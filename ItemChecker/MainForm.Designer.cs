@@ -62,7 +62,6 @@ namespace ItemChecker
             this.linkCS_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.linkTS_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.about_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.availability_groupBox = new System.Windows.Forms.GroupBox();
             this.steamMarket_label = new System.Windows.Forms.Label();
             this.tryskins_label = new System.Windows.Forms.Label();
@@ -179,8 +178,7 @@ namespace ItemChecker
             this.file_MainStripMenu,
             this.reload_MainStripMenu,
             this.tools_MainStripMenu,
-            this.links_toolStripMenuItem,
-            this.about_toolStripMenuItem});
+            this.links_toolStripMenuItem});
             this.main_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.main_menuStrip.Name = "main_menuStrip";
             this.main_menuStrip.Size = new System.Drawing.Size(600, 24);
@@ -390,18 +388,10 @@ namespace ItemChecker
             // 
             // linkTS_toolStripMenuItem
             // 
-            this.linkTS_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.tryskins_logo;
             this.linkTS_toolStripMenuItem.Name = "linkTS_toolStripMenuItem";
             this.linkTS_toolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.linkTS_toolStripMenuItem.Text = "TrySkins";
             this.linkTS_toolStripMenuItem.Click += new System.EventHandler(this.linkTS_toolStripMenuItem_Click);
-            // 
-            // about_toolStripMenuItem
-            // 
-            this.about_toolStripMenuItem.Name = "about_toolStripMenuItem";
-            this.about_toolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.about_toolStripMenuItem.Text = "About";
-            this.about_toolStripMenuItem.Click += new System.EventHandler(this.about_toolStripMenuItem_Click);
             // 
             // availability_groupBox
             // 
@@ -1014,7 +1004,6 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem linkTS_toolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem updateData_toolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem about_toolStripMenuItem;
     }
 }
 

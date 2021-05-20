@@ -4,16 +4,16 @@ using System.Threading;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Globalization;
 using Newtonsoft.Json.Linq;
-using System.ComponentModel;
 using static ItemChecker.Program;
 using ItemChecker.General;
 using ItemChecker.Model;
 using ItemChecker.Settings;
 using ItemChecker.NET;
-using System.Globalization;
 
 namespace ItemChecker.Presenter
 {
@@ -172,6 +172,7 @@ namespace ItemChecker.Presenter
                 mainForm.progressBar_StripStatus.Visible = true;
                 mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue_count;
                 mainForm.progressBar_StripStatus.Value = 0;
+                Main.loading = true;
                 ThreadPool.QueueUserWorkItem(placeOrder);
             }
         }
@@ -224,6 +225,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
+                Main.loading = true;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
 
@@ -253,9 +255,12 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 Edit.errorLog(exp, Main.version);
-
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Edit.errorMessage(exp, currMethodName);
+            }
+            finally
+            {
+                Main.loading = false;
             }
         }
 
@@ -263,13 +268,13 @@ namespace ItemChecker.Presenter
         public void timerTick(Object sender, ElapsedEventArgs e)
         {
             BuyOrder.tick--;
-            TimeSpan tm = TimeSpan.FromSeconds(BuyOrder.tick);
-            string st = tm.ToString("mm':'ss");
-            mainForm.timer_StripStatus.Text = "Next check: " + st;
+            TimeSpan time = TimeSpan.FromSeconds(BuyOrder.tick);
+            mainForm.timer_StripStatus.Text = "Next check: " + time.ToString("mm':'ss");
             if (BuyOrder.tick <= 0)
             {
                 Main.timer.Stop();
                 mainForm.timer_StripStatus.Text = "Pushing...";
+                Main.loading = true;
                 ThreadPool.QueueUserWorkItem(push);
             }
         }
@@ -291,7 +296,7 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value = 0; }));
 
                 pushItem();
-                if (SteamConfig.Default.updateST == true)
+                if (SteamConfig.Default.updateST)
                 {
                     mainForm.Invoke(new MethodInvoker(delegate {
                         mainForm.timer_StripStatus.Text = "Updating...";
@@ -299,9 +304,7 @@ namespace ItemChecker.Presenter
                         mainForm.progressBar_StripStatus.Maximum = 3;
                     }));
                     SteamPresenter.getBalance();
-                    getSteamlist();
-                    precentSteam();
-                    createSteamTable();
+                    MainPresenter.loadDataSteam();
                 }
             }
             catch (Exception exp)
@@ -312,6 +315,7 @@ namespace ItemChecker.Presenter
             {
                 BuyOrder.tick = SteamConfig.Default.timer * 60;
                 Main.timer.Start();
+                Main.loading = false;
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Visible = false; }));
             }
         }

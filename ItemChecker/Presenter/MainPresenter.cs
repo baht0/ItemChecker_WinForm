@@ -23,6 +23,7 @@ namespace ItemChecker.Presenter
             CancellationToken token = cancelTokenSource.Token;
             try
             {
+                Main.loading = true;
                 while (!token.IsCancellationRequested)
                 {
                     launchBrowser();
@@ -108,6 +109,7 @@ namespace ItemChecker.Presenter
 
                 progressInvoke();
             }
+            else throw new InvalidOperationException("Login Tryskins");
         }
 
         //load
@@ -169,13 +171,13 @@ namespace ItemChecker.Presenter
                 }
                 else if (Main.reload == 1)//tryskins
                 {
-                    SteamPresenter.getBalance();
+                    preparationData();
                     BuyOrder._clearQueue();
                     loadDataTryskins();
                 }
                 else if (Main.reload == 2)//buy order
                 {
-                    SteamPresenter.getBalance();
+                    preparationData();
                     loadDataSteam();
                 }
                 else if (Main.reload == 3)//withdraw
@@ -203,44 +205,38 @@ namespace ItemChecker.Presenter
         //other
         public static void clearAll()
         {
-            try
+            stopPush();
+            TrySkins._clear();
+            BuyOrder._clear();
+            BuyOrder._clearQueue();
+            Withdraw._clear();
+
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.steamMarket_label, "SteamMarket: -")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.tryskins_label, "TrySkins: -")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.overstock_label, "Overstock: -")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.unavailable_label, "Unavailable: -")));
+
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.course_label, "0.00 ₽")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.quantity_label, "Quantity: -")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.available_label, "Available: -")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.check_label, "Check: -")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.push_label, "Push: -")));
+            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.catch_label, "Catch: -")));
+
+            mainForm.Invoke(new MethodInvoker(delegate
             {
-                stopPush();
-                TrySkins._clear();
-                BuyOrder._clear();
-                BuyOrder._clearQueue();
-                Withdraw._clear();
+                mainForm.status_StripStatus.Text = "Processing...";
+                mainForm.status_StripStatus.Visible = true;
 
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.steamMarket_label, "SteamMarket: -")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.tryskins_label, "TrySkins: -")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.overstock_label, "Overstock: -")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.unavailable_label, "Unavailable: -")));
-
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.course_label, "0.00 ₽")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.quantity_label, "Quantity: -")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.available_label, "Available: -")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.check_label, "Check: -")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.push_label, "Push: -")));
-                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.catch_label, "Catch: -")));
-
-                mainForm.Invoke(new MethodInvoker(delegate
-                {
-                    mainForm.reload_MainStripMenu.Enabled = false;
-                    mainForm.progressBar_StripStatus.Value = 0;
-                    mainForm.progressBar_StripStatus.Visible = true;
-                    mainForm.steamMarket_label.ForeColor = Color.Black;
-                    mainForm.available_label.ForeColor = Color.Black;
-                    mainForm.queue_linkLabel.Text = "Place order: -";
-                    mainForm.tradeOffers_linkLabel.Text = "Incoming: -";
-                    mainForm.balance_StripStatus.Text = "Balance: 0.00";
-                }));
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
-                Edit.errorLog(exp, Main.version);
-            }
+                mainForm.reload_MainStripMenu.Enabled = false;
+                mainForm.progressBar_StripStatus.Value = 0;
+                mainForm.progressBar_StripStatus.Visible = true;
+                mainForm.steamMarket_label.ForeColor = Color.Black;
+                mainForm.available_label.ForeColor = Color.Black;
+                mainForm.queue_linkLabel.Text = "Place order: -";
+                mainForm.tradeOffers_linkLabel.Text = "Incoming: -";
+                mainForm.balance_StripStatus.Text = "Balance: 0.00";
+            }));
         }
         public static void stopPush()
         {
@@ -254,14 +250,15 @@ namespace ItemChecker.Presenter
                 mainForm.push_linkLabel.Text = "Push...";
             }));
         }
+
         public static void progressInvoke(int i = 1)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value += i; }));
         }
         public static void exit()
         {
-            Main.Browser.Quit();
             mainForm.notifyIcon.Visible = false;
+            Main.Browser.Quit();
             foreach (Process proc in Process.GetProcessesByName("ItemChecker"))
             {
                 proc.Kill();

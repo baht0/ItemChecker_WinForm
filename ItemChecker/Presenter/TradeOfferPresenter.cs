@@ -19,6 +19,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
+                Main.loading = true;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 checkOffer();
@@ -30,14 +31,15 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.tradeOffers_linkLabel.Text = "Incoming: -"; }));
 
+                Edit.errorLog(exp, Main.version);
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Edit.errorMessage(exp, currMethodName);
             }
             finally
             {
+                Main.loading = false;
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.progressBar_StripStatus.Visible = false;
                     mainForm.tradeOffers_linkLabel.Enabled = true;

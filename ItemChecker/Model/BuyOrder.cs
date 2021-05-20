@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ItemChecker.Model
 {
@@ -42,7 +40,6 @@ namespace ItemChecker.Model
             BuyOrder.precent.Clear();
             BuyOrder.difference.Clear();
 
-            BuyOrder.count = 0;
             BuyOrder.sum = 0;
             BuyOrder.available_amount = 0;
         }

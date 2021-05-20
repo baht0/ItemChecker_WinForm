@@ -84,17 +84,17 @@ namespace ItemChecker.Presenter
             {
                 IWebElement name = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[1]/span")));
                 if (BuyOrder.item.Contains(name.Text)) continue;
-                if (Main.overstock.Contains(name.Text) || Main.unavailable.Contains(name.Text))
+                else if (Main.overstock.Contains(name.Text) || Main.unavailable.Contains(name.Text))
                 {
                     TrySkins.t++;
                     continue;
                 }
-                if (TrySkins.item.Contains(name.Text)) break;
+                else if (TrySkins.item.Contains(name.Text)) break;
 
                 //fast
-                if (TryskinsConfig.Default.fastTime)
+                else if (TryskinsConfig.Default.fastTime)
                 {
-                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins) [FAST]";
+                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins)";
                     IWebElement steama = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[7]/span")));
                     IWebElement csmoney = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[8]/span")));
                     IWebElement prec = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[9]/div")));
@@ -106,11 +106,11 @@ namespace ItemChecker.Presenter
                     TrySkins.difference.Add(Edit.difference(Convert.ToDouble(csmoney.Text), Convert.ToDouble(steama.Text), Main.course));
                 }
                 //long
-                if (TryskinsConfig.Default.longTime)
+                else if (TryskinsConfig.Default.longTime)
                 {
                     try
                     {
-                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins) [LONG]";
+                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins) [Accurate]";
                         var json = Request.mrinkaRequest(Edit.replaceUrl(name.Text));
                         var buy_order = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
                         var csm_sell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());

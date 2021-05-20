@@ -44,7 +44,6 @@ namespace ItemChecker
             Main.timer.Elapsed += new ElapsedEventHandler(buyOrderPresenter.timerTick);
             Main.timer.Interval = 1000;
             Main.timer.AutoReset = true;
-            Main.loading = true;
             ThreadPool.QueueUserWorkItem(MainPresenter.Start);
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -69,7 +68,7 @@ namespace ItemChecker
         private void settings_MainStripMenu_Click(object sender, System.EventArgs e)
         {
             SettingsForm fr = new SettingsForm();
-            fr.ShowDialog();
+            fr.ShowDialog();     
         }
         private void printScreen_MainStripMenu_Click(object sender, System.EventArgs e)
         {
@@ -179,12 +178,6 @@ namespace ItemChecker
                     withdrawTable_MainStripMenu.Text = "Withdraw";
                 }
             }
-        }
-        //about
-        private void about_toolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AboutForm fr = new AboutForm();
-            fr.ShowDialog();
         }
 
         //linkLabels

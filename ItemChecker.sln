@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker", "ItemChecker\ItemChecker.csproj", "{9519E044-273B-4629-90B2-9FDF1036FD86}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker.NET", "ItemChecker.NET\ItemChecker.NET.csproj", "{A6645A49-A008-46D0-9CAA-FFF0FCB812A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker.Net", "ItemChecker.NET\ItemChecker.Net.csproj", "{A6645A49-A008-46D0-9CAA-FFF0FCB812A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemChecker.General", "ItemChecker.General\ItemChecker.General.csproj", "{54EF71CF-8E36-430D-841D-B23ED3340248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker.General", "ItemChecker.General\ItemChecker.General.csproj", "{54EF71CF-8E36-430D-841D-B23ED3340248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

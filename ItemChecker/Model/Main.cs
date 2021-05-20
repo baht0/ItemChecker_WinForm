@@ -1,8 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using ItemChecker.Settings;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace ItemChecker.Model
 {
