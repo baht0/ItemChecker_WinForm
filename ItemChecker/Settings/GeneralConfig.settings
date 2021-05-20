@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ItemChecker.Settings" GeneratedClassName="GeneralConfig">
+  <Profiles />
+  <Settings>
+    <Setting Name="steamApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="currencyApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2e1738c3876683cb468f</Value>
+    </Setting>
+    <Setting Name="wait" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
