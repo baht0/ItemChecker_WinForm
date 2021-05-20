@@ -19,39 +19,54 @@ namespace ItemChecker.Presenter
     {
         public static void withdraw(object state)
         {
-            withdrawCheck();
-            createWithdraw();
-            Main.loading = false;
+            try
+            {
+                withdrawCheck();
+                createWithdraw();
+                Main.loading = false;
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Edit.errorLog(exp, Main.version);
+                Edit.errorMessage(exp, currMethodName);
+            }
         }
 
         public static void withdrawCheck()
         {
-            try
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.status_StripStatus.Text = "Check Withdraw...";
+                mainForm.status_StripStatus.Visible = true;
+                mainForm.withdraw_dataGridView.Rows.Clear();
+            }));
+
+            Withdraw._clear();
+
+            if (TryskinsConfig.Default.souvenirW) Withdraw.souvenir = 1;
+            if (TryskinsConfig.Default.stickerW) Withdraw.sticker = 1;
+            int page = 1;
+            while (true)
             {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.status_StripStatus.Text = "Check Withdraw...";
-                    mainForm.status_StripStatus.Visible = true;
-                    mainForm.withdraw_dataGridView.Rows.Clear();
-                }));
+                string url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=" + Withdraw.souvenir + "&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Bsticker%5D=" + Withdraw.sticker + "&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showcsmoney&ItemsFilter%5Bservice2%5D=showsteam&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=0&ItemsFilter%5Bhours2%5D=0&ItemsFilter%5BpriceFrom1%5D=&ItemsFilter%5BpriceTo1%5D=&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=" + TryskinsConfig.Default.minSalesW + "&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minPrecentW + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxPrecentW + "&ItemsFilter%5BpercentTo2%5D=&page=" + page + "&per-page=30";
+                Main.Browser.Navigate().GoToUrl(url);
 
-                Withdraw._clear();
-
-                if (TryskinsConfig.Default.souvenirW) Withdraw.souvenir = 1;
-                if (TryskinsConfig.Default.stickerW) Withdraw.sticker = 1;
-                int page = 1;
-                while (true)
+                List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
+                if (items.Count > 1)
                 {
-                    string url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=" + Withdraw.souvenir + "&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Bsticker%5D=" + Withdraw.sticker + "&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showcsmoney&ItemsFilter%5Bservice2%5D=showsteam&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=0&ItemsFilter%5Bhours2%5D=0&ItemsFilter%5BpriceFrom1%5D=&ItemsFilter%5BpriceTo1%5D=&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=" + TryskinsConfig.Default.minSalesW + "&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minPrecentW + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxPrecentW + "&ItemsFilter%5BpercentTo2%5D=&page=" + page + "&per-page=30";
-                    Main.Browser.Navigate().GoToUrl(url);
-
-                    List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
-                    if (items.Count != 0)
+                    getWithdrawTryskins(items.Count);
+                    if (items.Count < 30) break;
+                    page++;
+                }
+                else if (items.Count == 1)
+                {
+                    try
                     {
                         getWithdrawTryskins(items.Count);
-                        if (items.Count < 30) break;
+                        break;
                     }
-                    else
+                    catch
                     {
                         mainForm.Invoke(new MethodInvoker(delegate {
                             mainForm.withdraw_dataGridView.Rows.Add();
@@ -59,17 +74,8 @@ namespace ItemChecker.Presenter
                         }));
                         break;
                     }
-                    page++;
                 }
-            }
-            catch (Exception exp)
-            {
-                Edit.errorLog(exp, Main.version);
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.withdraw_dataGridView.Rows.Add();
-                    mainForm.withdraw_dataGridView.Rows[0].Cells[1].Value = "Something went wrong :(";
-                }));
-            }
+            }            
         }
         private static void getWithdrawTryskins(int count)
         {
