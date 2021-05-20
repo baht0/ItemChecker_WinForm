@@ -11,30 +11,46 @@ using ItemChecker.Settings;
 using ItemChecker.General;
 using ItemChecker.NET;
 using System.Drawing;
-using System.Globalization;
 
 namespace ItemChecker.Presenter
 {
     public class MainPresenter
     {
+        //start
         public static void Start(object state)
         {
+            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancelTokenSource.Token;
             try
             {
-                launchBrowser();
-                loginSteam();
-                loginTryskins();
-                loadData();
+                while (!token.IsCancellationRequested)
+                {
+                    launchBrowser();
+                    loginSteam();
+                    loginTryskins();
+                    preparationData();
+                    loadDataSteam();
+                    loadDataTryskins();
+                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
+
+                    cancelTokenSource.Cancel();
+                }
             }
             catch (Exception exp)
             {
+                cancelTokenSource.Cancel();
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Edit.errorLog(exp, Main.version);
                 Edit.errorMessage(exp, currMethodName);
             }
             finally
             {
-                Main.loading = false;
+                Main.loading = false; 
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.progressBar_StripStatus.Visible = false;
+                    mainForm.status_StripStatus.Visible = false;
+                    mainForm.reload_MainStripMenu.Enabled = true;
+                }));
             }
         }
         public static void launchBrowser()
@@ -44,18 +60,13 @@ namespace ItemChecker.Presenter
             ChromeOptions option = new ChromeOptions();
             option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160");
 
-            Main.Browser = new ChromeDriver(chromeDriverService, option);
+            Main.Browser = new ChromeDriver(chromeDriverService, option, TimeSpan.FromMinutes(5));
             Main.Browser.Manage().Window.Maximize();
             Main.Browser.Url = "https://steamcommunity.com/login/home/?goto=";
             var cookie = Main.Browser.Manage().Cookies.GetCookieNamed("sessionid").ToString();
             Main.sessionid = cookie.Substring(10, 24);
 
-            mainForm.Invoke(new MethodInvoker(delegate
-            {
-                mainForm.loading_panel.Visible = false;
-                mainForm.loading_pictureBox.Visible = false;
-                mainForm.ver_label.Visible = false;
-            }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
 
             progressInvoke();
         }
@@ -84,31 +95,22 @@ namespace ItemChecker.Presenter
         }
         private static void loginTryskins()
         {
-            try
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Tryskins..."; }));
+            Main.Browser.Navigate().GoToUrl("https://table.altskins.com/login/steam");
+            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
+
+            IWebElement account = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
+            if (account.Text == Steam.login)
             {
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Tryskins..."; }));
-                Main.Browser.Navigate().GoToUrl("https://table.altskins.com/login/steam");
-                WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
+                IWebElement signins = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
+                signins.Click();
+                Thread.Sleep(300);
 
-                IWebElement account = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
-                if (account.Text == Steam.login)
-                {
-                    IWebElement signins = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
-                    signins.Click();
-                    Thread.Sleep(300);
-
-                    progressInvoke();
-                }
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
-
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value--; }));
+                progressInvoke();
             }
         }
 
+        //load
         public static void preparationData()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Info..."; }));
@@ -127,72 +129,54 @@ namespace ItemChecker.Presenter
 
             progressInvoke();
         }
-        public static void loadData()
+        public static void loadDataSteam()
         {
-            try
+            if (BuyOrder.count != 0)
             {
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Visible = true; }));
-                preparationData();
-                if (BuyOrder.count != 0)
-                {
-                    BuyOrderPresenter.getSteamlist();
-                    BuyOrderPresenter.precentSteam();
-                    BuyOrderPresenter.createSteamTable();
-                }
-                else mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.progressBar_StripStatus.Value = mainForm.progressBar_StripStatus.Value + 3;
-                    mainForm.buyOrder_dataGridView.Rows.Clear();
-                }));
-
-                TryskinsPresenter.checkTryskins();
-
-                if (!TrySkins.item.Contains("empty")) TryskinsPresenter.createTryTable();
-
-                Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.progressBar_StripStatus.Visible = false;
-                    mainForm.reload_MainStripMenu.Enabled = true;
-                    mainForm.status_StripStatus.Visible = false;
-                }));
+                BuyOrderPresenter.getSteamlist();
+                BuyOrderPresenter.precentSteam();
+                BuyOrderPresenter.createSteamTable();
             }
-            finally
-            {
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.reload_MainStripMenu.Enabled = true;
-                }));
-            }
+            else progressInvoke(3);
+        }
+        public static void loadDataTryskins()
+        {
+            TryskinsPresenter.checkTryskins();
+            if (TrySkins.count != 0) TryskinsPresenter.createTryTable();
+            else progressInvoke();
         }
 
+        //reaload
         public static void _reload(object state)
         {
             try
             {
                 Main.loading = true;
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                stopPush();
                 mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.progressBar_StripStatus.Value = 0;
                     mainForm.reload_MainStripMenu.Enabled = false;
+                    mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.status_StripStatus.Text = "Processing...";
                     mainForm.status_StripStatus.Visible = true;
-                    mainForm.progressBar_StripStatus.Visible = true;
                 }));
                 if (Main.reload == 0)//full
                 {
-                    clearData();
-                    loadData();
+                    clearAll();
+                    preparationData();
+                    loadDataSteam();
+                    loadDataTryskins();
                 }
                 else if (Main.reload == 1)//tryskins
                 {
                     SteamPresenter.getBalance();
-                    TryskinsPresenter.checkTryskins();
-                    TryskinsPresenter.createTryTable();
+                    BuyOrder._clearQueue();
+                    loadDataTryskins();
                 }
-                else if (Main.reload == 2)//steam(a)
+                else if (Main.reload == 2)//buy order
                 {
                     SteamPresenter.getBalance();
-                    BuyOrderPresenter.getSteamlist();
-                    BuyOrderPresenter.precentSteam();
-                    BuyOrderPresenter.createSteamTable();
+                    loadDataSteam();
                 }
                 else if (Main.reload == 3)//withdraw
                 {
@@ -216,35 +200,39 @@ namespace ItemChecker.Presenter
                 }));
             }
         }
-
-        public static void progressInvoke()
-        {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value++; }));
-        }
-
-        public static void clearData()
+        //other
+        public static void clearAll()
         {
             try
             {
                 stopPush();
-                BuyOrder.queue.Clear();
-                BuyOrder.ordered.Clear();
-                BuyOrder.queue_count = 0;
-                BuyOrder.order_dol = 0;
-                BuyOrder.order_rub = 0;
-
-                BuyOrder.sum = 0;
-                BuyOrder.available_amount = 0;
+                TrySkins._clear();
+                BuyOrder._clear();
+                BuyOrder._clearQueue();
+                Withdraw._clear();
 
                 mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.steamMarket_label, "SteamMarket: -")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.tryskins_label, "TrySkins: -")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.overstock_label, "Overstock: -")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.unavailable_label, "Unavailable: -")));
+
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.course_label, "0.00 ₽")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.quantity_label, "Quantity: -")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.available_label, "Available: -")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.check_label, "Check: -")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.push_label, "Push: -")));
+                mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.catch_label, "Catch: -")));
+
                 mainForm.Invoke(new MethodInvoker(delegate
                 {
                     mainForm.reload_MainStripMenu.Enabled = false;
-                    mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.steamMarket_label.ForeColor = Color.Black;
                     mainForm.available_label.ForeColor = Color.Black;
                     mainForm.queue_linkLabel.Text = "Place order: -";
+                    mainForm.tradeOffers_linkLabel.Text = "Incoming: -";
+                    mainForm.balance_StripStatus.Text = "Balance: 0.00";
                 }));
             }
             catch (Exception exp)
@@ -257,14 +245,18 @@ namespace ItemChecker.Presenter
         public static void stopPush()
         {
             Main.timer.Stop();
-            BuyOrder.tick = 0;
-            mainForm.progressBar_StripStatus.Control.Invoke(new MethodInvoker(delegate
+            BuyOrder._clearPush();
+            mainForm.Invoke(new MethodInvoker(delegate
             {
+                mainForm.timer_StripStatus.Visible = false;
                 mainForm.tradeOffers_linkLabel.Enabled = true;
                 mainForm.queue_linkLabel.Enabled = true;
                 mainForm.push_linkLabel.Text = "Push...";
-                mainForm.timer_StripStatus.Visible = false;
             }));
+        }
+        public static void progressInvoke(int i = 1)
+        {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value += i; }));
         }
         public static void exit()
         {

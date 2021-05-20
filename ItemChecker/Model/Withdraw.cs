@@ -13,5 +13,17 @@ namespace ItemChecker.Model
         public static List<double> precent = new List<double>();
         public static int souvenir { get; set; }
         public static int sticker { get; set; }
+
+        public static void _clear()
+        {
+            Withdraw.name.Clear();
+            Withdraw.sales.Clear();
+            Withdraw.csm.Clear();
+            Withdraw.st.Clear();
+            Withdraw.precent.Clear();
+
+            Withdraw.souvenir = 0;
+            Withdraw.sticker = 0;
+        }
     }
 }

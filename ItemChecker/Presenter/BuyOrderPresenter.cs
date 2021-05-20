@@ -21,12 +21,8 @@ namespace ItemChecker.Presenter
     {
         public static void getSteamlist()
         {
+            BuyOrder._clear();
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check Steam..."; }));
-
-            BuyOrder.item.Clear();
-            BuyOrder.url.Clear();
-            BuyOrder.id.Clear();
-            BuyOrder.price.Clear();
 
             WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
             Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
@@ -61,10 +57,6 @@ namespace ItemChecker.Presenter
         public static void precentSteam()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Calculate Steam..."; }));
-
-            BuyOrder.csm_price.Clear();
-            BuyOrder.precent.Clear();
-            BuyOrder.difference.Clear();
 
             for (int i = 0; i < BuyOrder.count; i++)
             {
@@ -222,18 +214,10 @@ namespace ItemChecker.Presenter
             }
             Thread.Sleep(2000);
             mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.queue_linkLabel.Text = "Place order: -";
                 mainForm.progressBar_StripStatus.Maximum = 7;
-                mainForm.progressBar_StripStatus.Value = 0;
             }));
-            MainPresenter.clearData();
-            MainPresenter.loadData();
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.tryskins_dataGridView.Enabled = true;
-                mainForm.buyOrder_dataGridView.Enabled = true;
-                mainForm.progressBar_StripStatus.Visible = false;
-                mainForm.queue_linkLabel.Enabled = true;
-            }));
+            Main.reload = 0;
+            ThreadPool.QueueUserWorkItem(MainPresenter._reload);
         }
         //delete order
         public static void deleteOrder(object state)

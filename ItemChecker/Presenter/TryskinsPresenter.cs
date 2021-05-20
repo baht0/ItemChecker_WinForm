@@ -21,69 +21,61 @@ namespace ItemChecker.Presenter
     {
         public static void checkTryskins()
         {
-            try
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.status_StripStatus.Text = "Check Tryskins...";
+                mainForm.tryskins_dataGridView.Rows.Clear();
+            }));
+
+            TrySkins._clear();
+
+            double min_sta = 2;
+            int j = 15;
+            do
             {
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.status_StripStatus.Text = "Check Tryskins...";
-                    mainForm.tryskins_dataGridView.Rows.Clear();
-                }));
+                j += 15;
+                min_sta += 5;
+            }
+            while (j < Steam.balance_usd); min_sta -= 2;
+            double max_sta = Steam.balance_usd;
+            if (TryskinsConfig.Default.maxTryskinsPrice != 0) max_sta = TryskinsConfig.Default.maxTryskinsPrice;
+            if (TryskinsConfig.Default.minTryskinsPrice != 0) min_sta = TryskinsConfig.Default.minTryskinsPrice;
 
-                TrySkins.item.Clear();
-                TrySkins.sta.Clear();
-                TrySkins.csm.Clear();
-                TrySkins.precent.Clear();
-                TrySkins.difference.Clear();
-                TrySkins.count = 0;
-                TrySkins.t = 0;
+            int page = 1;
+            while (true)
+            {
+                TrySkins.url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=" + page + "&per-page=30";
+                Main.Browser.Navigate().GoToUrl(TrySkins.url);
+                Thread.Sleep(500);
 
-                double min_sta = 2;
-                int j = 15;
-                do
+                List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
+                TrySkins.count += items.Count;
+
+                if (items.Count > 1)
                 {
-                    j += 15;
-                    min_sta += 5;
+                    getTryskins(items.Count);
+                    if (items.Count < 30) break;
+                    page++;
                 }
-                while (j < Steam.balance_usd); min_sta -= 2;
-                double max_sta = Steam.balance_usd;
-                if (TryskinsConfig.Default.maxTryskinsPrice != 0) max_sta = TryskinsConfig.Default.maxTryskinsPrice;
-                if (TryskinsConfig.Default.minTryskinsPrice != 0) min_sta = TryskinsConfig.Default.minTryskinsPrice;
-
-                int page = 1;
-                while (true)
+                else if (items.Count == 1)
                 {
-                    TrySkins.url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=" + page + "&per-page=30";
-                    Main.Browser.Navigate().GoToUrl(TrySkins.url);
-                    Thread.Sleep(500);
-
-                    List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
-                    TrySkins.count += items.Count;
-                    if (items.Count != 0)
+                    try
                     {
                         getTryskins(items.Count);
-                        if (items.Count < 30) break;
+                        break;
                     }
-                    else
+                    catch
                     {
-                        TrySkins.item.Add("empty");
+                        TrySkins.count = 0;
                         mainForm.Invoke(new MethodInvoker(delegate {
-                            mainForm.tryskins_dataGridView.Rows.Add(); mainForm.tryskins_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list.";
+                            mainForm.tryskins_dataGridView.Rows.Add();
+                            mainForm.tryskins_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list.";
                         }));
                         break;
                     }
-                    page++;
                 }
-                mainForm.tryskins_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.tryskins_label, "TrySkins: " + TrySkins.t.ToString())));
-                MainPresenter.progressInvoke();
             }
-            catch (Exception exp)
-            {
-                Edit.errorLog(exp, Main.version);
-                TrySkins.item.Add("empty");
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.tryskins_dataGridView.Rows.Add();
-                    mainForm.tryskins_dataGridView.Rows[0].Cells[1].Value = "Something went wrong :(";
-                }));
-            }
+            mainForm.tryskins_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.tryskins_label, "TrySkins: " + TrySkins.t.ToString())));
+            MainPresenter.progressInvoke();
         }
         public static void getTryskins(int count)
         {
@@ -98,6 +90,8 @@ namespace ItemChecker.Presenter
                     continue;
                 }
                 if (TrySkins.item.Contains(name.Text)) break;
+
+                //fast
                 if (TryskinsConfig.Default.fastTime)
                 {
                     mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins) [FAST]";
@@ -111,6 +105,7 @@ namespace ItemChecker.Presenter
                     TrySkins.precent.Add(Edit.removeSymbol(prec.Text));
                     TrySkins.difference.Add(Edit.difference(Convert.ToDouble(csmoney.Text), Convert.ToDouble(steama.Text), Main.course));
                 }
+                //long
                 if (TryskinsConfig.Default.longTime)
                 {
                     try

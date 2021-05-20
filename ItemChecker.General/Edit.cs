@@ -7,11 +7,6 @@ namespace ItemChecker.General
 {
     public class Edit
     {
-        //public static String getVersion()
-        //{
-        //    return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-        //}
-
         //url
         public static String replaceUrl(string str)
         {

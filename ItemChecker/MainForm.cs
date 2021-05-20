@@ -86,8 +86,9 @@ namespace ItemChecker
 
             if (result == DialogResult.Yes)
             {
+                loading_panel.Visible = true;
                 progressBar_StripStatus.Maximum = 9;
-                MainPresenter.clearData();
+                MainPresenter.clearAll();
                 Main.Browser.Quit();
                 Thread.Sleep(1000);
                 status_StripStatus.Visible = true;
@@ -116,27 +117,33 @@ namespace ItemChecker
         }
         private void tryskins_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-
             progressBar_StripStatus.Maximum = 2;
-            Main.reload = 0;
+            Main.reload = 1;
             ThreadPool.QueueUserWorkItem(MainPresenter._reload);
         }
         private void buyOrders_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-
             progressBar_StripStatus.Maximum = 3;
-            Main.reload = 0;
+            Main.reload = 2;
             ThreadPool.QueueUserWorkItem(MainPresenter._reload);
         }
         private void withdrawReload_MainStripMenu_Click(object sender, System.EventArgs e)
         {
             progressBar_StripStatus.Maximum = 2;
-            Main.reload = 0;
+            Main.reload = 3;
             ThreadPool.QueueUserWorkItem(MainPresenter._reload);
         }
         private void updateData_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Main.loading) MainPresenter.preparationData();
+            if (!Main.loading)
+            {
+                status_StripStatus.Visible = true;
+                progressBar_StripStatus.Value = 0;
+                progressBar_StripStatus.Maximum = 1;
+                MainPresenter.preparationData();
+                BuyOrderPresenter.availableAmount();
+                status_StripStatus.Visible = false;
+            }
         }
         //tools
         private void checkOwnList_MainStripMenu_Click(object sender, System.EventArgs e)

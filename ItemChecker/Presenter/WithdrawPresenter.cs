@@ -35,11 +35,7 @@ namespace ItemChecker.Presenter
                     mainForm.withdraw_dataGridView.Rows.Clear();
                 }));
 
-                Withdraw.name.Clear();
-                Withdraw.sales.Clear();
-                Withdraw.csm.Clear();
-                Withdraw.st.Clear();
-                Withdraw.precent.Clear();
+                Withdraw._clear();
 
                 if (TryskinsConfig.Default.souvenirW) Withdraw.souvenir = 1;
                 if (TryskinsConfig.Default.stickerW) Withdraw.sticker = 1;

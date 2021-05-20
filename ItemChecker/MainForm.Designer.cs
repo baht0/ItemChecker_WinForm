@@ -47,9 +47,9 @@ namespace ItemChecker
             this.tryskins_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.buyOrders_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.withdrawReload_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.updateData_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.withdrawReload_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tools_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.checkOwnList_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.floatCheck_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -247,9 +247,9 @@ namespace ItemChecker
             this.tryskins_MainStripMenu,
             this.buyOrders_MainStripMenu,
             this.toolStripSeparator2,
-            this.withdrawReload_MainStripMenu,
+            this.updateData_toolStripMenuItem,
             this.toolStripSeparator8,
-            this.updateData_toolStripMenuItem});
+            this.withdrawReload_MainStripMenu});
             this.reload_MainStripMenu.Enabled = false;
             this.reload_MainStripMenu.Name = "reload_MainStripMenu";
             this.reload_MainStripMenu.Size = new System.Drawing.Size(55, 20);
@@ -286,24 +286,25 @@ namespace ItemChecker
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(136, 6);
             // 
-            // withdrawReload_MainStripMenu
-            // 
-            this.withdrawReload_MainStripMenu.Name = "withdrawReload_MainStripMenu";
-            this.withdrawReload_MainStripMenu.Size = new System.Drawing.Size(139, 22);
-            this.withdrawReload_MainStripMenu.Text = "Withdraw";
-            this.withdrawReload_MainStripMenu.Click += new System.EventHandler(this.withdrawReload_MainStripMenu_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(136, 6);
-            // 
             // updateData_toolStripMenuItem
             // 
             this.updateData_toolStripMenuItem.Name = "updateData_toolStripMenuItem";
             this.updateData_toolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.updateData_toolStripMenuItem.Text = "Update Data";
             this.updateData_toolStripMenuItem.Click += new System.EventHandler(this.updateData_toolStripMenuItem_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(136, 6);
+            // 
+            // withdrawReload_MainStripMenu
+            // 
+            this.withdrawReload_MainStripMenu.Enabled = false;
+            this.withdrawReload_MainStripMenu.Name = "withdrawReload_MainStripMenu";
+            this.withdrawReload_MainStripMenu.Size = new System.Drawing.Size(139, 22);
+            this.withdrawReload_MainStripMenu.Text = "Withdraw";
+            this.withdrawReload_MainStripMenu.Click += new System.EventHandler(this.withdrawReload_MainStripMenu_Click);
             // 
             // tools_MainStripMenu
             // 
@@ -358,7 +359,6 @@ namespace ItemChecker
             // 
             // linkSM_toolStripMenuItem
             // 
-            this.linkSM_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.steam_logo;
             this.linkSM_toolStripMenuItem.Name = "linkSM_toolStripMenuItem";
             this.linkSM_toolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.linkSM_toolStripMenuItem.Text = "SteamMarket";
@@ -378,7 +378,6 @@ namespace ItemChecker
             // 
             // linkCS_toolStripMenuItem
             // 
-            this.linkCS_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.cs_money_logo;
             this.linkCS_toolStripMenuItem.Name = "linkCS_toolStripMenuItem";
             this.linkCS_toolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.linkCS_toolStripMenuItem.Text = "Cs.Money (old)";
