@@ -9,7 +9,7 @@ namespace ItemChecker
 {
     public partial class LoginForm : Form
     {
-        private bool status;
+        private bool close;
 
         public LoginForm()
         {
@@ -28,7 +28,7 @@ namespace ItemChecker
         }
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (status != true)
+            if (!close)
             {
                 DialogResult result = MessageBox.Show(
                     "Do you want to log out?",
@@ -84,7 +84,7 @@ namespace ItemChecker
                     Properties.Settings.Default.remember = remember_checkBox.Checked;
                 }
                 Properties.Settings.Default.Save();
-                status = true;
+                close = true;
                 Close();
             }
         }

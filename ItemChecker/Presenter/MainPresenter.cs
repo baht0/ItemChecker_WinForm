@@ -1,16 +1,16 @@
 ﻿using OpenQA.Selenium.Chrome;
-using System;
-using System.Windows.Forms;
-using ItemChecker.Model;
-using static ItemChecker.Program;
-using System.Diagnostics;
-using System.Threading;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using System;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Diagnostics;
+using System.Threading;
+using static ItemChecker.Program;
 using ItemChecker.Settings;
 using ItemChecker.General;
 using ItemChecker.NET;
-using System.Drawing;
+using ItemChecker.Model;
 
 namespace ItemChecker.Presenter
 {
@@ -56,12 +56,13 @@ namespace ItemChecker.Presenter
         }
         public static void launchBrowser()
         {
-            var chromeDriverService = ChromeDriverService.CreateDefaultService();
+            ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
             ChromeOptions option = new ChromeOptions();
             option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160");
+            option.Proxy = null;
 
-            Main.Browser = new ChromeDriver(chromeDriverService, option, TimeSpan.FromMinutes(5));
+            Main.Browser = new ChromeDriver(chromeDriverService, option);
             Main.Browser.Manage().Window.Maximize();
             Main.Browser.Url = "https://steamcommunity.com/login/home/?goto=";
             var cookie = Main.Browser.Manage().Cookies.GetCookieNamed("sessionid").ToString();

@@ -87,6 +87,7 @@ namespace ItemChecker
             // 
             // service_toolStripComboBox
             // 
+            this.service_toolStripComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.service_toolStripComboBox.Items.AddRange(new object[] {
             "Cs.Money",
             "Loot.Farm"});

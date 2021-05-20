@@ -33,6 +33,8 @@ namespace ItemChecker
                     );
                 Process.GetCurrentProcess().Kill();
             }
+            foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
+            foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
             ver_label.Text = "Version: " + Main.version;
         }
         public void MainForm_Shown(object sender, System.EventArgs e)
@@ -116,13 +118,13 @@ namespace ItemChecker
         }
         private void tryskins_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            progressBar_StripStatus.Maximum = 2;
+            progressBar_StripStatus.Maximum = 3;
             Main.reload = 1;
             ThreadPool.QueueUserWorkItem(MainPresenter._reload);
         }
         private void buyOrders_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            progressBar_StripStatus.Maximum = 3;
+            progressBar_StripStatus.Maximum = 4;
             Main.reload = 2;
             ThreadPool.QueueUserWorkItem(MainPresenter._reload);
         }
