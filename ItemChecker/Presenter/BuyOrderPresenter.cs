@@ -167,8 +167,6 @@ namespace ItemChecker.Presenter
             if (!BuyOrder.queue.Contains("") & BuyOrder.queue_count > 0)
             {
                 mainForm.queue_linkLabel.Enabled = false;
-                mainForm.tryskins_dataGridView.Enabled = false;
-                mainForm.buyOrder_dataGridView.Enabled = false;
                 mainForm.progressBar_StripStatus.Visible = true;
                 mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue_count;
                 mainForm.progressBar_StripStatus.Value = 0;

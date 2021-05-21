@@ -90,62 +90,65 @@ namespace ItemChecker
         }
         private void ok_button_Click(object sender, EventArgs e)
         {
-            if (currApiKey_textBox.Text != "" & steamApiKey_textBox.Text != "")
+            if (!Main.loading)
             {
-                //general
-                GeneralConfig.Default.steamApiKey = steamApiKey_textBox.Text;
-                GeneralConfig.Default.currencyApiKey = currApiKey_textBox.Text;
-                GeneralConfig.Default.wait = Convert.ToInt32(wait_numericUpDown.Value);
-                //steam
-                SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
-                SteamConfig.Default.updateST = updST_checkBox.Checked;
-                SteamConfig.Default.autoDelete = Convert.ToInt32(autoRemove_numericUpDown.Value);
-                //tryskins
-                TryskinsConfig.Default.maxTryskinsPrecent = Convert.ToInt32(maxPrecent_numericUpDown.Value);
-                TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);
-                TryskinsConfig.Default.maxTryskinsPrice = Convert.ToInt32(maxPrice_numericUpDown.Value);
-                TryskinsConfig.Default.minTryskinsPrice = Convert.ToInt32(minPrice_numericUpDown.Value);
-                TryskinsConfig.Default.minPrecentW = Convert.ToInt32(minPrecentW_numericUpDown.Value);
-                TryskinsConfig.Default.maxPrecentW = Convert.ToInt32(maxPrecentW_numericUpDown.Value);
-                TryskinsConfig.Default.minSalesW = Convert.ToInt32(minSalesW_numericUpDown.Value);
-                TryskinsConfig.Default.souvenirW = souvenir_checkBox.Checked;
-                TryskinsConfig.Default.stickerW = sticker_checkBox.Checked;
-                TryskinsConfig.Default.fastTime = fast_radioButton.Checked;
-                TryskinsConfig.Default.longTime = long_radioButton.Checked;
-                //float
-                FloatConfig.Default.maxFloatPrecent = maxPrecentFloat_numericUpDown.Value;
-                FloatConfig.Default.countGetItems = Convert.ToInt32(getItems_numericUpDown.Value);
-                if (lowest_radioButton.Checked == true) FloatConfig.Default.priceCompare = 0;
-                if (median_radioButton.Checked == true) FloatConfig.Default.priceCompare = 1;
-                if (csm_radioButton.Checked == true) FloatConfig.Default.priceCompare = 2;
+                if (currApiKey_textBox.Text != "" & steamApiKey_textBox.Text != "")
+                {
+                    //general
+                    GeneralConfig.Default.steamApiKey = steamApiKey_textBox.Text;
+                    GeneralConfig.Default.currencyApiKey = currApiKey_textBox.Text;
+                    GeneralConfig.Default.wait = Convert.ToInt32(wait_numericUpDown.Value);
+                    //steam
+                    SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
+                    SteamConfig.Default.updateST = updST_checkBox.Checked;
+                    SteamConfig.Default.autoDelete = Convert.ToInt32(autoRemove_numericUpDown.Value);
+                    //tryskins
+                    TryskinsConfig.Default.maxTryskinsPrecent = Convert.ToInt32(maxPrecent_numericUpDown.Value);
+                    TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);
+                    TryskinsConfig.Default.maxTryskinsPrice = Convert.ToInt32(maxPrice_numericUpDown.Value);
+                    TryskinsConfig.Default.minTryskinsPrice = Convert.ToInt32(minPrice_numericUpDown.Value);
+                    TryskinsConfig.Default.minPrecentW = Convert.ToInt32(minPrecentW_numericUpDown.Value);
+                    TryskinsConfig.Default.maxPrecentW = Convert.ToInt32(maxPrecentW_numericUpDown.Value);
+                    TryskinsConfig.Default.minSalesW = Convert.ToInt32(minSalesW_numericUpDown.Value);
+                    TryskinsConfig.Default.souvenirW = souvenir_checkBox.Checked;
+                    TryskinsConfig.Default.stickerW = sticker_checkBox.Checked;
+                    TryskinsConfig.Default.fastTime = fast_radioButton.Checked;
+                    TryskinsConfig.Default.longTime = long_radioButton.Checked;
+                    //float
+                    FloatConfig.Default.maxFloatPrecent = maxPrecentFloat_numericUpDown.Value;
+                    FloatConfig.Default.countGetItems = Convert.ToInt32(getItems_numericUpDown.Value);
+                    if (lowest_radioButton.Checked == true) FloatConfig.Default.priceCompare = 0;
+                    if (median_radioButton.Checked == true) FloatConfig.Default.priceCompare = 1;
+                    if (csm_radioButton.Checked == true) FloatConfig.Default.priceCompare = 2;
 
-                FloatConfig.Default.maxFloatValue_FN = FN_numericUpDown.Value;
-                FloatConfig.Default.maxFloatValue_MW = MW_numericUpDown.Value;
-                FloatConfig.Default.maxFloatValue_FT = FT_numericUpDown.Value;
-                FloatConfig.Default.maxFloatValue_WW = WW_numericUpDown.Value;
-                FloatConfig.Default.maxFloatValue_BS = BS_numericUpDown.Value;
+                    FloatConfig.Default.maxFloatValue_FN = FN_numericUpDown.Value;
+                    FloatConfig.Default.maxFloatValue_MW = MW_numericUpDown.Value;
+                    FloatConfig.Default.maxFloatValue_FT = FT_numericUpDown.Value;
+                    FloatConfig.Default.maxFloatValue_WW = WW_numericUpDown.Value;
+                    FloatConfig.Default.maxFloatValue_BS = BS_numericUpDown.Value;
 
-                GeneralConfig.Default.Save();
-                SteamConfig.Default.Save();
-                TryskinsConfig.Default.Save();
-                FloatConfig.Default.Save();
+                    GeneralConfig.Default.Save();
+                    SteamConfig.Default.Save();
+                    TryskinsConfig.Default.Save();
+                    FloatConfig.Default.Save();
 
-                MessageBox.Show(
-                    "Some changes may require restarting the program.",
-                    "Information",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                    MessageBox.Show(
+                        "Some changes may require restarting the program.",
+                        "Information",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
 
-                Close();
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Not all fields are filled.",
-                    "Warning",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Not all fields are filled.",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+            }            
         }
         private void cancel_button_Click(object sender, EventArgs e)
         {

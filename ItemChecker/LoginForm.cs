@@ -85,6 +85,7 @@ namespace ItemChecker
                 }
                 Properties.Settings.Default.Save();
                 close = true;
+                Main.loading = true;
                 Close();
             }
         }

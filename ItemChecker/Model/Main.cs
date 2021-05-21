@@ -1,7 +1,4 @@
-﻿using ItemChecker.Settings;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
+﻿using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Reflection;
 
