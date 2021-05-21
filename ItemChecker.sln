@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker", "ItemChecker\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker.Net", "ItemChecker.NET\ItemChecker.Net.csproj", "{A6645A49-A008-46D0-9CAA-FFF0FCB812A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker.General", "ItemChecker.General\ItemChecker.General.csproj", "{54EF71CF-8E36-430D-841D-B23ED3340248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemChecker.Support", "ItemChecker.General\ItemChecker.Support.csproj", "{54EF71CF-8E36-430D-841D-B23ED3340248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

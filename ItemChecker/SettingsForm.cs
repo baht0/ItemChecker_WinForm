@@ -4,7 +4,6 @@ using System.IO;
 using System.Windows.Forms;
 using ItemChecker.Model;
 using ItemChecker.Settings;
-using ItemChecker.General;
 
 namespace ItemChecker
 {

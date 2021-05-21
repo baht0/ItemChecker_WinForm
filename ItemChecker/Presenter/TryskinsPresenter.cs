@@ -10,10 +10,10 @@ using System.Linq;
 using System.ComponentModel;
 using Newtonsoft.Json.Linq;
 using static ItemChecker.Program;
-using ItemChecker.General;
+using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Settings;
-using ItemChecker.NET;
+using ItemChecker.Net;
 
 namespace ItemChecker.Presenter
 {

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ItemChecker.General\ItemChecker.General.csproj" />
+    <ProjectReference Include="..\ItemChecker.General\ItemChecker.Support.csproj" />
   </ItemGroup>
 
 </Project>

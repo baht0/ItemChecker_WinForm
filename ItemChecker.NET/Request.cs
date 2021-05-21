@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using ItemChecker.General;
+using ItemChecker.Support;
 
-namespace ItemChecker.NET
+namespace ItemChecker.Net
 {
     public class Request
     {

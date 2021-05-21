@@ -4,10 +4,10 @@ using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using System.Windows.Forms;
 using static ItemChecker.Program;
-using ItemChecker.General;
+using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Settings;
-using ItemChecker.NET;
+using ItemChecker.Net;
 using System.Globalization;
 using OpenQA.Selenium.Support.Extensions;
 

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ItemChecker.General\ItemChecker.General.csproj" />
+    <ProjectReference Include="..\ItemChecker.General\ItemChecker.Support.csproj" />
     <ProjectReference Include="..\ItemChecker.NET\ItemChecker.Net.csproj" />
   </ItemGroup>
 

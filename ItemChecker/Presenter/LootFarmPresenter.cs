@@ -1,15 +1,10 @@
-﻿using OpenQA.Selenium.Chrome;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using ItemChecker.Model;
 using static ItemChecker.Program;
-using System.Diagnostics;
 using System.Threading;
-using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium;
-using ItemChecker.Settings;
-using ItemChecker.General;
-using ItemChecker.NET;
+using ItemChecker.Support;
+using ItemChecker.Net;
 using System.Drawing;
 using System.Globalization;
 using Newtonsoft.Json.Linq;

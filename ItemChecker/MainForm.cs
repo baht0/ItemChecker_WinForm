@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
-using ItemChecker.General;
+using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
 using ItemChecker.Settings;
@@ -261,17 +261,17 @@ namespace ItemChecker
                 if (cell == 2)
                 {
                     url = "https://steamcommunity.com/market/listings/730/" + str;
-                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+                    Edit.openUrl(url);
                 }
                 if (cell == 3)
                 {
                     url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + str;
-                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+                    Edit.openUrl(url);
                 }
                 if (cell == 4)
                 {
                     url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=&ItemsFilter%5BpriceTo1%5D=&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=" + str + "&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=&ItemsFilter%5BpercentTo2%5D=";
-                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+                    Edit.openUrl(url);
                 }
             }
             catch { }
@@ -325,12 +325,12 @@ namespace ItemChecker
             if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 2)
             {
                 url = "https://steamcommunity.com/market/listings/730/" + str;
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+                Edit.openUrl(url);
             }
             if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 3)
             {
                 url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + str;
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+                Edit.openUrl(url);
             }
         }
         private void buyOrder_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
@@ -398,19 +398,19 @@ namespace ItemChecker
         //links
         private void linkSM_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {"https://steamcommunity.com/market/"}"));
+            Edit.openUrl("https://steamcommunity.com/market/");
         }
         private void linkIN_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {"https://steamcommunity.com/my/inventory#730/"}"));
+            Edit.openUrl("https://steamcommunity.com/my/inventory#730/");
         }
         private void linkCS_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {"https://old.cs.money"}"));
+            Edit.openUrl("https://old.cs.money");
         }
         private void linkTS_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {TrySkins.url}"));
+            Edit.openUrl(TrySkins.url);
         }
     }
 }

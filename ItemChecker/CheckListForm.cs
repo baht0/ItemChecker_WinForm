@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using ItemChecker.General;
+using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
 

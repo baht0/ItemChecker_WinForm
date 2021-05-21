@@ -6,7 +6,7 @@ using System.Threading;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using ItemChecker.Settings;
-using ItemChecker.General;
+using ItemChecker.Support;
 using System.Drawing;
 using System.Globalization;
 using System.Collections.Generic;

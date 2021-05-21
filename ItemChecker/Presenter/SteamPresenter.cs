@@ -5,7 +5,7 @@ using static ItemChecker.Program;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using ItemChecker.Settings;
-using ItemChecker.General;
+using ItemChecker.Support;
 
 namespace ItemChecker.Presenter
 {

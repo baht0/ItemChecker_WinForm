@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ItemChecker.General
+namespace ItemChecker.Support
 {
     public class Edit
     {
@@ -30,6 +31,15 @@ namespace ItemChecker.General
             str = str.Replace("%29", ")");
 
             return str;
+        }
+        public static void openUrl(string url)
+        {
+            var psi = new ProcessStartInfo(url)
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
+            Process.Start(psi);
         }
 
         //remove

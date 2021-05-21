@@ -8,8 +8,8 @@ using System.Diagnostics;
 using System.Threading;
 using static ItemChecker.Program;
 using ItemChecker.Settings;
-using ItemChecker.General;
-using ItemChecker.NET;
+using ItemChecker.Support;
+using ItemChecker.Net;
 using ItemChecker.Model;
 
 namespace ItemChecker.Presenter
