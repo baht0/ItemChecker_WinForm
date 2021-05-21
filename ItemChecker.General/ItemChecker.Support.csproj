@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Authors>baht0</Authors>
+    <PackageProjectUrl>https://github.com/baht0/ItemChecker</PackageProjectUrl>
+    <Description>Steam Bot Supports</Description>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
   </PropertyGroup>
 
 </Project>
