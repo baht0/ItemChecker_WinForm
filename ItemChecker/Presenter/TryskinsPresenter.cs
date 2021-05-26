@@ -161,7 +161,6 @@ namespace ItemChecker.Presenter
                     //color
                     if (TrySkins.precent[i] < 30) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.OrangeRed; }));
                     if (TrySkins.precent[i] >= 35) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
-                    if (TrySkins.precent[i] >= 40) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.Green; }));
                     if (TrySkins.item[i].Contains("Souvenir")) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Yellow; }));
                     if (TrySkins.item[i].Contains("StatTrak")) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
                     if (TrySkins.item[i].Contains("★")) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));

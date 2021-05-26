@@ -408,6 +408,35 @@ namespace ItemChecker
             }
             catch { }
         }
+        private void withdraw_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                string str = withdraw_dataGridView.CurrentCell.Value.ToString();
+                int row = withdraw_dataGridView.CurrentCell.RowIndex;
+                int cell = withdraw_dataGridView.CurrentCell.ColumnIndex;
+                if (cell == 2 || cell == 3)
+                {
+                    Main.save_str = str;
+                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Edit.funcConvert(str, Main.course);
+                }
+            }
+            catch { }
+        }
+        private void withdraw_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                int row = withdraw_dataGridView.CurrentCell.RowIndex;
+                int cell = withdraw_dataGridView.CurrentCell.ColumnIndex;
+                if (cell == 2 || cell == 3)
+                {
+                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Main.save_str;
+                    Main.save_str = "";
+                }
+            }
+            catch { }
+        }
 
         //tree
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)

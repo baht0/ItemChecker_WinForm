@@ -827,6 +827,8 @@ namespace ItemChecker
             this.withdraw_dataGridView.TabIndex = 8;
             this.withdraw_dataGridView.Visible = false;
             this.withdraw_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellDoubleClick);
+            this.withdraw_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellEnter);
+            this.withdraw_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellLeave);
             // 
             // dataGridViewTextBoxColumn7
             // 
