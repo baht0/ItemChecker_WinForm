@@ -15,7 +15,7 @@ namespace ItemChecker.Model
 
         public static int count { get; set; }
         public static int t { get; set; }
-        public static string url { get; set; }
+        public static string url = "https://table.altskins.com/site/items";
 
         public static void _clear()
         {

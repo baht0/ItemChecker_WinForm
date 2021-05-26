@@ -97,6 +97,7 @@ namespace ItemChecker
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.taskbar_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.checkOwnList_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.floatCheck_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.exit_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -733,35 +734,43 @@ namespace ItemChecker
             // 
             this.notifyIcon.ContextMenuStrip = this.taskbar_contextMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "notifyIcon";
+            this.notifyIcon.Text = "ItemChecker";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // taskbar_contextMenuStrip
             // 
             this.taskbar_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkOwnList_toolStripMenuItem,
             this.floatCheck_toolStripMenuItem,
             this.toolStripSeparator5,
             this.exit_toolStripMenuItem});
             this.taskbar_contextMenuStrip.Name = "taskbar_contextMenuStrip";
-            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(134, 54);
+            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(151, 76);
+            // 
+            // checkOwnList_toolStripMenuItem
+            // 
+            this.checkOwnList_toolStripMenuItem.Name = "checkOwnList_toolStripMenuItem";
+            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.checkOwnList_toolStripMenuItem.Text = "CheckOwnList";
+            this.checkOwnList_toolStripMenuItem.Click += new System.EventHandler(this.checkOwnList_toolStripMenuItem_Click);
             // 
             // floatCheck_toolStripMenuItem
             // 
             this.floatCheck_toolStripMenuItem.Name = "floatCheck_toolStripMenuItem";
-            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.floatCheck_toolStripMenuItem.Text = "FloatCheck";
             this.floatCheck_toolStripMenuItem.Click += new System.EventHandler(this.floatCheck_toolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(130, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(147, 6);
             // 
             // exit_toolStripMenuItem
             // 
             this.exit_toolStripMenuItem.Name = "exit_toolStripMenuItem";
-            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.exit_toolStripMenuItem.Text = "Exit";
             this.exit_toolStripMenuItem.Click += new System.EventHandler(this.exit_toolStripMenuItem_Click);
             // 
@@ -817,6 +826,7 @@ namespace ItemChecker
             this.withdraw_dataGridView.Size = new System.Drawing.Size(576, 460);
             this.withdraw_dataGridView.TabIndex = 8;
             this.withdraw_dataGridView.Visible = false;
+            this.withdraw_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellDoubleClick);
             // 
             // dataGridViewTextBoxColumn7
             // 
@@ -1004,6 +1014,7 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem linkTS_toolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem updateData_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkOwnList_toolStripMenuItem;
     }
 }
 

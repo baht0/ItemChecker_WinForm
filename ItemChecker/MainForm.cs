@@ -378,6 +378,36 @@ namespace ItemChecker
                 }
             }
         }
+        //withdraw
+        private void withdraw_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                int row = Convert.ToInt32(withdraw_dataGridView.CurrentCell.RowIndex.ToString());
+                string iname = withdraw_dataGridView.Rows[row].Cells[1].Value.ToString();
+                int cell = withdraw_dataGridView.CurrentCell.ColumnIndex;
+                string str = Edit.replaceUrl(iname);
+                string url;
+
+                if (cell == 1 || cell == 2)
+                {
+                    url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + str;
+                    Edit.openUrl(url);
+                    withdraw_dataGridView.Rows[row].Cells[1].Style.BackColor = System.Drawing.Color.Silver;
+                }
+                if (cell == 3 || cell == 4)
+                {
+                    url = "https://steamcommunity.com/market/listings/730/" + str;
+                    Edit.openUrl(url);
+                }
+                if (cell == 5)
+                {
+                    url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showcsmoney&ItemsFilter%5Bservice2%5D=showsteam&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=&ItemsFilter%5BpriceTo1%5D=&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=" + str + "&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=&ItemsFilter%5BpercentTo2%5D=";
+                    Edit.openUrl(url);
+                }
+            }
+            catch { }
+        }
 
         //tree
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -385,6 +415,10 @@ namespace ItemChecker
             this.Show();
             this.WindowState = FormWindowState.Normal;
             this.Activate();
+        }
+        private void checkOwnList_toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            checkOwnList_MainStripMenu.PerformClick();
         }
         private void floatCheck_toolStripMenuItem_Click(object sender, EventArgs e)
         {

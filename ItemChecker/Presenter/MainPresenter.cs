@@ -23,7 +23,6 @@ namespace ItemChecker.Presenter
             CancellationToken token = cancelTokenSource.Token;
             try
             {
-                Main.loading = true;
                 while (!token.IsCancellationRequested)
                 {
                     launchBrowser();
@@ -83,6 +82,7 @@ namespace ItemChecker.Presenter
 
             LoginForm fr = new LoginForm();
             mainForm.Invoke(new MethodInvoker(delegate { fr.ShowDialog(); }));
+            Main.loading = true;
 
             username.SendKeys(Steam.login);
             password.SendKeys(Steam.pass);
