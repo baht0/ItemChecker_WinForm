@@ -44,6 +44,7 @@ namespace ItemChecker.Presenter
                     checkOwnListForm.quick_button.Enabled = true;
                     checkOwnListForm.ownList_dataGridView.Sort(checkOwnListForm.ownList_dataGridView.Columns[6], ListSortDirection.Descending);
                 }));
+                Main.loading = false;
             }
         }
 

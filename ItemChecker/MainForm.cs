@@ -112,27 +112,23 @@ namespace ItemChecker
         //reload
         private void full_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            progressBar_StripStatus.Maximum = 7;
             Main.reload = 0;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload);
+            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 7 });
         }
         private void tryskins_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            progressBar_StripStatus.Maximum = 3;
             Main.reload = 1;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload);
+            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 3 });
         }
         private void buyOrders_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            progressBar_StripStatus.Maximum = 4;
             Main.reload = 2;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload);
+            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 4 });
         }
         private void withdrawReload_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            progressBar_StripStatus.Maximum = 2;
             Main.reload = 3;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload);
+            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 2 });
         }
         private void updateData_toolStripMenuItem_Click(object sender, EventArgs e)
         {

@@ -156,8 +156,10 @@ namespace ItemChecker.Presenter
             {
                 Main.loading = true;
                 stopPush();
+                object[] args = state as object[];
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = false;
+                    mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
                     mainForm.progressBar_StripStatus.Value = 0;
                     mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.status_StripStatus.Text = "Processing...";

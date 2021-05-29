@@ -212,12 +212,8 @@ namespace ItemChecker.Presenter
                 }
             }
             Thread.Sleep(2000);
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.progressBar_StripStatus.Maximum = 7;
-            }));
-            Main.reload = 0;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload);
-        }
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.full_MainStripMenu.PerformClick(); }));
+            }
         //delete order
         public static void deleteOrder(object state)
         {
@@ -270,10 +266,14 @@ namespace ItemChecker.Presenter
             mainForm.timer_StripStatus.Text = "Next check: " + time.ToString("mm':'ss");
             if (BuyOrder.tick <= 0)
             {
-                Main.timer.Stop();
-                mainForm.timer_StripStatus.Text = "Pushing...";
-                Main.loading = true;
-                ThreadPool.QueueUserWorkItem(push);
+                if (!Main.loading)
+                {
+                    Main.timer.Stop();
+                    mainForm.timer_StripStatus.Text = "Pushing...";
+                    Main.loading = true;
+                    ThreadPool.QueueUserWorkItem(push);
+                }
+                else MainPresenter.stopPush();
             }
         }
         public void push(object state)

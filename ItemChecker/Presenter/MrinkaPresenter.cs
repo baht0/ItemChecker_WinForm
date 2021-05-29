@@ -61,6 +61,7 @@ namespace ItemChecker.Presenter
                     checkOwnListForm.quick_button.Enabled = true;
                     checkOwnListForm.ownList_dataGridView.Sort(checkOwnListForm.ownList_dataGridView.Columns[6], ListSortDirection.Descending);
                 }));
+                Main.loading = false;
             }
         }
         private static void createList()
@@ -138,7 +139,7 @@ namespace ItemChecker.Presenter
                 string iname = checkOwnListForm.ownList_dataGridView.Rows[row].Cells[1].Value.ToString();
                 double buyord = Convert.ToDouble(Edit.removeSymbol(checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Value.ToString()));
 
-                if (!BuyOrder.item.Contains(iname) & !BuyOrder.ordered.Contains(iname) & cell != 4)
+                if (!BuyOrder.item.Contains(iname) & !BuyOrder.ordered.Contains(iname) & cell != 4 & buyord <= Steam.balance_usd)
                 {
                     string url = Edit.replaceUrl(iname);
 

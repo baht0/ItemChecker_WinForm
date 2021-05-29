@@ -45,12 +45,13 @@ namespace ItemChecker
         {
             try
             {
-                if (Main.checkList.Count != 0)
+                if (Main.checkList.Count != 0 & !Main.loading)
                 {
-                    updated_toolStripStatusLabel.Visible = false;
                     ownList_menuStrip.Enabled = false;
                     quick_button.Enabled = false;
+                    updated_toolStripStatusLabel.Visible = false;
                     status_toolStripStatusLabel.Visible = true;
+                    Main.loading = true;
                     if (service_toolStripComboBox.SelectedIndex == 0)
                     {
                         service = "cs.money";
@@ -77,44 +78,42 @@ namespace ItemChecker
                 Edit.errorLog(exp, Main.version);
                 Edit.errorMessage(exp, currMethodName);
             }
-            finally
-            {
-                ownList_menuStrip.Enabled = true;
-                quick_button.Enabled = true;
-                status_toolStripStatusLabel.Visible = false;
-            }
         }
 
         private void quick_button_Click(object sender, EventArgs e)
         {
             try
             {
-                Main.checkList.Clear();
-                Main.checkList.Add(textBox.Text.Trim());
-                count_toolStripStatusLabel.Text = "Count: 1";
+                if (textBox.Text != "" & !Main.loading)
+                {
+                    Main.checkList.Clear();
+                    Main.checkList.Add(textBox.Text.Trim());
+                    count_toolStripStatusLabel.Text = "Count: 1";
 
-                updated_toolStripStatusLabel.Visible = false;
-                ownList_menuStrip.Enabled = false;
-                quick_button.Enabled = false;
-                status_toolStripStatusLabel.Text = "Processing...";
-                status_toolStripStatusLabel.Visible = true;
-                if (service_toolStripComboBox.SelectedIndex == 0)
-                {
-                    service = "cs.money";
-                    ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
-                    ownList_dataGridView.Columns[3].HeaderText = "Price (CSM)";
-                    ownList_dataGridView.Columns[5].HeaderText = "GetPrice (CSM)";
-                    ownList_dataGridView.Columns[8].HeaderText = "Status (CSM)";
-                    ThreadPool.QueueUserWorkItem(MrinkaPresenter.checkList);
-                }
-                if (service_toolStripComboBox.SelectedIndex == 1)
-                {
-                    service = "loot.farm";
-                    ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
-                    ownList_dataGridView.Columns[3].HeaderText = "Price (LF)";
-                    ownList_dataGridView.Columns[5].HeaderText = "GetPrice (LF)";
-                    ownList_dataGridView.Columns[8].HeaderText = "Status (LF)";
-                    ThreadPool.QueueUserWorkItem(LootFarmPresenter.checkList);
+                    updated_toolStripStatusLabel.Visible = false;
+                    ownList_menuStrip.Enabled = false;
+                    quick_button.Enabled = false;
+                    status_toolStripStatusLabel.Text = "Processing...";
+                    status_toolStripStatusLabel.Visible = true;
+                    Main.loading = true;
+                    if (service_toolStripComboBox.SelectedIndex == 0)
+                    {
+                        service = "cs.money";
+                        ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
+                        ownList_dataGridView.Columns[3].HeaderText = "Price (CSM)";
+                        ownList_dataGridView.Columns[5].HeaderText = "GetPrice (CSM)";
+                        ownList_dataGridView.Columns[8].HeaderText = "Status (CSM)";
+                        ThreadPool.QueueUserWorkItem(MrinkaPresenter.checkList);
+                    }
+                    if (service_toolStripComboBox.SelectedIndex == 1)
+                    {
+                        service = "loot.farm";
+                        ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
+                        ownList_dataGridView.Columns[3].HeaderText = "Price (LF)";
+                        ownList_dataGridView.Columns[5].HeaderText = "GetPrice (LF)";
+                        ownList_dataGridView.Columns[8].HeaderText = "Status (LF)";
+                        ThreadPool.QueueUserWorkItem(LootFarmPresenter.checkList);
+                    }
                 }
             }
             catch (Exception exp)
@@ -122,12 +121,6 @@ namespace ItemChecker
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Edit.errorLog(exp, Main.version);
                 Edit.errorMessage(exp, currMethodName);
-            }
-            finally
-            {
-                ownList_menuStrip.Enabled = true;
-                quick_button.Enabled = true;
-                status_toolStripStatusLabel.Visible = false;
             }
         }
         private void textBox1_KeyDown(object sender, KeyEventArgs e)

@@ -161,6 +161,7 @@ namespace ItemChecker.Presenter
                     //color
                     if (TrySkins.precent[i] < 30) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.OrangeRed; }));
                     if (TrySkins.precent[i] >= 35) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
+                    if (TrySkins.sta[i] > Steam.balance_usd) checkOwnListForm.Invoke(new Action(() => { checkOwnListForm.ownList_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.Crimson; }));
                     if (TrySkins.item[i].Contains("Souvenir")) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Yellow; }));
                     if (TrySkins.item[i].Contains("StatTrak")) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
                     if (TrySkins.item[i].Contains("★")) mainForm.tryskins_dataGridView.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
@@ -186,7 +187,7 @@ namespace ItemChecker.Presenter
                 string iname = mainForm.tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
                 double buyord = Convert.ToDouble(Edit.removeSymbol(mainForm.tryskins_dataGridView.Rows[row].Cells[2].Value.ToString()));
 
-                if (!BuyOrder.ordered.Contains(iname) & cell != 2)
+                if (!BuyOrder.ordered.Contains(iname) & cell != 2 & buyord <= Steam.balance_usd)
                 {
                     string url = Edit.replaceUrl(iname);
 
