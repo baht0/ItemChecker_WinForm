@@ -50,6 +50,7 @@ namespace ItemChecker
                     ownList_menuStrip.Enabled = false;
                     quick_button.Enabled = false;
                     updated_toolStripStatusLabel.Visible = false;
+                    status_toolStripStatusLabel.Text = "Processing...";
                     status_toolStripStatusLabel.Visible = true;
                     Main.loading = true;
                     if (service_toolStripComboBox.SelectedIndex == 0)
@@ -82,45 +83,13 @@ namespace ItemChecker
 
         private void quick_button_Click(object sender, EventArgs e)
         {
-            try
+            if (textBox.Text != "")
             {
-                if (textBox.Text != "" & !Main.loading)
-                {
-                    Main.checkList.Clear();
-                    Main.checkList.Add(textBox.Text.Trim());
-                    count_toolStripStatusLabel.Text = "Count: 1";
+                Main.checkList.Clear();
+                Main.checkList.Add(textBox.Text.Trim());
+                count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
 
-                    updated_toolStripStatusLabel.Visible = false;
-                    ownList_menuStrip.Enabled = false;
-                    quick_button.Enabled = false;
-                    status_toolStripStatusLabel.Text = "Processing...";
-                    status_toolStripStatusLabel.Visible = true;
-                    Main.loading = true;
-                    if (service_toolStripComboBox.SelectedIndex == 0)
-                    {
-                        service = "cs.money";
-                        ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
-                        ownList_dataGridView.Columns[3].HeaderText = "Price (CSM)";
-                        ownList_dataGridView.Columns[5].HeaderText = "GetPrice (CSM)";
-                        ownList_dataGridView.Columns[8].HeaderText = "Status (CSM)";
-                        ThreadPool.QueueUserWorkItem(MrinkaPresenter.checkList);
-                    }
-                    if (service_toolStripComboBox.SelectedIndex == 1)
-                    {
-                        service = "loot.farm";
-                        ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
-                        ownList_dataGridView.Columns[3].HeaderText = "Price (LF)";
-                        ownList_dataGridView.Columns[5].HeaderText = "GetPrice (LF)";
-                        ownList_dataGridView.Columns[8].HeaderText = "Status (LF)";
-                        ThreadPool.QueueUserWorkItem(LootFarmPresenter.checkList);
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorLog(exp, Main.version);
-                Edit.errorMessage(exp, currMethodName);
+                check_toolStripMenuItem.PerformClick();
             }
         }
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
