@@ -279,6 +279,7 @@ namespace ItemChecker
             this.Name = "CheckOwnListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Check Own List";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CheckOwnListForm_FormClosing);
             this.ownList_menuStrip.ResumeLayout(false);
             this.ownList_menuStrip.PerformLayout();
             this.ownList_statusStrip.ResumeLayout(false);

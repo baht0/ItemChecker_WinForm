@@ -1017,6 +1017,7 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem updateData_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkOwnList_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testbutton;
     }
 }
 

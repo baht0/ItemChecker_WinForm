@@ -15,5 +15,18 @@ namespace ItemChecker.Model
 
         public static List<string> stUpdated = new List<string>();
         public static List<string> csmUpdated = new List<string>();
+
+        public static void _clear()
+        {
+            Mrinka.sellOrder.Clear();
+            Mrinka.buyOrder.Clear();
+            Mrinka.csmSell.Clear();
+            Mrinka.csmBuy.Clear();
+            Mrinka.precent.Clear();
+            Mrinka.difference.Clear();
+
+            Mrinka.stUpdated.Clear();
+            Mrinka.csmUpdated.Clear();
+        }
     }
 }

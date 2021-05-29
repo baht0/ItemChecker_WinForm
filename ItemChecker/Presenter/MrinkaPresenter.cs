@@ -8,60 +8,52 @@ using ItemChecker.Net;
 using System.Drawing;
 using System.Globalization;
 using Newtonsoft.Json.Linq;
-using System.ComponentModel;
 
 namespace ItemChecker.Presenter
 {
     public class MrinkaPresenter
     {
-        public static void checkList(object state)
+        public static void checkList()
         {
             try
             {
+                Mrinka._clear();
                 for (int i = 0; i < Main.checkList.Count; i++)
                 {
-                    try
+                    if (!CheckOwnListForm.checkStop)
                     {
-                        var json = Request.mrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
+                        try
+                        {
+                            var json = Request.mrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
 
-                        Mrinka.sellOrder.Add(Convert.ToDouble(JObject.Parse(json)["steam"]["sellOrder"].ToString()));
-                        double buyorder = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
-                        Mrinka.stUpdated.Add(JObject.Parse(json)["steam"]["updated"].ToString());
-                        Mrinka.buyOrder.Add(buyorder);
+                            Mrinka.sellOrder.Add(Convert.ToDouble(JObject.Parse(json)["steam"]["sellOrder"].ToString()));
+                            double buyorder = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
+                            Mrinka.stUpdated.Add(JObject.Parse(json)["steam"]["updated"].ToString());
+                            Mrinka.buyOrder.Add(buyorder);
 
-                        double csmsell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
-                        Mrinka.csmBuy.Add(JObject.Parse(json)["csm"]["buy"]["0"].ToString());
-                        Mrinka.csmUpdated.Add(JObject.Parse(json)["csm"]["updated"].ToString());
-                        Mrinka.csmSell.Add(csmsell);
+                            double csmsell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
+                            Mrinka.csmBuy.Add(JObject.Parse(json)["csm"]["buy"]["0"].ToString());
+                            Mrinka.csmUpdated.Add(JObject.Parse(json)["csm"]["updated"].ToString());
+                            Mrinka.csmSell.Add(csmsell);
 
-                        Mrinka.precent.Add(Math.Round(((csmsell - buyorder) / buyorder) * 100, 2));
-                        Mrinka.difference.Add(Math.Round(csmsell - buyorder, 2));
+                            Mrinka.precent.Add(Math.Round(((csmsell - buyorder) / buyorder) * 100, 2));
+                            Mrinka.difference.Add(Math.Round(csmsell - buyorder, 2));
+                        }
+                        catch
+                        {
+                            checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.status_toolStripStatusLabel.Text = "Check List (429). Wait 2 min..."; }));
+                            i--;
+                            Thread.Sleep(30000);
+                            continue;
+                        }
                     }
-                    catch
-                    {
-                        checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.status_toolStripStatusLabel.Text = "Check List (429). Wait 2 min..."; }));
-                        i--;
-                        Thread.Sleep(30000);
-                        continue;
-                    }
+                    else return;
                 }
                 createList();
             }
             catch (Exception exp)
             {
                 Edit.errorLog(exp, Main.version);
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
-            }
-            finally
-            {
-                checkOwnListForm.Invoke(new MethodInvoker(delegate {
-                    checkOwnListForm.status_toolStripStatusLabel.Visible = false;
-                    checkOwnListForm.ownList_menuStrip.Enabled = true;
-                    checkOwnListForm.quick_button.Enabled = true;
-                    checkOwnListForm.ownList_dataGridView.Sort(checkOwnListForm.ownList_dataGridView.Columns[6], ListSortDirection.Descending);
-                }));
-                Main.loading = false;
             }
         }
         private static void createList()
@@ -185,8 +177,6 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
                 Edit.errorLog(exp, Main.version);
             }
         }

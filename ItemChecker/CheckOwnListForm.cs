@@ -8,18 +8,27 @@ using System.Windows.Forms;
 using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
+using System.ComponentModel;
 
 namespace ItemChecker
 {
     public partial class CheckOwnListForm : Form
     {
-        string service;
+        int service;
+        public static bool checkStop = false;
         public CheckOwnListForm()
         {
             InitializeComponent();
             Program.checkOwnListForm = this;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             service_toolStripComboBox.SelectedIndex = 0;
+        }
+        private void CheckOwnListForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            checkStop = true;
+            Main.loading = false;
+            this.Hide();
+            e.Cancel = true;
         }
 
         //list
@@ -43,33 +52,43 @@ namespace ItemChecker
         }
         private void check_toolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (service_toolStripComboBox.SelectedIndex == 0) service = 0;
+            if (service_toolStripComboBox.SelectedIndex == 1) service = 1;
+            ThreadPool.QueueUserWorkItem(checkMain);
+        }
+        private void checkMain(object state)
+        {
             try
             {
                 if (Main.checkList.Count != 0 & !Main.loading)
                 {
-                    ownList_menuStrip.Enabled = false;
-                    quick_button.Enabled = false;
-                    updated_toolStripStatusLabel.Visible = false;
-                    status_toolStripStatusLabel.Text = "Processing...";
-                    status_toolStripStatusLabel.Visible = true;
                     Main.loading = true;
-                    if (service_toolStripComboBox.SelectedIndex == 0)
+                    Invoke(new MethodInvoker(delegate {
+                        ownList_menuStrip.Enabled = false;
+                        quick_button.Enabled = false;
+                        updated_toolStripStatusLabel.Visible = false;
+                        status_toolStripStatusLabel.Text = "Processing...";
+                        status_toolStripStatusLabel.Visible = true;
+                    }));
+                    if (service == 0)
                     {
-                        service = "cs.money";
-                        ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
-                        ownList_dataGridView.Columns[3].HeaderText = "Price (CSM)";
-                        ownList_dataGridView.Columns[5].HeaderText = "GetPrice (CSM)";
-                        ownList_dataGridView.Columns[8].HeaderText = "Status (CSM)";
-                        ThreadPool.QueueUserWorkItem(MrinkaPresenter.checkList);
+                        Invoke(new MethodInvoker(delegate {
+                            ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
+                            ownList_dataGridView.Columns[3].HeaderText = "Price (CSM)";
+                            ownList_dataGridView.Columns[5].HeaderText = "GetPrice (CSM)";
+                            ownList_dataGridView.Columns[8].HeaderText = "Status (CSM)";
+                        }));
+                        MrinkaPresenter.checkList();
                     }
-                    if (service_toolStripComboBox.SelectedIndex == 1)
+                    if (service == 1)
                     {
-                        service = "loot.farm";
-                        ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
-                        ownList_dataGridView.Columns[3].HeaderText = "Price (LF)";
-                        ownList_dataGridView.Columns[5].HeaderText = "GetPrice (LF)";
-                        ownList_dataGridView.Columns[8].HeaderText = "Status (LF)";
-                        ThreadPool.QueueUserWorkItem(LootFarmPresenter.checkList);
+                        Invoke(new MethodInvoker(delegate {
+                            ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
+                            ownList_dataGridView.Columns[3].HeaderText = "Price (LF)";
+                            ownList_dataGridView.Columns[5].HeaderText = "GetPrice (LF)";
+                            ownList_dataGridView.Columns[8].HeaderText = "Status (LF)";
+                        }));
+                        LootFarmPresenter.checkList();
                     }
                 }
             }
@@ -78,6 +97,17 @@ namespace ItemChecker
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Edit.errorLog(exp, Main.version);
                 Edit.errorMessage(exp, currMethodName);
+            }
+            finally
+            {
+                Main.loading = false;
+                Invoke(new MethodInvoker(delegate
+                {
+                    status_toolStripStatusLabel.Visible = false;
+                    ownList_menuStrip.Enabled = true;
+                    quick_button.Enabled = true;
+                    ownList_dataGridView.Sort(ownList_dataGridView.Columns[6], ListSortDirection.Descending);
+                }));
             }
         }
 
@@ -114,7 +144,7 @@ namespace ItemChecker
                 url = "https://steamcommunity.com/market/listings/730/" + Edit.replaceUrl(iname);
                 Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
             }
-            if (index == 3 || index == 5 & (service == "cs.money" || service == "loot.farm"))
+            if (index == 3 || index == 5)
             {
                 url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + Edit.replaceUrl(iname);
                 Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
@@ -132,7 +162,7 @@ namespace ItemChecker
                     Main.save_str = str;
                     ownList_dataGridView.Rows[row].Cells[cell].Value = Edit.funcConvert(str, Main.course);
                 }
-                if (service == "cs.money")
+                if (service == 0)
                 {
                     updated_toolStripStatusLabel.Text = "Updated(h): " + Edit.convertTime(Convert.ToDouble(Mrinka.stUpdated[row])) + "(ST) | " + Edit.convertTime(Convert.ToDouble(Mrinka.csmUpdated[row])) + "(CSM)";
                     updated_toolStripStatusLabel.Visible = true;
@@ -153,6 +183,6 @@ namespace ItemChecker
         private void ownList_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter | e.KeyCode == Keys.Insert) ThreadPool.QueueUserWorkItem(MrinkaPresenter.addQueue);
-        }
+        }        
     }
 }
