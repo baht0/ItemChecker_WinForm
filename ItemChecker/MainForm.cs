@@ -112,34 +112,42 @@ namespace ItemChecker
         //reload
         private void full_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            Main.reload = 0;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 7 });
+            if (!Main.loading)
+            {
+                Main.reload = 0;
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 7 });
+            }
         }
         private void tryskins_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            Main.reload = 1;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 3 });
+            if (!Main.loading)
+            {
+                Main.reload = 1;
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 3 });
+            }
         }
         private void buyOrders_MainStripMenu_Click(object sender, System.EventArgs e)
         {
-            Main.reload = 2;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 4 });
-        }
-        private void withdrawReload_MainStripMenu_Click(object sender, System.EventArgs e)
-        {
-            Main.reload = 3;
-            ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 2 });
+            if (!Main.loading)
+            {
+                Main.reload = 2;
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 4 });
+            }
         }
         private void updateData_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
-                status_StripStatus.Visible = true;
-                progressBar_StripStatus.Value = 0;
-                progressBar_StripStatus.Maximum = 1;
-                MainPresenter.preparationData();
-                BuyOrderPresenter.availableAmount();
-                status_StripStatus.Visible = false;
+                Main.reload = 3;
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 1 });
+            }
+        }
+        private void withdrawReload_MainStripMenu_Click(object sender, System.EventArgs e)
+        {
+            if (!Main.loading)
+            {
+                Main.reload = 4;
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 2 });
             }
         }
         //tools

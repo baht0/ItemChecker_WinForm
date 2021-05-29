@@ -183,7 +183,12 @@ namespace ItemChecker.Presenter
                     preparationData();
                     loadDataSteam();
                 }
-                else if (Main.reload == 3)//withdraw
+                else if (Main.reload == 3)//update data
+                {
+                    preparationData();
+                    BuyOrderPresenter.availableAmount();
+                }
+                else if (Main.reload == 4)//withdraw
                 {
                     WithdrawPresenter.withdrawCheck();
                     WithdrawPresenter.createWithdraw();

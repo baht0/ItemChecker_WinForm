@@ -118,7 +118,7 @@ namespace ItemChecker.Presenter
                     if (Withdraw.precent[i] < 5) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[5].Style.BackColor = Color.LightSalmon; }));
                     if (Withdraw.precent[i] > 10) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[5].Style.BackColor = Color.PaleGreen; }));
                     if (Withdraw.sales[i] > 1000) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
-                    if (Withdraw.name[i].Contains("Sticker")) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DeepSkyBlue; }));
+                    if (Withdraw.name[i].Contains("Sticker") || Withdraw.name[i].Contains("Graffiti")) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DeepSkyBlue; }));
                     if (Withdraw.name[i].Contains("StatTrak")) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
                     if (Withdraw.name[i].Contains("★")) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
                     mainForm.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.LightGray; }));

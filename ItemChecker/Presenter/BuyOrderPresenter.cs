@@ -109,12 +109,13 @@ namespace ItemChecker.Presenter
                         mainForm.buyOrder_dataGridView.Rows[i].Cells[5].Value = BuyOrder.difference[i];
                     }));
 
-                    if (BuyOrder.precent[i] < 25) mainForm.buyOrder_dataGridView.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.OrangeRed; }));
-                    if (BuyOrder.precent[i] > 35) mainForm.buyOrder_dataGridView.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
-                    if (Convert.ToDouble(BuyOrder.price[i]) > Steam.balance) mainForm.buyOrder_dataGridView.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Crimson; }));
-                    if (BuyOrder.item[i].Contains("Souvenir")) mainForm.buyOrder_dataGridView.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Yellow; }));
-                    if (BuyOrder.item[i].Contains("StatTrak")) mainForm.buyOrder_dataGridView.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
-                    if (BuyOrder.item[i].Contains("★")) mainForm.buyOrder_dataGridView.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
+                    if (BuyOrder.precent[i] < 25) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.OrangeRed; }));
+                    if (BuyOrder.precent[i] > 35) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
+                    if (Convert.ToDouble(BuyOrder.price[i]) > Steam.balance) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Crimson; }));
+                    if (BuyOrder.item[i].Contains("Sticker") || BuyOrder.item[i].Contains("Graffiti")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DeepSkyBlue; }));
+                    if (BuyOrder.item[i].Contains("Souvenir")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Yellow; }));
+                    if (BuyOrder.item[i].Contains("StatTrak")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
+                    if (BuyOrder.item[i].Contains("★")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
                     if (BuyOrder.precent[i] < SteamConfig.Default.autoDelete & BuyOrder.precent[i] != -100)
                     {
                         Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
