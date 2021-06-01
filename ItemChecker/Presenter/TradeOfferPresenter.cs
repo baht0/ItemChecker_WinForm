@@ -19,7 +19,6 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                Main.loading = true;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 checkOffer();
@@ -42,7 +41,6 @@ namespace ItemChecker.Presenter
                 Main.loading = false;
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.progressBar_StripStatus.Visible = false;
-                    mainForm.tradeOffers_linkLabel.Enabled = true;
                 }));
             }
         }
@@ -79,7 +77,10 @@ namespace ItemChecker.Presenter
         }
         private static void getOfferId()
         {
-            mainForm.progressBar_StripStatus.Control.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Visible = true; mainForm.progressBar_StripStatus.Value = 0; mainForm.progressBar_StripStatus.Maximum = TradeOffer.count; }));
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.progressBar_StripStatus.Visible = true;
+                mainForm.progressBar_StripStatus.Value = 0;
+                mainForm.progressBar_StripStatus.Maximum = TradeOffer.count; }));
 
             TradeOffer.id.Clear();
             WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));

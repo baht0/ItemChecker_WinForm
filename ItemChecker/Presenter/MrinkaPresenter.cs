@@ -138,18 +138,12 @@ namespace ItemChecker.Presenter
 
                     if (!BuyOrder.queue.Contains(url))
                     {
-                        BuyOrder.order_dol += buyord;
                         BuyOrder.order_rub += Math.Round(buyord * Main.course, 2);
                         BuyOrder.queue.Add(url);
                         BuyOrder.queue_count++;
                         checkOwnListForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_count > 0) checkOwnListForm.queue_toolStripStatusLabel.Visible = true;
-                            if (BuyOrder.order_rub > BuyOrder.available_amount)
-                            {
-                                mainForm.available_label.ForeColor = Color.Red;
-                                checkOwnListForm.queue_toolStripStatusLabel.ForeColor = Color.Red;
-                            }
-                            checkOwnListForm.queue_toolStripStatusLabel.Text = $"BuyOrder: {BuyOrder.order_dol}$ | {BuyOrder.order_rub}₽";
+                            if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
                             checkOwnListForm.ownList_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
                             checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LimeGreen;
@@ -157,18 +151,12 @@ namespace ItemChecker.Presenter
                     }
                     else
                     {
-                        BuyOrder.order_dol -= buyord;
                         BuyOrder.order_rub -= Math.Round(buyord * Main.course, 2);
                         BuyOrder.queue.Remove(url);
                         BuyOrder.queue_count--;
                         checkOwnListForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_count <= 0) checkOwnListForm.queue_toolStripStatusLabel.Visible = false;
-                            if (BuyOrder.order_rub < BuyOrder.available_amount)
-                            {
-                                mainForm.available_label.ForeColor = Color.Black;
-                                checkOwnListForm.queue_toolStripStatusLabel.ForeColor = Color.Black;
-                            }
-                            checkOwnListForm.queue_toolStripStatusLabel.Text = $"BuyOrder: {BuyOrder.order_dol}$ | {BuyOrder.order_rub}₽";
+                            if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
                             checkOwnListForm.ownList_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
                             checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LightGray;

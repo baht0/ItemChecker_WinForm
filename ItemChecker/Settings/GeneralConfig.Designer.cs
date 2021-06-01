@@ -58,5 +58,29 @@ namespace ItemChecker.Settings {
                 this["wait"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string profilePath {
+            get {
+                return ((string)(this["profilePath"]));
+            }
+            set {
+                this["profilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public string profileDirectory {
+            get {
+                return ((string)(this["profileDirectory"]));
+            }
+            set {
+                this["profileDirectory"] = value;
+            }
+        }
     }
 }

@@ -21,12 +21,12 @@ namespace ItemChecker.Presenter
                 IWebElement count = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//span[@id='my_market_buylistings_number']")));
                 IWebElement balance = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[@id='header_wallet_balance']")));
 
-                Steam.balance = Edit.removeRub(balance.Text) + 0.01;
+                Steam.balance = Math.Round(Edit.removeRub(balance.Text) + 0.01, 2);
                 BuyOrder.count = Convert.ToInt32(count.Text);
 
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.balance_StripStatus.Text = "Balance: " + balance.Text;
-                    mainForm.quantity_label.Text = "Quantity: " + count.Text;
+                    mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {count.Text}";
                     mainForm.available_label.Text = "Available: " + Convert.ToString(Steam.balance * 10) + "₽";
                 }));
             }

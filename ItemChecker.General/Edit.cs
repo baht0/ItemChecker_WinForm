@@ -102,21 +102,6 @@ namespace ItemChecker.Support
             return dtDateTime;
         }
 
-        public static void invokeLabel(Label label, string text)
-        {
-            // If the current thread is not the UI thread, InvokeRequired will be true
-            if (label.InvokeRequired)
-            {
-                // If so, call Invoke, passing it a lambda expression which calls
-                // Edit with the same label and text, but on the UI thread instead.
-                label.Invoke((Action)(() => invokeLabel(label, text)));
-                return;
-            }
-            // If we're running on the UI thread, we'll get here, and can safely update 
-            // the label's text.
-            label.Text = text;
-        }
-
         //Exception
         public static void errorLog(Exception exp, string ver)
         {

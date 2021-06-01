@@ -31,6 +31,8 @@ namespace ItemChecker
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.general_tabPage = new System.Windows.Forms.TabPage();
+            this.profileDirectory_label = new System.Windows.Forms.Label();
+            this.selectFoolder_button = new System.Windows.Forms.Button();
             this.getCurr_linkLabel = new System.Windows.Forms.LinkLabel();
             this.getST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.openFolder_linkLabel = new System.Windows.Forms.LinkLabel();
@@ -143,6 +145,8 @@ namespace ItemChecker
             // 
             // general_tabPage
             // 
+            this.general_tabPage.Controls.Add(this.profileDirectory_label);
+            this.general_tabPage.Controls.Add(this.selectFoolder_button);
             this.general_tabPage.Controls.Add(this.getCurr_linkLabel);
             this.general_tabPage.Controls.Add(this.getST_linkLabel);
             this.general_tabPage.Controls.Add(this.openFolder_linkLabel);
@@ -162,6 +166,25 @@ namespace ItemChecker
             this.general_tabPage.TabIndex = 0;
             this.general_tabPage.Text = "General";
             this.general_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // profileDirectory_label
+            // 
+            this.profileDirectory_label.AutoSize = true;
+            this.profileDirectory_label.Location = new System.Drawing.Point(19, 148);
+            this.profileDirectory_label.Name = "profileDirectory_label";
+            this.profileDirectory_label.Size = new System.Drawing.Size(87, 13);
+            this.profileDirectory_label.TabIndex = 12;
+            this.profileDirectory_label.Text = "Profile Directory: ";
+            // 
+            // selectFoolder_button
+            // 
+            this.selectFoolder_button.Location = new System.Drawing.Point(20, 165);
+            this.selectFoolder_button.Name = "selectFoolder_button";
+            this.selectFoolder_button.Size = new System.Drawing.Size(92, 23);
+            this.selectFoolder_button.TabIndex = 11;
+            this.selectFoolder_button.Text = "Select Profile";
+            this.selectFoolder_button.UseVisualStyleBackColor = true;
+            this.selectFoolder_button.Click += new System.EventHandler(this.selectFoolder_button_Click);
             // 
             // getCurr_linkLabel
             // 
@@ -205,7 +228,7 @@ namespace ItemChecker
             // 
             this.extract_groupBox.Controls.Add(this.extractTry_linkLabel);
             this.extract_groupBox.Controls.Add(this.extractST_linkLabel);
-            this.extract_groupBox.Location = new System.Drawing.Point(20, 152);
+            this.extract_groupBox.Location = new System.Drawing.Point(20, 194);
             this.extract_groupBox.Name = "extract_groupBox";
             this.extract_groupBox.Size = new System.Drawing.Size(251, 64);
             this.extract_groupBox.TabIndex = 8;
@@ -238,7 +261,7 @@ namespace ItemChecker
             // 
             // wait_numericUpDown
             // 
-            this.wait_numericUpDown.Location = new System.Drawing.Point(20, 126);
+            this.wait_numericUpDown.Location = new System.Drawing.Point(20, 120);
             this.wait_numericUpDown.Minimum = new decimal(new int[] {
             5,
             0,
@@ -286,7 +309,7 @@ namespace ItemChecker
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(112, 133);
+            this.label4.Location = new System.Drawing.Point(112, 127);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 13);
             this.label4.TabIndex = 3;
@@ -295,7 +318,7 @@ namespace ItemChecker
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 110);
+            this.label3.Location = new System.Drawing.Point(20, 104);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(118, 13);
             this.label3.TabIndex = 2;
@@ -1120,5 +1143,8 @@ namespace ItemChecker
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.NumericUpDown FN_numericUpDown;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button selectFoolder_button;
+        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.Label profileDirectory_label;
     }
 }

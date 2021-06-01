@@ -37,7 +37,6 @@ namespace ItemChecker
             this.check_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ownList_statusStrip = new System.Windows.Forms.StatusStrip();
             this.count_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.queue_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.space_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.updated_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.status_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -105,7 +104,6 @@ namespace ItemChecker
             // 
             this.ownList_statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.count_toolStripStatusLabel,
-            this.queue_toolStripStatusLabel,
             this.space_toolStripStatusLabel,
             this.updated_toolStripStatusLabel,
             this.status_toolStripStatusLabel});
@@ -120,13 +118,6 @@ namespace ItemChecker
             this.count_toolStripStatusLabel.Name = "count_toolStripStatusLabel";
             this.count_toolStripStatusLabel.Size = new System.Drawing.Size(51, 17);
             this.count_toolStripStatusLabel.Text = "Count: -";
-            // 
-            // queue_toolStripStatusLabel
-            // 
-            this.queue_toolStripStatusLabel.Name = "queue_toolStripStatusLabel";
-            this.queue_toolStripStatusLabel.Size = new System.Drawing.Size(126, 17);
-            this.queue_toolStripStatusLabel.Text = "BuyOrder: 0.00$ | 0.00₽";
-            this.queue_toolStripStatusLabel.Visible = false;
             // 
             // space_toolStripStatusLabel
             // 
@@ -299,7 +290,6 @@ namespace ItemChecker
         public System.Windows.Forms.ToolStripComboBox service_toolStripComboBox;
         public System.Windows.Forms.ToolStripMenuItem check_toolStripMenuItem;
         public System.Windows.Forms.ToolStripStatusLabel count_toolStripStatusLabel;
-        public System.Windows.Forms.ToolStripStatusLabel queue_toolStripStatusLabel;
         public System.Windows.Forms.ToolStripStatusLabel space_toolStripStatusLabel;
         public System.Windows.Forms.ToolStripStatusLabel updated_toolStripStatusLabel;
         public System.Windows.Forms.ToolStripStatusLabel status_toolStripStatusLabel;

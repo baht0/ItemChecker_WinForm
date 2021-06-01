@@ -115,7 +115,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 0;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 7 });
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 6 });
             }
         }
         private void tryskins_MainStripMenu_Click(object sender, System.EventArgs e)
@@ -168,12 +168,12 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
-                if (withdrawTable_MainStripMenu.Text == "Withdraw")
+                if (!withdraw_dataGridView.Visible)
                 {
-                    withdrawReload_MainStripMenu.Enabled = true;
                     MainPresenter.stopPush();
-                    withdraw_dataGridView.Visible = true;
                     withdrawTable_MainStripMenu.Text = "Close Withdraw";
+                    withdraw_dataGridView.Visible = true;
+                    withdrawReload_MainStripMenu.Enabled = true;
                     Main.loading = true;
                     ThreadPool.QueueUserWorkItem(WithdrawPresenter.withdraw);
                 }
@@ -198,16 +198,20 @@ namespace ItemChecker
                     MessageBoxIcon.Question);
                 if (result == DialogResult.OK)
                 {
-                    tradeOffers_linkLabel.Enabled = false;
+                    Main.loading = true;
                     ThreadPool.QueueUserWorkItem(TradeOfferPresenter.tradeOffers);
                 }
             }                
         }
         private void queue_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (!Main.loading)
+            if (!Main.loading & BuyOrder.queue.Count > 0 & BuyOrder.queue_count > 0)
             {
-                if (BuyOrder.order_rub < BuyOrder.available_amount) BuyOrderPresenter.createOrder();
+                if (BuyOrder.order_rub < BuyOrder.available_amount)
+                {
+                    Main.loading = true;
+                    ThreadPool.QueueUserWorkItem(BuyOrderPresenter.placeOrder);
+                }
                 else
                 {
                     DialogResult result = MessageBox.Show(
@@ -215,7 +219,11 @@ namespace ItemChecker
                         "Warning",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Warning);
-                    if (result == DialogResult.Yes) BuyOrderPresenter.createOrder();
+                    if (result == DialogResult.Yes)
+                    {
+                        Main.loading = true;
+                        ThreadPool.QueueUserWorkItem(BuyOrderPresenter.placeOrder);
+                    }
                 }
             }            
         }
@@ -228,17 +236,12 @@ namespace ItemChecker
                     BuyOrder.tick = SteamConfig.Default.timer * 60;
 
                     timer_StripStatus.Visible = true;
-                    tradeOffers_linkLabel.Enabled = false;
-                    queue_linkLabel.Enabled = false;
                     push_linkLabel.Text = "Stop...";
                     Main.timer.Start();
                 }
                 else
                 {
-                    if (timer_StripStatus.Text != "Pushing...")
-                    {
-                        MainPresenter.stopPush();
-                    }
+                    if (BuyOrder.tick > 1) MainPresenter.stopPush();
                 }
             }
         }

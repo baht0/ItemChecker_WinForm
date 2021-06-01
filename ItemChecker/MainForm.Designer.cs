@@ -74,11 +74,10 @@ namespace ItemChecker
             this.course_groupBox = new System.Windows.Forms.GroupBox();
             this.course_label = new System.Windows.Forms.Label();
             this.steamItems_groupBox = new System.Windows.Forms.GroupBox();
+            this.queue_label = new System.Windows.Forms.Label();
             this.available_label = new System.Windows.Forms.Label();
-            this.quantity_label = new System.Windows.Forms.Label();
             this.itemPusher_groupBox = new System.Windows.Forms.GroupBox();
             this.push_linkLabel = new System.Windows.Forms.LinkLabel();
-            this.catch_label = new System.Windows.Forms.Label();
             this.push_label = new System.Windows.Forms.Label();
             this.check_label = new System.Windows.Forms.Label();
             this.tryskins_dataGridView = new System.Windows.Forms.DataGridView();
@@ -138,6 +137,7 @@ namespace ItemChecker
             this.main_statusStrip.Location = new System.Drawing.Point(0, 589);
             this.main_statusStrip.Name = "main_statusStrip";
             this.main_statusStrip.Size = new System.Drawing.Size(600, 22);
+            this.main_statusStrip.SizingGrip = false;
             this.main_statusStrip.TabIndex = 0;
             this.main_statusStrip.Text = "main_statusStrip";
             // 
@@ -512,44 +512,43 @@ namespace ItemChecker
             // 
             // steamItems_groupBox
             // 
+            this.steamItems_groupBox.Controls.Add(this.queue_label);
             this.steamItems_groupBox.Controls.Add(this.available_label);
-            this.steamItems_groupBox.Controls.Add(this.quantity_label);
             this.steamItems_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.steamItems_groupBox.Location = new System.Drawing.Point(76, 539);
             this.steamItems_groupBox.Name = "steamItems_groupBox";
-            this.steamItems_groupBox.Size = new System.Drawing.Size(235, 40);
+            this.steamItems_groupBox.Size = new System.Drawing.Size(300, 40);
             this.steamItems_groupBox.TabIndex = 4;
             this.steamItems_groupBox.TabStop = false;
             this.steamItems_groupBox.Text = "Steam Items:";
             // 
+            // queue_label
+            // 
+            this.queue_label.AutoSize = true;
+            this.queue_label.Location = new System.Drawing.Point(166, 16);
+            this.queue_label.Name = "queue_label";
+            this.queue_label.Size = new System.Drawing.Size(48, 13);
+            this.queue_label.TabIndex = 2;
+            this.queue_label.Text = "Queue: -";
+            // 
             // available_label
             // 
             this.available_label.AutoSize = true;
-            this.available_label.Location = new System.Drawing.Point(98, 16);
+            this.available_label.Location = new System.Drawing.Point(6, 16);
             this.available_label.Name = "available_label";
             this.available_label.Size = new System.Drawing.Size(59, 13);
             this.available_label.TabIndex = 1;
             this.available_label.Text = "Available: -";
             // 
-            // quantity_label
-            // 
-            this.quantity_label.AutoSize = true;
-            this.quantity_label.Location = new System.Drawing.Point(6, 16);
-            this.quantity_label.Name = "quantity_label";
-            this.quantity_label.Size = new System.Drawing.Size(55, 13);
-            this.quantity_label.TabIndex = 0;
-            this.quantity_label.Text = "Quantity: -";
-            // 
             // itemPusher_groupBox
             // 
             this.itemPusher_groupBox.Controls.Add(this.push_linkLabel);
-            this.itemPusher_groupBox.Controls.Add(this.catch_label);
             this.itemPusher_groupBox.Controls.Add(this.push_label);
             this.itemPusher_groupBox.Controls.Add(this.check_label);
             this.itemPusher_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.itemPusher_groupBox.Location = new System.Drawing.Point(317, 539);
+            this.itemPusher_groupBox.Location = new System.Drawing.Point(382, 539);
             this.itemPusher_groupBox.Name = "itemPusher_groupBox";
-            this.itemPusher_groupBox.Size = new System.Drawing.Size(271, 40);
+            this.itemPusher_groupBox.Size = new System.Drawing.Size(206, 40);
             this.itemPusher_groupBox.TabIndex = 4;
             this.itemPusher_groupBox.TabStop = false;
             this.itemPusher_groupBox.Text = "ItemPusher:";
@@ -566,15 +565,6 @@ namespace ItemChecker
             this.push_linkLabel.TabStop = true;
             this.push_linkLabel.Text = "Push...";
             this.push_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.push_linkLabel_LinkClicked);
-            // 
-            // catch_label
-            // 
-            this.catch_label.AutoSize = true;
-            this.catch_label.Location = new System.Drawing.Point(212, 16);
-            this.catch_label.Name = "catch_label";
-            this.catch_label.Size = new System.Drawing.Size(44, 13);
-            this.catch_label.TabIndex = 6;
-            this.catch_label.Text = "Catch: -";
             // 
             // push_label
             // 
@@ -972,9 +962,7 @@ namespace ItemChecker
         public System.Windows.Forms.LinkLabel queue_linkLabel;
         public System.Windows.Forms.Label course_label;
         public System.Windows.Forms.Label available_label;
-        public System.Windows.Forms.Label quantity_label;
         public System.Windows.Forms.LinkLabel push_linkLabel;
-        public System.Windows.Forms.Label catch_label;
         public System.Windows.Forms.Label push_label;
         public System.Windows.Forms.Label check_label;
         public System.Windows.Forms.DataGridView tryskins_dataGridView;
@@ -1018,6 +1006,7 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem updateData_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkOwnList_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testbutton;
+        public System.Windows.Forms.Label queue_label;
     }
 }
 

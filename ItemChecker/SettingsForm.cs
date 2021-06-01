@@ -9,6 +9,8 @@ namespace ItemChecker
 {
     public partial class SettingsForm : Form
     {
+        string profilePath;
+        string profileDirectory;
         public SettingsForm()
         {
             InitializeComponent();
@@ -17,6 +19,9 @@ namespace ItemChecker
             steamApiKey_textBox.Text = GeneralConfig.Default.steamApiKey.Trim();
             currApiKey_textBox.Text = GeneralConfig.Default.currencyApiKey.Trim();
             wait_numericUpDown.Value = GeneralConfig.Default.wait;
+            profilePath = GeneralConfig.Default.profilePath;
+            profileDirectory = GeneralConfig.Default.profileDirectory;
+            profileDirectory_label.Text = "Profile Directory: " + profileDirectory;
             //steam
             timer_numericUpDown.Value = SteamConfig.Default.timer;
             updST_checkBox.Checked = SteamConfig.Default.updateST;
@@ -56,6 +61,8 @@ namespace ItemChecker
             steamApiKey_textBox.Text = " ";
             currApiKey_textBox.Text = "";
             wait_numericUpDown.Value = 15;
+            profilePath = Application.StartupPath + "\\profile";
+            profileDirectory = "Default";
             //steam
             timer_numericUpDown.Value = 10;
             updST_checkBox.Checked = true;
@@ -97,6 +104,8 @@ namespace ItemChecker
                     GeneralConfig.Default.steamApiKey = steamApiKey_textBox.Text;
                     GeneralConfig.Default.currencyApiKey = currApiKey_textBox.Text;
                     GeneralConfig.Default.wait = Convert.ToInt32(wait_numericUpDown.Value);
+                    GeneralConfig.Default.profilePath = profilePath;
+                    GeneralConfig.Default.profileDirectory = profileDirectory;
                     //steam
                     SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
                     SteamConfig.Default.updateST = updST_checkBox.Checked;
@@ -185,7 +194,6 @@ namespace ItemChecker
         }
         private void openFolder_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Console.WriteLine(Application.StartupPath);
             Process.Start(new ProcessStartInfo("cmd", $"/c start {Application.StartupPath}"));
         }
 
@@ -197,6 +205,20 @@ namespace ItemChecker
         private void getCurr_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(new ProcessStartInfo("cmd", $"/c start {"https://free.currencyconverterapi.com/free-api-key"}"));
+        }
+
+        private void selectFoolder_button_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Select a folder with a profile.\nSave the profile in a separate folder.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FolderBrowserDialog FBD = new FolderBrowserDialog();
+            FBD.ShowNewFolderButton = false;
+            if (FBD.ShowDialog() == DialogResult.OK)
+            {
+                profilePath = Path.GetDirectoryName(FBD.SelectedPath);
+                profilePath = profilePath.Replace(@"\", @"\\");
+                profileDirectory = Path.GetFileName(FBD.SelectedPath);
+                profileDirectory_label.Text = "Profile Directory: " + profileDirectory;
+            }
         }
     }
 }

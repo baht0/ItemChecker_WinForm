@@ -20,14 +20,12 @@ namespace ItemChecker.Model
         public static List<string> queue = new List<string>();
         public static List<string> ordered = new List<string>();
 
-        public static double order_dol { get; set; }
         public static double order_rub { get; set; }
         public static int queue_count { get; set; }
         //push
         public static int tick { get; set; }
         public static int int_check = 0;
         public static int int_push = 0;
-        public static int int_catch = 0;
 
 
         public static void _clear()
@@ -49,7 +47,6 @@ namespace ItemChecker.Model
             BuyOrder.ordered.Clear();
 
             BuyOrder.queue_count = 0;
-            BuyOrder.order_dol = 0;
             BuyOrder.order_rub = 0;
         }
         public static void _clearPush()
@@ -57,7 +54,6 @@ namespace ItemChecker.Model
             BuyOrder.tick = 0;
             BuyOrder.int_check = 0;
             BuyOrder.int_push = 0;
-            BuyOrder.int_catch = 0;
         }
     }
 }

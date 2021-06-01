@@ -79,7 +79,7 @@ namespace ItemChecker.Presenter
                     }
                 }
             }
-            mainForm.tryskins_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.tryskins_label, "TrySkins: " + TrySkins.t.ToString())));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_label.Text = "TrySkins: " + TrySkins.t.ToString(); }));
             MainPresenter.progressInvoke();
         }
         public static void getTryskins(int count)
@@ -99,7 +99,7 @@ namespace ItemChecker.Presenter
                 //fast
                 else if (TryskinsConfig.Default.fastTime)
                 {
-                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins)";
+                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.count}";
                     IWebElement steama = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[7]/span")));
                     IWebElement csmoney = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[8]/span")));
                     IWebElement prec = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[9]/div")));
@@ -115,7 +115,7 @@ namespace ItemChecker.Presenter
                 {
                     try
                     {
-                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins) [Accurate]";
+                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.count}";
                         var json = Request.mrinkaRequest(Edit.replaceUrl(name.Text));
                         var buy_order = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
                         var csm_sell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
@@ -161,7 +161,7 @@ namespace ItemChecker.Presenter
                     //color
                     if (TrySkins.precent[i] < 30) mainForm.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.OrangeRed; }));
                     if (TrySkins.precent[i] >= 35) mainForm.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
-                    if (TrySkins.sta[i] > Steam.balance_usd) checkOwnListForm.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.Crimson; }));
+                    if (TrySkins.sta[i] > Steam.balance_usd) mainForm.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Crimson; }));
                     if (TrySkins.item[i].Contains("Sticker") || TrySkins.item[i].Contains("Graffiti")) mainForm.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DeepSkyBlue; }));
                     if (TrySkins.item[i].Contains("Souvenir")) mainForm.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Yellow; }));
                     if (TrySkins.item[i].Contains("StatTrak")) mainForm.Invoke(new Action(() => { mainForm.tryskins_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
@@ -194,13 +194,13 @@ namespace ItemChecker.Presenter
 
                     if (!BuyOrder.queue.Contains(url))
                     {
-                        BuyOrder.order_dol += buyord;
                         BuyOrder.order_rub += Math.Round(buyord * Main.course, 2);
                         BuyOrder.queue.Add(url);
                         BuyOrder.queue_count++;
                         mainForm.Invoke(new MethodInvoker(delegate
                         {
                             if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
                             mainForm.tryskins_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
                             mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.LimeGreen;
@@ -208,13 +208,13 @@ namespace ItemChecker.Presenter
                     }
                     else
                     {
-                        BuyOrder.order_dol -= buyord;
                         BuyOrder.order_rub -= Math.Round(buyord * Main.course, 2);
                         BuyOrder.queue.Remove(url);
                         BuyOrder.queue_count--;
                         mainForm.Invoke(new MethodInvoker(delegate
                         {
-                            if (BuyOrder.order_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
+                            if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
                             mainForm.tryskins_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
                             mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.White;

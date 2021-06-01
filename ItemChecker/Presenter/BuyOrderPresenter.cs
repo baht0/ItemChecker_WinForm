@@ -52,7 +52,7 @@ namespace ItemChecker.Presenter
             BuyOrder.available_amount = 0;
             foreach (double item in BuyOrder.price) BuyOrder.sum += item;
             BuyOrder.available_amount = Math.Round(Steam.balance * 10 - BuyOrder.sum, 2);
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.available_label, "Available: " + BuyOrder.available_amount.ToString() + "₽")));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽"; }));
         }
         public static void precentSteam()
         {
@@ -156,31 +156,41 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.buyOrder_dataGridView.Columns[4].ValueType = mainForm.buyOrder_dataGridView.Columns[5].ValueType = typeof(Double);
                 mainForm.buyOrder_dataGridView.Sort(mainForm.buyOrder_dataGridView.Columns[4], ListSortDirection.Ascending);
+                mainForm.steamMarket_label.Text = "SteamMarket: " + Convert.ToString(s);
             }));
-            mainForm.steamMarket_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.steamMarket_label, "SteamMarket: " + Convert.ToString(s))));
 
             MainPresenter.progressInvoke();
         }
 
         //place order
-        public static void createOrder()
+        public static void placeOrder(object state)
         {
-            if (!BuyOrder.queue.Contains("") & BuyOrder.queue_count > 0)
+            try
             {
-                mainForm.queue_linkLabel.Enabled = false;
-                mainForm.progressBar_StripStatus.Visible = true;
-                mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue_count;
-                mainForm.progressBar_StripStatus.Value = 0;
-                Main.loading = true;
-                ThreadPool.QueueUserWorkItem(placeOrder);
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.status_StripStatus.Text = "Place Order...";
+                    mainForm.status_StripStatus.Visible = true;
+                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue_count;
+                    mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Visible = true; }));
+                createOrder();
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Edit.errorMessage(exp, currMethodName);
+                Edit.errorLog(exp, Main.version);
+            }
+            finally
+            {
+                Main.loading = false;
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.progressBar_StripStatus.Visible = false;
+                    mainForm.status_StripStatus.Visible = false; }));
             }
         }
-        private static void placeOrder(object state)
+        private static void createOrder()
         {
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Place Order...";
-                mainForm.status_StripStatus.Visible = true;
-            }));
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
 
@@ -202,8 +212,6 @@ namespace ItemChecker.Presenter
                 }
                 catch (Exception exp)
                 {
-                    string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                    Edit.errorMessage(exp, currMethodName);
                     Edit.errorLog(exp, Main.version);
                     continue;
                 }
@@ -213,8 +221,9 @@ namespace ItemChecker.Presenter
                 }
             }
             Thread.Sleep(2000);
+            Main.loading = false;
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.full_MainStripMenu.PerformClick(); }));
-            }
+        }
         //delete order
         public static void deleteOrder(object state)
         {
@@ -239,9 +248,9 @@ namespace ItemChecker.Presenter
 
                     BuyOrder.available_amount = Math.Round(BuyOrder.available_amount + Edit.removeSymbol(price), 2);
                     BuyOrder.sum = Math.Round(BuyOrder.sum - Edit.removeSymbol(price), 2);
-                    mainForm.available_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.available_label, "Available: " + Convert.ToString(BuyOrder.available_amount) + "₽")));
-                    mainForm.quantity_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.quantity_label, "Quantity: " + Convert.ToString(BuyOrder.count--))));
                     mainForm.Invoke(new Action(() => {
+                        mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽";
+                        mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.count--}";
                         mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
                         mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Value = "Deleted";
                     }));
@@ -328,11 +337,11 @@ namespace ItemChecker.Presenter
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + BuyOrder.url[i]);
                     Thread.Sleep(2000);
 
-                    IWebElement my_last = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]/div[2]/span/span")));
-                    double my_order = Edit.removeRub(my_last.Text);
+                    IWebElement my = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]/div[2]/span/span")));
+                    double my_order = Edit.removeRub(my.Text);
 
-                    IWebElement last_price = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
-                    double last_order = Edit.removeRub(last_price.Text);
+                    IWebElement last = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
+                    double last_order = Edit.removeRub(last.Text);
 
                     if (Steam.balance > last_order & last_order > my_order)
                     {
@@ -357,8 +366,11 @@ namespace ItemChecker.Presenter
 
                             BuyOrder.available_amount = Math.Round(BuyOrder.available_amount + BuyOrder.price[i], 2);
                             BuyOrder.sum = Math.Round(BuyOrder.sum - BuyOrder.price[i], 2);
-                            mainForm.available_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.available_label, "Available: " + BuyOrder.available_amount.ToString() + "₽")));
-                            mainForm.quantity_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.quantity_label, "Quantity: " + Convert.ToString(BuyOrder.count--))));
+
+                            mainForm.Invoke(new MethodInvoker(delegate {
+                                mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽";
+                                mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.count--}";
+                            }));
                         }
                     }
                 }
@@ -367,9 +379,6 @@ namespace ItemChecker.Presenter
                     string catch_item = Edit.inverReplaceUrl(BuyOrder.url[i]) + "\n";
                     string catch_item_url = "https://steamcommunity.com/market/listings/730/" + BuyOrder.url[i] + "\n";
                     Edit.errorLog(exp, Main.version);
-
-                    BuyOrder.int_catch++;
-                    mainForm.catch_label.Invoke(new MethodInvoker(() => mainForm.catch_label.Text = "Catch: " + Convert.ToString(BuyOrder.int_catch)));
                     continue;
                 }
                 finally

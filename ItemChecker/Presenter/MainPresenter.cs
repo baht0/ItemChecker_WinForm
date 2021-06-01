@@ -11,6 +11,7 @@ using ItemChecker.Settings;
 using ItemChecker.Support;
 using ItemChecker.Net;
 using ItemChecker.Model;
+using System.IO;
 
 namespace ItemChecker.Presenter
 {
@@ -26,8 +27,12 @@ namespace ItemChecker.Presenter
                 while (!token.IsCancellationRequested)
                 {
                     launchBrowser();
-                    loginSteam();
-                    loginTryskins();
+                    if (!Main.Browser.Url.Contains("id"))
+                    {
+                        loginSteam();
+                        loginTryskins();
+                    }
+                    else progressInvoke(2);
                     preparationData();
                     loadDataSteam();
                     loadDataTryskins();
@@ -53,12 +58,12 @@ namespace ItemChecker.Presenter
                 }));
             }
         }
-        public static void launchBrowser()
+        private static void launchBrowser()
         {
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
             ChromeOptions option = new ChromeOptions();
-            option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160");
+            option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions", @"--user-data-dir=" + GeneralConfig.Default.profilePath, "profile-directory=" + GeneralConfig.Default.profileDirectory);
             option.Proxy = null;
 
             Main.Browser = new ChromeDriver(chromeDriverService, option);
@@ -112,9 +117,32 @@ namespace ItemChecker.Presenter
             }
             else throw new InvalidOperationException("Login Tryskins");
         }
+        private static void createCookies()
+        {
+            try
+            {
+                string text = "";
+                using (FileStream fstream = new FileStream("Cookies.data", FileMode.Create))
+                {		
+                    foreach (Cookie ck in Main.Browser.Manage().Cookies.AllCookies)
+                    {
+                        text += (ck.Name + ";" + ck.Value + ";" + ck.Domain + ";" + ck.Path + ";" + ck.Expiry + ";" + ck.Secure + "\n");
+                    }
+
+                    byte[] array = System.Text.Encoding.Default.GetBytes(text);
+                    fstream.Write(array, 0, array.Length);
+                }
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Edit.errorLog(exp, Main.version);
+                Edit.errorMessage(exp, currMethodName);
+            }
+        }
 
         //load
-        public static void preparationData()
+        private static void preparationData()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Info..."; }));
 
@@ -126,9 +154,12 @@ namespace ItemChecker.Presenter
             Main.overstock = request.overstock();
             Main.unavailable = request.unavailable();
 
-            mainForm.course_label.Invoke((Action)(() => Edit.invokeLabel(mainForm.course_label, Main.course.ToString() + " ₽")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.overstock_label, "Overstock: " + Main.overstock.Count.ToString())));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.unavailable_label, "Unavailable: " + Main.unavailable.Count.ToString())));
+            mainForm.Invoke(new MethodInvoker(delegate
+            {
+                mainForm.course_label.Text = Main.course.ToString() + " ₽";
+                mainForm.overstock_label.Text =  "Overstock: " + Main.overstock.Count.ToString();
+                mainForm.unavailable_label.Text = "Unavailable: " + Main.unavailable.Count.ToString();
+            }));
 
             progressInvoke();
         }
@@ -142,7 +173,7 @@ namespace ItemChecker.Presenter
             }
             else progressInvoke(3);
         }
-        public static void loadDataTryskins()
+        private static void loadDataTryskins()
         {
             TryskinsPresenter.checkTryskins();
             if (TrySkins.count != 0) TryskinsPresenter.createTryTable();
@@ -219,22 +250,28 @@ namespace ItemChecker.Presenter
             BuyOrder._clearQueue();
             Withdraw._clear();
 
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.steamMarket_label, "SteamMarket: -")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.tryskins_label, "TrySkins: -")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.overstock_label, "Overstock: -")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.unavailable_label, "Unavailable: -")));
-
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.course_label, "0.00 ₽")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.quantity_label, "Quantity: -")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.available_label, "Available: -")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.check_label, "Check: -")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.push_label, "Push: -")));
-            mainForm.Invoke((Action)(() => Edit.invokeLabel(mainForm.catch_label, "Catch: -")));
-
             mainForm.Invoke(new MethodInvoker(delegate
             {
+                mainForm.steamMarket_label.Text = "SteamMarket: -";
+                mainForm.tryskins_label.Text = "TrySkins: -";
+                mainForm.overstock_label.Text = "Overstock: -";
+                mainForm.unavailable_label.Text = "Unavailable: -";
+
+                mainForm.course_label.Text = "0.00 ₽";
+                mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins)";
+                mainForm.buyOrder_dataGridView.Columns[1].HeaderText = "Item (BuyOrders)";
+                mainForm.available_label.Text = "Available: -";
+                mainForm.check_label.Text = "Check: -";
+                mainForm.push_label.Text = "Push: -";
+
                 mainForm.status_StripStatus.Text = "Processing...";
                 mainForm.status_StripStatus.Visible = true;
+
+                mainForm.tryskins_dataGridView.Rows.Clear();
+                mainForm.buyOrder_dataGridView.Rows.Clear();
+                mainForm.withdraw_dataGridView.Rows.Clear();
+                mainForm.withdraw_dataGridView.Visible = false;
+                mainForm.withdrawTable_MainStripMenu.Text = "Withdraw";
 
                 mainForm.reload_MainStripMenu.Enabled = false;
                 mainForm.progressBar_StripStatus.Value = 0;
@@ -253,8 +290,6 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate
             {
                 mainForm.timer_StripStatus.Visible = false;
-                mainForm.tradeOffers_linkLabel.Enabled = true;
-                mainForm.queue_linkLabel.Enabled = true;
                 mainForm.push_linkLabel.Text = "Push...";
             }));
         }
@@ -271,6 +306,31 @@ namespace ItemChecker.Presenter
             {
                 proc.Kill();
             }
+        }
+
+        public static void nameId()
+        {
+            try
+            {
+                Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/MAC-10%20%7C%20Oceanic%20%28Minimal%20Wear%29");
+                //IWebElement element = Main.Browser.FindElement(By.TagName("script"));
+                //String htmlCode = (String)((IJavaScriptExecutor)Main.Browser).ExecuteScript("return arguments[0].innerHTML;", element);
+                //errorLog(htmlCode);
+                WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
+                IWebElement nameId = Main.Browser.FindElement(By.XPath("//body[@script[30]]"));
+                errorLog(nameId.GetAttribute("innerHTML").ToString());
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Edit.errorLog(exp, Main.version);
+                Edit.errorMessage(exp, currMethodName);
+            }
+        }
+        public static void errorLog(string message)
+        {
+            if (!File.Exists("ttt.txt")) File.WriteAllText("ttt.txt", "v. [" + DateTime.Now + "]\n" + message + "\n");
+            else File.WriteAllText("ttt.txt", string.Format("{0}{1}", "v. [" + DateTime.Now + "]\n" + message + "\n", File.ReadAllText("ttt.txt")));
         }
     }
 }
