@@ -63,7 +63,9 @@ namespace ItemChecker.Presenter
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
             ChromeOptions option = new ChromeOptions();
-            option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions", @"--user-data-dir=" + GeneralConfig.Default.profilePath, "profile-directory=" + GeneralConfig.Default.profileDirectory);
+            option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions");
+            if (GeneralConfig.Default.profile) option.AddArguments(@"--user-data-dir=" + Application.StartupPath.Replace(@"\", @"\\") + "\\profile", "profile-directory=Default");
+            else Directory.Delete(Application.StartupPath.Replace(@"\", @"\\") + "\\profile", true);
             option.Proxy = null;
 
             Main.Browser = new ChromeDriver(chromeDriverService, option);
@@ -116,29 +118,6 @@ namespace ItemChecker.Presenter
                 progressInvoke();
             }
             else throw new InvalidOperationException("Login Tryskins");
-        }
-        private static void createCookies()
-        {
-            try
-            {
-                string text = "";
-                using (FileStream fstream = new FileStream("Cookies.data", FileMode.Create))
-                {		
-                    foreach (Cookie ck in Main.Browser.Manage().Cookies.AllCookies)
-                    {
-                        text += (ck.Name + ";" + ck.Value + ";" + ck.Domain + ";" + ck.Path + ";" + ck.Expiry + ";" + ck.Secure + "\n");
-                    }
-
-                    byte[] array = System.Text.Encoding.Default.GetBytes(text);
-                    fstream.Write(array, 0, array.Length);
-                }
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorLog(exp, Main.version);
-                Edit.errorMessage(exp, currMethodName);
-            }
         }
 
         //load
@@ -260,7 +239,8 @@ namespace ItemChecker.Presenter
                 mainForm.course_label.Text = "0.00 ₽";
                 mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins)";
                 mainForm.buyOrder_dataGridView.Columns[1].HeaderText = "Item (BuyOrders)";
-                mainForm.available_label.Text = "Available: -";
+                mainForm.available_label.Text = "Available: -"; mainForm.available_label.ForeColor = Color.Red;
+                mainForm.queue_label.Text = "Queue: -";
                 mainForm.check_label.Text = "Check: -";
                 mainForm.push_label.Text = "Push: -";
 

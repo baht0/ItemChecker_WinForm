@@ -55,13 +55,6 @@ namespace ItemChecker
             this.floatCheck_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.withdrawTable_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.links_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.linkSM_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.linkIN_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.linkCS_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.linkTS_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.availability_groupBox = new System.Windows.Forms.GroupBox();
             this.steamMarket_label = new System.Windows.Forms.Label();
             this.tryskins_label = new System.Windows.Forms.Label();
@@ -99,6 +92,14 @@ namespace ItemChecker
             this.checkOwnList_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.floatCheck_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.links_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.marketLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inventoryLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.csmoneyLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.tryskinsLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.exit_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loading_panel = new System.Windows.Forms.Panel();
             this.ver_label = new System.Windows.Forms.Label();
@@ -178,8 +179,7 @@ namespace ItemChecker
             this.main_menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.file_MainStripMenu,
             this.reload_MainStripMenu,
-            this.tools_MainStripMenu,
-            this.links_toolStripMenuItem});
+            this.tools_MainStripMenu});
             this.main_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.main_menuStrip.Name = "main_menuStrip";
             this.main_menuStrip.Size = new System.Drawing.Size(600, 24);
@@ -341,58 +341,6 @@ namespace ItemChecker
             this.withdrawTable_MainStripMenu.Size = new System.Drawing.Size(150, 22);
             this.withdrawTable_MainStripMenu.Text = "Withdraw";
             this.withdrawTable_MainStripMenu.Click += new System.EventHandler(this.withdrawTable_MainStripMenu_Click);
-            // 
-            // links_toolStripMenuItem
-            // 
-            this.links_toolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.linkSM_toolStripMenuItem,
-            this.linkIN_toolStripMenuItem,
-            this.toolStripSeparator6,
-            this.linkCS_toolStripMenuItem,
-            this.toolStripSeparator7,
-            this.linkTS_toolStripMenuItem});
-            this.links_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.link;
-            this.links_toolStripMenuItem.Name = "links_toolStripMenuItem";
-            this.links_toolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.links_toolStripMenuItem.Text = "Links";
-            // 
-            // linkSM_toolStripMenuItem
-            // 
-            this.linkSM_toolStripMenuItem.Name = "linkSM_toolStripMenuItem";
-            this.linkSM_toolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.linkSM_toolStripMenuItem.Text = "SteamMarket";
-            this.linkSM_toolStripMenuItem.Click += new System.EventHandler(this.linkSM_toolStripMenuItem_Click);
-            // 
-            // linkIN_toolStripMenuItem
-            // 
-            this.linkIN_toolStripMenuItem.Name = "linkIN_toolStripMenuItem";
-            this.linkIN_toolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.linkIN_toolStripMenuItem.Text = "Inventory";
-            this.linkIN_toolStripMenuItem.Click += new System.EventHandler(this.linkIN_toolStripMenuItem_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(152, 6);
-            // 
-            // linkCS_toolStripMenuItem
-            // 
-            this.linkCS_toolStripMenuItem.Name = "linkCS_toolStripMenuItem";
-            this.linkCS_toolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.linkCS_toolStripMenuItem.Text = "Cs.Money (old)";
-            this.linkCS_toolStripMenuItem.Click += new System.EventHandler(this.linkCS_toolStripMenuItem_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(152, 6);
-            // 
-            // linkTS_toolStripMenuItem
-            // 
-            this.linkTS_toolStripMenuItem.Name = "linkTS_toolStripMenuItem";
-            this.linkTS_toolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.linkTS_toolStripMenuItem.Text = "TrySkins";
-            this.linkTS_toolStripMenuItem.Click += new System.EventHandler(this.linkTS_toolStripMenuItem_Click);
             // 
             // availability_groupBox
             // 
@@ -589,6 +537,7 @@ namespace ItemChecker
             this.tryskins_dataGridView.AllowUserToAddRows = false;
             this.tryskins_dataGridView.AllowUserToDeleteRows = false;
             this.tryskins_dataGridView.AllowUserToResizeRows = false;
+            this.tryskins_dataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.tryskins_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tryskins_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.color,
@@ -657,6 +606,7 @@ namespace ItemChecker
             this.buyOrder_dataGridView.AllowUserToAddRows = false;
             this.buyOrder_dataGridView.AllowUserToDeleteRows = false;
             this.buyOrder_dataGridView.AllowUserToResizeRows = false;
+            this.buyOrder_dataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.buyOrder_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.buyOrder_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
@@ -734,9 +684,11 @@ namespace ItemChecker
             this.checkOwnList_toolStripMenuItem,
             this.floatCheck_toolStripMenuItem,
             this.toolStripSeparator5,
+            this.links_toolStripMenuItem,
+            this.toolStripSeparator9,
             this.exit_toolStripMenuItem});
             this.taskbar_contextMenuStrip.Name = "taskbar_contextMenuStrip";
-            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(151, 76);
+            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(151, 104);
             // 
             // checkOwnList_toolStripMenuItem
             // 
@@ -756,6 +708,63 @@ namespace ItemChecker
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(147, 6);
+            // 
+            // links_toolStripMenuItem
+            // 
+            this.links_toolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.marketLink_toolStripMenuItem,
+            this.inventoryLink_toolStripMenuItem,
+            this.toolStripSeparator10,
+            this.csmoneyLink_toolStripMenuItem,
+            this.toolStripSeparator11,
+            this.tryskinsLink_toolStripMenuItem});
+            this.links_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.link;
+            this.links_toolStripMenuItem.Name = "links_toolStripMenuItem";
+            this.links_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.links_toolStripMenuItem.Text = "Links";
+            // 
+            // marketLink_toolStripMenuItem
+            // 
+            this.marketLink_toolStripMenuItem.Name = "marketLink_toolStripMenuItem";
+            this.marketLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.marketLink_toolStripMenuItem.Text = "SteamMarket";
+            this.marketLink_toolStripMenuItem.Click += new System.EventHandler(this.marketLink_toolStripMenuItem_Click);
+            // 
+            // inventoryLink_toolStripMenuItem
+            // 
+            this.inventoryLink_toolStripMenuItem.Name = "inventoryLink_toolStripMenuItem";
+            this.inventoryLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.inventoryLink_toolStripMenuItem.Text = "Inventory";
+            this.inventoryLink_toolStripMenuItem.Click += new System.EventHandler(this.inventoryLink_toolStripMenuItem_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(149, 6);
+            // 
+            // csmoneyLink_toolStripMenuItem
+            // 
+            this.csmoneyLink_toolStripMenuItem.Name = "csmoneyLink_toolStripMenuItem";
+            this.csmoneyLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.csmoneyLink_toolStripMenuItem.Text = "CsMoney (old)";
+            this.csmoneyLink_toolStripMenuItem.Click += new System.EventHandler(this.csmoneyLink_toolStripMenuItem_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(149, 6);
+            // 
+            // tryskinsLink_toolStripMenuItem
+            // 
+            this.tryskinsLink_toolStripMenuItem.Name = "tryskinsLink_toolStripMenuItem";
+            this.tryskinsLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tryskinsLink_toolStripMenuItem.Text = "TrySkins";
+            this.tryskinsLink_toolStripMenuItem.Click += new System.EventHandler(this.tryskinsLink_toolStripMenuItem_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(147, 6);
             // 
             // exit_toolStripMenuItem
             // 
@@ -800,6 +809,7 @@ namespace ItemChecker
             this.withdraw_dataGridView.AllowUserToAddRows = false;
             this.withdraw_dataGridView.AllowUserToDeleteRows = false;
             this.withdraw_dataGridView.AllowUserToResizeRows = false;
+            this.withdraw_dataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.withdraw_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.withdraw_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn7,
@@ -995,18 +1005,19 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
-        private System.Windows.Forms.ToolStripMenuItem links_toolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem linkSM_toolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem linkIN_toolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-        private System.Windows.Forms.ToolStripMenuItem linkCS_toolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem linkTS_toolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem updateData_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkOwnList_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testbutton;
         public System.Windows.Forms.Label queue_label;
+        private System.Windows.Forms.ToolStripMenuItem links_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem marketLink_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inventoryLink_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem csmoneyLink_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripMenuItem tryskinsLink_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
     }
 }
 

@@ -464,21 +464,20 @@ namespace ItemChecker
         {
             exitToolStripMenuItem.PerformClick();
         }
-
         //links
-        private void linkSM_toolStripMenuItem_Click(object sender, EventArgs e)
+        private void marketLink_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             Edit.openUrl("https://steamcommunity.com/market/");
         }
-        private void linkIN_toolStripMenuItem_Click(object sender, EventArgs e)
+        private void inventoryLink_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             Edit.openUrl("https://steamcommunity.com/my/inventory#730/");
         }
-        private void linkCS_toolStripMenuItem_Click(object sender, EventArgs e)
+        private void csmoneyLink_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             Edit.openUrl("https://old.cs.money");
         }
-        private void linkTS_toolStripMenuItem_Click(object sender, EventArgs e)
+        private void tryskinsLink_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             Edit.openUrl(TrySkins.url);
         }

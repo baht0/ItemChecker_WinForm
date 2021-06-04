@@ -21,7 +21,8 @@ namespace ItemChecker.Presenter
                 IWebElement count = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//span[@id='my_market_buylistings_number']")));
                 IWebElement balance = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[@id='header_wallet_balance']")));
 
-                Steam.balance = Math.Round(Edit.removeRub(balance.Text) + 0.01, 2);
+                Steam.balance = Edit.removeRub(balance.Text);
+                if (Steam.balance == Math.Truncate(Steam.balance)) Steam.balance += 0.01;
                 BuyOrder.count = Convert.ToInt32(count.Text);
 
                 mainForm.Invoke(new MethodInvoker(delegate {

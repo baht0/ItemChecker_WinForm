@@ -11,11 +11,8 @@
     <Setting Name="wait" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
     </Setting>
-    <Setting Name="profilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="profileDirectory" Type="System.String" Scope="User">
-      <Value Profile="(Default)">None</Value>
+    <Setting Name="profile" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

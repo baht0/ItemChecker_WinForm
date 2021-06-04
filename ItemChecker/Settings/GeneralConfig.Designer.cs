@@ -61,25 +61,13 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string profilePath {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool profile {
             get {
-                return ((string)(this["profilePath"]));
+                return ((bool)(this["profile"]));
             }
             set {
-                this["profilePath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("None")]
-        public string profileDirectory {
-            get {
-                return ((string)(this["profileDirectory"]));
-            }
-            set {
-                this["profileDirectory"] = value;
+                this["profile"] = value;
             }
         }
     }
