@@ -92,7 +92,7 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
-                if (String.IsNullOrEmpty(currApiKey_textBox.Text))
+                if (!String.IsNullOrEmpty(currApiKey_textBox.Text))
                 {
                     //general
                     GeneralConfig.Default.steamApiKey = steamApiKey_textBox.Text;

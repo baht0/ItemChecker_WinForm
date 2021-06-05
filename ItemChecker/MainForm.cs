@@ -190,7 +190,7 @@ namespace ItemChecker
         //linkLabels
         private void tradeOffers_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (!Main.loading & String.IsNullOrEmpty(GeneralConfig.Default.steamApiKey))
+            if (!Main.loading & !String.IsNullOrEmpty(GeneralConfig.Default.steamApiKey))
             {
                 DialogResult result = MessageBox.Show(
                     "Are you sure you want to ACCEPT trade offers?",
