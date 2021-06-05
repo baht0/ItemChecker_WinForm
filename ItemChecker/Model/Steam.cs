@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ItemChecker.Model
+﻿namespace ItemChecker.Model
 {
     public class Steam
     {

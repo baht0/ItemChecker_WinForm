@@ -73,66 +73,6 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
-        public int minPrecentW {
-            get {
-                return ((int)(this["minPrecentW"]));
-            }
-            set {
-                this["minPrecentW"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
-        public int maxPrecentW {
-            get {
-                return ((int)(this["maxPrecentW"]));
-            }
-            set {
-                this["maxPrecentW"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("500")]
-        public int minSalesW {
-            get {
-                return ((int)(this["minSalesW"]));
-            }
-            set {
-                this["minSalesW"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool souvenirW {
-            get {
-                return ((bool)(this["souvenirW"]));
-            }
-            set {
-                this["souvenirW"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool stickerW {
-            get {
-                return ((bool)(this["stickerW"]));
-            }
-            set {
-                this["stickerW"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool fastTime {
             get {

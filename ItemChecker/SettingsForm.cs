@@ -27,11 +27,16 @@ namespace ItemChecker
             minPrecent_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrecent;
             maxPrice_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrice;
             minPrice_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrice;
-            minPrecentW_numericUpDown.Value = TryskinsConfig.Default.minPrecentW;
-            maxPrecentW_numericUpDown.Value = TryskinsConfig.Default.maxPrecentW;
-            minSalesW_numericUpDown.Value = TryskinsConfig.Default.minSalesW;
-            souvenir_checkBox.Checked = TryskinsConfig.Default.souvenirW;
-            sticker_checkBox.Checked = TryskinsConfig.Default.stickerW;
+            //withdraw
+            minPrecentW_numericUpDown.Value = WithdrawConfig.Default.minPrecent;
+            maxPrecentW_numericUpDown.Value = WithdrawConfig.Default.maxPrecent;
+            maxPriceW_numericUpDown.Value = WithdrawConfig.Default.maxPrice;
+            minPriceW_numericUpDown.Value = WithdrawConfig.Default.minPrice;
+            minSalesW_numericUpDown.Value = WithdrawConfig.Default.minSales;
+            souvenir_checkBox.Checked = WithdrawConfig.Default.souvenir;
+            sticker_checkBox.Checked = WithdrawConfig.Default.sticker;
+            onlySt_checkBox.Checked = WithdrawConfig.Default.onlySticker;
+            compareSta_checkBox.Checked = WithdrawConfig.Default.compareSta;
 
             fast_radioButton.Checked = TryskinsConfig.Default.fastTime;
             long_radioButton.Checked = TryskinsConfig.Default.longTime;
@@ -66,12 +71,16 @@ namespace ItemChecker
             minPrecent_numericUpDown.Value = 27;
             maxPrice_numericUpDown.Value = 0;
             minPrice_numericUpDown.Value = 0;
-
+            //withdraw
             minPrecentW_numericUpDown.Value = 3;
             maxPrecentW_numericUpDown.Value = 60;
+            maxPriceW_numericUpDown.Value = 0;
+            minPriceW_numericUpDown.Value = 0;
             minSalesW_numericUpDown.Value = 500;
             souvenir_checkBox.Checked = false;
             sticker_checkBox.Checked = false;
+            onlySt_checkBox.Checked = false;
+            compareSta_checkBox.Checked = false;
 
             fast_radioButton.Checked = true;
             long_radioButton.Checked = false;
@@ -108,13 +117,18 @@ namespace ItemChecker
                     TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);
                     TryskinsConfig.Default.maxTryskinsPrice = Convert.ToInt32(maxPrice_numericUpDown.Value);
                     TryskinsConfig.Default.minTryskinsPrice = Convert.ToInt32(minPrice_numericUpDown.Value);
-                    TryskinsConfig.Default.minPrecentW = Convert.ToInt32(minPrecentW_numericUpDown.Value);
-                    TryskinsConfig.Default.maxPrecentW = Convert.ToInt32(maxPrecentW_numericUpDown.Value);
-                    TryskinsConfig.Default.minSalesW = Convert.ToInt32(minSalesW_numericUpDown.Value);
-                    TryskinsConfig.Default.souvenirW = souvenir_checkBox.Checked;
-                    TryskinsConfig.Default.stickerW = sticker_checkBox.Checked;
                     TryskinsConfig.Default.fastTime = fast_radioButton.Checked;
                     TryskinsConfig.Default.longTime = long_radioButton.Checked;
+                    //withdraw
+                    WithdrawConfig.Default.minPrecent = Convert.ToInt32(minPrecentW_numericUpDown.Value);
+                    WithdrawConfig.Default.maxPrecent = Convert.ToInt32(maxPrecentW_numericUpDown.Value);
+                    WithdrawConfig.Default.maxPrice = Convert.ToInt32(maxPriceW_numericUpDown.Value);
+                    WithdrawConfig.Default.minPrice = Convert.ToInt32(minPriceW_numericUpDown.Value);
+                    WithdrawConfig.Default.minSales = Convert.ToInt32(minSalesW_numericUpDown.Value);
+                    WithdrawConfig.Default.souvenir = souvenir_checkBox.Checked;
+                    WithdrawConfig.Default.sticker = sticker_checkBox.Checked;
+                    WithdrawConfig.Default.onlySticker = onlySt_checkBox.Checked;
+                    WithdrawConfig.Default.compareSta = compareSta_checkBox.Checked;
                     //float
                     FloatConfig.Default.maxFloatPrecent = maxPrecentFloat_numericUpDown.Value;
                     FloatConfig.Default.countGetItems = Convert.ToInt32(getItems_numericUpDown.Value);
@@ -131,6 +145,7 @@ namespace ItemChecker
                     GeneralConfig.Default.Save();
                     SteamConfig.Default.Save();
                     TryskinsConfig.Default.Save();
+                    WithdrawConfig.Default.Save();
                     FloatConfig.Default.Save();
 
                     MessageBox.Show(
@@ -198,6 +213,13 @@ namespace ItemChecker
         private void getCurr_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(new ProcessStartInfo("cmd", $"/c start {"https://free.currencyconverterapi.com/free-api-key"}"));
+        }
+
+        //withdraw
+        private void sticker_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!sticker_checkBox.Checked) onlySt_checkBox.Checked = false;
+            onlySt_checkBox.Enabled = sticker_checkBox.Checked;
         }
     }
 }

@@ -37,6 +37,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>GeneralConfig.settings</DependentUpon>
     </Compile>
+    <Compile Update="Settings\WithdrawConfig.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>WithdrawConfig.settings</DependentUpon>
+    </Compile>
     <Compile Update="Settings\SteamConfig.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -74,6 +79,10 @@
     <None Update="Settings\GeneralConfig.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>GeneralConfig.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Settings\WithdrawConfig.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>WithdrawConfig.Designer.cs</LastGenOutput>
     </None>
     <None Update="Settings\SteamConfig.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

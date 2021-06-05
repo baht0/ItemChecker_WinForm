@@ -155,7 +155,7 @@ namespace ItemChecker.Presenter
         private static void loadDataTryskins()
         {
             TryskinsPresenter.checkTryskins();
-            if (TrySkins.count != 0) TryskinsPresenter.createTryTable();
+            if (TrySkins.item.Count > 0) TryskinsPresenter.createTryTable();
             else progressInvoke();
         }
 
@@ -306,11 +306,6 @@ namespace ItemChecker.Presenter
         //        Edit.errorLog(exp, Main.version);
         //        Edit.errorMessage(exp, currMethodName);
         //    }
-        //}
-        //public static void errorLog(string message)
-        //{
-        //    if (!File.Exists("ttt.txt")) File.WriteAllText("ttt.txt", "v. [" + DateTime.Now + "]\n" + message + "\n");
-        //    else File.WriteAllText("ttt.txt", string.Format("{0}{1}", "v. [" + DateTime.Now + "]\n" + message + "\n", File.ReadAllText("ttt.txt")));
         //}
     }
 }

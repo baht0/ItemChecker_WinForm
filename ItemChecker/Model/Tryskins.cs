@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ItemChecker.Model
 {
@@ -13,7 +11,6 @@ namespace ItemChecker.Model
         public static List<double> precent = new List<double>();
         public static List<double> difference = new List<double>();
 
-        public static int count { get; set; }
         public static int t { get; set; }
         public static string url = "https://table.altskins.com/site/items";
 
@@ -25,7 +22,6 @@ namespace ItemChecker.Model
             TrySkins.precent.Clear();
             TrySkins.difference.Clear();
 
-            TrySkins.count = 0;
             TrySkins.t = 0;
             TrySkins.url = null;
         }

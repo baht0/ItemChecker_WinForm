@@ -30,6 +30,7 @@ namespace ItemChecker.Presenter
                     mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {count.Text}";
                     mainForm.available_label.Text = "Available: " + Convert.ToString(Steam.balance * 10) + "₽";
                 }));
+
             }
             catch (Exception exp)
             {

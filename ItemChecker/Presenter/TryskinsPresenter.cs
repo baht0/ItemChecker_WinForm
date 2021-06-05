@@ -53,7 +53,6 @@ namespace ItemChecker.Presenter
                 Thread.Sleep(500);
 
                 List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
-                TrySkins.count += items.Count;
 
                 if (items.Count > 1)
                 {
@@ -70,7 +69,7 @@ namespace ItemChecker.Presenter
                     }
                     catch
                     {
-                        TrySkins.count = 0;
+                        TrySkins.item.Clear();
                         mainForm.Invoke(new MethodInvoker(delegate {
                             mainForm.tryskins_dataGridView.Rows.Add();
                             mainForm.tryskins_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list.";
@@ -99,7 +98,7 @@ namespace ItemChecker.Presenter
                 //fast
                 else if (TryskinsConfig.Default.fastTime)
                 {
-                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.count}";
+                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
                     IWebElement steama = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[7]/span")));
                     IWebElement csmoney = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[8]/span")));
                     IWebElement prec = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[9]/div")));
@@ -115,7 +114,7 @@ namespace ItemChecker.Presenter
                 {
                     try
                     {
-                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.count}";
+                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
                         var json = Request.mrinkaRequest(Edit.replaceUrl(name.Text));
                         var buy_order = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
                         var csm_sell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
