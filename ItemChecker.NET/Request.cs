@@ -77,6 +77,10 @@ namespace ItemChecker.Net
         {
             return getRequest(@"https://steamcommunity.com/market/priceoverview/?country=RU&currency=" + c + "&appid=730&market_hash_name=" + url);
         }
+        public static String tradeOffers(string steam_api_key)
+        {
+            return getRequest(@"http://api.steampowered.com/IEconService/GetTradeOffers/v1/?key="+ steam_api_key +"&get_received_offers=1&active_only=100");
+        }
 
         public static Double getCourse(string currency_api_key)
         {
