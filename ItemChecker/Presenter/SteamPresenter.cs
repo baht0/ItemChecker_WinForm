@@ -15,7 +15,6 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                BuyOrder.count = 0;
                 Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market");
                 WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
                 IWebElement count = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//span[@id='my_market_buylistings_number']")));
@@ -23,11 +22,10 @@ namespace ItemChecker.Presenter
 
                 Steam.balance = Edit.removeRub(balance.Text);
                 if (Steam.balance == Math.Truncate(Steam.balance)) Steam.balance += 0.01;
-                BuyOrder.count = Convert.ToInt32(count.Text);
+                BuyOrder.my_buy_orders = Convert.ToInt32(count.Text);
 
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.balance_StripStatus.Text = "Balance: " + balance.Text;
-                    mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {count.Text}";
                     mainForm.available_label.Text = "Available: " + Convert.ToString(Steam.balance * 10) + "₽";
                 }));
 

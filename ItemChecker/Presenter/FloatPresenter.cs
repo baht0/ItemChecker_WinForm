@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Media;
 using OpenQA.Selenium.Support.Extensions;
+using System.Threading;
 
 namespace ItemChecker.Presenter
 {
@@ -89,8 +90,18 @@ namespace ItemChecker.Presenter
                 Float.lowestPrice = Edit.removeRub(JObject.Parse(json)["lowest_price"].ToString());
                 Float.medianPrice = Edit.removeRub(JObject.Parse(json)["median_price"].ToString());
 
-                json = Request.mrinkaRequest(item);
-                Float.csmPrice = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
+                Tuple<String, Boolean> response = Tuple.Create("", false);
+                do
+                {
+                    response = Request.mrinkaRequest(Edit.replaceUrl(item));
+                    if (!response.Item2)
+                    {
+                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Float Check (429). Please Wait..."; }));
+                        Thread.Sleep(30000);
+                    }
+                }
+                while (!response.Item2);
+                Float.csmPrice = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
                 Float.csmPrice = Math.Round(Float.csmPrice * Main.course, 2);
 
                 if (FloatConfig.Default.priceCompare == 0) Float.priceCompare = Float.lowestPrice;

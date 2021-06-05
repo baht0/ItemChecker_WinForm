@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using System.Windows.Forms;
 using System.Drawing;
@@ -56,7 +55,7 @@ namespace ItemChecker.Presenter
 
                 if (items.Count > 1)
                 {
-                    getTryskins(items.Count);
+                    getTryskins(items);
                     if (items.Count < 30) break;
                     page++;
                 }
@@ -64,7 +63,7 @@ namespace ItemChecker.Presenter
                 {
                     try
                     {
-                        getTryskins(items.Count);
+                        getTryskins(items);
                         break;
                     }
                     catch
@@ -81,70 +80,69 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_label.Text = "TrySkins: " + TrySkins.t.ToString(); }));
             MainPresenter.progressInvoke();
         }
-        public static void getTryskins(int count)
+        public static void getTryskins(List<IWebElement> items)
         {
-            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
-            for (int i = 1; i <= count; i++)
+            foreach (IWebElement item in items)
             {
-                IWebElement name = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[1]/span")));
-                if (BuyOrder.item.Contains(name.Text)) continue;
-                else if (Main.overstock.Contains(name.Text) || Main.unavailable.Contains(name.Text))
+                string[] str = item.Text.Split("\n");
+                string item_name = str[0].Trim();
+
+                if (BuyOrder.item.Contains(item_name)) continue;
+                else if (Main.overstock.Contains(item_name) || Main.unavailable.Contains(item_name))
                 {
                     TrySkins.t++;
                     continue;
                 }
-                else if (TrySkins.item.Contains(name.Text)) break;
+                else if (TrySkins.item.Contains(item_name)) break;
 
                 //fast
                 else if (TryskinsConfig.Default.fastTime)
                 {
-                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
-                    IWebElement steama = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[7]/span")));
-                    IWebElement csmoney = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[8]/span")));
-                    IWebElement prec = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + i + "]/td[9]/div")));
+                    string[] prices = str[4].Split(" ");
+                    double sta = Edit.removeDol(prices[0].Trim());
+                    double csm = Edit.removeDol(prices[1].Trim());
+                    double precent = Edit.removeSymbol(str[5].Trim());
 
-                    TrySkins.item.Add(name.Text);
-                    TrySkins.sta.Add(Convert.ToDouble(steama.Text));
-                    TrySkins.csm.Add(Convert.ToDouble(csmoney.Text));
-                    TrySkins.precent.Add(Edit.removeSymbol(prec.Text));
-                    TrySkins.difference.Add(Edit.difference(Convert.ToDouble(csmoney.Text), Convert.ToDouble(steama.Text), Main.course));
+                    TrySkins.item.Add(item_name);
+                    TrySkins.sta.Add(sta);
+                    TrySkins.csm.Add(csm);
+                    TrySkins.precent.Add(precent);
+                    TrySkins.difference.Add(Edit.difference(csm, sta, Main.course));
+                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
                 }
                 //long
                 else if (TryskinsConfig.Default.longTime)
                 {
-                    try
+                    Tuple<String, Boolean> response = Tuple.Create("", false);
+                    do
                     {
-                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
-                        var json = Request.mrinkaRequest(Edit.replaceUrl(name.Text));
-                        var buy_order = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
-                        var csm_sell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
-                        var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
-
-                        if (prec > 0)
+                        response = Request.mrinkaRequest(Edit.replaceUrl(item_name));
+                        if (!response.Item2)
                         {
-                            TrySkins.item.Add(name.Text);
-                            TrySkins.sta.Add(buy_order);
-                            TrySkins.csm.Add(csm_sell);
-                            TrySkins.precent.Add(prec);
-                            TrySkins.difference.Add(Edit.difference(csm_sell, buy_order, Main.course));
+                            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check TrySkins (429). Please Wait..."; }));
+                            Thread.Sleep(30000);
                         }
                     }
-                    catch
+                    while (!response.Item2);
+                    var buy_order = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
+                    var csm_sell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
+                    var precent = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
+
+                    if (precent > 0)
                     {
-                        mainForm.Invoke(new MethodInvoker(delegate {
-                            mainForm.status_StripStatus.Text = "Check TrySkins (429). Wait 2 min...";
-                            mainForm.timer_StripStatus.Text = "Updating (429). Wait 2 min...";
-                        }));
-                        i--;
-                        Thread.Sleep(30000);
-                        continue;
+                        TrySkins.item.Add(item_name);
+                        TrySkins.sta.Add(buy_order);
+                        TrySkins.csm.Add(csm_sell);
+                        TrySkins.precent.Add(precent);
+                        TrySkins.difference.Add(Edit.difference(csm_sell, buy_order, Main.course));
                     }
+                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
                 }
             }
         }
         public static void createTryTable()
         {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Table Tryskins..."; }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Tryskins..."; }));
             for (int i = 0; i < TrySkins.item.Count; i++)
             {
                 if (!Main.overstock.Contains(TrySkins.item[i]) & !Main.unavailable.Contains(TrySkins.item[i]) & !BuyOrder.item.Contains(TrySkins.item[i]))

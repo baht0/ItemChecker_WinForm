@@ -65,14 +65,20 @@ namespace ItemChecker.Net
             WebResponse resp = reqGET.GetResponse();
             Stream stream = resp.GetResponseStream();
             StreamReader sr = new StreamReader(stream);
-            var json = sr.ReadToEnd();
+            var json = sr.ReadToEnd();            
 
             return json;
         }
-        public static String mrinkaRequest(string str)
+        public static Tuple<String, Boolean> mrinkaRequest(string str)
         {
-            string url = @"http://188.166.72.201:8080/singleitem?i=" + str;
-            return getRequest(url);
+            try
+            {
+                string url = @"http://188.166.72.201:8080/singleitem?i=" + str;
+                return Tuple.Create(getRequest(url), true);
+            }
+            catch {
+                return Tuple.Create("", false); 
+            }
         }
         public static String lowPriceRequest(string url, int c)
         {

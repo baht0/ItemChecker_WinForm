@@ -22,30 +22,30 @@ namespace ItemChecker.Presenter
                 {
                     if (!CheckOwnListForm.checkStop)
                     {
-                        try
+                        Tuple<String, Boolean> response = Tuple.Create("", false);
+                        do
                         {
-                            var json = Request.mrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
-
-                            Mrinka.sellOrder.Add(Convert.ToDouble(JObject.Parse(json)["steam"]["sellOrder"].ToString()));
-                            double buyorder = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
-                            Mrinka.stUpdated.Add(JObject.Parse(json)["steam"]["updated"].ToString());
-                            Mrinka.buyOrder.Add(buyorder);
-
-                            double csmsell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
-                            Mrinka.csmBuy.Add(JObject.Parse(json)["csm"]["buy"]["0"].ToString());
-                            Mrinka.csmUpdated.Add(JObject.Parse(json)["csm"]["updated"].ToString());
-                            Mrinka.csmSell.Add(csmsell);
-
-                            Mrinka.precent.Add(Math.Round(((csmsell - buyorder) / buyorder) * 100, 2));
-                            Mrinka.difference.Add(Math.Round(csmsell - buyorder, 2));
+                            response = Request.mrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
+                            if (!response.Item2)
+                            {
+                                mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check List (429). Please Wait..."; }));
+                                Thread.Sleep(30000);
+                            }
                         }
-                        catch
-                        {
-                            checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.status_toolStripStatusLabel.Text = "Check List (429). Wait 2 min..."; }));
-                            i--;
-                            Thread.Sleep(30000);
-                            continue;
-                        }
+                        while (!response.Item2);
+
+                        Mrinka.sellOrder.Add(Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["sellOrder"].ToString()));
+                        double buyorder = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
+                        Mrinka.stUpdated.Add(JObject.Parse(response.Item1)["steam"]["updated"].ToString());
+                        Mrinka.buyOrder.Add(buyorder);
+
+                        double csmsell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
+                        Mrinka.csmBuy.Add(JObject.Parse(response.Item1)["csm"]["buy"]["0"].ToString());
+                        Mrinka.csmUpdated.Add(JObject.Parse(response.Item1)["csm"]["updated"].ToString());
+                        Mrinka.csmSell.Add(csmsell);
+
+                        Mrinka.precent.Add(Math.Round(((csmsell - buyorder) / buyorder) * 100, 2));
+                        Mrinka.difference.Add(Math.Round(csmsell - buyorder, 2));
                     }
                     else return;
                 }

@@ -144,7 +144,7 @@ namespace ItemChecker.Presenter
         }
         public static void loadDataSteam()
         {
-            if (BuyOrder.count != 0)
+            if (BuyOrder.my_buy_orders != 0)
             {
                 BuyOrderPresenter.getSteamlist();
                 BuyOrderPresenter.precentSteam();

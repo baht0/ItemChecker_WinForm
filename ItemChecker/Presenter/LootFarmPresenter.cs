@@ -23,38 +23,38 @@ namespace ItemChecker.Presenter
             {
                 if (!CheckOwnListForm.checkStop)
                 {
-                    try
+                    string str = array[i]["name"].ToString();
+                    if (Main.checkList.Contains(str))
                     {
-                        string str = array[i]["name"].ToString();
-                        if (Main.checkList.Contains(str))
+                        Tuple<String, Boolean> response = Tuple.Create("", false);
+                        do
                         {
-                            json = Request.mrinkaRequest(Edit.replaceUrl(str));
-
-                            LootFarm.item.Add(str);
-                            double price_lf = Convert.ToDouble(array[i]["price"]) / 100;
-                            LootFarm.price.Add(price_lf);
-
-                            LootFarm.price_st.Add(Convert.ToDouble(JObject.Parse(json)["steam"]["sellOrder"].ToString()));
-                            LootFarm.get_price.Add(Math.Round(Convert.ToDouble(array[i]["price"]) / 100 * 0.97, 2));
-                            double buy_order_st = Convert.ToDouble(JObject.Parse(json)["steam"]["buyOrder"].ToString());
-                            LootFarm.buy_order.Add(buy_order_st);
-
-                            LootFarm.precent.Add(Math.Round(((price_lf - buy_order_st) / buy_order_st) * 100, 2));
-                            LootFarm.difference.Add(Math.Round(price_lf - buy_order_st, 2));
-
-                            int have = Convert.ToInt32(array[i]["have"]);
-                            int max = Convert.ToInt32(array[i]["max"]);
-                            int count = max - have;
-                            if (count > 0) LootFarm.status.Add("Tradable");
-                            else if (count <= 0) LootFarm.status.Add("Overstock");
+                            response = Request.mrinkaRequest(Edit.replaceUrl(str));
+                            if (!response.Item2)
+                            {
+                                mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check List (429). Please Wait..."; }));
+                                Thread.Sleep(30000);
+                            }
                         }
-                    }
-                    catch
-                    {
-                        checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.status_toolStripStatusLabel.Text = "Check List (429). Wait 2 min..."; }));
-                        i--;
-                        Thread.Sleep(30000);
-                        continue;
+                        while (!response.Item2);
+
+                        LootFarm.item.Add(str);
+                        double price_lf = Convert.ToDouble(array[i]["price"]) / 100;
+                        LootFarm.price.Add(price_lf);
+
+                        LootFarm.price_st.Add(Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["sellOrder"].ToString()));
+                        LootFarm.get_price.Add(Math.Round(Convert.ToDouble(array[i]["price"]) / 100 * 0.97, 2));
+                        double buy_order_st = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
+                        LootFarm.buy_order.Add(buy_order_st);
+
+                        LootFarm.precent.Add(Math.Round(((price_lf - buy_order_st) / buy_order_st) * 100, 2));
+                        LootFarm.difference.Add(Math.Round(price_lf - buy_order_st, 2));
+
+                        int have = Convert.ToInt32(array[i]["have"]);
+                        int max = Convert.ToInt32(array[i]["max"]);
+                        int count = max - have;
+                        if (count > 0) LootFarm.status.Add("Tradable");
+                        else if (count <= 0) LootFarm.status.Add("Overstock");
                     }
                 }
                 else return;

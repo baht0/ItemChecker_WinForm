@@ -230,7 +230,7 @@ namespace ItemChecker
         }
         private void push_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (BuyOrder.count > 0 & !Main.loading)
+            if (BuyOrder.item.Count > 0 & !Main.loading)
             {
                 if (push_linkLabel.Text == "Push...")
                 {

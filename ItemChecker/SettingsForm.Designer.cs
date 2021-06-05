@@ -34,13 +34,13 @@ namespace ItemChecker
             this.default_button = new System.Windows.Forms.Button();
             this.withdraw_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.compareSta_checkBox = new System.Windows.Forms.CheckBox();
             this.onlySt_checkBox = new System.Windows.Forms.CheckBox();
             this.minSalesW_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
             this.souvenir_checkBox = new System.Windows.Forms.CheckBox();
             this.sticker_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.compareSta_checkBox = new System.Windows.Forms.CheckBox();
             this.minPriceW_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.maxPriceW_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -208,16 +208,6 @@ namespace ItemChecker
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Additionally";
             // 
-            // compareSta_checkBox
-            // 
-            this.compareSta_checkBox.AutoSize = true;
-            this.compareSta_checkBox.Location = new System.Drawing.Point(15, 124);
-            this.compareSta_checkBox.Name = "compareSta_checkBox";
-            this.compareSta_checkBox.Size = new System.Drawing.Size(92, 17);
-            this.compareSta_checkBox.TabIndex = 20;
-            this.compareSta_checkBox.Text = "Compare STA";
-            this.compareSta_checkBox.UseVisualStyleBackColor = true;
-            // 
             // onlySt_checkBox
             // 
             this.onlySt_checkBox.AutoSize = true;
@@ -299,6 +289,16 @@ namespace ItemChecker
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Withdraw";
+            // 
+            // compareSta_checkBox
+            // 
+            this.compareSta_checkBox.AutoSize = true;
+            this.compareSta_checkBox.Location = new System.Drawing.Point(15, 124);
+            this.compareSta_checkBox.Name = "compareSta_checkBox";
+            this.compareSta_checkBox.Size = new System.Drawing.Size(92, 17);
+            this.compareSta_checkBox.TabIndex = 20;
+            this.compareSta_checkBox.Text = "Compare STA";
+            this.compareSta_checkBox.UseVisualStyleBackColor = true;
             // 
             // minPriceW_numericUpDown
             // 
@@ -526,6 +526,11 @@ namespace ItemChecker
             // BS_numericUpDown
             // 
             this.BS_numericUpDown.DecimalPlaces = 3;
+            this.BS_numericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.BS_numericUpDown.Location = new System.Drawing.Point(129, 123);
             this.BS_numericUpDown.Maximum = new decimal(new int[] {
             1,
@@ -559,6 +564,11 @@ namespace ItemChecker
             // WW_numericUpDown
             // 
             this.WW_numericUpDown.DecimalPlaces = 3;
+            this.WW_numericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.WW_numericUpDown.Location = new System.Drawing.Point(129, 97);
             this.WW_numericUpDown.Maximum = new decimal(new int[] {
             45,
@@ -592,6 +602,11 @@ namespace ItemChecker
             // FT_numericUpDown
             // 
             this.FT_numericUpDown.DecimalPlaces = 3;
+            this.FT_numericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.FT_numericUpDown.Location = new System.Drawing.Point(129, 71);
             this.FT_numericUpDown.Maximum = new decimal(new int[] {
             38,
@@ -625,6 +640,11 @@ namespace ItemChecker
             // MW_numericUpDown
             // 
             this.MW_numericUpDown.DecimalPlaces = 3;
+            this.MW_numericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.MW_numericUpDown.Location = new System.Drawing.Point(129, 45);
             this.MW_numericUpDown.Maximum = new decimal(new int[] {
             15,
@@ -658,6 +678,11 @@ namespace ItemChecker
             // FN_numericUpDown
             // 
             this.FN_numericUpDown.DecimalPlaces = 3;
+            this.FN_numericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.FN_numericUpDown.Location = new System.Drawing.Point(129, 19);
             this.FN_numericUpDown.Maximum = new decimal(new int[] {
             7,

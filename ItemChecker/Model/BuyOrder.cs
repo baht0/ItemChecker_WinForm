@@ -5,7 +5,7 @@ namespace ItemChecker.Model
     public class BuyOrder
     {
         //order
-        public static int count { get; set; }
+        public static int my_buy_orders { get; set; }
         public static double available_amount { get; set; }
         public static double sum { get; set; }
 
@@ -54,6 +54,16 @@ namespace ItemChecker.Model
             BuyOrder.tick = 0;
             BuyOrder.int_check = 0;
             BuyOrder.int_push = 0;
+        }
+        public static void removeAtItem(int index)
+        {
+            BuyOrder.item.RemoveAt(index);
+            BuyOrder.url.RemoveAt(index);
+            BuyOrder.id.RemoveAt(index);
+            BuyOrder.price.RemoveAt(index);
+            BuyOrder.csm_price.RemoveAt(index);
+            BuyOrder.precent.RemoveAt(index);
+            BuyOrder.difference.RemoveAt(index);
         }
     }
 }

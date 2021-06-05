@@ -14,6 +14,9 @@ using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Settings;
 using ItemChecker.Net;
+using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ItemChecker.Presenter
 {
@@ -31,18 +34,19 @@ namespace ItemChecker.Presenter
             IWebElement table = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table']/h3/span[1]")));
             if (table.Text == "My listings awaiting confirmation") table_index = 2;
 
-            for (int i = 0; i < BuyOrder.count; i++)
+            List<IWebElement> items = Main.Browser.FindElements(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[@class='market_listing_row market_recent_listing_row']")).ToList();
+            int i = 2;
+            foreach (IWebElement item in items)
             {
-                IWebElement list = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[" + (i + 2) + "]/div[4]/span[1]/a")));
-                IWebElement price = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[" + (i + 2) + "]/div[2]/span/span")));
-                IWebElement id = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[" + (i + 2) + "]")));
+                string[] str = item.Text.Split("\n");
+                IWebElement id = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[" + i + "]")));
 
-                BuyOrder.item.Add(list.Text);
-                BuyOrder.url.Add(Edit.replaceUrl(list.Text));
-                BuyOrder.price.Add(Edit.removeRub(price.Text));
-                BuyOrder.id.Add(Edit.buyOrderId(id.GetAttribute("id")));
+                BuyOrder.item.Add(str[2].Trim());
+                BuyOrder.url.Add(Edit.replaceUrl(str[2].Trim()));
+                BuyOrder.price.Add(Edit.removeRub(str[0].Trim()));
+                BuyOrder.id.Add(Edit.buyOrderId(id.GetAttribute("id"))); i++;
+                mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}"; }));
             }
-
             availableAmount();
             MainPresenter.progressInvoke();
         }
@@ -50,7 +54,7 @@ namespace ItemChecker.Presenter
         {
             BuyOrder.sum = 0;
             BuyOrder.available_amount = 0;
-            foreach (double item in BuyOrder.price) BuyOrder.sum += item;
+            foreach (double item_price in BuyOrder.price) BuyOrder.sum += item_price;
             BuyOrder.available_amount = Math.Round(Steam.balance * 10 - BuyOrder.sum, 2);
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽"; }));
         }
@@ -58,33 +62,32 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Calculate Steam..."; }));
 
-            for (int i = 0; i < BuyOrder.count; i++)
+            for (int i = 0; i < BuyOrder.item.Count; i++)
             {
-                try
+                Tuple<String, Boolean> response = Tuple.Create("", false);
+                do
                 {
-                    double my_order = Convert.ToDouble(BuyOrder.price[i]);
-                    var buy_order = Math.Round(my_order / Main.course, 2);
-
-                    var json = Request.mrinkaRequest(BuyOrder.url[i]);
-
-                    var csm_sell = Convert.ToDouble(JObject.Parse(json)["csm"]["sell"].ToString());
-                    var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
-                    var diff = Math.Round((csm_sell * Main.course) - my_order, 2);
-
-                    BuyOrder.csm_price.Add(csm_sell);
-                    BuyOrder.precent.Add(prec);
-                    BuyOrder.difference.Add(diff);
+                    response = Request.mrinkaRequest(BuyOrder.url[i]);
+                    if (!response.Item2)
+                    {
+                        mainForm.Invoke(new MethodInvoker(delegate {
+                            mainForm.status_StripStatus.Text = "Calculate Steam (429). Please Wait...";
+                            mainForm.timer_StripStatus.Text = "Updating (429). Please Wait...";
+                        }));
+                        Thread.Sleep(30000);
+                    }
                 }
-                catch
-                {
-                    mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.status_StripStatus.Text = "Calculate Steam (429). Wait 2 min...";
-                        mainForm.timer_StripStatus.Text = "Updating (429). Wait 2 min...";
-                    }));
-                    i--;
-                    Thread.Sleep(30000);
-                    continue;
-                }
+                while (!response.Item2);
+
+                double my_order = Convert.ToDouble(BuyOrder.price[i]);
+                var buy_order = Math.Round(my_order / Main.course, 2);
+                var csm_sell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
+                var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
+                var diff = Math.Round((csm_sell * Main.course) - my_order, 2);
+
+                BuyOrder.csm_price.Add(csm_sell);
+                BuyOrder.precent.Add(prec);
+                BuyOrder.difference.Add(diff);
             }
             MainPresenter.progressInvoke();
         }
@@ -96,7 +99,7 @@ namespace ItemChecker.Presenter
             }));
             int s = 0;
 
-            for (int i = 0; i < BuyOrder.count; i++)
+            for (int i = 0; i < BuyOrder.item.Count; i++)
             {
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Rows.Add(); }));
                 if (!Main.overstock.Contains(BuyOrder.item[i]) & !Main.unavailable.Contains(BuyOrder.item[i]))
@@ -116,7 +119,7 @@ namespace ItemChecker.Presenter
                     if (BuyOrder.item[i].Contains("Souvenir")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Yellow; }));
                     if (BuyOrder.item[i].Contains("StatTrak")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
                     if (BuyOrder.item[i].Contains("★")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
-                    if (BuyOrder.precent[i] < SteamConfig.Default.autoDelete & BuyOrder.precent[i] != -100)
+                    if (BuyOrder.precent[i] <= SteamConfig.Default.autoDelete & BuyOrder.precent[i] != -100)
                     {
                         Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
                         mainForm.Invoke(new Action(() => {
@@ -236,21 +239,18 @@ namespace ItemChecker.Presenter
                 if (mainForm.buyOrder_dataGridView.CurrentCell.ColumnIndex == 1)
                 {
                     int row = Convert.ToInt32(mainForm.buyOrder_dataGridView.CurrentCell.RowIndex.ToString());
-                    string iname = mainForm.buyOrder_dataGridView.CurrentCell.Value.ToString();
-                    string price = mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Value.ToString();
+                    string item = mainForm.buyOrder_dataGridView.CurrentCell.Value.ToString();
 
-                    string url = Edit.replaceUrl(iname);
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + url);
-
+                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + Edit.replaceUrl(item));
                     IWebElement buy_orderid = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]")));
 
                     Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(Edit.buyOrderId(buy_orderid.GetAttribute("id")), Main.sessionid));
 
-                    BuyOrder.available_amount = Math.Round(BuyOrder.available_amount + Edit.removeSymbol(price), 2);
-                    BuyOrder.sum = Math.Round(BuyOrder.sum - Edit.removeSymbol(price), 2);
+                    BuyOrder.removeAtItem(BuyOrder.item.IndexOf(item));
+                    availableAmount();
+
                     mainForm.Invoke(new Action(() => {
-                        mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽";
-                        mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.count--}";
+                        mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
                         mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
                         mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Value = "Deleted";
                     }));
@@ -295,9 +295,9 @@ namespace ItemChecker.Presenter
                 SteamPresenter.getBalance();
 
                 mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.item.Count;
                     mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.progressBar_StripStatus.Value = 0;
-                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.count;
                 }));
 
                 getSteamlist();
@@ -330,7 +330,7 @@ namespace ItemChecker.Presenter
         private void pushItem()
         {
             WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
-            for (int i = 0; i < BuyOrder.count; i++)
+            for (int i = 0; i < BuyOrder.item.Count; i++)
             {
                 try
                 {
@@ -338,9 +338,8 @@ namespace ItemChecker.Presenter
                     Thread.Sleep(2000);
 
                     IWebElement my = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]/div[2]/span/span")));
-                    double my_order = Edit.removeRub(my.Text);
-
                     IWebElement last = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
+                    double my_order = Edit.removeRub(my.Text);
                     double last_order = Edit.removeRub(last.Text);
 
                     if (Steam.balance > last_order & last_order > my_order)
@@ -364,13 +363,10 @@ namespace ItemChecker.Presenter
                         {
                             Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
 
-                            BuyOrder.available_amount = Math.Round(BuyOrder.available_amount + BuyOrder.price[i], 2);
-                            BuyOrder.sum = Math.Round(BuyOrder.sum - BuyOrder.price[i], 2);
+                            BuyOrder.removeAtItem(i);
+                            availableAmount();
 
-                            mainForm.Invoke(new MethodInvoker(delegate {
-                                mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽";
-                                mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.count--}";
-                            }));
+                            mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}"; }));
                         }
                     }
                 }
