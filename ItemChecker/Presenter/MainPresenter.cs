@@ -288,29 +288,29 @@ namespace ItemChecker.Presenter
             }
         }
 
-        public static void nameId()
-        {
-            try
-            {
-                Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/MAC-10%20%7C%20Oceanic%20%28Minimal%20Wear%29");
-                //IWebElement element = Main.Browser.FindElement(By.TagName("script"));
-                //String htmlCode = (String)((IJavaScriptExecutor)Main.Browser).ExecuteScript("return arguments[0].innerHTML;", element);
-                //errorLog(htmlCode);
-                WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
-                IWebElement nameId = Main.Browser.FindElement(By.XPath("//body[@script[30]]"));
-                errorLog(nameId.GetAttribute("innerHTML").ToString());
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorLog(exp, Main.version);
-                Edit.errorMessage(exp, currMethodName);
-            }
-        }
-        public static void errorLog(string message)
-        {
-            if (!File.Exists("ttt.txt")) File.WriteAllText("ttt.txt", "v. [" + DateTime.Now + "]\n" + message + "\n");
-            else File.WriteAllText("ttt.txt", string.Format("{0}{1}", "v. [" + DateTime.Now + "]\n" + message + "\n", File.ReadAllText("ttt.txt")));
-        }
+        //public static void nameId()
+        //{
+        //    try
+        //    {
+        //        Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/MAC-10%20%7C%20Oceanic%20%28Minimal%20Wear%29");
+        //        //IWebElement element = Main.Browser.FindElement(By.TagName("script"));
+        //        //String htmlCode = (String)((IJavaScriptExecutor)Main.Browser).ExecuteScript("return arguments[0].innerHTML;", element);
+        //        //errorLog(htmlCode);
+        //        WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
+        //        IWebElement nameId = Main.Browser.FindElement(By.XPath("//body[@script[30]]"));
+        //        errorLog(nameId.GetAttribute("innerHTML").ToString());
+        //    }
+        //    catch (Exception exp)
+        //    {
+        //        string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+        //        Edit.errorLog(exp, Main.version);
+        //        Edit.errorMessage(exp, currMethodName);
+        //    }
+        //}
+        //public static void errorLog(string message)
+        //{
+        //    if (!File.Exists("ttt.txt")) File.WriteAllText("ttt.txt", "v. [" + DateTime.Now + "]\n" + message + "\n");
+        //    else File.WriteAllText("ttt.txt", string.Format("{0}{1}", "v. [" + DateTime.Now + "]\n" + message + "\n", File.ReadAllText("ttt.txt")));
+        //}
     }
 }

@@ -93,12 +93,12 @@ namespace ItemChecker
             this.floatCheck_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.links_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.marketLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inventoryLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tryskinsLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.csmoneyLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.tryskinsLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inventoryLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.marketLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.exit_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loading_panel = new System.Windows.Forms.Panel();
@@ -675,7 +675,6 @@ namespace ItemChecker
             this.notifyIcon.ContextMenuStrip = this.taskbar_contextMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "ItemChecker";
-            this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // taskbar_contextMenuStrip
@@ -712,30 +711,23 @@ namespace ItemChecker
             // links_toolStripMenuItem
             // 
             this.links_toolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.marketLink_toolStripMenuItem,
-            this.inventoryLink_toolStripMenuItem,
+            this.tryskinsLink_toolStripMenuItem,
             this.toolStripSeparator10,
             this.csmoneyLink_toolStripMenuItem,
             this.toolStripSeparator11,
-            this.tryskinsLink_toolStripMenuItem});
+            this.inventoryLink_toolStripMenuItem,
+            this.marketLink_toolStripMenuItem});
             this.links_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.link;
             this.links_toolStripMenuItem.Name = "links_toolStripMenuItem";
             this.links_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.links_toolStripMenuItem.Text = "Links";
             // 
-            // marketLink_toolStripMenuItem
+            // tryskinsLink_toolStripMenuItem
             // 
-            this.marketLink_toolStripMenuItem.Name = "marketLink_toolStripMenuItem";
-            this.marketLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.marketLink_toolStripMenuItem.Text = "SteamMarket";
-            this.marketLink_toolStripMenuItem.Click += new System.EventHandler(this.marketLink_toolStripMenuItem_Click);
-            // 
-            // inventoryLink_toolStripMenuItem
-            // 
-            this.inventoryLink_toolStripMenuItem.Name = "inventoryLink_toolStripMenuItem";
-            this.inventoryLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.inventoryLink_toolStripMenuItem.Text = "Inventory";
-            this.inventoryLink_toolStripMenuItem.Click += new System.EventHandler(this.inventoryLink_toolStripMenuItem_Click);
+            this.tryskinsLink_toolStripMenuItem.Name = "tryskinsLink_toolStripMenuItem";
+            this.tryskinsLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tryskinsLink_toolStripMenuItem.Text = "TrySkins";
+            this.tryskinsLink_toolStripMenuItem.Click += new System.EventHandler(this.tryskinsLink_toolStripMenuItem_Click);
             // 
             // toolStripSeparator10
             // 
@@ -754,12 +746,19 @@ namespace ItemChecker
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(149, 6);
             // 
-            // tryskinsLink_toolStripMenuItem
+            // inventoryLink_toolStripMenuItem
             // 
-            this.tryskinsLink_toolStripMenuItem.Name = "tryskinsLink_toolStripMenuItem";
-            this.tryskinsLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.tryskinsLink_toolStripMenuItem.Text = "TrySkins";
-            this.tryskinsLink_toolStripMenuItem.Click += new System.EventHandler(this.tryskinsLink_toolStripMenuItem_Click);
+            this.inventoryLink_toolStripMenuItem.Name = "inventoryLink_toolStripMenuItem";
+            this.inventoryLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.inventoryLink_toolStripMenuItem.Text = "Inventory";
+            this.inventoryLink_toolStripMenuItem.Click += new System.EventHandler(this.inventoryLink_toolStripMenuItem_Click);
+            // 
+            // marketLink_toolStripMenuItem
+            // 
+            this.marketLink_toolStripMenuItem.Name = "marketLink_toolStripMenuItem";
+            this.marketLink_toolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.marketLink_toolStripMenuItem.Text = "SteamMarket";
+            this.marketLink_toolStripMenuItem.Click += new System.EventHandler(this.marketLink_toolStripMenuItem_Click);
             // 
             // toolStripSeparator9
             // 

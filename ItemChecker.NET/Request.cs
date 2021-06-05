@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using ItemChecker.Support;
+using System.Windows.Forms;
 
 namespace ItemChecker.Net
 {
@@ -49,10 +50,10 @@ namespace ItemChecker.Net
 
             return postRequest(body, url);
         }
-        public static String acceptTrade(string id, string partner_id, string sessionid)
+        public static String acceptTrade(string tradeofferid, string partner_id, string sessionid)
         {
-            string body = "sessionid=" + sessionid + @"&serverid=1&tradeofferid=" + id + @"&partner=" + partner_id + @"&captcha=";
-            string url = "https://steamcommunity.com/tradeoffer/" + id + "/accept";
+            string body = "sessionid=" + sessionid + @"&serverid=1&tradeofferid=" + tradeofferid + @"&partner=" + partner_id + @"&captcha=";
+            string url = "https://steamcommunity.com/tradeoffer/" + tradeofferid + "/accept";
 
             return postRequest(body, url);
         }

@@ -92,7 +92,7 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
-                if (currApiKey_textBox.Text != "" & steamApiKey_textBox.Text != "")
+                if (String.IsNullOrEmpty(currApiKey_textBox.Text))
                 {
                     //general
                     GeneralConfig.Default.steamApiKey = steamApiKey_textBox.Text;
@@ -144,7 +144,7 @@ namespace ItemChecker
                 else
                 {
                     MessageBox.Show(
-                        "Not all fields are filled.",
+                        "The 'Currency Api Key' field must not be empty.",
                         "Warning",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);

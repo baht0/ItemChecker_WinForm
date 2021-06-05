@@ -31,8 +31,8 @@ namespace ItemChecker.Presenter
                     string url = Edit.replaceUrl(item);
                     getPrice(url);
 
-                    string url_link = @"https://steamcommunity.com/market/listings/730/" + url + "/render?start=0&count=" + FloatConfig.Default.countGetItems + "&currency=5&language=english&format=json";
-                    var json = Request.getRequest(url_link);
+                    string url_request = @"https://steamcommunity.com/market/listings/730/" + url + "/render?start=0&count=" + FloatConfig.Default.countGetItems + "&currency=5&language=english&format=json";
+                    var json = Request.getRequest(url_request);
 
                     JObject obj = JObject.Parse(json);
                     var attributes = obj["listinginfo"].ToList<JToken>();

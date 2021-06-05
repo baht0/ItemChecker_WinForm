@@ -35,9 +35,10 @@ namespace ItemChecker
             }
             foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
             foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
+            notifyIcon.Visible = true;
             ver_label.Text = "Version: " + Main.version;
         }
-        public void MainForm_Shown(object sender, System.EventArgs e)
+        public void MainForm_Shown(object sender, EventArgs e)
         {
             status_StripStatus.Text = "Launch Browser...";
             BuyOrderPresenter buyOrderPresenter = new BuyOrderPresenter();
@@ -67,17 +68,17 @@ namespace ItemChecker
         }
 
         //file
-        private void settings_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void settings_MainStripMenu_Click(object sender, EventArgs e)
         {
             SettingsForm fr = new SettingsForm();
             fr.ShowDialog();     
         }
-        private void printScreen_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void printScreen_MainStripMenu_Click(object sender, EventArgs e)
         {
             ((ITakesScreenshot)Main.Browser).GetScreenshot().SaveAsFile("Screen.png", ScreenshotImageFormat.Png);
             Process.Start(new ProcessStartInfo("cmd", $"/c start {Application.StartupPath + "\\Screen.png"}"));
         }
-        private void restart_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void restart_MainStripMenu_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
                     "Do you really want restart program?",
@@ -96,7 +97,7 @@ namespace ItemChecker
                 ThreadPool.QueueUserWorkItem(MainPresenter.Start);
             }
         }
-        private void exitToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
               "Do you want to log out?",
@@ -110,7 +111,7 @@ namespace ItemChecker
             }
         }
         //reload
-        private void full_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void full_MainStripMenu_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
@@ -118,7 +119,7 @@ namespace ItemChecker
                 ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 6 });
             }
         }
-        private void tryskins_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void tryskins_MainStripMenu_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
@@ -126,7 +127,7 @@ namespace ItemChecker
                 ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 3 });
             }
         }
-        private void buyOrders_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void buyOrders_MainStripMenu_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
@@ -142,7 +143,7 @@ namespace ItemChecker
                 ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 1 });
             }
         }
-        private void withdrawReload_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void withdrawReload_MainStripMenu_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
@@ -151,12 +152,12 @@ namespace ItemChecker
             }
         }
         //tools
-        private void checkOwnList_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
         {
             CheckOwnListForm fr = new CheckOwnListForm();
             fr.Show();
         }
-        private void floatCheck_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
@@ -164,7 +165,7 @@ namespace ItemChecker
                 fr.ShowDialog();
             }            
         }
-        private void withdrawTable_MainStripMenu_Click(object sender, System.EventArgs e)
+        private void withdrawTable_MainStripMenu_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
@@ -189,7 +190,7 @@ namespace ItemChecker
         //linkLabels
         private void tradeOffers_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (!Main.loading)
+            if (!Main.loading & String.IsNullOrEmpty(GeneralConfig.Default.steamApiKey))
             {
                 DialogResult result = MessageBox.Show(
                     "Are you sure you want to ACCEPT trade offers?",
@@ -245,7 +246,7 @@ namespace ItemChecker
                 }
             }
         }
-        private void timer_StripStatus_Click(object sender, System.EventArgs e)
+        private void timer_StripStatus_Click(object sender, EventArgs e)
         {
             if (push_linkLabel.Text == "Stop...") BuyOrder.tick = 1;
         }
