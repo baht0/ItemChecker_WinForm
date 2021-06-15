@@ -45,8 +45,8 @@ namespace ItemChecker.Presenter
             {
                 cancelTokenSource.Cancel();
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorLog(exp, Main.version);
-                Edit.errorMessage(exp, currMethodName);
+                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
             }
             finally
             {
@@ -56,6 +56,7 @@ namespace ItemChecker.Presenter
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.reload_MainStripMenu.Enabled = true;
                 }));
+                mainForm.notifyIcon.ShowBalloonTip(10);                
             }
         }
         private static void launchBrowser()
@@ -71,6 +72,7 @@ namespace ItemChecker.Presenter
             Main.Browser = new ChromeDriver(chromeDriverService, option);
             Main.Browser.Manage().Window.Maximize();
             Main.Browser.Url = "https://steamcommunity.com/login/home/?goto=";
+            Main.wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
             var cookie = Main.Browser.Manage().Cookies.GetCookieNamed("sessionid").ToString();
             Main.sessionid = cookie.Substring(10, 24);
 
@@ -82,10 +84,9 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Steam..."; }));
 
-            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
             IWebElement username = Main.Browser.FindElement(By.XPath("//input[@name='username']"));
             IWebElement password = Main.Browser.FindElement(By.XPath("//input[@name='password']"));
-            IWebElement signin = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@class='btn_blue_steamui btn_medium login_btn']")));
+            IWebElement signin = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@class='btn_blue_steamui btn_medium login_btn']")));
 
             LoginForm fr = new LoginForm();
             mainForm.Invoke(new MethodInvoker(delegate { fr.ShowDialog(); }));
@@ -95,7 +96,7 @@ namespace ItemChecker.Presenter
             password.SendKeys(Steam.pass);
             signin.Click();
 
-            IWebElement code = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//input[@id='twofactorcode_entry']")));
+            IWebElement code = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//input[@id='twofactorcode_entry']")));
             code.SendKeys(Steam.code);
             code.SendKeys(OpenQA.Selenium.Keys.Enter);
 
@@ -106,12 +107,11 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Tryskins..."; }));
             Main.Browser.Navigate().GoToUrl("https://table.altskins.com/login/steam");
-            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
 
-            IWebElement account = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
+            IWebElement account = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
             if (account.Text == Steam.login)
             {
-                IWebElement signins = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
+                IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
                 signins.Click();
                 Thread.Sleep(300);
 
@@ -207,8 +207,8 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+                Exceptions.errorLog(exp, Main.version);
             }
             finally
             {
@@ -216,8 +216,9 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = true;
                     mainForm.status_StripStatus.Visible = false;
-                    mainForm.progressBar_StripStatus.Visible = false;
-                }));
+                    mainForm.progressBar_StripStatus.Visible = false; }));
+                mainForm.notifyIcon.BalloonTipText = "Loading is complete. Open to show.";
+                mainForm.notifyIcon.ShowBalloonTip(6);
             }
         }
         //other
@@ -251,7 +252,7 @@ namespace ItemChecker.Presenter
                 mainForm.buyOrder_dataGridView.Rows.Clear();
                 mainForm.withdraw_dataGridView.Rows.Clear();
                 mainForm.withdraw_dataGridView.Visible = false;
-                mainForm.withdrawTable_MainStripMenu.Text = "Withdraw";
+                mainForm.withdraw_MainStripMenu.Text = "Withdraw";
 
                 mainForm.reload_MainStripMenu.Enabled = false;
                 mainForm.progressBar_StripStatus.Value = 0;
@@ -287,25 +288,5 @@ namespace ItemChecker.Presenter
                 proc.Kill();
             }
         }
-
-        //public static void nameId()
-        //{
-        //    try
-        //    {
-        //        Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/MAC-10%20%7C%20Oceanic%20%28Minimal%20Wear%29");
-        //        //IWebElement element = Main.Browser.FindElement(By.TagName("script"));
-        //        //String htmlCode = (String)((IJavaScriptExecutor)Main.Browser).ExecuteScript("return arguments[0].innerHTML;", element);
-        //        //errorLog(htmlCode);
-        //        WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
-        //        IWebElement nameId = Main.Browser.FindElement(By.XPath("//body[@script[30]]"));
-        //        errorLog(nameId.GetAttribute("innerHTML").ToString());
-        //    }
-        //    catch (Exception exp)
-        //    {
-        //        string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-        //        Edit.errorLog(exp, Main.version);
-        //        Edit.errorMessage(exp, currMethodName);
-        //    }
-        //}
     }
 }

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using ItemChecker.Support;
-using System.Windows.Forms;
 
 namespace ItemChecker.Net
 {
@@ -35,8 +34,9 @@ namespace ItemChecker.Net
 
             return postRequest(body, url);
         }
-        public static String createBuyOrder(string hash_name, double last_order, string sessionid)
+        public static String createBuyOrder(string item, double last_order, string sessionid)
         {
+            string hash_name = Edit.replaceUrl(item);
             string order = (last_order * 100 + 1).ToString();
             string body = "sessionid=" + sessionid + @"&currency=5&appid=730&market_hash_name=" + hash_name + @"&price_total=" + order + @"&quantity=1&billing_state=&save_my_address=0";
             string url = "https://steamcommunity.com/market/createbuyorder/";
@@ -86,7 +86,7 @@ namespace ItemChecker.Net
         }
         public static String tradeOffers(string steam_api_key)
         {
-            return getRequest(@"http://api.steampowered.com/IEconService/GetTradeOffers/v1/?key="+ steam_api_key +"&get_received_offers=1&active_only=100");
+            return getRequest(@"http://api.steampowered.com/IEconService/GetTradeOffers/v1/?key=" + steam_api_key + "&get_received_offers=1&active_only=100");
         }
 
         public static Double getCourse(string currency_api_key)
@@ -100,7 +100,7 @@ namespace ItemChecker.Net
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, "1.0.0.0");
+                Exceptions.errorLog(exp, "1.0.0.0");
                 return 0.00;
             }
         }

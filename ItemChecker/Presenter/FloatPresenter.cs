@@ -17,14 +17,35 @@ namespace ItemChecker.Presenter
     {
         public static void Check(object state)
         {
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Float Check...";
-                mainForm.progressBar_StripStatus.Value = 0;
-                mainForm.progressBar_StripStatus.Maximum = Float.items.Count;
-                mainForm.progressBar_StripStatus.Visible = true;
-                mainForm.status_StripStatus.Visible = true;
-            }));
+            try
+            {
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.status_StripStatus.Text = "Float Check...";
+                    mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Maximum = Float.items.Count;
+                    mainForm.progressBar_StripStatus.Visible = true;
+                    mainForm.status_StripStatus.Visible = true; }));
+                checkingCycle();
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+            }
+            finally
+            {
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.status_StripStatus.Visible = false;
+                    mainForm.progressBar_StripStatus.Visible = false; }));
+                mainForm.notifyIcon.BalloonTipText = "FloatCheck completed.";
+                mainForm.notifyIcon.ShowBalloonTip(6);
+                Main.loading = false;
+            }
+        }
 
+        public static void checkingCycle()
+        {
             foreach (string item in Float.items)
             {
                 try
@@ -71,16 +92,14 @@ namespace ItemChecker.Presenter
                 }
                 catch (Exception exp)
                 {
-                    Edit.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.version);
                     continue;
                 }
-                finally { mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value++; })); }
-            }
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Visible = false;
-                mainForm.progressBar_StripStatus.Visible = false;
-            }));
-            Main.loading = false;
+                finally
+                {
+                    MainPresenter.progressInvoke();
+                }
+            }            
         }
         private static void getPrice(string item)
         {
@@ -110,7 +129,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
             }
         }
         private static Double getFloatValue(string link)
@@ -125,7 +144,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
                 return 1;
             }
 

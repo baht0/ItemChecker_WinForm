@@ -84,14 +84,18 @@ namespace ItemChecker
             this.long_radioButton = new System.Windows.Forms.RadioButton();
             this.fast_radioButton = new System.Windows.Forms.RadioButton();
             this.steam_tabPage = new System.Windows.Forms.TabPage();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.steamApiKey_textBox = new System.Windows.Forms.TextBox();
+            this.getST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.autoRemove_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.timer_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.updST_checkBox = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.general_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -99,11 +103,8 @@ namespace ItemChecker
             this.profile_checkBox = new System.Windows.Forms.CheckBox();
             this.wait_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.getCurr_linkLabel = new System.Windows.Forms.LinkLabel();
-            this.steamApiKey_textBox = new System.Windows.Forms.TextBox();
-            this.getST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.currApiKey_textBox = new System.Windows.Forms.TextBox();
             this.openFolder_linkLabel = new System.Windows.Forms.LinkLabel();
             this.extract_groupBox = new System.Windows.Forms.GroupBox();
@@ -138,6 +139,7 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecent_numericUpDown)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.steam_tabPage.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.autoRemove_numericUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timer_numericUpDown)).BeginInit();
@@ -900,10 +902,8 @@ namespace ItemChecker
             // 
             // steam_tabPage
             // 
-            this.steam_tabPage.Controls.Add(this.autoRemove_numericUpDown);
-            this.steam_tabPage.Controls.Add(this.label8);
+            this.steam_tabPage.Controls.Add(this.groupBox11);
             this.steam_tabPage.Controls.Add(this.groupBox1);
-            this.steam_tabPage.Controls.Add(this.label9);
             this.steam_tabPage.Location = new System.Drawing.Point(4, 22);
             this.steam_tabPage.Name = "steam_tabPage";
             this.steam_tabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -912,9 +912,55 @@ namespace ItemChecker
             this.steam_tabPage.Text = "Steam";
             this.steam_tabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.label1);
+            this.groupBox11.Controls.Add(this.steamApiKey_textBox);
+            this.groupBox11.Controls.Add(this.getST_linkLabel);
+            this.groupBox11.Controls.Add(this.autoRemove_numericUpDown);
+            this.groupBox11.Controls.Add(this.label9);
+            this.groupBox11.Controls.Add(this.label8);
+            this.groupBox11.Location = new System.Drawing.Point(17, 13);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(260, 106);
+            this.groupBox11.TabIndex = 7;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "Steam";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Steam API Key";
+            // 
+            // steamApiKey_textBox
+            // 
+            this.steamApiKey_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.steamApiKey_textBox.Location = new System.Drawing.Point(6, 32);
+            this.steamApiKey_textBox.Name = "steamApiKey_textBox";
+            this.steamApiKey_textBox.Size = new System.Drawing.Size(248, 21);
+            this.steamApiKey_textBox.TabIndex = 11;
+            this.steamApiKey_textBox.Text = "96BD1520132849D4C71003A9D2F6F5B2";
+            // 
+            // getST_linkLabel
+            // 
+            this.getST_linkLabel.AutoSize = true;
+            this.getST_linkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.getST_linkLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.getST_linkLabel.Location = new System.Drawing.Point(234, 17);
+            this.getST_linkLabel.Name = "getST_linkLabel";
+            this.getST_linkLabel.Size = new System.Drawing.Size(20, 12);
+            this.getST_linkLabel.TabIndex = 12;
+            this.getST_linkLabel.TabStop = true;
+            this.getST_linkLabel.Text = "Get";
+            this.getST_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.getST_linkLabel_LinkClicked);
+            // 
             // autoRemove_numericUpDown
             // 
-            this.autoRemove_numericUpDown.Location = new System.Drawing.Point(20, 34);
+            this.autoRemove_numericUpDown.Location = new System.Drawing.Point(6, 77);
             this.autoRemove_numericUpDown.Name = "autoRemove_numericUpDown";
             this.autoRemove_numericUpDown.Size = new System.Drawing.Size(87, 20);
             this.autoRemove_numericUpDown.TabIndex = 6;
@@ -925,14 +971,24 @@ namespace ItemChecker
             0,
             0});
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 61);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(95, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "AutoRemove Item:";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(113, 41);
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label8.Location = new System.Drawing.Point(99, 81);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(44, 13);
+            this.label8.Size = new System.Drawing.Size(19, 16);
             this.label8.TabIndex = 5;
-            this.label8.Text = "Precent";
+            this.label8.Text = "%";
             // 
             // groupBox1
             // 
@@ -940,7 +996,7 @@ namespace ItemChecker
             this.groupBox1.Controls.Add(this.updST_checkBox);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(17, 60);
+            this.groupBox1.Location = new System.Drawing.Point(17, 125);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(260, 94);
             this.groupBox1.TabIndex = 0;
@@ -949,7 +1005,7 @@ namespace ItemChecker
             // 
             // timer_numericUpDown
             // 
-            this.timer_numericUpDown.Location = new System.Drawing.Point(15, 36);
+            this.timer_numericUpDown.Location = new System.Drawing.Point(6, 36);
             this.timer_numericUpDown.Minimum = new decimal(new int[] {
             5,
             0,
@@ -968,7 +1024,7 @@ namespace ItemChecker
             // updST_checkBox
             // 
             this.updST_checkBox.AutoSize = true;
-            this.updST_checkBox.Location = new System.Drawing.Point(15, 65);
+            this.updST_checkBox.Location = new System.Drawing.Point(6, 65);
             this.updST_checkBox.Name = "updST_checkBox";
             this.updST_checkBox.Size = new System.Drawing.Size(124, 17);
             this.updST_checkBox.TabIndex = 2;
@@ -978,7 +1034,7 @@ namespace ItemChecker
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(108, 43);
+            this.label7.Location = new System.Drawing.Point(99, 43);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(27, 13);
             this.label7.TabIndex = 1;
@@ -987,20 +1043,11 @@ namespace ItemChecker
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 20);
+            this.label6.Location = new System.Drawing.Point(6, 20);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(36, 13);
             this.label6.TabIndex = 0;
             this.label6.Text = "Timer:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(20, 18);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(95, 13);
-            this.label9.TabIndex = 4;
-            this.label9.Text = "AutoRemove Item:";
             // 
             // general_tabPage
             // 
@@ -1023,7 +1070,7 @@ namespace ItemChecker
             this.groupBox7.Controls.Add(this.label4);
             this.groupBox7.Controls.Add(this.profile_checkBox);
             this.groupBox7.Controls.Add(this.wait_numericUpDown);
-            this.groupBox7.Location = new System.Drawing.Point(17, 129);
+            this.groupBox7.Location = new System.Drawing.Point(17, 88);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(260, 80);
             this.groupBox7.TabIndex = 13;
@@ -1035,9 +1082,9 @@ namespace ItemChecker
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(8, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 13);
+            this.label3.Size = new System.Drawing.Size(68, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Time for wait:";
+            this.label3.Text = "Waiting time:";
             // 
             // label4
             // 
@@ -1078,43 +1125,31 @@ namespace ItemChecker
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label1);
             this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Controls.Add(this.getCurr_linkLabel);
-            this.groupBox6.Controls.Add(this.steamApiKey_textBox);
-            this.groupBox6.Controls.Add(this.getST_linkLabel);
             this.groupBox6.Controls.Add(this.currApiKey_textBox);
             this.groupBox6.Location = new System.Drawing.Point(17, 14);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(260, 109);
+            this.groupBox6.Size = new System.Drawing.Size(260, 68);
             this.groupBox6.TabIndex = 12;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "API Keys";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Steam";
+            this.groupBox6.Text = "General";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 64);
+            this.label2.Location = new System.Drawing.Point(6, 18);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
+            this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Currency";
+            this.label2.Text = "Currency API Key";
             // 
             // getCurr_linkLabel
             // 
             this.getCurr_linkLabel.AutoSize = true;
             this.getCurr_linkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.getCurr_linkLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.getCurr_linkLabel.Location = new System.Drawing.Point(234, 66);
+            this.getCurr_linkLabel.Location = new System.Drawing.Point(234, 19);
             this.getCurr_linkLabel.Name = "getCurr_linkLabel";
             this.getCurr_linkLabel.Size = new System.Drawing.Size(20, 12);
             this.getCurr_linkLabel.TabIndex = 10;
@@ -1122,34 +1157,12 @@ namespace ItemChecker
             this.getCurr_linkLabel.Text = "Get";
             this.getCurr_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.getCurr_linkLabel_LinkClicked);
             // 
-            // steamApiKey_textBox
-            // 
-            this.steamApiKey_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.steamApiKey_textBox.Location = new System.Drawing.Point(8, 37);
-            this.steamApiKey_textBox.Name = "steamApiKey_textBox";
-            this.steamApiKey_textBox.Size = new System.Drawing.Size(246, 21);
-            this.steamApiKey_textBox.TabIndex = 5;
-            this.steamApiKey_textBox.Text = "96BD1520132849D4C71003A9D2F6F5B2";
-            // 
-            // getST_linkLabel
-            // 
-            this.getST_linkLabel.AutoSize = true;
-            this.getST_linkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.getST_linkLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.getST_linkLabel.Location = new System.Drawing.Point(234, 22);
-            this.getST_linkLabel.Name = "getST_linkLabel";
-            this.getST_linkLabel.Size = new System.Drawing.Size(20, 12);
-            this.getST_linkLabel.TabIndex = 9;
-            this.getST_linkLabel.TabStop = true;
-            this.getST_linkLabel.Text = "Get";
-            this.getST_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.getST_linkLabel_LinkClicked);
-            // 
             // currApiKey_textBox
             // 
             this.currApiKey_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.currApiKey_textBox.Location = new System.Drawing.Point(8, 80);
+            this.currApiKey_textBox.Location = new System.Drawing.Point(6, 34);
             this.currApiKey_textBox.Name = "currApiKey_textBox";
-            this.currApiKey_textBox.Size = new System.Drawing.Size(246, 21);
+            this.currApiKey_textBox.Size = new System.Drawing.Size(248, 21);
             this.currApiKey_textBox.TabIndex = 6;
             this.currApiKey_textBox.Text = "2e1738c3876683cb468f";
             // 
@@ -1169,9 +1182,9 @@ namespace ItemChecker
             // 
             this.extract_groupBox.Controls.Add(this.extractTry_linkLabel);
             this.extract_groupBox.Controls.Add(this.extractST_linkLabel);
-            this.extract_groupBox.Location = new System.Drawing.Point(17, 215);
+            this.extract_groupBox.Location = new System.Drawing.Point(17, 174);
             this.extract_groupBox.Name = "extract_groupBox";
-            this.extract_groupBox.Size = new System.Drawing.Size(260, 41);
+            this.extract_groupBox.Size = new System.Drawing.Size(260, 63);
             this.extract_groupBox.TabIndex = 8;
             this.extract_groupBox.TabStop = false;
             this.extract_groupBox.Text = "Extract";
@@ -1180,7 +1193,7 @@ namespace ItemChecker
             // 
             this.extractTry_linkLabel.AutoSize = true;
             this.extractTry_linkLabel.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.extractTry_linkLabel.Location = new System.Drawing.Point(141, 16);
+            this.extractTry_linkLabel.Location = new System.Drawing.Point(6, 38);
             this.extractTry_linkLabel.Name = "extractTry_linkLabel";
             this.extractTry_linkLabel.Size = new System.Drawing.Size(97, 13);
             this.extractTry_linkLabel.TabIndex = 1;
@@ -1192,7 +1205,7 @@ namespace ItemChecker
             // 
             this.extractST_linkLabel.AutoSize = true;
             this.extractST_linkLabel.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.extractST_linkLabel.Location = new System.Drawing.Point(15, 16);
+            this.extractST_linkLabel.Location = new System.Drawing.Point(6, 16);
             this.extractST_linkLabel.Name = "extractST_linkLabel";
             this.extractST_linkLabel.Size = new System.Drawing.Size(86, 13);
             this.extractST_linkLabel.TabIndex = 0;
@@ -1276,7 +1289,8 @@ namespace ItemChecker
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.steam_tabPage.ResumeLayout(false);
-            this.steam_tabPage.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.autoRemove_numericUpDown)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1349,11 +1363,8 @@ namespace ItemChecker
         private System.Windows.Forms.CheckBox profile_checkBox;
         private System.Windows.Forms.NumericUpDown wait_numericUpDown;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel getCurr_linkLabel;
-        private System.Windows.Forms.TextBox steamApiKey_textBox;
-        private System.Windows.Forms.LinkLabel getST_linkLabel;
         private System.Windows.Forms.TextBox currApiKey_textBox;
         private System.Windows.Forms.LinkLabel openFolder_linkLabel;
         private System.Windows.Forms.GroupBox extract_groupBox;
@@ -1379,5 +1390,9 @@ namespace ItemChecker
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.CheckBox compareSta_checkBox;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox steamApiKey_textBox;
+        private System.Windows.Forms.LinkLabel getST_linkLabel;
     }
 }

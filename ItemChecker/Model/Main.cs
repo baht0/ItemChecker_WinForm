@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -8,6 +9,7 @@ namespace ItemChecker.Model
     {
         public static string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static IWebDriver Browser { get; set; }
+        public static WebDriverWait wait { get; set; }
         public static System.Timers.Timer timer = new System.Timers.Timer();
         public static string sessionid { get; set; }
         public static double course { get; set; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
 
@@ -26,33 +25,24 @@ namespace ItemChecker
 
         private void ok_button_Click(object sender, EventArgs e)
         {
-            try
+            string str = richTextBox1.Text.Replace("\r\n", "\n");
+            if (request.Contains("MainForm"))
             {
-                string str = richTextBox1.Text.Replace("\r\n", "\n");
-                if (request.Contains("MainForm"))
-                {
-                    Float.items.Clear();
-                    Float.items.AddRange(richTextBox1.Lines);
-                    Properties.Settings.Default.floatList = str;
+                Float.items.Clear();
+                Float.items.AddRange(richTextBox1.Lines);
+                Properties.Settings.Default.floatList = str;
 
-                    Main.loading = true;
-                    ThreadPool.QueueUserWorkItem(FloatPresenter.Check);
-                }
-                else if (request.Contains("SortList"))
-                {
-                    Main.checkList.Clear();
-                    Main.checkList.AddRange(richTextBox1.Lines);
-                    Properties.Settings.Default.checkList = str;
-                }
-                Properties.Settings.Default.Save();
-                Close();
+                Main.loading = true;
+                ThreadPool.QueueUserWorkItem(FloatPresenter.Check);
             }
-            catch (Exception exp)
+            else if (request.Contains("SortList"))
             {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorLog(exp, Main.version);
-                Edit.errorMessage(exp, currMethodName);
+                Main.checkList.Clear();
+                Main.checkList.AddRange(richTextBox1.Lines);
+                Properties.Settings.Default.checkList = str;
             }
+            Properties.Settings.Default.Save();
+            Close();
         }
         private void cancel_button_Click(object sender, EventArgs e)
         {

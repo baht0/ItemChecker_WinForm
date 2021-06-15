@@ -49,7 +49,6 @@ namespace ItemChecker.Presenter
             {
                 string url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=1&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=" + page + "&per-page=30";
                 Main.Browser.Navigate().GoToUrl(url);
-                Thread.Sleep(500);
 
                 List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
 
@@ -68,7 +67,7 @@ namespace ItemChecker.Presenter
                     }
                     catch
                     {
-                        TrySkins.item.Clear();
+                        TrySkins._clear();
                         mainForm.Invoke(new MethodInvoker(delegate {
                             mainForm.tryskins_dataGridView.Rows.Add();
                             mainForm.tryskins_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list.";
@@ -179,51 +178,44 @@ namespace ItemChecker.Presenter
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
                 int row = mainForm.tryskins_dataGridView.CurrentCell.RowIndex;
                 int cell = mainForm.tryskins_dataGridView.CurrentCell.ColumnIndex;
-                string iname = mainForm.tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
-                double buyord = Convert.ToDouble(Edit.removeSymbol(mainForm.tryskins_dataGridView.Rows[row].Cells[2].Value.ToString()));
+                string item = mainForm.tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
+                double sta = Edit.removeSymbol(mainForm.tryskins_dataGridView.Rows[row].Cells[2].Value.ToString());
 
-                if (!BuyOrder.ordered.Contains(iname) & cell != 2 & buyord <= Steam.balance_usd)
+                if (!BuyOrder.item.Contains(item) & cell != 2 & sta <= Steam.balance_usd)
                 {
-                    string url = Edit.replaceUrl(iname);
-
-                    if (!BuyOrder.queue.Contains(url))
+                    if (!BuyOrder.queue.Contains(item))
                     {
-                        BuyOrder.order_rub += Math.Round(buyord * Main.course, 2);
-                        BuyOrder.queue.Add(url);
-                        BuyOrder.queue_count++;
+                        BuyOrder.queue_rub += Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue.Add(item);
                         mainForm.Invoke(new MethodInvoker(delegate
                         {
-                            if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
+                            if (BuyOrder.queue_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
+                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
                             mainForm.tryskins_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
-                            mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.LimeGreen;
-                        }));
+                            mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.LimeGreen; }));
                     }
                     else
                     {
-                        BuyOrder.order_rub -= Math.Round(buyord * Main.course, 2);
-                        BuyOrder.queue.Remove(url);
-                        BuyOrder.queue_count--;
+                        BuyOrder.queue_rub -= Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue.Remove(item);
                         mainForm.Invoke(new MethodInvoker(delegate
                         {
-                            if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
+                            if (BuyOrder.queue_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
+                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
                             mainForm.tryskins_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
-                            mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.White;
-                        }));
+                            mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.White; }));
                     }
                 }
             }
             catch (Exception exp)
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+                Exceptions.errorLog(exp, Main.version);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace ItemChecker.Presenter
                             response = Request.mrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
                             if (!response.Item2)
                             {
-                                mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check List (429). Please Wait..."; }));
+                                checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.status_toolStripStatusLabel.Text = "Check List (429). Please Wait..."; }));
                                 Thread.Sleep(30000);
                             }
                         }
@@ -46,6 +46,8 @@ namespace ItemChecker.Presenter
 
                         Mrinka.precent.Add(Math.Round(((csmsell - buyorder) / buyorder) * 100, 2));
                         Mrinka.difference.Add(Math.Round(csmsell - buyorder, 2));
+
+                        checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.ownList_dataGridView.Columns[1].HeaderText = $"Item - {i+1}"; }));
                     }
                     else return;
                 }
@@ -53,7 +55,12 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
+            }
+            finally
+            {
+                mainForm.notifyIcon.BalloonTipText = "Loading is complete. Open to show.";
+                mainForm.notifyIcon.ShowBalloonTip(6);
             }
         }
         private static void createList()
@@ -93,7 +100,7 @@ namespace ItemChecker.Presenter
                 if (Main.checkList[i].Contains("StatTrak")) checkOwnListForm.Invoke(new Action(() => { checkOwnListForm.ownList_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
                 if (Main.checkList[i].Contains("★")) checkOwnListForm.Invoke(new Action(() => { checkOwnListForm.ownList_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
                 if (BuyOrder.queue.Contains(Edit.replaceUrl(Main.checkList[i]))) checkOwnListForm.Invoke(new Action(() => { checkOwnListForm.ownList_dataGridView.Rows[i].Cells[1].Style.BackColor = Color.LimeGreen; checkOwnListForm.ownList_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.LimeGreen; }));
-                if (BuyOrder.item.Contains(Main.checkList[i]) || BuyOrder.ordered.Contains(Main.checkList[i]))
+                if (BuyOrder.item.Contains(Main.checkList[i]))
                 {
                     checkOwnListForm.Invoke(new MethodInvoker(delegate {
                         checkOwnListForm.ownList_dataGridView.Rows[i].Cells[1].Style.BackColor = Color.CornflowerBlue;
@@ -117,7 +124,7 @@ namespace ItemChecker.Presenter
                         checkOwnListForm.ownList_dataGridView.Rows[i].Cells[8].Value = "Unavailable";
                     }));
                 }
-                checkOwnListForm.ownList_statusStrip.Invoke(new Action(() => { checkOwnListForm.count_toolStripStatusLabel.Text = $"Count: {i+1}/{Main.checkList.Count}"; }));
+                checkOwnListForm.Invoke(new Action(() => { checkOwnListForm.count_toolStripStatusLabel.Text = $"Count: {i+1}/{Main.checkList.Count}"; }));
             }
         }
 
@@ -129,44 +136,38 @@ namespace ItemChecker.Presenter
 
                 int row = checkOwnListForm.ownList_dataGridView.CurrentCell.RowIndex;
                 int cell = checkOwnListForm.ownList_dataGridView.CurrentCell.ColumnIndex;
-                string iname = checkOwnListForm.ownList_dataGridView.Rows[row].Cells[1].Value.ToString();
-                double buyord = Convert.ToDouble(Edit.removeSymbol(checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Value.ToString()));
+                string item = checkOwnListForm.ownList_dataGridView.Rows[row].Cells[1].Value.ToString();
+                double sta = Edit.removeSymbol(checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Value.ToString());
 
-                if (!BuyOrder.item.Contains(iname) & !BuyOrder.ordered.Contains(iname) & cell != 4 & buyord <= Steam.balance_usd)
+                if (!BuyOrder.item.Contains(item) & cell != 4 & sta <= Steam.balance_usd)
                 {
-                    string url = Edit.replaceUrl(iname);
-
-                    if (!BuyOrder.queue.Contains(url))
+                    if (!BuyOrder.queue.Contains(item))
                     {
-                        BuyOrder.order_rub += Math.Round(buyord * Main.course, 2);
-                        BuyOrder.queue.Add(url);
-                        BuyOrder.queue_count++;
+                        BuyOrder.queue_rub += Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue.Add(item);
                         checkOwnListForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
+                            if (BuyOrder.queue_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
+                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
                             checkOwnListForm.ownList_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
-                            checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LimeGreen;
-                        }));
+                            checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LimeGreen; }));
                     }
                     else
                     {
-                        BuyOrder.order_rub -= Math.Round(buyord * Main.course, 2);
-                        BuyOrder.queue.Remove(url);
-                        BuyOrder.queue_count--;
+                        BuyOrder.queue_rub -= Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue.Remove(item);
                         checkOwnListForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.order_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.order_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue_count;
+                            if (BuyOrder.queue_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
+                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
                             checkOwnListForm.ownList_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
-                            checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LightGray;
-                        }));
+                            checkOwnListForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LightGray; }));
                     }
                 }
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
             }
         }
     }

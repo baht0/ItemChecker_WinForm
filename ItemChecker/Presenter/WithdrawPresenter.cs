@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using ItemChecker.Model;
 using static ItemChecker.Program;
 using System.Threading;
-using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using ItemChecker.Settings;
 using ItemChecker.Support;
@@ -23,13 +22,18 @@ namespace ItemChecker.Presenter
             {
                 withdrawCheck();
                 createWithdraw();
-                Main.loading = false;
             }
             catch (Exception exp)
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorLog(exp, Main.version);
-                Edit.errorMessage(exp, currMethodName);
+                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+            }
+            finally
+            {
+                Main.loading = false;
+                mainForm.notifyIcon.BalloonTipText = "Loading is complete. Open to show.";
+                mainForm.notifyIcon.ShowBalloonTip(6);
             }
         }
 
@@ -65,7 +69,7 @@ namespace ItemChecker.Presenter
                 List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
                 if (items.Count > 1)
                 {
-                    getWithdrawTryskins(items.Count);
+                    getWithdrawTryskins(items);
                     if (items.Count < 30) break;
                     page++;
                 }
@@ -73,11 +77,12 @@ namespace ItemChecker.Presenter
                 {
                     try
                     {
-                        getWithdrawTryskins(items.Count);
+                        getWithdrawTryskins(items);
                         break;
                     }
                     catch
                     {
+                        Withdraw._clear();
                         mainForm.Invoke(new MethodInvoker(delegate {
                             mainForm.withdraw_dataGridView.Rows.Add();
                             mainForm.withdraw_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list.";
@@ -87,23 +92,25 @@ namespace ItemChecker.Presenter
                 }
             }            
         }
-        private static void getWithdrawTryskins(int count)
+        private static void getWithdrawTryskins(List<IWebElement> items)
         {
-            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
-            for (int i = 0; i < count; i++)
+            foreach (IWebElement item in items)
             {
-                mainForm.withdraw_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {Withdraw.item.Count}";
-                IWebElement name_value = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + (i + 1) + "]/td[1]")));
-                IWebElement sales_value = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + (i + 1) + "]/td[4]/a/div")));
-                IWebElement csm_value = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + (i + 1) + "]/td[7]/span[1]")));
-                IWebElement st_value = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + (i + 1) + "]/td[8]/span[1]")));
-                IWebElement precent_value = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//table[@class='table table-bordered']/tbody/tr[" + (i + 1) + "]/td[9]")));
+                string[] str = item.Text.Split("\n");
+                string item_name = str[0].Trim();
+                int sales = Convert.ToInt32(str[2].Trim());
+                double precent = Edit.removeSymbol(str[5].Trim());
 
-                Withdraw.item.Add(name_value.Text);
-                Withdraw.sales.Add(Convert.ToInt32(sales_value.Text));
-                Withdraw.csm.Add(csm_value.Text);
-                Withdraw.st.Add(st_value.Text);
-                Withdraw.precent.Add(Edit.removeSymbol(precent_value.Text));
+                string[] prices = str[4].Split(" ");
+                double csm = Edit.removeDol(prices[0].Trim());
+                double st = Edit.removeDol(prices[3].Trim());
+
+                Withdraw.item.Add(item_name);
+                Withdraw.sales.Add(sales);
+                Withdraw.csm.Add(csm);
+                Withdraw.st.Add(st);
+                Withdraw.precent.Add(precent);
+                mainForm.withdraw_dataGridView.Columns[1].HeaderText = $"Item (Withdraw) - {Withdraw.item.Count}";
             }
         }
         public static void createWithdraw()
@@ -137,7 +144,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
             }
             finally
             {

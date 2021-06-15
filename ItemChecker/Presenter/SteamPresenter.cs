@@ -4,7 +4,6 @@ using ItemChecker.Model;
 using static ItemChecker.Program;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
-using ItemChecker.Settings;
 using ItemChecker.Support;
 
 namespace ItemChecker.Presenter
@@ -16,9 +15,8 @@ namespace ItemChecker.Presenter
             try
             {
                 Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market");
-                WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
-                IWebElement count = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//span[@id='my_market_buylistings_number']")));
-                IWebElement balance = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[@id='header_wallet_balance']")));
+                IWebElement count = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//span[@id='my_market_buylistings_number']")));
+                IWebElement balance = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[@id='header_wallet_balance']")));
 
                 Steam.balance = Edit.removeRub(balance.Text);
                 if (Steam.balance == Math.Truncate(Steam.balance)) Steam.balance += 0.01;
@@ -26,15 +24,13 @@ namespace ItemChecker.Presenter
 
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.balance_StripStatus.Text = "Balance: " + balance.Text;
-                    mainForm.available_label.Text = "Available: " + Convert.ToString(Steam.balance * 10) + "₽";
-                }));
-
+                    mainForm.available_label.Text = "Available: " + Convert.ToString(Steam.balance * 10) + "₽"; }));
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
+                Exceptions.errorMessage(exp, currMethodName);
             }
         }
     }

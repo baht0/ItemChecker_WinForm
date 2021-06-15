@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -73,7 +72,6 @@ namespace ItemChecker
                     if (service == 0)
                     {
                         Invoke(new MethodInvoker(delegate {
-                            ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
                             ownList_dataGridView.Columns[3].HeaderText = "Price (CSM)";
                             ownList_dataGridView.Columns[5].HeaderText = "GetPrice (CSM)";
                             ownList_dataGridView.Columns[8].HeaderText = "Status (CSM)";
@@ -83,7 +81,6 @@ namespace ItemChecker
                     if (service == 1)
                     {
                         Invoke(new MethodInvoker(delegate {
-                            ownList_dataGridView.Columns[2].HeaderText = "Price (ST)";
                             ownList_dataGridView.Columns[3].HeaderText = "Price (LF)";
                             ownList_dataGridView.Columns[5].HeaderText = "GetPrice (LF)";
                             ownList_dataGridView.Columns[8].HeaderText = "Status (LF)";
@@ -95,8 +92,8 @@ namespace ItemChecker
             catch (Exception exp)
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorLog(exp, Main.version);
-                Edit.errorMessage(exp, currMethodName);
+                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
             }
             finally
             {
@@ -142,12 +139,12 @@ namespace ItemChecker
             if (index == 2 || index == 4)
             {
                 url = "https://steamcommunity.com/market/listings/730/" + Edit.replaceUrl(iname);
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+                Edit.openUrl(url);
             }
             if (index == 3 || index == 5)
             {
                 url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + Edit.replaceUrl(iname);
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+                Edit.openUrl(url);
             }
         }
         private void ownList_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)

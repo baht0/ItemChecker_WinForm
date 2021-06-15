@@ -44,17 +44,16 @@ namespace ItemChecker
             this.reload_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.full_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tryskins_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.buyOrders_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.tryskinsReload_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.buyOrdersReload_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.withdrawReload_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.updateData_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.withdrawReload_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.tools_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.withdraw_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.checkOwnList_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.floatCheck_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.withdrawTable_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.availability_groupBox = new System.Windows.Forms.GroupBox();
             this.steamMarket_label = new System.Windows.Forms.Label();
             this.tryskins_label = new System.Windows.Forms.Label();
@@ -110,7 +109,7 @@ namespace ItemChecker
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.main_statusStrip.SuspendLayout();
             this.main_menuStrip.SuspendLayout();
             this.availability_groupBox.SuspendLayout();
@@ -243,12 +242,11 @@ namespace ItemChecker
             this.reload_MainStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.full_MainStripMenu,
             this.toolStripSeparator3,
-            this.tryskins_MainStripMenu,
-            this.buyOrders_MainStripMenu,
+            this.tryskinsReload_MainStripMenu,
+            this.buyOrdersReload_MainStripMenu,
+            this.withdrawReload_MainStripMenu,
             this.toolStripSeparator2,
-            this.updateData_toolStripMenuItem,
-            this.toolStripSeparator8,
-            this.withdrawReload_MainStripMenu});
+            this.updateData_toolStripMenuItem});
             this.reload_MainStripMenu.Enabled = false;
             this.reload_MainStripMenu.Name = "reload_MainStripMenu";
             this.reload_MainStripMenu.Size = new System.Drawing.Size(55, 20);
@@ -257,90 +255,85 @@ namespace ItemChecker
             // full_MainStripMenu
             // 
             this.full_MainStripMenu.Name = "full_MainStripMenu";
-            this.full_MainStripMenu.Size = new System.Drawing.Size(139, 22);
+            this.full_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.full_MainStripMenu.Text = "Full";
             this.full_MainStripMenu.Click += new System.EventHandler(this.full_MainStripMenu_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
-            // tryskins_MainStripMenu
+            // tryskinsReload_MainStripMenu
             // 
-            this.tryskins_MainStripMenu.Name = "tryskins_MainStripMenu";
-            this.tryskins_MainStripMenu.Size = new System.Drawing.Size(139, 22);
-            this.tryskins_MainStripMenu.Text = "TrySkins";
-            this.tryskins_MainStripMenu.Click += new System.EventHandler(this.tryskins_MainStripMenu_Click);
+            this.tryskinsReload_MainStripMenu.Name = "tryskinsReload_MainStripMenu";
+            this.tryskinsReload_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.tryskinsReload_MainStripMenu.Text = "TrySkins";
+            this.tryskinsReload_MainStripMenu.Click += new System.EventHandler(this.tryskins_MainStripMenu_Click);
             // 
-            // buyOrders_MainStripMenu
+            // buyOrdersReload_MainStripMenu
             // 
-            this.buyOrders_MainStripMenu.Name = "buyOrders_MainStripMenu";
-            this.buyOrders_MainStripMenu.Size = new System.Drawing.Size(139, 22);
-            this.buyOrders_MainStripMenu.Text = "BuyOrders";
-            this.buyOrders_MainStripMenu.Click += new System.EventHandler(this.buyOrders_MainStripMenu_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(136, 6);
-            // 
-            // updateData_toolStripMenuItem
-            // 
-            this.updateData_toolStripMenuItem.Name = "updateData_toolStripMenuItem";
-            this.updateData_toolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.updateData_toolStripMenuItem.Text = "Update Data";
-            this.updateData_toolStripMenuItem.Click += new System.EventHandler(this.updateData_toolStripMenuItem_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(136, 6);
+            this.buyOrdersReload_MainStripMenu.Name = "buyOrdersReload_MainStripMenu";
+            this.buyOrdersReload_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.buyOrdersReload_MainStripMenu.Text = "BuyOrders";
+            this.buyOrdersReload_MainStripMenu.Click += new System.EventHandler(this.buyOrders_MainStripMenu_Click);
             // 
             // withdrawReload_MainStripMenu
             // 
             this.withdrawReload_MainStripMenu.Enabled = false;
             this.withdrawReload_MainStripMenu.Name = "withdrawReload_MainStripMenu";
-            this.withdrawReload_MainStripMenu.Size = new System.Drawing.Size(139, 22);
+            this.withdrawReload_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.withdrawReload_MainStripMenu.Text = "Withdraw";
             this.withdrawReload_MainStripMenu.Click += new System.EventHandler(this.withdrawReload_MainStripMenu_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // updateData_toolStripMenuItem
+            // 
+            this.updateData_toolStripMenuItem.Name = "updateData_toolStripMenuItem";
+            this.updateData_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateData_toolStripMenuItem.Text = "Update Data";
+            this.updateData_toolStripMenuItem.Click += new System.EventHandler(this.updateData_toolStripMenuItem_Click);
             // 
             // tools_MainStripMenu
             // 
             this.tools_MainStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkOwnList_MainStripMenu,
-            this.floatCheck_MainStripMenu,
+            this.withdraw_MainStripMenu,
             this.toolStripSeparator4,
-            this.withdrawTable_MainStripMenu});
+            this.checkOwnList_MainStripMenu,
+            this.floatCheck_MainStripMenu});
             this.tools_MainStripMenu.Name = "tools_MainStripMenu";
             this.tools_MainStripMenu.Size = new System.Drawing.Size(46, 20);
             this.tools_MainStripMenu.Text = "&Tools";
             // 
+            // withdraw_MainStripMenu
+            // 
+            this.withdraw_MainStripMenu.Name = "withdraw_MainStripMenu";
+            this.withdraw_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.withdraw_MainStripMenu.Text = "Withdraw";
+            this.withdraw_MainStripMenu.Click += new System.EventHandler(this.withdrawTable_MainStripMenu_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            // 
             // checkOwnList_MainStripMenu
             // 
             this.checkOwnList_MainStripMenu.Name = "checkOwnList_MainStripMenu";
-            this.checkOwnList_MainStripMenu.Size = new System.Drawing.Size(150, 22);
+            this.checkOwnList_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.checkOwnList_MainStripMenu.Text = "CheckOwnList";
             this.checkOwnList_MainStripMenu.Click += new System.EventHandler(this.checkOwnList_MainStripMenu_Click);
             // 
             // floatCheck_MainStripMenu
             // 
             this.floatCheck_MainStripMenu.Name = "floatCheck_MainStripMenu";
-            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(150, 22);
+            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.floatCheck_MainStripMenu.Text = "FloatCheck";
             this.floatCheck_MainStripMenu.Click += new System.EventHandler(this.floatCheck_MainStripMenu_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
-            // 
-            // withdrawTable_MainStripMenu
-            // 
-            this.withdrawTable_MainStripMenu.Name = "withdrawTable_MainStripMenu";
-            this.withdrawTable_MainStripMenu.Size = new System.Drawing.Size(150, 22);
-            this.withdrawTable_MainStripMenu.Text = "Withdraw";
-            this.withdrawTable_MainStripMenu.Click += new System.EventHandler(this.withdrawTable_MainStripMenu_Click);
             // 
             // availability_groupBox
             // 
@@ -351,7 +344,7 @@ namespace ItemChecker
             this.availability_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.availability_groupBox.Location = new System.Drawing.Point(12, 27);
             this.availability_groupBox.Name = "availability_groupBox";
-            this.availability_groupBox.Size = new System.Drawing.Size(390, 40);
+            this.availability_groupBox.Size = new System.Drawing.Size(375, 40);
             this.availability_groupBox.TabIndex = 2;
             this.availability_groupBox.TabStop = false;
             this.availability_groupBox.Text = "Availability:";
@@ -359,7 +352,7 @@ namespace ItemChecker
             // steamMarket_label
             // 
             this.steamMarket_label.AutoSize = true;
-            this.steamMarket_label.Location = new System.Drawing.Point(288, 16);
+            this.steamMarket_label.Location = new System.Drawing.Point(276, 16);
             this.steamMarket_label.Name = "steamMarket_label";
             this.steamMarket_label.Size = new System.Drawing.Size(79, 13);
             this.steamMarket_label.TabIndex = 3;
@@ -368,7 +361,7 @@ namespace ItemChecker
             // tryskins_label
             // 
             this.tryskins_label.AutoSize = true;
-            this.tryskins_label.Location = new System.Drawing.Point(210, 16);
+            this.tryskins_label.Location = new System.Drawing.Point(204, 16);
             this.tryskins_label.Name = "tryskins_label";
             this.tryskins_label.Size = new System.Drawing.Size(57, 13);
             this.tryskins_label.TabIndex = 2;
@@ -396,7 +389,7 @@ namespace ItemChecker
             // 
             this.tradeOffer_groupBox.Controls.Add(this.tradeOffers_linkLabel);
             this.tradeOffer_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tradeOffer_groupBox.Location = new System.Drawing.Point(408, 27);
+            this.tradeOffer_groupBox.Location = new System.Drawing.Point(393, 27);
             this.tradeOffer_groupBox.Name = "tradeOffer_groupBox";
             this.tradeOffer_groupBox.Size = new System.Drawing.Size(88, 40);
             this.tradeOffer_groupBox.TabIndex = 3;
@@ -419,9 +412,9 @@ namespace ItemChecker
             // 
             this.queue_groupBox.Controls.Add(this.queue_linkLabel);
             this.queue_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.queue_groupBox.Location = new System.Drawing.Point(502, 27);
+            this.queue_groupBox.Location = new System.Drawing.Point(487, 27);
             this.queue_groupBox.Name = "queue_groupBox";
-            this.queue_groupBox.Size = new System.Drawing.Size(86, 40);
+            this.queue_groupBox.Size = new System.Drawing.Size(101, 40);
             this.queue_groupBox.TabIndex = 4;
             this.queue_groupBox.TabStop = false;
             this.queue_groupBox.Text = "Queue:";
@@ -672,6 +665,9 @@ namespace ItemChecker
             // 
             // notifyIcon
             // 
+            this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon.BalloonTipText = "The program is running.";
+            this.notifyIcon.BalloonTipTitle = "Information";
             this.notifyIcon.ContextMenuStrip = this.taskbar_contextMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "ItemChecker";
@@ -816,13 +812,13 @@ namespace ItemChecker
             this.dataGridViewTextBoxColumn9,
             this.dataGridViewTextBoxColumn10,
             this.dataGridViewTextBoxColumn11,
-            this.dataGridViewTextBoxColumn12});
+            this.Column1});
             this.withdraw_dataGridView.Location = new System.Drawing.Point(12, 73);
             this.withdraw_dataGridView.Name = "withdraw_dataGridView";
             this.withdraw_dataGridView.ReadOnly = true;
             this.withdraw_dataGridView.RowHeadersVisible = false;
             this.withdraw_dataGridView.RowTemplate.Height = 25;
-            this.withdraw_dataGridView.Size = new System.Drawing.Size(576, 460);
+            this.withdraw_dataGridView.Size = new System.Drawing.Size(575, 460);
             this.withdraw_dataGridView.TabIndex = 8;
             this.withdraw_dataGridView.Visible = false;
             this.withdraw_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellDoubleClick);
@@ -839,7 +835,7 @@ namespace ItemChecker
             // 
             // dataGridViewTextBoxColumn8
             // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "Item (TrySkins)";
+            this.dataGridViewTextBoxColumn8.HeaderText = "Item (Withdraw)";
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.ReadOnly = true;
             this.dataGridViewTextBoxColumn8.Width = 305;
@@ -865,12 +861,12 @@ namespace ItemChecker
             this.dataGridViewTextBoxColumn11.ReadOnly = true;
             this.dataGridViewTextBoxColumn11.Width = 55;
             // 
-            // dataGridViewTextBoxColumn12
+            // Column1
             // 
-            this.dataGridViewTextBoxColumn12.HeaderText = "Precent";
-            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
-            this.dataGridViewTextBoxColumn12.ReadOnly = true;
-            this.dataGridViewTextBoxColumn12.Width = 64;
+            this.Column1.HeaderText = "Precent";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 64;
             // 
             // MainForm
             // 
@@ -879,8 +875,8 @@ namespace ItemChecker
             this.ClientSize = new System.Drawing.Size(600, 611);
             this.Controls.Add(this.loading_panel);
             this.Controls.Add(this.withdraw_dataGridView);
-            this.Controls.Add(this.buyOrder_dataGridView);
             this.Controls.Add(this.tryskins_dataGridView);
+            this.Controls.Add(this.buyOrder_dataGridView);
             this.Controls.Add(this.course_groupBox);
             this.Controls.Add(this.steamItems_groupBox);
             this.Controls.Add(this.itemPusher_groupBox);
@@ -943,14 +939,14 @@ namespace ItemChecker
         public System.Windows.Forms.ToolStripMenuItem restart_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem reload_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem full_MainStripMenu;
-        public System.Windows.Forms.ToolStripMenuItem tryskins_MainStripMenu;
-        public System.Windows.Forms.ToolStripMenuItem buyOrders_MainStripMenu;
+        public System.Windows.Forms.ToolStripMenuItem tryskinsReload_MainStripMenu;
+        public System.Windows.Forms.ToolStripMenuItem buyOrdersReload_MainStripMenu;
         public System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         public System.Windows.Forms.ToolStripMenuItem withdrawReload_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem checkOwnList_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem floatCheck_MainStripMenu;
         public System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        public System.Windows.Forms.ToolStripMenuItem withdrawTable_MainStripMenu;
+        public System.Windows.Forms.ToolStripMenuItem withdraw_MainStripMenu;
         public System.Windows.Forms.ToolStripStatusLabel balance_StripStatus;
         public System.Windows.Forms.ToolStripStatusLabel space_StripStatus;
         public System.Windows.Forms.ToolStripStatusLabel status_StripStatus;
@@ -998,13 +994,6 @@ namespace ItemChecker
         public System.Windows.Forms.PictureBox loading_pictureBox;
         private System.ComponentModel.IContainer components;
         public System.Windows.Forms.DataGridView withdraw_dataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem updateData_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkOwnList_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testbutton;
@@ -1017,6 +1006,12 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripMenuItem tryskinsLink_toolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
     }
 }
 

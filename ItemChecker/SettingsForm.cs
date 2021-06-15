@@ -202,17 +202,17 @@ namespace ItemChecker
         }
         private void openFolder_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {Application.StartupPath}"));
+            Support.Edit.openUrl(Application.StartupPath);
         }
 
         //api
         private void getST_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {"https://steamcommunity.com/dev/apikey#domain"}"));
+            Support.Edit.openUrl("https://steamcommunity.com/dev/apikey#domain");
         }
         private void getCurr_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {"https://free.currencyconverterapi.com/free-api-key"}"));
+            Support.Edit.openUrl("https://free.currencyconverterapi.com/free-api-key");
         }
 
         //withdraw

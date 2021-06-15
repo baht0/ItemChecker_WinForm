@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Windows.Forms;
 
 namespace ItemChecker.Support
 {
@@ -100,24 +98,6 @@ namespace ItemChecker.Support
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddMilliseconds(unixtime).ToLocalTime();
             return dtDateTime;
-        }
-
-        //Exception
-        public static void errorLog(Exception exp, string ver)
-        {
-            string message = null;
-            message += exp.Message + "\n";
-            message += exp.StackTrace;
-            if (!File.Exists("errorsLog.txt")) File.WriteAllText("errorsLog.txt", "v." + ver + " [" + DateTime.Now + "]\n" + message + "\n");
-            else File.WriteAllText("errorsLog.txt", string.Format("{0}{1}", "v." + ver + " [" + DateTime.Now + "]\n" + message + "\n", File.ReadAllText("errorsLog.txt")));
-        }
-        public static void errorMessage(Exception exp, string currMethodName)
-        {
-            MessageBox.Show(
-                    "Something went wrong :(",
-                    "Error: " + currMethodName.Replace("_", " "),
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-        }
+        }                
     }
 }

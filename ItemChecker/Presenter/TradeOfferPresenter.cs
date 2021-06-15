@@ -6,7 +6,6 @@ using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Settings;
 using ItemChecker.Net;
-using System.Globalization;
 using OpenQA.Selenium.Support.Extensions;
 using Newtonsoft.Json.Linq;
 
@@ -18,16 +17,21 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.status_StripStatus.Text = "Check Offers...";
+                    mainForm.status_StripStatus.Visible = true;
+                }));
 
-                checkOffer();
-                if (TradeOffer.tradeofferid.Count > 0) acceptTrade();
+                TradeOffer.tradeofferid.Clear();
+                TradeOffer.partner_id.Clear();
+                
+                if (checkOffer()) acceptTrade();
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
+                Exceptions.errorMessage(exp, currMethodName);
             }
             finally
             {
@@ -39,25 +43,34 @@ namespace ItemChecker.Presenter
                 }));
             }
         }
-        private static void checkOffer()
+        private static Boolean checkOffer()
         {
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Check Offers...";
-                mainForm.status_StripStatus.Visible = true;
-            }));
-
-            TradeOffer.tradeofferid.Clear();
-            TradeOffer.partner_id.Clear();
-
-            var json = Request.tradeOffers(GeneralConfig.Default.steamApiKey);
-            var count = ((JArray)JObject.Parse(json)["response"]["trade_offers_received"]).Count;            
-
-            for (int i = 0; i < count; i++)
+            try
             {
-                TradeOffer.tradeofferid.Add(JObject.Parse(json)["response"]["trade_offers_received"][i]["tradeofferid"].ToString());
-                TradeOffer.partner_id.Add(JObject.Parse(json)["response"]["trade_offers_received"][i]["accountid_other"].ToString());
+                var json = Request.tradeOffers(GeneralConfig.Default.steamApiKey);
+                int count = ((JArray)JObject.Parse(json)["response"]["trade_offers_received"]).Count;
+                for (int i = 0; i < count; i++)
+                {
+                    int trade_status = Convert.ToInt32(JObject.Parse(json)["response"]["trade_offers_received"][i]["trade_offer_state"].ToString());
+                    if (trade_status == 2)
+                    {
+                        TradeOffer.tradeofferid.Add(JObject.Parse(json)["response"]["trade_offers_received"][i]["tradeofferid"].ToString());
+                        TradeOffer.partner_id.Add(JObject.Parse(json)["response"]["trade_offers_received"][i]["accountid_other"].ToString());
+                    }
+                    else continue;
+                }
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Maximum = TradeOffer.tradeofferid.Count;
+                    mainForm.progressBar_StripStatus.Visible = true;
+                    mainForm.tradeOffers_linkLabel.Text = "Incoming: " + TradeOffer.tradeofferid.Count;
+                }));
+                return true;
             }
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.tradeOffers_linkLabel.Text = "Incoming: " + TradeOffer.tradeofferid.Count.ToString(); }));
+            catch
+            {
+                return false;
+            }            
         }
         private static void acceptTrade()
         {
@@ -68,11 +81,12 @@ namespace ItemChecker.Presenter
             {
                 Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/tradeoffer/" + TradeOffer.tradeofferid[i]);
                 Thread.Sleep(1000);
-
                 Main.Browser.ExecuteJavaScript(Request.acceptTrade(TradeOffer.tradeofferid[i], TradeOffer.partner_id[i], Main.sessionid));
 
                 MainPresenter.progressInvoke();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.tradeOffers_linkLabel.Text = "Incoming: " + Convert.ToString(TradeOffer.tradeofferid.Count - (i + 1)); }));
+                mainForm.notifyIcon.BalloonTipText = "Acceptance of trades is complete.";
+                mainForm.notifyIcon.ShowBalloonTip(6);
             }
         }
     }

@@ -76,7 +76,7 @@ namespace ItemChecker
         private void printScreen_MainStripMenu_Click(object sender, EventArgs e)
         {
             ((ITakesScreenshot)Main.Browser).GetScreenshot().SaveAsFile("Screen.png", ScreenshotImageFormat.Png);
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {Application.StartupPath + "\\Screen.png"}"));
+            Edit.openUrl(Application.StartupPath + "\\Screen.png");
         }
         private void restart_MainStripMenu_Click(object sender, EventArgs e)
         {
@@ -172,7 +172,7 @@ namespace ItemChecker
                 if (!withdraw_dataGridView.Visible)
                 {
                     MainPresenter.stopPush();
-                    withdrawTable_MainStripMenu.Text = "Close Withdraw";
+                    withdraw_MainStripMenu.Text = "Close Withdraw";
                     withdraw_dataGridView.Visible = true;
                     withdrawReload_MainStripMenu.Enabled = true;
                     Main.loading = true;
@@ -182,7 +182,7 @@ namespace ItemChecker
                 {
                     withdrawReload_MainStripMenu.Enabled = false;
                     withdraw_dataGridView.Visible = false;
-                    withdrawTable_MainStripMenu.Text = "Withdraw";
+                    withdraw_MainStripMenu.Text = "Withdraw";
                 }
             }
         }
@@ -206,9 +206,9 @@ namespace ItemChecker
         }
         private void queue_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (!Main.loading & BuyOrder.queue.Count > 0 & BuyOrder.queue_count > 0)
+            if (!Main.loading & BuyOrder.queue.Count > 0)
             {
-                if (BuyOrder.order_rub < BuyOrder.available_amount)
+                if (BuyOrder.queue_rub < BuyOrder.available_amount)
                 {
                     Main.loading = true;
                     ThreadPool.QueueUserWorkItem(BuyOrderPresenter.placeOrder);

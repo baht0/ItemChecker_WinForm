@@ -16,7 +16,6 @@ using ItemChecker.Settings;
 using ItemChecker.Net;
 using System.Linq;
 using System.Collections.Generic;
-using System.IO;
 
 namespace ItemChecker.Presenter
 {
@@ -27,11 +26,10 @@ namespace ItemChecker.Presenter
             BuyOrder._clear();
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check Steam..."; }));
 
-            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
             Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
 
             int table_index = 1;
-            IWebElement table = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table']/h3/span[1]")));
+            IWebElement table = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table']/h3/span[1]")));
             if (table.Text == "My listings awaiting confirmation") table_index = 2;
 
             List<IWebElement> items = Main.Browser.FindElements(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[@class='market_listing_row market_recent_listing_row']")).ToList();
@@ -39,7 +37,7 @@ namespace ItemChecker.Presenter
             foreach (IWebElement item in items)
             {
                 string[] str = item.Text.Split("\n");
-                IWebElement id = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[" + i + "]")));
+                IWebElement id = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='my_listing_section market_content_block market_home_listing_table'][" + table_index + "]/div[" + i + "]")));
 
                 BuyOrder.item.Add(str[2].Trim());
                 BuyOrder.url.Add(Edit.replaceUrl(str[2].Trim()));
@@ -94,7 +92,7 @@ namespace ItemChecker.Presenter
         public static void createSteamTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Steam Table...";
+                mainForm.status_StripStatus.Text = "Write Steam...";
                 mainForm.buyOrder_dataGridView.Rows.Clear();
             }));
             int s = 0;
@@ -173,49 +171,53 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.status_StripStatus.Text = "Place Order...";
                     mainForm.status_StripStatus.Visible = true;
-                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue_count;
+                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue.Count;
                     mainForm.progressBar_StripStatus.Value = 0;
                     mainForm.progressBar_StripStatus.Visible = true; }));
                 createOrder();
+                mainForm.notifyIcon.BalloonTipText = "The creation of orders has been completed.";
+                mainForm.notifyIcon.ShowBalloonTip(4);
             }
             catch (Exception exp)
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+                Exceptions.errorLog(exp, Main.version);
             }
             finally
             {
                 Main.loading = false;
+                Thread.Sleep(1000);
+                BuyOrder._clearQueue();
                 mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.progressBar_StripStatus.Visible = false;
-                    mainForm.status_StripStatus.Visible = false; }));
+                    mainForm.queue_label.Text = "Queue: -";
+                    mainForm.queue_linkLabel.Text = "Place order: -";
+                    mainForm.buyOrdersReload_MainStripMenu.PerformClick();
+                }));
             }
         }
         private static void createOrder()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
 
-            for (int i = 0; i < BuyOrder.queue_count; i++)
+            for (int i = 0; i < BuyOrder.queue.Count; i++)
             {
                 try
                 {
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + BuyOrder.queue[i]);
                     Thread.Sleep(1000);
 
-                    IWebElement last = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
+                    IWebElement last = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
                     double last_order = Edit.removeRub(last.Text);
 
                     if (Steam.balance > last_order)
                     {
                         Main.Browser.ExecuteJavaScript(Request.createBuyOrder(BuyOrder.queue[i], last_order, Main.sessionid));
                     }
-                    BuyOrder.ordered.Add(Edit.inverReplaceUrl(BuyOrder.queue[i]));
                 }
                 catch (Exception exp)
                 {
-                    Edit.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.version);
                     continue;
                 }
                 finally
@@ -223,9 +225,6 @@ namespace ItemChecker.Presenter
                     MainPresenter.progressInvoke();
                 }
             }
-            Thread.Sleep(2000);
-            Main.loading = false;
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.full_MainStripMenu.PerformClick(); }));
         }
         //delete order
         public static void deleteOrder(object state)
@@ -234,7 +233,6 @@ namespace ItemChecker.Presenter
             {
                 Main.loading = true;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
 
                 if (mainForm.buyOrder_dataGridView.CurrentCell.ColumnIndex == 1)
                 {
@@ -242,7 +240,7 @@ namespace ItemChecker.Presenter
                     string item = mainForm.buyOrder_dataGridView.CurrentCell.Value.ToString();
 
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + Edit.replaceUrl(item));
-                    IWebElement buy_orderid = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]")));
+                    IWebElement buy_orderid = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]")));
 
                     Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(Edit.buyOrderId(buy_orderid.GetAttribute("id")), Main.sessionid));
 
@@ -258,9 +256,9 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Edit.errorMessage(exp, currMethodName);
+                Exceptions.errorMessage(exp, currMethodName);
             }
             finally
             {
@@ -317,7 +315,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Edit.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.version);
             }
             finally
             {
@@ -329,7 +327,6 @@ namespace ItemChecker.Presenter
         }
         private void pushItem()
         {
-            WebDriverWait wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
             for (int i = 0; i < BuyOrder.item.Count; i++)
             {
                 try
@@ -337,8 +334,8 @@ namespace ItemChecker.Presenter
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + BuyOrder.url[i]);
                     Thread.Sleep(2000);
 
-                    IWebElement my = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]/div[2]/span/span")));
-                    IWebElement last = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
+                    IWebElement my = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]/div[2]/span/span")));
+                    IWebElement last = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
                     double my_order = Edit.removeRub(my.Text);
                     double last_order = Edit.removeRub(last.Text);
 
@@ -374,7 +371,7 @@ namespace ItemChecker.Presenter
                 {
                     string catch_item = Edit.inverReplaceUrl(BuyOrder.url[i]) + "\n";
                     string catch_item_url = "https://steamcommunity.com/market/listings/730/" + BuyOrder.url[i] + "\n";
-                    Edit.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.version);
                     continue;
                 }
                 finally
