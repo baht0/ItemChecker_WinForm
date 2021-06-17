@@ -267,6 +267,27 @@ namespace ItemChecker.Presenter
         }
 
         //push...
+        public static void pushStart()
+        {
+            if (BuyOrder.item.Count > 0 & !Main.loading)
+            {
+                if (mainForm.push_linkLabel.Text == "Push...")
+                {
+                    BuyOrder.tick = SteamConfig.Default.timer * 60;
+
+                    mainForm.Invoke(new MethodInvoker(delegate {
+                        mainForm.timer_StripStatus.Visible = true;
+                        mainForm.push_linkLabel.Text = "Stop...";
+                    }));
+
+                    Main.timer.Start();
+                }
+                else
+                {
+                    if (BuyOrder.tick > 1) MainPresenter.stopPush();
+                }
+            }
+        }
         public void timerTick(Object sender, ElapsedEventArgs e)
         {
             BuyOrder.tick--;

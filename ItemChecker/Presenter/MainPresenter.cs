@@ -37,7 +37,11 @@ namespace ItemChecker.Presenter
                     loadDataSteam();
                     loadDataTryskins();
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
-
+                    if (GeneralConfig.Default.startupPush)
+                    {
+                        Main.loading = false;
+                        BuyOrderPresenter.pushStart();
+                    }
                     cancelTokenSource.Cancel();
                 }
             }

@@ -230,21 +230,7 @@ namespace ItemChecker
         }
         private void push_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (BuyOrder.item.Count > 0 & !Main.loading)
-            {
-                if (push_linkLabel.Text == "Push...")
-                {
-                    BuyOrder.tick = SteamConfig.Default.timer * 60;
-
-                    timer_StripStatus.Visible = true;
-                    push_linkLabel.Text = "Stop...";
-                    Main.timer.Start();
-                }
-                else
-                {
-                    if (BuyOrder.tick > 1) MainPresenter.stopPush();
-                }
-            }
+            BuyOrderPresenter.pushStart();
         }
         private void timer_StripStatus_Click(object sender, EventArgs e)
         {
