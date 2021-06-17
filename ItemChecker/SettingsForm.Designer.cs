@@ -112,6 +112,7 @@ namespace ItemChecker
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.startupPush_checkBox = new System.Windows.Forms.CheckBox();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).BeginInit();
@@ -1070,7 +1071,7 @@ namespace ItemChecker
             this.groupBox7.Controls.Add(this.label4);
             this.groupBox7.Controls.Add(this.profile_checkBox);
             this.groupBox7.Controls.Add(this.wait_numericUpDown);
-            this.groupBox7.Location = new System.Drawing.Point(17, 88);
+            this.groupBox7.Location = new System.Drawing.Point(17, 112);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(260, 80);
             this.groupBox7.TabIndex = 13;
@@ -1125,12 +1126,13 @@ namespace ItemChecker
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.startupPush_checkBox);
             this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Controls.Add(this.getCurr_linkLabel);
             this.groupBox6.Controls.Add(this.currApiKey_textBox);
             this.groupBox6.Location = new System.Drawing.Point(17, 14);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(260, 68);
+            this.groupBox6.Size = new System.Drawing.Size(260, 92);
             this.groupBox6.TabIndex = 12;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "General";
@@ -1182,7 +1184,7 @@ namespace ItemChecker
             // 
             this.extract_groupBox.Controls.Add(this.extractTry_linkLabel);
             this.extract_groupBox.Controls.Add(this.extractST_linkLabel);
-            this.extract_groupBox.Location = new System.Drawing.Point(17, 174);
+            this.extract_groupBox.Location = new System.Drawing.Point(17, 198);
             this.extract_groupBox.Name = "extract_groupBox";
             this.extract_groupBox.Size = new System.Drawing.Size(260, 63);
             this.extract_groupBox.TabIndex = 8;
@@ -1237,6 +1239,16 @@ namespace ItemChecker
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(301, 339);
             this.tabControl1.TabIndex = 0;
+            // 
+            // startupPush_checkBox
+            // 
+            this.startupPush_checkBox.AutoSize = true;
+            this.startupPush_checkBox.Location = new System.Drawing.Point(6, 62);
+            this.startupPush_checkBox.Name = "startupPush_checkBox";
+            this.startupPush_checkBox.Size = new System.Drawing.Size(89, 17);
+            this.startupPush_checkBox.TabIndex = 11;
+            this.startupPush_checkBox.Text = "StartUp Push";
+            this.startupPush_checkBox.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -1394,5 +1406,6 @@ namespace ItemChecker
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox steamApiKey_textBox;
         private System.Windows.Forms.LinkLabel getST_linkLabel;
+        private System.Windows.Forms.CheckBox startupPush_checkBox;
     }
 }

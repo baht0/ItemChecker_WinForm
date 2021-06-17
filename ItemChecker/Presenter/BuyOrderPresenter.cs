@@ -291,15 +291,13 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 SteamPresenter.getBalance();
-
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.item.Count;
-                    mainForm.progressBar_StripStatus.Visible = true;
-                    mainForm.progressBar_StripStatus.Value = 0;
-                }));
+                mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value = 0; }));
 
                 getSteamlist();
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value = 0; }));
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.item.Count;
+                    mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Visible = true; }));
 
                 pushItem();
                 if (SteamConfig.Default.updateST)
@@ -307,8 +305,7 @@ namespace ItemChecker.Presenter
                     mainForm.Invoke(new MethodInvoker(delegate {
                         mainForm.timer_StripStatus.Text = "Updating...";
                         mainForm.progressBar_StripStatus.Value = 0;
-                        mainForm.progressBar_StripStatus.Maximum = 3;
-                    }));
+                        mainForm.progressBar_StripStatus.Maximum = 3; }));
                     SteamPresenter.getBalance();
                     MainPresenter.loadDataSteam();
                 }
@@ -339,7 +336,7 @@ namespace ItemChecker.Presenter
                     double my_order = Edit.removeRub(my.Text);
                     double last_order = Edit.removeRub(last.Text);
 
-                    if (Steam.balance > last_order & last_order > my_order)
+                    if (Steam.balance > last_order & last_order > my_order & last_order <= BuyOrder.available_amount)
                     {
                         Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
                         Thread.Sleep(2000);
@@ -349,7 +346,7 @@ namespace ItemChecker.Presenter
                         mainForm.push_label.Invoke(new MethodInvoker(() => mainForm.push_label.Text = "Push: " + Convert.ToString(BuyOrder.int_push)));
                         Thread.Sleep(1500);
                     }
-                    else if (Steam.balance < last_order)
+                    else if (Steam.balance < last_order || last_order >= BuyOrder.available_amount)
                     {
                         DialogResult result = MessageBox.Show(
                             $"There is not enough balance for a purchase requisition.\n{Edit.inverReplaceUrl(BuyOrder.url[i])}\nHigher order: {last_order}₽\n\nRemove buy order?",

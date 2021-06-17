@@ -18,6 +18,7 @@ namespace ItemChecker
             currApiKey_textBox.Text = GeneralConfig.Default.currencyApiKey.Trim();
             wait_numericUpDown.Value = GeneralConfig.Default.wait;
             profile_checkBox.Checked = GeneralConfig.Default.profile;
+            startupPush_checkBox.Checked = GeneralConfig.Default.startupPush;
             //steam
             timer_numericUpDown.Value = SteamConfig.Default.timer;
             updST_checkBox.Checked = SteamConfig.Default.updateST;
@@ -62,6 +63,7 @@ namespace ItemChecker
             currApiKey_textBox.Text = "";
             wait_numericUpDown.Value = 15;
             profile_checkBox.Checked = true;
+            startupPush_checkBox.Checked = false;
             //steam
             timer_numericUpDown.Value = 10;
             updST_checkBox.Checked = true;
@@ -108,6 +110,7 @@ namespace ItemChecker
                     GeneralConfig.Default.currencyApiKey = currApiKey_textBox.Text;
                     GeneralConfig.Default.wait = Convert.ToInt32(wait_numericUpDown.Value);
                     GeneralConfig.Default.profile = profile_checkBox.Checked;
+                    GeneralConfig.Default.startupPush = startupPush_checkBox.Checked;
                     //steam
                     SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
                     SteamConfig.Default.updateST = updST_checkBox.Checked;
