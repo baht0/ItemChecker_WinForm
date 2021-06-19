@@ -156,7 +156,7 @@ namespace ItemChecker.Presenter
             }
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.buyOrder_dataGridView.Columns[4].ValueType = mainForm.buyOrder_dataGridView.Columns[5].ValueType = typeof(Double);
-                mainForm.buyOrder_dataGridView.Sort(mainForm.buyOrder_dataGridView.Columns[4], ListSortDirection.Ascending);
+                mainForm.buyOrder_dataGridView.Sort(mainForm.buyOrder_dataGridView.Columns[5], ListSortDirection.Ascending);
                 mainForm.steamMarket_label.Text = "SteamMarket: " + Convert.ToString(s);
             }));
 
@@ -357,7 +357,7 @@ namespace ItemChecker.Presenter
                     double my_order = Edit.removeRub(my.Text);
                     double last_order = Edit.removeRub(last.Text);
 
-                    if (Steam.balance > last_order & last_order > my_order & last_order <= BuyOrder.available_amount)
+                    if (last_order > my_order & Steam.balance >= last_order & (last_order - my_order) <= BuyOrder.available_amount)
                     {
                         Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
                         Thread.Sleep(2000);
@@ -367,22 +367,19 @@ namespace ItemChecker.Presenter
                         mainForm.push_label.Invoke(new MethodInvoker(() => mainForm.push_label.Text = "Push: " + Convert.ToString(BuyOrder.int_push)));
                         Thread.Sleep(1500);
                     }
-                    else if (Steam.balance < last_order || last_order >= BuyOrder.available_amount)
+                    else if (SteamConfig.Default.cancelOrder & Steam.balance < last_order | (last_order - my_order) >= BuyOrder.available_amount)
                     {
-                        DialogResult result = MessageBox.Show(
-                            $"There is not enough balance for a purchase requisition.\n{Edit.inverReplaceUrl(BuyOrder.url[i])}\nHigher order: {last_order}₽\n\nRemove buy order?",
-                            "Warning",
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Warning);
-                        if (result == DialogResult.Yes)
-                        {
-                            Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
+                        Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
 
-                            BuyOrder.removeAtItem(i);
-                            availableAmount();
+                        BuyOrder.removeAtItem(i);
+                        availableAmount();
 
-                            mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}"; }));
-                        }
+                        mainForm.Invoke(new MethodInvoker(delegate {
+                            mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
+                            mainForm.cancel_label.Text = BuyOrder.int_cancel++.ToString(); }));
+
+                        mainForm.notifyIcon.BalloonTipText = $"{BuyOrder.item[i]}\nThe buy order has been canceled. Not enough balance.";
+                        mainForm.notifyIcon.ShowBalloonTip(6);
                     }
                 }
                 catch (Exception exp)

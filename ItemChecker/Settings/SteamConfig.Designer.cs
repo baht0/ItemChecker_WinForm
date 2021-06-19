@@ -12,7 +12,7 @@ namespace ItemChecker.Settings {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class SteamConfig : global::System.Configuration.ApplicationSettingsBase {
         
         private static SteamConfig defaultInstance = ((SteamConfig)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new SteamConfig())));
@@ -56,6 +56,18 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["autoDelete"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool cancelOrder {
+            get {
+                return ((bool)(this["cancelOrder"]));
+            }
+            set {
+                this["cancelOrder"] = value;
             }
         }
     }

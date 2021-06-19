@@ -69,6 +69,7 @@ namespace ItemChecker
             this.queue_label = new System.Windows.Forms.Label();
             this.available_label = new System.Windows.Forms.Label();
             this.itemPusher_groupBox = new System.Windows.Forms.GroupBox();
+            this.cancel_label = new System.Windows.Forms.Label();
             this.push_linkLabel = new System.Windows.Forms.LinkLabel();
             this.push_label = new System.Windows.Forms.Label();
             this.check_label = new System.Windows.Forms.Label();
@@ -255,26 +256,26 @@ namespace ItemChecker
             // full_MainStripMenu
             // 
             this.full_MainStripMenu.Name = "full_MainStripMenu";
-            this.full_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.full_MainStripMenu.Size = new System.Drawing.Size(139, 22);
             this.full_MainStripMenu.Text = "Full";
             this.full_MainStripMenu.Click += new System.EventHandler(this.full_MainStripMenu_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(136, 6);
             // 
             // tryskinsReload_MainStripMenu
             // 
             this.tryskinsReload_MainStripMenu.Name = "tryskinsReload_MainStripMenu";
-            this.tryskinsReload_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.tryskinsReload_MainStripMenu.Size = new System.Drawing.Size(139, 22);
             this.tryskinsReload_MainStripMenu.Text = "TrySkins";
             this.tryskinsReload_MainStripMenu.Click += new System.EventHandler(this.tryskins_MainStripMenu_Click);
             // 
             // buyOrdersReload_MainStripMenu
             // 
             this.buyOrdersReload_MainStripMenu.Name = "buyOrdersReload_MainStripMenu";
-            this.buyOrdersReload_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.buyOrdersReload_MainStripMenu.Size = new System.Drawing.Size(139, 22);
             this.buyOrdersReload_MainStripMenu.Text = "BuyOrders";
             this.buyOrdersReload_MainStripMenu.Click += new System.EventHandler(this.buyOrders_MainStripMenu_Click);
             // 
@@ -282,19 +283,19 @@ namespace ItemChecker
             // 
             this.withdrawReload_MainStripMenu.Enabled = false;
             this.withdrawReload_MainStripMenu.Name = "withdrawReload_MainStripMenu";
-            this.withdrawReload_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.withdrawReload_MainStripMenu.Size = new System.Drawing.Size(139, 22);
             this.withdrawReload_MainStripMenu.Text = "Withdraw";
             this.withdrawReload_MainStripMenu.Click += new System.EventHandler(this.withdrawReload_MainStripMenu_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(136, 6);
             // 
             // updateData_toolStripMenuItem
             // 
             this.updateData_toolStripMenuItem.Name = "updateData_toolStripMenuItem";
-            this.updateData_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateData_toolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.updateData_toolStripMenuItem.Text = "Update Data";
             this.updateData_toolStripMenuItem.Click += new System.EventHandler(this.updateData_toolStripMenuItem_Click);
             // 
@@ -312,26 +313,26 @@ namespace ItemChecker
             // withdraw_MainStripMenu
             // 
             this.withdraw_MainStripMenu.Name = "withdraw_MainStripMenu";
-            this.withdraw_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.withdraw_MainStripMenu.Size = new System.Drawing.Size(150, 22);
             this.withdraw_MainStripMenu.Text = "Withdraw";
             this.withdraw_MainStripMenu.Click += new System.EventHandler(this.withdrawTable_MainStripMenu_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
             // 
             // checkOwnList_MainStripMenu
             // 
             this.checkOwnList_MainStripMenu.Name = "checkOwnList_MainStripMenu";
-            this.checkOwnList_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.checkOwnList_MainStripMenu.Size = new System.Drawing.Size(150, 22);
             this.checkOwnList_MainStripMenu.Text = "CheckOwnList";
             this.checkOwnList_MainStripMenu.Click += new System.EventHandler(this.checkOwnList_MainStripMenu_Click);
             // 
             // floatCheck_MainStripMenu
             // 
             this.floatCheck_MainStripMenu.Name = "floatCheck_MainStripMenu";
-            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(150, 22);
             this.floatCheck_MainStripMenu.Text = "FloatCheck";
             this.floatCheck_MainStripMenu.Click += new System.EventHandler(this.floatCheck_MainStripMenu_Click);
             // 
@@ -458,7 +459,7 @@ namespace ItemChecker
             this.steamItems_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.steamItems_groupBox.Location = new System.Drawing.Point(76, 539);
             this.steamItems_groupBox.Name = "steamItems_groupBox";
-            this.steamItems_groupBox.Size = new System.Drawing.Size(300, 40);
+            this.steamItems_groupBox.Size = new System.Drawing.Size(246, 40);
             this.steamItems_groupBox.TabIndex = 4;
             this.steamItems_groupBox.TabStop = false;
             this.steamItems_groupBox.Text = "Steam Items:";
@@ -466,7 +467,7 @@ namespace ItemChecker
             // queue_label
             // 
             this.queue_label.AutoSize = true;
-            this.queue_label.Location = new System.Drawing.Point(166, 16);
+            this.queue_label.Location = new System.Drawing.Point(140, 16);
             this.queue_label.Name = "queue_label";
             this.queue_label.Size = new System.Drawing.Size(48, 13);
             this.queue_label.TabIndex = 2;
@@ -483,16 +484,26 @@ namespace ItemChecker
             // 
             // itemPusher_groupBox
             // 
+            this.itemPusher_groupBox.Controls.Add(this.cancel_label);
             this.itemPusher_groupBox.Controls.Add(this.push_linkLabel);
             this.itemPusher_groupBox.Controls.Add(this.push_label);
             this.itemPusher_groupBox.Controls.Add(this.check_label);
             this.itemPusher_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.itemPusher_groupBox.Location = new System.Drawing.Point(382, 539);
+            this.itemPusher_groupBox.Location = new System.Drawing.Point(328, 539);
             this.itemPusher_groupBox.Name = "itemPusher_groupBox";
-            this.itemPusher_groupBox.Size = new System.Drawing.Size(206, 40);
+            this.itemPusher_groupBox.Size = new System.Drawing.Size(259, 40);
             this.itemPusher_groupBox.TabIndex = 4;
             this.itemPusher_groupBox.TabStop = false;
             this.itemPusher_groupBox.Text = "ItemPusher:";
+            // 
+            // cancel_label
+            // 
+            this.cancel_label.AutoSize = true;
+            this.cancel_label.Location = new System.Drawing.Point(194, 16);
+            this.cancel_label.Name = "cancel_label";
+            this.cancel_label.Size = new System.Drawing.Size(49, 13);
+            this.cancel_label.TabIndex = 8;
+            this.cancel_label.Text = "Cancel: -";
             // 
             // push_linkLabel
             // 
@@ -510,7 +521,7 @@ namespace ItemChecker
             // push_label
             // 
             this.push_label.AutoSize = true;
-            this.push_label.Location = new System.Drawing.Point(148, 16);
+            this.push_label.Location = new System.Drawing.Point(139, 16);
             this.push_label.Name = "push_label";
             this.push_label.Size = new System.Drawing.Size(40, 13);
             this.push_label.TabIndex = 5;
@@ -1012,6 +1023,7 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        public System.Windows.Forms.Label cancel_label;
     }
 }
 

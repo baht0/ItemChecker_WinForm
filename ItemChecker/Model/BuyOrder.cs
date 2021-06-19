@@ -23,6 +23,7 @@ namespace ItemChecker.Model
         public static int tick { get; set; }
         public static int int_check = 0;
         public static int int_push = 0;
+        public static int int_cancel = 0;
 
 
         public static void _clear()
@@ -42,12 +43,6 @@ namespace ItemChecker.Model
         {
             BuyOrder.queue.Clear();
             BuyOrder.queue_rub = 0;
-        }
-        public static void _clearPush()
-        {
-            BuyOrder.tick = 0;
-            BuyOrder.int_check = 0;
-            BuyOrder.int_push = 0;
         }
         public static void removeAtItem(int index)
         {

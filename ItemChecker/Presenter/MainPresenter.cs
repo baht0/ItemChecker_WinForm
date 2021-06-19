@@ -246,8 +246,6 @@ namespace ItemChecker.Presenter
                 mainForm.buyOrder_dataGridView.Columns[1].HeaderText = "Item (BuyOrders)";
                 mainForm.available_label.Text = "Available: -"; mainForm.available_label.ForeColor = Color.Red;
                 mainForm.queue_label.Text = "Queue: -";
-                mainForm.check_label.Text = "Check: -";
-                mainForm.push_label.Text = "Push: -";
 
                 mainForm.status_StripStatus.Text = "Processing...";
                 mainForm.status_StripStatus.Visible = true;
@@ -271,12 +269,11 @@ namespace ItemChecker.Presenter
         public static void stopPush()
         {
             Main.timer.Stop();
-            BuyOrder._clearPush();
+            BuyOrder.tick = 0;
             mainForm.Invoke(new MethodInvoker(delegate
             {
                 mainForm.timer_StripStatus.Visible = false;
-                mainForm.push_linkLabel.Text = "Push...";
-            }));
+                mainForm.push_linkLabel.Text = "Push..."; }));
         }
 
         public static void progressInvoke(int i = 1)

@@ -167,7 +167,7 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.tryskins_dataGridView.Columns[4].ValueType = typeof(Double);
                 mainForm.tryskins_dataGridView.Columns[5].ValueType = typeof(Double);
-                mainForm.tryskins_dataGridView.Sort(mainForm.tryskins_dataGridView.Columns[4], ListSortDirection.Descending);
+                mainForm.tryskins_dataGridView.Sort(mainForm.tryskins_dataGridView.Columns[5], ListSortDirection.Descending);
             }));
             MainPresenter.progressInvoke();
         }

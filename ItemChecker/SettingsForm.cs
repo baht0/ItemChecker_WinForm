@@ -23,6 +23,7 @@ namespace ItemChecker
             timer_numericUpDown.Value = SteamConfig.Default.timer;
             updST_checkBox.Checked = SteamConfig.Default.updateST;
             autoRemove_numericUpDown.Value = SteamConfig.Default.autoDelete;
+            cancelOrder_checkBox.Checked = SteamConfig.Default.cancelOrder;
             //tryskins
             maxPrecent_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrecent;
             minPrecent_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrecent;
@@ -68,6 +69,7 @@ namespace ItemChecker
             timer_numericUpDown.Value = 10;
             updST_checkBox.Checked = true;
             autoRemove_numericUpDown.Value = 0;
+            cancelOrder_checkBox.Checked = false;
             //tryskins
             maxPrecent_numericUpDown.Value = 60;
             minPrecent_numericUpDown.Value = 27;
@@ -115,6 +117,7 @@ namespace ItemChecker
                     SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
                     SteamConfig.Default.updateST = updST_checkBox.Checked;
                     SteamConfig.Default.autoDelete = Convert.ToInt32(autoRemove_numericUpDown.Value);
+                    SteamConfig.Default.cancelOrder = cancelOrder_checkBox.Checked;
                     //tryskins
                     TryskinsConfig.Default.maxTryskinsPrecent = Convert.ToInt32(maxPrecent_numericUpDown.Value);
                     TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);
