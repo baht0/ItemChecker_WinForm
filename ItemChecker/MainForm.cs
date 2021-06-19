@@ -37,6 +37,18 @@ namespace ItemChecker
             foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
             notifyIcon.Visible = true;
             ver_label.Text = "Version: " + Main.version;
+
+            if (Properties.Settings.Default.UpdateSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                GeneralConfig.Default.Upgrade();
+                SteamConfig.Default.Upgrade();
+                TryskinsConfig.Default.Upgrade();
+                WithdrawConfig.Default.Upgrade();
+                FloatConfig.Default.Upgrade();
+                Properties.Settings.Default.UpdateSettings = false;
+                Properties.Settings.Default.Save();
+            }
         }
         public void MainForm_Shown(object sender, EventArgs e)
         {

@@ -23,7 +23,7 @@ namespace ItemChecker.Presenter
             CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
             CancellationToken token = cancelTokenSource.Token;
             try
-            {
+            {                
                 while (!token.IsCancellationRequested)
                 {
                     launchBrowser();
