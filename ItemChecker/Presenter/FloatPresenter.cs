@@ -38,8 +38,7 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                mainForm.notifyIcon.BalloonTipText = "FloatCheck completed.";
-                mainForm.notifyIcon.ShowBalloonTip(6);
+                MainPresenter.messageBalloonTip("FloatCheck completed.");
                 Main.loading = false;
             }
         }
@@ -54,7 +53,7 @@ namespace ItemChecker.Presenter
                     getPrice(url);
 
                     string url_request = @"https://steamcommunity.com/market/listings/730/" + url + "/render?start=0&count=" + FloatConfig.Default.countGetItems + "&currency=5&language=english&format=json";
-                    var json = Request.getRequest(url_request);
+                    var json = Request.GetRequest(url_request);
 
                     JObject obj = JObject.Parse(json);
                     var attributes = obj["listinginfo"].ToList<JToken>();
@@ -80,10 +79,10 @@ namespace ItemChecker.Presenter
                         link = link.Replace("%listingid%", listing_id);
                         link = link.Replace("%assetid%", ass_id);
                         if (item.Contains("Factory New")) Float.maxFloat = FloatConfig.Default.maxFloatValue_FN;
-                        if (item.Contains("Minimal Wear")) Float.maxFloat = FloatConfig.Default.maxFloatValue_MW;
-                        if (item.Contains("Field-Tested")) Float.maxFloat = FloatConfig.Default.maxFloatValue_FT;
-                        if (item.Contains("Well-Worn")) Float.maxFloat = FloatConfig.Default.maxFloatValue_WW;
-                        if (item.Contains("Battle-Scarred")) Float.maxFloat = FloatConfig.Default.maxFloatValue_BS;
+                        else if (item.Contains("Minimal Wear")) Float.maxFloat = FloatConfig.Default.maxFloatValue_MW;
+                        else if (item.Contains("Field-Tested")) Float.maxFloat = FloatConfig.Default.maxFloatValue_FT;
+                        else if (item.Contains("Well-Worn")) Float.maxFloat = FloatConfig.Default.maxFloatValue_WW;
+                        else if (item.Contains("Battle-Scarred")) Float.maxFloat = FloatConfig.Default.maxFloatValue_BS;
                         if (getFloatValue(link) < Convert.ToDouble(Float.maxFloat))
                         {
                             buyItem(item, price, listing_id, fee, subtotal, total);
@@ -105,14 +104,14 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                var json = Request.lowPriceRequest(item, 5);
+                var json = Request.PriceOverview(item, 5);
                 Float.lowestPrice = Edit.removeRub(JObject.Parse(json)["lowest_price"].ToString());
                 Float.medianPrice = Edit.removeRub(JObject.Parse(json)["median_price"].ToString());
 
                 Tuple<String, Boolean> response = Tuple.Create("", false);
                 do
                 {
-                    response = Request.mrinkaRequest(Edit.replaceUrl(item));
+                    response = Request.MrinkaRequest(Edit.replaceUrl(item));
                     if (!response.Item2)
                     {
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Float Check (429). Please Wait..."; }));
@@ -138,7 +137,7 @@ namespace ItemChecker.Presenter
             {
                 string url = @"https://api.csgofloat.com/?url=" + link;
 
-                var json = Request.getRequest(url);
+                var json = Request.GetRequest(url);
                 Float.floatValue = Convert.ToDouble(JObject.Parse(json)["iteminfo"]["floatvalue"].ToString());
                 return Float.floatValue;
             }
@@ -159,7 +158,7 @@ namespace ItemChecker.Presenter
                 "Buy item",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
-            if (result == DialogResult.Yes) Main.Browser.ExecuteJavaScript(Request.buyListing(listing_id, fee, subtotal, total, Main.sessionid));
+            if (result == DialogResult.Yes) Main.Browser.ExecuteJavaScript(Request.BuyListing(listing_id, fee, subtotal, total, Main.sessionid));
         }
     }
 }

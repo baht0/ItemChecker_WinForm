@@ -18,12 +18,12 @@ namespace ItemChecker.Presenter
 {
     public class TryskinsPresenter
     {
+        static bool pages = true;
         public static void checkTryskins()
         {
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.status_StripStatus.Text = "Check Tryskins...";
-                mainForm.tryskins_dataGridView.Rows.Clear();
-            }));
+                mainForm.tryskins_dataGridView.Rows.Clear(); }));
 
             TrySkins._clear();
             double min_sta = 2;
@@ -45,7 +45,7 @@ namespace ItemChecker.Presenter
 
             int page = 1;
             TrySkins.url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=1&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=" + page + "&per-page=30";
-            while (true)
+            while (pages)
             {
                 string url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=1&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=" + page + "&per-page=30";
                 Main.Browser.Navigate().GoToUrl(url);
@@ -70,8 +70,7 @@ namespace ItemChecker.Presenter
                         TrySkins._clear();
                         mainForm.Invoke(new MethodInvoker(delegate {
                             mainForm.tryskins_dataGridView.Rows.Add();
-                            mainForm.tryskins_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list.";
-                        }));
+                            mainForm.tryskins_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list."; }));
                         break;
                     }
                 }
@@ -86,13 +85,17 @@ namespace ItemChecker.Presenter
                 string[] str = item.Text.Split("\n");
                 string item_name = str[0].Trim();
 
-                if (BuyOrder.item.Contains(item_name)) continue;
+                if (TrySkins.item.Contains(item_name))
+                {
+                    pages = false;
+                    break;
+                }
                 else if (Main.overstock.Contains(item_name) || Main.unavailable.Contains(item_name))
                 {
                     TrySkins.t++;
                     continue;
                 }
-                else if (TrySkins.item.Contains(item_name)) break;
+                else if (BuyOrder.item.Contains(item_name)) continue;
 
                 //fast
                 else if (TryskinsConfig.Default.fastTime)
@@ -115,7 +118,7 @@ namespace ItemChecker.Presenter
                     Tuple<String, Boolean> response = Tuple.Create("", false);
                     do
                     {
-                        response = Request.mrinkaRequest(Edit.replaceUrl(item_name));
+                        response = Request.MrinkaRequest(Edit.replaceUrl(item_name));
                         if (!response.Item2)
                         {
                             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check TrySkins (429). Please Wait..."; }));
@@ -123,17 +126,18 @@ namespace ItemChecker.Presenter
                         }
                     }
                     while (!response.Item2);
-                    var buy_order = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
+
+                    var highest_buy_order = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
                     var csm_sell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
-                    var precent = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
+                    var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
 
                     if (precent > 0)
                     {
                         TrySkins.item.Add(item_name);
-                        TrySkins.sta.Add(buy_order);
+                        TrySkins.sta.Add(highest_buy_order);
                         TrySkins.csm.Add(csm_sell);
                         TrySkins.precent.Add(precent);
-                        TrySkins.difference.Add(Edit.difference(csm_sell, buy_order, Main.course));
+                        TrySkins.difference.Add(Edit.difference(csm_sell, highest_buy_order, Main.course));
                     }
                     mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
                 }

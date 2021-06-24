@@ -203,38 +203,38 @@ namespace ItemChecker
             // 
             this.settings_MainStripMenu.Image = global::ItemChecker.Properties.Resources.setting;
             this.settings_MainStripMenu.Name = "settings_MainStripMenu";
-            this.settings_MainStripMenu.Size = new System.Drawing.Size(134, 22);
+            this.settings_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.settings_MainStripMenu.Text = "Settings";
             this.settings_MainStripMenu.Click += new System.EventHandler(this.settings_MainStripMenu_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(131, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(177, 6);
             // 
             // printScreen_MainStripMenu
             // 
             this.printScreen_MainStripMenu.Name = "printScreen_MainStripMenu";
-            this.printScreen_MainStripMenu.Size = new System.Drawing.Size(134, 22);
+            this.printScreen_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.printScreen_MainStripMenu.Text = "PrintScreen";
             this.printScreen_MainStripMenu.Click += new System.EventHandler(this.printScreen_MainStripMenu_Click);
             // 
             // restart_MainStripMenu
             // 
             this.restart_MainStripMenu.Name = "restart_MainStripMenu";
-            this.restart_MainStripMenu.Size = new System.Drawing.Size(134, 22);
+            this.restart_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.restart_MainStripMenu.Text = "Restart";
             this.restart_MainStripMenu.Click += new System.EventHandler(this.restart_MainStripMenu_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(131, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -499,6 +499,7 @@ namespace ItemChecker
             // cancel_label
             // 
             this.cancel_label.AutoSize = true;
+            this.cancel_label.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cancel_label.Location = new System.Drawing.Point(194, 16);
             this.cancel_label.Name = "cancel_label";
             this.cancel_label.Size = new System.Drawing.Size(49, 13);

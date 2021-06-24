@@ -58,9 +58,8 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.progressBar_StripStatus.Visible = false;
                     mainForm.status_StripStatus.Visible = false;
-                    mainForm.reload_MainStripMenu.Enabled = true;
-                }));
-                mainForm.notifyIcon.ShowBalloonTip(10);                
+                    mainForm.reload_MainStripMenu.Enabled = true; }));
+                messageBalloonTip();
             }
         }
         private static void launchBrowser()
@@ -130,12 +129,12 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Info..."; }));
 
             SteamPresenter.getBalance();
-            Main.course = Request.getCourse(GeneralConfig.Default.currencyApiKey);
+            Main.course = Request.GetCourse(GeneralConfig.Default.currencyApiKey);
             Steam.balance_usd = Math.Round(Steam.balance / Main.course, 2);
 
             Request request = new Request();
-            Main.overstock = request.overstock();
-            Main.unavailable = request.unavailable();
+            Main.overstock = request.GetOverstock();
+            Main.unavailable = request.GetUnavailable();
 
             mainForm.Invoke(new MethodInvoker(delegate
             {
@@ -151,7 +150,7 @@ namespace ItemChecker.Presenter
             if (BuyOrder.my_buy_orders != 0)
             {
                 BuyOrderPresenter.getSteamlist();
-                BuyOrderPresenter.precentSteam();
+                BuyOrderPresenter.calcOrders();
                 BuyOrderPresenter.createSteamTable();
             }
             else progressInvoke(3);
@@ -177,8 +176,8 @@ namespace ItemChecker.Presenter
                     mainForm.progressBar_StripStatus.Value = 0;
                     mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.status_StripStatus.Text = "Processing...";
-                    mainForm.status_StripStatus.Visible = true;
-                }));
+                    mainForm.status_StripStatus.Visible = true; }));
+
                 if (Main.reload == 0)//full
                 {
                     clearAll();
@@ -221,8 +220,7 @@ namespace ItemChecker.Presenter
                     mainForm.reload_MainStripMenu.Enabled = true;
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                mainForm.notifyIcon.BalloonTipText = "Loading is complete. Open to show.";
-                mainForm.notifyIcon.ShowBalloonTip(6);
+                messageBalloonTip();
             }
         }
         //other
@@ -276,17 +274,32 @@ namespace ItemChecker.Presenter
                 mainForm.push_linkLabel.Text = "Push..."; }));
         }
 
+        public static void messageBalloonTip(string str = "Loading is complete. Open to show.", ToolTipIcon icon = ToolTipIcon.Info, int sec = 5)
+        {
+            mainForm.notifyIcon.BalloonTipText = str;
+            mainForm.notifyIcon.BalloonTipIcon = icon;
+            mainForm.notifyIcon.ShowBalloonTip(sec);
+        }
         public static void progressInvoke(int i = 1)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value += i; }));
         }
         public static void exit()
         {
-            mainForm.notifyIcon.Visible = false;
-            Main.Browser.Quit();
-            foreach (Process proc in Process.GetProcessesByName("ItemChecker"))
+            try
             {
-                proc.Kill();
+                mainForm.notifyIcon.Visible = false;
+                Main.Browser.Quit();
+            }
+            catch
+            {
+                foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
+                foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
+            }
+            finally
+            {
+                Application.Exit();
+                foreach (Process proc in Process.GetProcessesByName("ItemChecker")) proc.Kill();
             }
         }
     }

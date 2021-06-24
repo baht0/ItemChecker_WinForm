@@ -11,7 +11,7 @@ namespace ItemChecker.Net
     public class Request
     {
         //post
-        public static String postRequest(string body, string url)
+        public static String PostRequest(string body, string url)
         {
             string js_post = @"
                 async function postBuyOrder(url = '') {
@@ -27,39 +27,38 @@ namespace ItemChecker.Net
 
             return js_post;
         }
-        public static String buyListing(string listing_id, double fee, double subtotal, double total, string sessionid)
+        public static String BuyListing(string listing_id, double fee, double subtotal, double total, string sessionid)
         {
             string body = "sessionid=" + sessionid + "&currency=5&fee=" + fee.ToString() + "&subtotal=" + subtotal.ToString() + "&total=" + total.ToString() + "&quantity=1&first_name=&last_name=&billing_address=&billing_address_two=&billing_country=&billing_city=&billing_state=&billing_postal_code=&save_my_address=1";
             string url = "https://steamcommunity.com/market/buylisting/" + listing_id;
 
-            return postRequest(body, url);
+            return PostRequest(body, url);
         }
-        public static String createBuyOrder(string item, double last_order, string sessionid)
+        public static String CreateBuyOrder(string market_hash_name, double last_order, string sessionid)
         {
-            string hash_name = Edit.replaceUrl(item);
-            string order = (last_order * 100 + 1).ToString();
-            string body = "sessionid=" + sessionid + @"&currency=5&appid=730&market_hash_name=" + hash_name + @"&price_total=" + order + @"&quantity=1&billing_state=&save_my_address=0";
+            string price_total = (last_order * 100 + 1).ToString();
+            string body = "sessionid=" + sessionid + @"&currency=5&appid=730&market_hash_name=" + market_hash_name + @"&price_total=" + price_total + @"&quantity=1&billing_state=&save_my_address=0";
             string url = "https://steamcommunity.com/market/createbuyorder/";
 
-            return postRequest(body, url);
+            return PostRequest(body, url);
         }
-        public static String cancelBuyOrder(string buy_orderid, string sessionid)
+        public static String CancelBuyOrder(string buy_orderid, string sessionid)
         {
             string body = "sessionid=" + sessionid + @"&buy_orderid=" + buy_orderid;
             string url = "https://steamcommunity.com/market/cancelbuyorder/";
 
-            return postRequest(body, url);
+            return PostRequest(body, url);
         }
-        public static String acceptTrade(string tradeofferid, string partner_id, string sessionid)
+        public static String AcceptTrade(string tradeofferid, string partner_id, string sessionid)
         {
             string body = "sessionid=" + sessionid + @"&serverid=1&tradeofferid=" + tradeofferid + @"&partner=" + partner_id + @"&captcha=";
             string url = "https://steamcommunity.com/tradeoffer/" + tradeofferid + "/accept";
 
-            return postRequest(body, url);
+            return PostRequest(body, url);
         }
 
         //get
-        public static String getRequest(string url)
+        public static String GetRequest(string url)
         {
             WebRequest reqGET = WebRequest.Create(url);
             WebResponse resp = reqGET.GetResponse();
@@ -69,32 +68,50 @@ namespace ItemChecker.Net
 
             return json;
         }
-        public static Tuple<String, Boolean> mrinkaRequest(string str)
+        public static Tuple<String, Boolean> MrinkaRequest(string str)
         {
             try
             {
                 string url = @"http://188.166.72.201:8080/singleitem?i=" + str;
-                return Tuple.Create(getRequest(url), true);
+                return Tuple.Create(GetRequest(url), true);
             }
             catch {
                 return Tuple.Create("", false); 
             }
         }
-        public static String lowPriceRequest(string url, int c)
+        public static String PriceOverview(string market_hash_name, int currency)
         {
-            return getRequest(@"https://steamcommunity.com/market/priceoverview/?country=RU&currency=" + c + "&appid=730&market_hash_name=" + url);
+            return GetRequest(@"https://steamcommunity.com/market/priceoverview/?country=RU&currency=" + currency + "&appid=730&market_hash_name=" + market_hash_name);
         }
-        public static String tradeOffers(string steam_api_key)
+        public static String GetTradeOffers(string steam_api_key)
         {
-            return getRequest(@"http://api.steampowered.com/IEconService/GetTradeOffers/v1/?key=" + steam_api_key + "&get_received_offers=1&active_only=100");
+            return GetRequest(@"http://api.steampowered.com/IEconService/GetTradeOffers/v1/?key=" + steam_api_key + "&get_received_offers=1&active_only=100");
+        }
+        public static Int32 ItemNameId(string market_hash_name)
+        {
+            var html = GetRequest("https://steamcommunity.com/market/listings/730/" + market_hash_name);
+            html = html.Substring(html.IndexOf("Market_LoadOrderSpread"));
+            var a = html.IndexOf("(");
+            var b = html.IndexOf(")");
+            string str = html.Substring(a, b);
+
+            int id = Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(str, @"[^\d]+", ""));
+            return id;
+        }
+        public static Double ItemOrdersHistogram(int item_nameid)
+        {
+            var json = GetRequest("https://steamcommunity.com/market/itemordershistogram?country=RU&language=english&currency=5&item_nameid=" + item_nameid + "&two_factor=0");
+
+            var highest_buy_order = Convert.ToDouble(JObject.Parse(json)["highest_buy_order"].ToString());
+            return highest_buy_order / 100;
         }
 
-        public static Double getCourse(string currency_api_key)
+        public static Double GetCourse(string currency_api_key)
         {
             try
             {
                 string url = @"https://free.currconv.com/api/v7/convert?q=USD_RUB&compact=ultra&apiKey=" + currency_api_key;
-                var json = getRequest(url);
+                var json = GetRequest(url);
 
                 return Math.Round(Convert.ToDouble(JObject.Parse(json)["USD_RUB"].ToString()), 2);
             }
@@ -105,7 +122,7 @@ namespace ItemChecker.Net
             }
         }
 
-        public List<string> overstock()
+        public List<string> GetOverstock()
         {
             WebClient client = new WebClient();
             var str = client.DownloadString("https://cs.money/list_overstock?appId=730");
@@ -115,7 +132,7 @@ namespace ItemChecker.Net
             foreach (var rootObject in json) list.Add(Edit.replaceUnavailable(rootObject.market_hash_name));
             return list;
         }
-        public List<string> unavailable()
+        public List<string> GetUnavailable()
         {
             WebClient client = new WebClient();
             var str = client.DownloadString("https://cs.money/list_unavailable?appId=730");

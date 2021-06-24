@@ -16,7 +16,7 @@ namespace ItemChecker.Presenter
         public static void checkList()
         {
             LootFarm._clear();
-            var json = Request.getRequest("https://loot.farm/fullprice.json");
+            var json = Request.GetRequest("https://loot.farm/fullprice.json");
             JArray array = JArray.Parse(json);
 
             for (int i = 0; i < array.Count; i++)
@@ -29,7 +29,7 @@ namespace ItemChecker.Presenter
                         Tuple<String, Boolean> response = Tuple.Create("", false);
                         do
                         {
-                            response = Request.mrinkaRequest(Edit.replaceUrl(str));
+                            response = Request.MrinkaRequest(Edit.replaceUrl(str));
                             if (!response.Item2)
                             {
                                 checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.status_toolStripStatusLabel.Text = "Check List (429). Please Wait..."; }));
@@ -61,8 +61,7 @@ namespace ItemChecker.Presenter
                 else return;
             }
             createLootfarm();
-            mainForm.notifyIcon.BalloonTipText = "Loading is complete. Open to show.";
-            mainForm.notifyIcon.ShowBalloonTip(6);
+            MainPresenter.messageBalloonTip();
         }
         static void createLootfarm()
         {

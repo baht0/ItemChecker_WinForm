@@ -19,17 +19,6 @@ namespace ItemChecker.Support
 
             return str;
         }
-        public static String inverReplaceUrl(string str)
-        {
-            str = str.Replace("%E2%98%85", "★");
-            str = str.Replace("%E2%84%A2", "™");
-            str = str.Replace("%20", " ");
-            str = str.Replace("%7C", "|");
-            str = str.Replace("%28", "(");
-            str = str.Replace("%29", ")");
-
-            return str;
-        }
         public static void openUrl(string url)
         {
             var psi = new ProcessStartInfo(url)
@@ -59,10 +48,6 @@ namespace ItemChecker.Support
         public static String buyOrderId(string idOrder)
         {
             return idOrder.Replace("mybuyorder_", "");
-        }
-        public static String tradeOfferId(string str)
-        {
-            return str.Replace("tradeofferid_", "");
         }
 
         public static String replaceUnavailable(string str)

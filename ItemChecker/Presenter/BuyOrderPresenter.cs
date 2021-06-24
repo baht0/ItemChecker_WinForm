@@ -55,8 +55,18 @@ namespace ItemChecker.Presenter
             foreach (double item_price in BuyOrder.price) BuyOrder.sum += item_price;
             BuyOrder.available_amount = Math.Round(Steam.balance * 10 - BuyOrder.sum, 2);
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽"; }));
+            if (BuyOrder.available_amount < 1000)
+            {
+                mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.ForeColor = Color.OrangeRed; }));
+                MessageBox.Show(
+                    "Little available amount.\nCancellation of orders is possible.",
+                    "Warning",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            else mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.ForeColor = Color.Black; }));
         }
-        public static void precentSteam()
+        public static void calcOrders()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Calculate Steam..."; }));
 
@@ -65,7 +75,7 @@ namespace ItemChecker.Presenter
                 Tuple<String, Boolean> response = Tuple.Create("", false);
                 do
                 {
-                    response = Request.mrinkaRequest(BuyOrder.url[i]);
+                    response = Request.MrinkaRequest(BuyOrder.url[i]);
                     if (!response.Item2)
                     {
                         mainForm.Invoke(new MethodInvoker(delegate {
@@ -119,7 +129,7 @@ namespace ItemChecker.Presenter
                     if (BuyOrder.item[i].Contains("★")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
                     if (BuyOrder.precent[i] <= SteamConfig.Default.autoDelete & BuyOrder.precent[i] != -100)
                     {
-                        Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
+                        Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
                         mainForm.Invoke(new Action(() => {
                             mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Red;
                             mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = "Deleted";
@@ -175,8 +185,7 @@ namespace ItemChecker.Presenter
                     mainForm.progressBar_StripStatus.Value = 0;
                     mainForm.progressBar_StripStatus.Visible = true; }));
                 createOrder();
-                mainForm.notifyIcon.BalloonTipText = "The creation of orders has been completed.";
-                mainForm.notifyIcon.ShowBalloonTip(4);
+                MainPresenter.messageBalloonTip("The creation of orders has been completed.");
             }
             catch (Exception exp)
             {
@@ -192,8 +201,7 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.queue_label.Text = "Queue: -";
                     mainForm.queue_linkLabel.Text = "Place order: -";
-                    mainForm.buyOrdersReload_MainStripMenu.PerformClick();
-                }));
+                    mainForm.buyOrdersReload_MainStripMenu.PerformClick(); }));
             }
         }
         private static void createOrder()
@@ -204,16 +212,13 @@ namespace ItemChecker.Presenter
             {
                 try
                 {
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + BuyOrder.queue[i]);
-                    Thread.Sleep(1000);
+                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/" + Edit.replaceUrl(BuyOrder.queue[i]));
+                    Thread.Sleep(500);
+                    var ItemNameId = Request.ItemNameId(Edit.replaceUrl(BuyOrder.queue[i]));
+                    var highest_buy_order = Request.ItemOrdersHistogram(ItemNameId);
 
-                    IWebElement last = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
-                    double last_order = Edit.removeRub(last.Text);
-
-                    if (Steam.balance > last_order)
-                    {
-                        Main.Browser.ExecuteJavaScript(Request.createBuyOrder(BuyOrder.queue[i], last_order, Main.sessionid));
-                    }
+                    if (Steam.balance > highest_buy_order) 
+                        Main.Browser.ExecuteJavaScript(Request.CreateBuyOrder(BuyOrder.queue[i], highest_buy_order, Main.sessionid));
                 }
                 catch (Exception exp)
                 {
@@ -227,42 +232,30 @@ namespace ItemChecker.Presenter
             }
         }
         //delete order
-        public static void deleteOrder(object state)
+        public static void CancelOrder(object state)
         {
             try
             {
-                Main.loading = true;
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
+                int row = Convert.ToInt32(mainForm.buyOrder_dataGridView.CurrentCell.RowIndex.ToString());
+                string item = mainForm.buyOrder_dataGridView.CurrentCell.Value.ToString();
 
-                if (mainForm.buyOrder_dataGridView.CurrentCell.ColumnIndex == 1)
-                {
-                    int row = Convert.ToInt32(mainForm.buyOrder_dataGridView.CurrentCell.RowIndex.ToString());
-                    string item = mainForm.buyOrder_dataGridView.CurrentCell.Value.ToString();
+                int index = BuyOrder.item.IndexOf(item);
+                Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[index], Main.sessionid));
 
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + Edit.replaceUrl(item));
-                    IWebElement buy_orderid = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]")));
+                BuyOrder.removeAtItem(index);
+                availableAmount();
 
-                    Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(Edit.buyOrderId(buy_orderid.GetAttribute("id")), Main.sessionid));
-
-                    BuyOrder.removeAtItem(BuyOrder.item.IndexOf(item));
-                    availableAmount();
-
-                    mainForm.Invoke(new Action(() => {
-                        mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
-                        mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
-                        mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Value = "Deleted";
-                    }));
-                }
+                mainForm.Invoke(new Action(() => {
+                    mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
+                    mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
+                    mainForm.buyOrder_dataGridView.Rows[row].Cells[2].Value = "Cancel"; }));
             }
             catch (Exception exp)
             {
                 Exceptions.errorLog(exp, Main.version);
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Exceptions.errorMessage(exp, currMethodName);
-            }
-            finally
-            {
-                Main.loading = false;
             }
         }
 
@@ -277,8 +270,7 @@ namespace ItemChecker.Presenter
 
                     mainForm.Invoke(new MethodInvoker(delegate {
                         mainForm.timer_StripStatus.Visible = true;
-                        mainForm.push_linkLabel.Text = "Stop...";
-                    }));
+                        mainForm.push_linkLabel.Text = "Stop..."; }));
 
                     Main.timer.Start();
                 }
@@ -313,13 +305,12 @@ namespace ItemChecker.Presenter
 
                 SteamPresenter.getBalance();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value = 0; }));
-
                 getSteamlist();
+
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.progressBar_StripStatus.Maximum = BuyOrder.item.Count;
                     mainForm.progressBar_StripStatus.Value = 0;
                     mainForm.progressBar_StripStatus.Visible = true; }));
-
                 pushItem();
                 if (SteamConfig.Default.updateST)
                 {
@@ -349,43 +340,43 @@ namespace ItemChecker.Presenter
             {
                 try
                 {
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + BuyOrder.url[i]);
-                    Thread.Sleep(2000);
+                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/" + BuyOrder.url[i]);
+                    Thread.Sleep(500);
+                    var ItemNameId = Request.ItemNameId(BuyOrder.url[i]);
+                    var highest_buy_order = Request.ItemOrdersHistogram(ItemNameId);
 
-                    IWebElement my = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='tabContentsMyListings']/div/div[2]/div[2]/span/span")));
-                    IWebElement last = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@id='market_commodity_buyrequests']/span[2]")));
-                    double my_order = Edit.removeRub(my.Text);
-                    double last_order = Edit.removeRub(last.Text);
+                    double my_order = BuyOrder.price[i];
 
-                    if (last_order > my_order & Steam.balance >= last_order & (last_order - my_order) <= BuyOrder.available_amount)
+                    if (highest_buy_order > my_order & Steam.balance >= highest_buy_order & (highest_buy_order - my_order) <= BuyOrder.available_amount)
                     {
-                        Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
+                        Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
                         Thread.Sleep(2000);
-                        Main.Browser.ExecuteJavaScript(Request.createBuyOrder(BuyOrder.url[i], last_order, Main.sessionid));
+                        Main.Browser.ExecuteJavaScript(Request.CreateBuyOrder(BuyOrder.url[i], highest_buy_order, Main.sessionid));
 
                         BuyOrder.int_push++;
                         mainForm.push_label.Invoke(new MethodInvoker(() => mainForm.push_label.Text = "Push: " + Convert.ToString(BuyOrder.int_push)));
                         Thread.Sleep(1500);
                     }
-                    else if (SteamConfig.Default.cancelOrder & Steam.balance < last_order | (last_order - my_order) >= BuyOrder.available_amount)
+                    else if (Steam.balance < highest_buy_order | (highest_buy_order - my_order) >= BuyOrder.available_amount)
                     {
-                        Main.Browser.ExecuteJavaScript(Request.cancelBuyOrder(BuyOrder.id[i], Main.sessionid));
+                        if (SteamConfig.Default.cancelOrder)
+                        {
+                            Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
 
-                        BuyOrder.removeAtItem(i);
-                        availableAmount();
+                            BuyOrder.removeAtItem(i);
+                            availableAmount();
 
-                        mainForm.Invoke(new MethodInvoker(delegate {
-                            mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
-                            mainForm.cancel_label.Text = BuyOrder.int_cancel++.ToString(); }));
+                            mainForm.Invoke(new MethodInvoker(delegate {
+                                mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
+                                mainForm.cancel_label.Text = BuyOrder.int_cancel++.ToString();
+                                mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
+                        }
 
-                        mainForm.notifyIcon.BalloonTipText = $"{BuyOrder.item[i]}\nThe buy order has been canceled. Not enough balance.";
-                        mainForm.notifyIcon.ShowBalloonTip(6);
+                        MainPresenter.messageBalloonTip($"Not enough balance for item:\n{BuyOrder.item[i]}", ToolTipIcon.Warning);
                     }
                 }
                 catch (Exception exp)
                 {
-                    string catch_item = Edit.inverReplaceUrl(BuyOrder.url[i]) + "\n";
-                    string catch_item_url = "https://steamcommunity.com/market/listings/730/" + BuyOrder.url[i] + "\n";
                     Exceptions.errorLog(exp, Main.version);
                     continue;
                 }

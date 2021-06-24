@@ -63,7 +63,7 @@ namespace ItemChecker
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (loading_panel.Visible != true)
+            if (!loading_panel.Visible)
             {
                 if (e.CloseReason == CloseReason.UserClosing)
                 {
@@ -73,7 +73,6 @@ namespace ItemChecker
             }
             else
             {
-                loading_pictureBox.Visible = true;
                 notifyIcon.Visible = false;
                 Main.Browser.Quit();
             }
@@ -379,9 +378,7 @@ namespace ItemChecker
                       MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
-                {
-                    ThreadPool.QueueUserWorkItem(BuyOrderPresenter.deleteOrder);
-                }
+                    ThreadPool.QueueUserWorkItem(BuyOrderPresenter.CancelOrder);
             }
         }
         //withdraw

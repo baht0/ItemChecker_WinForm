@@ -32,8 +32,7 @@ namespace ItemChecker.Presenter
             finally
             {
                 Main.loading = false;
-                mainForm.notifyIcon.BalloonTipText = "Loading is complete. Open to show.";
-                mainForm.notifyIcon.ShowBalloonTip(6);
+                MainPresenter.messageBalloonTip();
             }
         }
 

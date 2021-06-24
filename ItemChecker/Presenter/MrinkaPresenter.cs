@@ -25,7 +25,7 @@ namespace ItemChecker.Presenter
                         Tuple<String, Boolean> response = Tuple.Create("", false);
                         do
                         {
-                            response = Request.mrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
+                            response = Request.MrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
                             if (!response.Item2)
                             {
                                 checkOwnListForm.Invoke(new MethodInvoker(delegate { checkOwnListForm.status_toolStripStatusLabel.Text = "Check List (429). Please Wait..."; }));
@@ -59,8 +59,7 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                mainForm.notifyIcon.BalloonTipText = "Loading is complete. Open to show.";
-                mainForm.notifyIcon.ShowBalloonTip(6);
+                MainPresenter.messageBalloonTip();
             }
         }
         private static void createList()

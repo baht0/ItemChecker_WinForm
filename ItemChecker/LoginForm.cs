@@ -2,7 +2,6 @@
 using System.Media;
 using System.Windows.Forms;
 using ItemChecker.Presenter;
-using static ItemChecker.Program;
 using ItemChecker.Model;
 
 namespace ItemChecker
@@ -53,7 +52,6 @@ namespace ItemChecker
         {
             e.KeyChar = char.ToUpper(e.KeyChar);
         }
-
         private void viewPass_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (viewPass_checkBox.Checked)
