@@ -33,6 +33,9 @@ namespace ItemChecker.Presenter
             {
                 Main.loading = false;
                 MainPresenter.messageBalloonTip();
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.status_StripStatus.Visible = false;
+                    mainForm.progressBar_StripStatus.Visible = false; }));
             }
         }
 
@@ -42,8 +45,7 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.status_StripStatus.Text = "Check Withdraw...";
                 mainForm.status_StripStatus.Visible = true;
-                mainForm.withdraw_dataGridView.Rows.Clear();
-            }));
+                mainForm.withdraw_dataGridView.Rows.Clear(); }));
 
             Withdraw._clear();
             if (WithdrawConfig.Default.souvenir) Withdraw.souvenir = 1;
@@ -84,8 +86,7 @@ namespace ItemChecker.Presenter
                         Withdraw._clear();
                         mainForm.Invoke(new MethodInvoker(delegate {
                             mainForm.withdraw_dataGridView.Rows.Add();
-                            mainForm.withdraw_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list.";
-                        }));
+                            mainForm.withdraw_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list."; }));
                         break;
                     }
                 }
@@ -99,10 +100,11 @@ namespace ItemChecker.Presenter
                 string item_name = str[0].Trim();
                 int sales = Convert.ToInt32(str[2].Trim());
                 double precent = Edit.removeSymbol(str[5].Trim());
-
+                str[4] = str[4].Replace("★ ", null);
+                str[4] = str[4].Replace("🕐 ", null);
                 string[] prices = str[4].Split(" ");
                 double csm = Edit.removeDol(prices[0].Trim());
-                double st = Edit.removeDol(prices[3].Trim());
+                double st = Edit.removeDol(prices[2].Trim());
 
                 Withdraw.item.Add(item_name);
                 Withdraw.sales.Add(sales);

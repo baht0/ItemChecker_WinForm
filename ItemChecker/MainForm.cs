@@ -37,7 +37,6 @@ namespace ItemChecker
             foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
             notifyIcon.Visible = true;
             ver_label.Text = "Version: " + Main.version;
-
             if (Properties.Settings.Default.UpdateSettings)
             {
                 Properties.Settings.Default.Upgrade();
@@ -55,6 +54,7 @@ namespace ItemChecker
             status_StripStatus.Text = "Launch Browser...";
             BuyOrderPresenter buyOrderPresenter = new BuyOrderPresenter();
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Main.loading = true;
 
             Main.timer.Elapsed += new ElapsedEventHandler(buyOrderPresenter.timerTick);
             Main.timer.Interval = 1000;

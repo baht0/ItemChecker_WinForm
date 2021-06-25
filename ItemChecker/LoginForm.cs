@@ -3,6 +3,7 @@ using System.Media;
 using System.Windows.Forms;
 using ItemChecker.Presenter;
 using ItemChecker.Model;
+using static ItemChecker.Program;
 
 namespace ItemChecker
 {
@@ -29,14 +30,10 @@ namespace ItemChecker
         {
             if (!close)
             {
-                DialogResult result = MessageBox.Show(
-                    "Do you want to log out?",
-                    "Warning",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Yes) MainPresenter.exit();
-                if (result == DialogResult.No) e.Cancel = true;
+                mainForm.Hide();
+                this.Hide();
+                MainPresenter.exit();
+                e.Cancel = true;
             }
         }
 

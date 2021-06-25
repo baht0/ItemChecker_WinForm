@@ -130,10 +130,13 @@ namespace ItemChecker.Presenter
                     if (BuyOrder.precent[i] <= SteamConfig.Default.autoDelete & BuyOrder.precent[i] != -100)
                     {
                         Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
+                        BuyOrder.removeAtItem(BuyOrder.item.IndexOf(BuyOrder.item[i]));
                         mainForm.Invoke(new Action(() => {
+                            mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
                             mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Red;
-                            mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = "Deleted";
-                        }));
+                            mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = "Cancel";
+                            mainForm.cancel_label.Text = BuyOrder.int_cancel++.ToString();
+                            mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
                         continue;
                     }
                 }

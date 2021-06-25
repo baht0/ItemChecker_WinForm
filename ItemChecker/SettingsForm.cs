@@ -154,12 +154,6 @@ namespace ItemChecker
                     WithdrawConfig.Default.Save();
                     FloatConfig.Default.Save();
 
-                    MessageBox.Show(
-                        "Some changes may require restarting the program.",
-                        "Information",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-
                     Close();
                 }
                 else
@@ -170,7 +164,15 @@ namespace ItemChecker
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                 }
-            }            
+            }
+            else
+            {
+                MessageBox.Show(
+                        "Settings cannot be changed during loading.",
+                        "Warning",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+            }
         }
         private void cancel_button_Click(object sender, EventArgs e)
         {
