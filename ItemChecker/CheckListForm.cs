@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ItemChecker.Model;
@@ -21,8 +23,22 @@ namespace ItemChecker
             {
                 richTextBox1.Text = Properties.Settings.Default.checkList.Trim();
             }
+            this.Text = "CheckList: " + richTextBox1.Lines.Count().ToString();
         }
 
+        private void selectFile_button_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.InitialDirectory = Application.StartupPath;
+            dialog.RestoreDirectory = true;
+            dialog.Filter = "Items List (txt)|*.txt";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                richTextBox1.Clear();
+                richTextBox1.Text = File.ReadAllText(dialog.FileName);
+                this.Text = "CheckList: " + richTextBox1.Lines.Count().ToString();
+            }
+        }
         private void ok_button_Click(object sender, EventArgs e)
         {
             string str = richTextBox1.Text.Replace("\r\n", "\n");
@@ -46,9 +62,12 @@ namespace ItemChecker
         }
         private void cancel_button_Click(object sender, EventArgs e)
         {
-            Float.items.Clear();
-            Main.checkList.Clear();
             Close();
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            this.Text = "CheckList: " + richTextBox1.Lines.Count().ToString();
         }
     }
 }

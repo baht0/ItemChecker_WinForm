@@ -17,6 +17,7 @@ namespace ItemChecker
 {
     public partial class MainForm : Form
     {
+        ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
         public MainForm()
         {
             InitializeComponent();
@@ -165,8 +166,7 @@ namespace ItemChecker
         //tools
         private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
         {
-            CheckOwnListForm fr = new CheckOwnListForm();
-            fr.Show();
+            serviceChecker.Show();
         }
         private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {

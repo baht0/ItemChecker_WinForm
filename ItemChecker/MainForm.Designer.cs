@@ -203,38 +203,38 @@ namespace ItemChecker
             // 
             this.settings_MainStripMenu.Image = global::ItemChecker.Properties.Resources.setting;
             this.settings_MainStripMenu.Name = "settings_MainStripMenu";
-            this.settings_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.settings_MainStripMenu.Size = new System.Drawing.Size(134, 22);
             this.settings_MainStripMenu.Text = "Settings";
             this.settings_MainStripMenu.Click += new System.EventHandler(this.settings_MainStripMenu_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(131, 6);
             // 
             // printScreen_MainStripMenu
             // 
             this.printScreen_MainStripMenu.Name = "printScreen_MainStripMenu";
-            this.printScreen_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.printScreen_MainStripMenu.Size = new System.Drawing.Size(134, 22);
             this.printScreen_MainStripMenu.Text = "PrintScreen";
             this.printScreen_MainStripMenu.Click += new System.EventHandler(this.printScreen_MainStripMenu_Click);
             // 
             // restart_MainStripMenu
             // 
             this.restart_MainStripMenu.Name = "restart_MainStripMenu";
-            this.restart_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.restart_MainStripMenu.Size = new System.Drawing.Size(134, 22);
             this.restart_MainStripMenu.Text = "Restart";
             this.restart_MainStripMenu.Click += new System.EventHandler(this.restart_MainStripMenu_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(131, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -313,26 +313,26 @@ namespace ItemChecker
             // withdraw_MainStripMenu
             // 
             this.withdraw_MainStripMenu.Name = "withdraw_MainStripMenu";
-            this.withdraw_MainStripMenu.Size = new System.Drawing.Size(150, 22);
+            this.withdraw_MainStripMenu.Size = new System.Drawing.Size(154, 22);
             this.withdraw_MainStripMenu.Text = "Withdraw";
             this.withdraw_MainStripMenu.Click += new System.EventHandler(this.withdrawTable_MainStripMenu_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(151, 6);
             // 
             // checkOwnList_MainStripMenu
             // 
             this.checkOwnList_MainStripMenu.Name = "checkOwnList_MainStripMenu";
-            this.checkOwnList_MainStripMenu.Size = new System.Drawing.Size(150, 22);
-            this.checkOwnList_MainStripMenu.Text = "CheckOwnList";
+            this.checkOwnList_MainStripMenu.Size = new System.Drawing.Size(154, 22);
+            this.checkOwnList_MainStripMenu.Text = "ServiceChecker";
             this.checkOwnList_MainStripMenu.Click += new System.EventHandler(this.checkOwnList_MainStripMenu_Click);
             // 
             // floatCheck_MainStripMenu
             // 
             this.floatCheck_MainStripMenu.Name = "floatCheck_MainStripMenu";
-            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(150, 22);
+            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(154, 22);
             this.floatCheck_MainStripMenu.Text = "FloatCheck";
             this.floatCheck_MainStripMenu.Click += new System.EventHandler(this.floatCheck_MainStripMenu_Click);
             // 
@@ -695,26 +695,26 @@ namespace ItemChecker
             this.toolStripSeparator9,
             this.exit_toolStripMenuItem});
             this.taskbar_contextMenuStrip.Name = "taskbar_contextMenuStrip";
-            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(151, 104);
+            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(181, 126);
             // 
             // checkOwnList_toolStripMenuItem
             // 
             this.checkOwnList_toolStripMenuItem.Name = "checkOwnList_toolStripMenuItem";
-            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-            this.checkOwnList_toolStripMenuItem.Text = "CheckOwnList";
+            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkOwnList_toolStripMenuItem.Text = "ServiceChecker";
             this.checkOwnList_toolStripMenuItem.Click += new System.EventHandler(this.checkOwnList_toolStripMenuItem_Click);
             // 
             // floatCheck_toolStripMenuItem
             // 
             this.floatCheck_toolStripMenuItem.Name = "floatCheck_toolStripMenuItem";
-            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.floatCheck_toolStripMenuItem.Text = "FloatCheck";
             this.floatCheck_toolStripMenuItem.Click += new System.EventHandler(this.floatCheck_toolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // links_toolStripMenuItem
             // 
@@ -727,7 +727,7 @@ namespace ItemChecker
             this.marketLink_toolStripMenuItem});
             this.links_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.link;
             this.links_toolStripMenuItem.Name = "links_toolStripMenuItem";
-            this.links_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.links_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.links_toolStripMenuItem.Text = "Links";
             // 
             // tryskinsLink_toolStripMenuItem
@@ -771,12 +771,12 @@ namespace ItemChecker
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
             // 
             // exit_toolStripMenuItem
             // 
             this.exit_toolStripMenuItem.Name = "exit_toolStripMenuItem";
-            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exit_toolStripMenuItem.Text = "Exit";
             this.exit_toolStripMenuItem.Click += new System.EventHandler(this.exit_toolStripMenuItem_Click);
             // 

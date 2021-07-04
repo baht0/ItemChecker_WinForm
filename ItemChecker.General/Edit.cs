@@ -63,6 +63,12 @@ namespace ItemChecker.Support
 
             return value.ToString() + "₽";
         }
+        public static String funcConvert(double value, double currency)
+        {
+            value = Math.Round(value * currency, 2);
+
+            return value.ToString() + "₽";
+        }
         public static Double difference(double csm, double st, double currency)
         {
             return Math.Round((csm - st) * currency, 2);
