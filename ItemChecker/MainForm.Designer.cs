@@ -37,7 +37,6 @@ namespace ItemChecker
             this.file_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.settings_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.printScreen_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.restart_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -191,7 +190,6 @@ namespace ItemChecker
             this.file_MainStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settings_MainStripMenu,
             this.toolStripSeparator,
-            this.printScreen_MainStripMenu,
             this.restart_MainStripMenu,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
@@ -211,13 +209,6 @@ namespace ItemChecker
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
             this.toolStripSeparator.Size = new System.Drawing.Size(131, 6);
-            // 
-            // printScreen_MainStripMenu
-            // 
-            this.printScreen_MainStripMenu.Name = "printScreen_MainStripMenu";
-            this.printScreen_MainStripMenu.Size = new System.Drawing.Size(134, 22);
-            this.printScreen_MainStripMenu.Text = "PrintScreen";
-            this.printScreen_MainStripMenu.Click += new System.EventHandler(this.printScreen_MainStripMenu_Click);
             // 
             // restart_MainStripMenu
             // 
@@ -695,26 +686,26 @@ namespace ItemChecker
             this.toolStripSeparator9,
             this.exit_toolStripMenuItem});
             this.taskbar_contextMenuStrip.Name = "taskbar_contextMenuStrip";
-            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(181, 126);
+            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(155, 104);
             // 
             // checkOwnList_toolStripMenuItem
             // 
             this.checkOwnList_toolStripMenuItem.Name = "checkOwnList_toolStripMenuItem";
-            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.checkOwnList_toolStripMenuItem.Text = "ServiceChecker";
             this.checkOwnList_toolStripMenuItem.Click += new System.EventHandler(this.checkOwnList_toolStripMenuItem_Click);
             // 
             // floatCheck_toolStripMenuItem
             // 
             this.floatCheck_toolStripMenuItem.Name = "floatCheck_toolStripMenuItem";
-            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.floatCheck_toolStripMenuItem.Text = "FloatCheck";
             this.floatCheck_toolStripMenuItem.Click += new System.EventHandler(this.floatCheck_toolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(151, 6);
             // 
             // links_toolStripMenuItem
             // 
@@ -727,7 +718,7 @@ namespace ItemChecker
             this.marketLink_toolStripMenuItem});
             this.links_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.link;
             this.links_toolStripMenuItem.Name = "links_toolStripMenuItem";
-            this.links_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.links_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.links_toolStripMenuItem.Text = "Links";
             // 
             // tryskinsLink_toolStripMenuItem
@@ -771,12 +762,12 @@ namespace ItemChecker
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(151, 6);
             // 
             // exit_toolStripMenuItem
             // 
             this.exit_toolStripMenuItem.Name = "exit_toolStripMenuItem";
-            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.exit_toolStripMenuItem.Text = "Exit";
             this.exit_toolStripMenuItem.Click += new System.EventHandler(this.exit_toolStripMenuItem_Click);
             // 
@@ -947,7 +938,6 @@ namespace ItemChecker
         public System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         public System.Windows.Forms.ToolStripMenuItem tools_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem settings_MainStripMenu;
-        public System.Windows.Forms.ToolStripMenuItem printScreen_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem restart_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem reload_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem full_MainStripMenu;

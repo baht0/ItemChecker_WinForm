@@ -37,7 +37,7 @@ namespace ItemChecker.Presenter
                     loadDataSteam();
                     loadDataTryskins();
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
-                    if (GeneralConfig.Default.startupPush)
+                    if (SteamConfig.Default.startupPush)
                     {
                         Main.loading = false;
                         BuyOrderPresenter.pushStart();
@@ -150,7 +150,10 @@ namespace ItemChecker.Presenter
             if (BuyOrder.my_buy_orders != 0)
             {
                 BuyOrderPresenter.getSteamlist();
-                BuyOrderPresenter.calcOrders();
+                if (GeneralConfig.Default.proxy & BuyOrder.item.Count >= 30)
+                    BuyOrderPresenter.checkOrdersProxy();
+                else
+                    BuyOrderPresenter.checkOrders();
                 BuyOrderPresenter.createSteamTable();
             }
             else progressInvoke(3);
@@ -158,7 +161,8 @@ namespace ItemChecker.Presenter
         private static void loadDataTryskins()
         {
             TryskinsPresenter.checkTryskins();
-            if (TrySkins.item.Count > 0) TryskinsPresenter.createTryTable();
+            if (TrySkins.item.Count > 0)
+                TryskinsPresenter.createTryTable();
             else progressInvoke();
         }
 

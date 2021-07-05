@@ -60,11 +60,23 @@ namespace ItemChecker.Net
         //get
         public static String GetRequest(string url)
         {
-            WebRequest reqGET = WebRequest.Create(url);
-            WebResponse resp = reqGET.GetResponse();
-            Stream stream = resp.GetResponseStream();
+            WebRequest request = WebRequest.Create(url);
+            WebResponse response = request.GetResponse();
+            Stream stream = response.GetResponseStream();
             StreamReader sr = new StreamReader(stream);
-            var json = sr.ReadToEnd();            
+            var json = sr.ReadToEnd();
+
+            return json;
+        }
+        public static String GetRequest(string url, string address)
+        {
+            WebRequest request = WebRequest.Create(url);
+            request.Proxy = new WebProxy(address.Trim(), true);
+            request.Timeout = 5000;
+            WebResponse response = request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            StreamReader sr = new StreamReader(stream);
+            var json = sr.ReadToEnd();
 
             return json;
         }

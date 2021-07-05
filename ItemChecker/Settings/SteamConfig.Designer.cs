@@ -70,5 +70,17 @@ namespace ItemChecker.Settings {
                 this["cancelOrder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool startupPush {
+            get {
+                return ((bool)(this["startupPush"]));
+            }
+            set {
+                this["startupPush"] = value;
+            }
+        }
     }
 }

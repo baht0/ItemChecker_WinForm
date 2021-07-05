@@ -115,32 +115,71 @@ namespace ItemChecker.Presenter
                 //long
                 else if (TryskinsConfig.Default.longTime)
                 {
-                    Tuple<String, Boolean> response = Tuple.Create("", false);
-                    do
-                    {
-                        response = Request.MrinkaRequest(Edit.replaceUrl(item_name));
-                        if (!response.Item2)
-                        {
-                            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check TrySkins (429). Please Wait..."; }));
-                            Thread.Sleep(30000);
-                        }
-                    }
-                    while (!response.Item2);
-
-                    var highest_buy_order = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
-                    var csm_sell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
-                    var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
-
-                    if (precent > 0)
-                    {
-                        TrySkins.item.Add(item_name);
-                        TrySkins.sta.Add(highest_buy_order);
-                        TrySkins.csm.Add(csm_sell);
-                        TrySkins.precent.Add(precent);
-                        TrySkins.difference.Add(Edit.difference(csm_sell, highest_buy_order, Main.course));
-                    }
-                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
+                    checkListTryskins(item_name);
+                    //if (GeneralConfig.Default.proxy)
+                    //    checkListTryskinsProxy(item_name);
+                    //else
+                    //    checkListTryskins(item_name);
                 }
+            }
+        }
+        private static void checkListTryskins(string item_name)
+        {
+            Tuple<String, Boolean> response = Tuple.Create("", false);
+            do
+            {
+                response = Request.MrinkaRequest(Edit.replaceUrl(item_name));
+                if (!response.Item2)
+                {
+                    mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check TrySkins (429). Please Wait..."; }));
+                    Thread.Sleep(30000);
+                }
+            }
+            while (!response.Item2);
+
+            var highest_buy_order = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
+            var csm_sell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
+            var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
+
+            if (precent > 0)
+            {
+                TrySkins.item.Add(item_name);
+                TrySkins.sta.Add(highest_buy_order);
+                TrySkins.csm.Add(csm_sell);
+                TrySkins.precent.Add(precent);
+                TrySkins.difference.Add(Edit.difference(csm_sell, highest_buy_order, Main.course));
+            }
+            mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
+        }
+        private static void checkListTryskinsProxy(string item_name)
+        {
+            int id = 0;
+            int i = 0;
+            try
+            {
+                string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
+                string response = Request.GetRequest(url, Main.proxyList[id]);
+
+                var highest_buy_order = Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString());
+                var csm_sell = Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString());
+                var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
+
+                if (precent > 0)
+                {
+                    TrySkins.item.Add(item_name);
+                    TrySkins.sta.Add(highest_buy_order);
+                    TrySkins.csm.Add(csm_sell);
+                    TrySkins.precent.Add(precent);
+                    TrySkins.difference.Add(Edit.difference(csm_sell, highest_buy_order, Main.course));
+                }
+                mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
+            }
+            catch
+            {
+                i--;
+                if (Main.proxyList.Count > id)
+                    id++;
+                //else break;
             }
         }
         public static void createTryTable()

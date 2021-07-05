@@ -66,7 +66,7 @@ namespace ItemChecker.Presenter
             }
             else mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.ForeColor = Color.Black; }));
         }
-        public static void calcOrders()
+        public static void checkOrders()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Calculate Steam..."; }));
 
@@ -78,7 +78,8 @@ namespace ItemChecker.Presenter
                     response = Request.MrinkaRequest(BuyOrder.url[i]);
                     if (!response.Item2)
                     {
-                        mainForm.Invoke(new MethodInvoker(delegate {
+                        mainForm.Invoke(new MethodInvoker(delegate
+                        {
                             mainForm.status_StripStatus.Text = "Calculate Steam (429). Please Wait...";
                             mainForm.timer_StripStatus.Text = "Updating (429). Please Wait...";
                         }));
@@ -96,6 +97,38 @@ namespace ItemChecker.Presenter
                 BuyOrder.csm_price.Add(csm_sell);
                 BuyOrder.precent.Add(prec);
                 BuyOrder.difference.Add(diff);
+            }
+            MainPresenter.progressInvoke();
+        }
+        public static void checkOrdersProxy()
+        {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Calculate Steam..."; }));
+            int id = 0;
+
+            for (int i = 0; i < BuyOrder.item.Count; i++)
+            {
+                try
+                {
+                    string url = @"http://188.166.72.201:8080/singleitem?i=" + BuyOrder.url[i];
+                    var response = Request.GetRequest(url, Main.proxyList[id]);
+
+                    double my_order = Convert.ToDouble(BuyOrder.price[i]);
+                    var buy_order = Math.Round(my_order / Main.course, 2);
+                    var csm_sell = Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString());
+                    var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
+                    var diff = Math.Round((csm_sell * Main.course) - my_order, 2);
+
+                    BuyOrder.csm_price.Add(csm_sell);
+                    BuyOrder.precent.Add(prec);
+                    BuyOrder.difference.Add(diff);
+                }
+                catch
+                {
+                    i--;
+                    if (Main.proxyList.Count > id)
+                        id++;
+                    else break;
+                }
             }
             MainPresenter.progressInvoke();
         }
@@ -135,7 +168,7 @@ namespace ItemChecker.Presenter
                             mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
                             mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Red;
                             mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = "Cancel";
-                            mainForm.cancel_label.Text = BuyOrder.int_cancel++.ToString();
+                            mainForm.cancel_label.Text = "Cancel: " + BuyOrder.int_cancel++.ToString();
                             mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
                         continue;
                     }
@@ -371,7 +404,7 @@ namespace ItemChecker.Presenter
 
                             mainForm.Invoke(new MethodInvoker(delegate {
                                 mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
-                                mainForm.cancel_label.Text = BuyOrder.int_cancel++.ToString();
+                                mainForm.cancel_label.Text = "Cancel: " + BuyOrder.int_cancel++.ToString();
                                 mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
                         }
 

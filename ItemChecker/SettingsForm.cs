@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using ItemChecker.Model;
@@ -18,12 +17,13 @@ namespace ItemChecker
             currApiKey_textBox.Text = GeneralConfig.Default.currencyApiKey.Trim();
             wait_numericUpDown.Value = GeneralConfig.Default.wait;
             profile_checkBox.Checked = GeneralConfig.Default.profile;
-            startupPush_checkBox.Checked = GeneralConfig.Default.startupPush;
+            proxy_checkBox.Checked = GeneralConfig.Default.proxy;
             //steam
             timer_numericUpDown.Value = SteamConfig.Default.timer;
             updST_checkBox.Checked = SteamConfig.Default.updateST;
             autoRemove_numericUpDown.Value = SteamConfig.Default.autoDelete;
             cancelOrder_checkBox.Checked = SteamConfig.Default.cancelOrder;
+            startupPush_checkBox.Checked = SteamConfig.Default.startupPush;
             //tryskins
             maxPrecent_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrecent;
             minPrecent_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrecent;
@@ -64,12 +64,13 @@ namespace ItemChecker
             currApiKey_textBox.Text = "";
             wait_numericUpDown.Value = 15;
             profile_checkBox.Checked = true;
-            startupPush_checkBox.Checked = false;
+            proxy_checkBox.Checked = false;
             //steam
             timer_numericUpDown.Value = 10;
             updST_checkBox.Checked = true;
             autoRemove_numericUpDown.Value = 0;
             cancelOrder_checkBox.Checked = false;
+            startupPush_checkBox.Checked = false;
             //tryskins
             maxPrecent_numericUpDown.Value = 60;
             minPrecent_numericUpDown.Value = 27;
@@ -112,12 +113,13 @@ namespace ItemChecker
                     GeneralConfig.Default.currencyApiKey = currApiKey_textBox.Text;
                     GeneralConfig.Default.wait = Convert.ToInt32(wait_numericUpDown.Value);
                     GeneralConfig.Default.profile = profile_checkBox.Checked;
-                    GeneralConfig.Default.startupPush = startupPush_checkBox.Checked;
+                    GeneralConfig.Default.proxy = proxy_checkBox.Checked;
                     //steam
                     SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
                     SteamConfig.Default.updateST = updST_checkBox.Checked;
                     SteamConfig.Default.autoDelete = Convert.ToInt32(autoRemove_numericUpDown.Value);
                     SteamConfig.Default.cancelOrder = cancelOrder_checkBox.Checked;
+                    SteamConfig.Default.startupPush = startupPush_checkBox.Checked;
                     //tryskins
                     TryskinsConfig.Default.maxTryskinsPrecent = Convert.ToInt32(maxPrecent_numericUpDown.Value);
                     TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);
@@ -228,6 +230,17 @@ namespace ItemChecker
         {
             if (!sticker_checkBox.Checked) onlySt_checkBox.Checked = false;
             onlySt_checkBox.Enabled = sticker_checkBox.Checked;
+        }
+
+        //proxy
+        private void proxy_button_Click(object sender, EventArgs e)
+        {
+            CheckListForm checkList = new CheckListForm("ProxyList");
+            checkList.ShowDialog();
+        }
+        private void proxy_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            proxy_button.Enabled = proxy_checkBox.Checked;
         }
     }
 }

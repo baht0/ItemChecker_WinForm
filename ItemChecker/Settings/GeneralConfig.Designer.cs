@@ -74,12 +74,12 @@ namespace ItemChecker.Settings {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool startupPush {
+        public bool proxy {
             get {
-                return ((bool)(this["startupPush"]));
+                return ((bool)(this["proxy"]));
             }
             set {
-                this["startupPush"] = value;
+                this["proxy"] = value;
             }
         }
     }

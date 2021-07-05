@@ -85,6 +85,8 @@ namespace ItemChecker
             this.fast_radioButton = new System.Windows.Forms.RadioButton();
             this.steam_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.startupPush_checkBox = new System.Windows.Forms.CheckBox();
+            this.cancelOrder_checkBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.steamApiKey_textBox = new System.Windows.Forms.TextBox();
             this.getST_linkLabel = new System.Windows.Forms.LinkLabel();
@@ -103,7 +105,8 @@ namespace ItemChecker
             this.profile_checkBox = new System.Windows.Forms.CheckBox();
             this.wait_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.startupPush_checkBox = new System.Windows.Forms.CheckBox();
+            this.proxy_checkBox = new System.Windows.Forms.CheckBox();
+            this.proxy_button = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.getCurr_linkLabel = new System.Windows.Forms.LinkLabel();
             this.currApiKey_textBox = new System.Windows.Forms.TextBox();
@@ -113,7 +116,6 @@ namespace ItemChecker
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.cancelOrder_checkBox = new System.Windows.Forms.CheckBox();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).BeginInit();
@@ -916,6 +918,7 @@ namespace ItemChecker
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.startupPush_checkBox);
             this.groupBox11.Controls.Add(this.cancelOrder_checkBox);
             this.groupBox11.Controls.Add(this.label1);
             this.groupBox11.Controls.Add(this.steamApiKey_textBox);
@@ -925,10 +928,30 @@ namespace ItemChecker
             this.groupBox11.Controls.Add(this.label8);
             this.groupBox11.Location = new System.Drawing.Point(17, 13);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(260, 127);
+            this.groupBox11.Size = new System.Drawing.Size(260, 152);
             this.groupBox11.TabIndex = 7;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Steam";
+            // 
+            // startupPush_checkBox
+            // 
+            this.startupPush_checkBox.AutoSize = true;
+            this.startupPush_checkBox.Location = new System.Drawing.Point(6, 104);
+            this.startupPush_checkBox.Name = "startupPush_checkBox";
+            this.startupPush_checkBox.Size = new System.Drawing.Size(87, 17);
+            this.startupPush_checkBox.TabIndex = 14;
+            this.startupPush_checkBox.Text = "Startup Push";
+            this.startupPush_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // cancelOrder_checkBox
+            // 
+            this.cancelOrder_checkBox.AutoSize = true;
+            this.cancelOrder_checkBox.Location = new System.Drawing.Point(6, 127);
+            this.cancelOrder_checkBox.Name = "cancelOrder_checkBox";
+            this.cancelOrder_checkBox.Size = new System.Drawing.Size(242, 17);
+            this.cancelOrder_checkBox.TabIndex = 13;
+            this.cancelOrder_checkBox.Text = "Cancel a buy order if the balance isn\'t enough";
+            this.cancelOrder_checkBox.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -999,7 +1022,7 @@ namespace ItemChecker
             this.groupBox1.Controls.Add(this.updST_checkBox);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(17, 146);
+            this.groupBox1.Location = new System.Drawing.Point(17, 171);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(260, 94);
             this.groupBox1.TabIndex = 0;
@@ -1073,7 +1096,7 @@ namespace ItemChecker
             this.groupBox7.Controls.Add(this.label4);
             this.groupBox7.Controls.Add(this.profile_checkBox);
             this.groupBox7.Controls.Add(this.wait_numericUpDown);
-            this.groupBox7.Location = new System.Drawing.Point(17, 105);
+            this.groupBox7.Location = new System.Drawing.Point(17, 111);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(260, 80);
             this.groupBox7.TabIndex = 13;
@@ -1128,26 +1151,38 @@ namespace ItemChecker
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.startupPush_checkBox);
+            this.groupBox6.Controls.Add(this.proxy_checkBox);
+            this.groupBox6.Controls.Add(this.proxy_button);
             this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Controls.Add(this.getCurr_linkLabel);
             this.groupBox6.Controls.Add(this.currApiKey_textBox);
             this.groupBox6.Location = new System.Drawing.Point(17, 14);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(260, 85);
+            this.groupBox6.Size = new System.Drawing.Size(260, 91);
             this.groupBox6.TabIndex = 12;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "General";
             // 
-            // startupPush_checkBox
+            // proxy_checkBox
             // 
-            this.startupPush_checkBox.AutoSize = true;
-            this.startupPush_checkBox.Location = new System.Drawing.Point(6, 62);
-            this.startupPush_checkBox.Name = "startupPush_checkBox";
-            this.startupPush_checkBox.Size = new System.Drawing.Size(87, 17);
-            this.startupPush_checkBox.TabIndex = 11;
-            this.startupPush_checkBox.Text = "Startup Push";
-            this.startupPush_checkBox.UseVisualStyleBackColor = true;
+            this.proxy_checkBox.AutoSize = true;
+            this.proxy_checkBox.Location = new System.Drawing.Point(6, 67);
+            this.proxy_checkBox.Name = "proxy_checkBox";
+            this.proxy_checkBox.Size = new System.Drawing.Size(73, 17);
+            this.proxy_checkBox.TabIndex = 12;
+            this.proxy_checkBox.Text = "Use proxy";
+            this.proxy_checkBox.UseVisualStyleBackColor = true;
+            this.proxy_checkBox.CheckedChanged += new System.EventHandler(this.proxy_checkBox_CheckedChanged);
+            // 
+            // proxy_button
+            // 
+            this.proxy_button.Location = new System.Drawing.Point(85, 61);
+            this.proxy_button.Name = "proxy_button";
+            this.proxy_button.Size = new System.Drawing.Size(75, 23);
+            this.proxy_button.TabIndex = 11;
+            this.proxy_button.Text = "Proxy";
+            this.proxy_button.UseVisualStyleBackColor = true;
+            this.proxy_button.Click += new System.EventHandler(this.proxy_button_Click);
             // 
             // label2
             // 
@@ -1196,7 +1231,7 @@ namespace ItemChecker
             // 
             this.extract_groupBox.Controls.Add(this.extractTry_linkLabel);
             this.extract_groupBox.Controls.Add(this.extractST_linkLabel);
-            this.extract_groupBox.Location = new System.Drawing.Point(17, 191);
+            this.extract_groupBox.Location = new System.Drawing.Point(17, 197);
             this.extract_groupBox.Name = "extract_groupBox";
             this.extract_groupBox.Size = new System.Drawing.Size(260, 63);
             this.extract_groupBox.TabIndex = 8;
@@ -1251,16 +1286,6 @@ namespace ItemChecker
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(301, 339);
             this.tabControl1.TabIndex = 0;
-            // 
-            // cancelOrder_checkBox
-            // 
-            this.cancelOrder_checkBox.AutoSize = true;
-            this.cancelOrder_checkBox.Location = new System.Drawing.Point(7, 104);
-            this.cancelOrder_checkBox.Name = "cancelOrder_checkBox";
-            this.cancelOrder_checkBox.Size = new System.Drawing.Size(242, 17);
-            this.cancelOrder_checkBox.TabIndex = 13;
-            this.cancelOrder_checkBox.Text = "Cancel a buy order if the balance isn\'t enough";
-            this.cancelOrder_checkBox.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -1418,7 +1443,9 @@ namespace ItemChecker
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox steamApiKey_textBox;
         private System.Windows.Forms.LinkLabel getST_linkLabel;
-        private System.Windows.Forms.CheckBox startupPush_checkBox;
         private System.Windows.Forms.CheckBox cancelOrder_checkBox;
+        private System.Windows.Forms.CheckBox startupPush_checkBox;
+        private System.Windows.Forms.CheckBox proxy_checkBox;
+        private System.Windows.Forms.Button proxy_button;
     }
 }

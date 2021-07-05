@@ -21,5 +21,6 @@ namespace ItemChecker.Model
         public static List<string> overstock = new List<string>();
         public static List<string> unavailable = new List<string>();
         internal static List<string> checkList = new List<string>();
+        internal static List<string> proxyList = new List<string>();
     }
 }

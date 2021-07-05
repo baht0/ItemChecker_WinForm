@@ -17,7 +17,6 @@ namespace ItemChecker
 {
     public partial class MainForm : Form
     {
-        ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
         public MainForm()
         {
             InitializeComponent();
@@ -49,6 +48,7 @@ namespace ItemChecker
                 Properties.Settings.Default.UpdateSettings = false;
                 Properties.Settings.Default.Save();
             }
+            Main.proxyList.AddRange(Properties.Settings.Default.proxyList.Split("\n"));
         }
         public void MainForm_Shown(object sender, EventArgs e)
         {
@@ -84,11 +84,6 @@ namespace ItemChecker
         {
             SettingsForm fr = new SettingsForm();
             fr.ShowDialog();     
-        }
-        private void printScreen_MainStripMenu_Click(object sender, EventArgs e)
-        {
-            ((ITakesScreenshot)Main.Browser).GetScreenshot().SaveAsFile("Screen.png", ScreenshotImageFormat.Png);
-            Edit.openUrl(Application.StartupPath + "\\Screen.png");
         }
         private void restart_MainStripMenu_Click(object sender, EventArgs e)
         {
@@ -166,13 +161,14 @@ namespace ItemChecker
         //tools
         private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
         {
+            ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
             serviceChecker.Show();
         }
         private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
-                CheckListForm fr = new CheckListForm("MainForm");
+                CheckListForm fr = new CheckListForm("FloatList");
                 fr.ShowDialog();
             }            
         }

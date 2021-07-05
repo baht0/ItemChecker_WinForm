@@ -5,11 +5,13 @@ using static ItemChecker.Program;
 using System.Threading;
 using ItemChecker.Support;
 using ItemChecker.Net;
+using ItemChecker.Settings;
 using System.Drawing;
 using System.Globalization;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ItemChecker.Presenter
 {
@@ -24,9 +26,11 @@ namespace ItemChecker.Presenter
                 Main.loading = true;
 
                 ServiceChecker._clear();
-
                 if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
-                    checkMrinka();
+                    if (GeneralConfig.Default.proxy & !String.IsNullOrEmpty(Properties.Settings.Default.proxyList))
+                        checkMrinkaProxy();
+                    else
+                        checkMrinka();
                 if (ServiceChecker.service_one == 2 | ServiceChecker.service_two == 2)
                     checkLootFarm();
 
@@ -101,6 +105,43 @@ namespace ItemChecker.Presenter
                     serviceCheckerForm.Invoke(new Action(() => { serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}"; }));
                 }
                 else return;
+            }
+        }
+        private static void checkMrinkaProxy()
+        {
+            int id = 0;
+            for (int i = 0; i < Main.checkList.Count; i++)
+            {
+                try
+                {
+                    string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
+                    string response = Request.GetRequest(url, Main.proxyList[id]);
+
+                    ServiceChecker.price_one.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
+                    ServiceChecker.price2_one.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
+                    ServiceChecker.stUpdated.Add(JObject.Parse(response)["steam"]["updated"].ToString());
+
+                    ServiceChecker.price2_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString()));
+                    ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
+                    ServiceChecker.csmUpdated.Add(JObject.Parse(response)["csm"]["updated"].ToString());
+                    if (Main.unavailable.Contains(Main.checkList[i]))
+                        ServiceChecker.status.Add("Unavailable");
+                    else if (Main.overstock.Contains(Main.checkList[i]))
+                        ServiceChecker.status.Add("Overstock");
+                    else
+                        ServiceChecker.status.Add("Tradable");
+                    serviceCheckerForm.Invoke(new Action(() => { serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}"; }));
+
+                    if (!File.Exists("true.txt")) File.WriteAllText("true.txt", Main.proxyList[id] + "\n");
+                    else File.WriteAllText("true.txt", string.Format("{0}{1}", Main.proxyList[id] + "\n", File.ReadAllText("true.txt")));
+                }
+                catch
+                {
+                    i--;
+                    if (Main.proxyList.Count > id)
+                        id++;
+                    else break;
+                }
             }
         }
         private static void checkLootFarm()
@@ -193,7 +234,7 @@ namespace ItemChecker.Presenter
                 serviceCheckerForm.ownList_dataGridView.Rows[i].Cells[4].Value = ServiceChecker.price_two[i] + "$";
                 serviceCheckerForm.ownList_dataGridView.Rows[i].Cells[5].Value = ServiceChecker.price2_two[i] + "$";
                 serviceCheckerForm.ownList_dataGridView.Rows[i].Cells[6].Value = precent;
-                serviceCheckerForm.ownList_dataGridView.Rows[i].Cells[7].Value = Edit.funcConvert(difference, Main.course);
+                serviceCheckerForm.ownList_dataGridView.Rows[i].Cells[7].Value = Edit.removeSymbol(Edit.funcConvert(difference, Main.course));
                 serviceCheckerForm.ownList_dataGridView.Rows[i].Cells[8].Value = ServiceChecker.status[i];
             }));
 
@@ -244,20 +285,21 @@ namespace ItemChecker.Presenter
                 int row = serviceCheckerForm.ownList_dataGridView.CurrentCell.RowIndex;
                 int cell = serviceCheckerForm.ownList_dataGridView.CurrentCell.ColumnIndex;
                 string item = serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[1].Value.ToString();
-                double sta = Edit.removeSymbol(serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[4].Value.ToString());
+                double sta = Edit.removeSymbol(serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[3].Value.ToString());
 
-                if (!BuyOrder.item.Contains(item) & cell != 4 & sta <= Steam.balance_usd & ServiceChecker.service_one == 0)
+                if (!BuyOrder.item.Contains(item) & cell != 3 & sta <= Steam.balance_usd)
                 {
                     if (!BuyOrder.queue.Contains(item))
                     {
                         BuyOrder.queue_rub += Math.Round(sta * Main.course, 2);
                         BuyOrder.queue.Add(item);
                         serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
+                            if (BuyOrder.queue_rub > BuyOrder.available_amount) 
+                                mainForm.available_label.ForeColor = Color.Red;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
                             serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
-                            serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LimeGreen;
+                            serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LimeGreen;
                         }));
                     }
                     else
@@ -265,11 +307,12 @@ namespace ItemChecker.Presenter
                         BuyOrder.queue_rub -= Math.Round(sta * Main.course, 2);
                         BuyOrder.queue.Remove(item);
                         serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
+                            if (BuyOrder.queue_rub <= BuyOrder.available_amount) 
+                                mainForm.available_label.ForeColor = Color.Black;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
                             serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
-                            serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[4].Style.BackColor = Color.LightGray;
+                            serviceCheckerForm.ownList_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.White;
                         }));
                     }
                 }

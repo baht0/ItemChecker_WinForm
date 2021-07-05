@@ -23,8 +23,6 @@ namespace ItemChecker
         {
             ServiceChecker.checkStop = true;
             Main.loading = false;
-            this.Hide();
-            e.Cancel = true;
         }
 
         //list
@@ -169,7 +167,7 @@ namespace ItemChecker
         }
         private void ownList_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter | e.KeyCode == Keys.Insert & ServiceChecker.service_one == 0) 
+            if (e.KeyCode == Keys.Enter | e.KeyCode == Keys.Insert & ServiceChecker.service_one == 0)
                 ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.addQueue);
         }
     }
