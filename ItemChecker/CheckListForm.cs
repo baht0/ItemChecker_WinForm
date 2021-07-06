@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ItemChecker.Model;
+using ItemChecker.Net;
 using ItemChecker.Presenter;
 using ItemChecker.Support;
+using Newtonsoft.Json.Linq;
 
 namespace ItemChecker
 {
@@ -17,15 +19,21 @@ namespace ItemChecker
             InitializeComponent();
             request = str;
             if (str.Contains("FloatList"))
+            {
+                getToolStripMenuItem.Visible = false;
                 richTextBox1.Text = Properties.Settings.Default.floatList.Trim();
+            }
             else if (str.Contains("ProxyList"))
             {
-                label1.Text = "Example: 127.0.0.1:80. Protocol: HTTP. Uptime >= 70%";
-                getProxysToolStripMenuItem.Visible = true;
+                getToolStripMenuItem.Text = "Get proxys";
+                label1.Text = "Example: 127.0.0.1:80. Protocol: HTTP.";
                 richTextBox1.Text = Properties.Settings.Default.proxyList.Trim();
             }
             else if (str.Contains("SortList"))
+            {
+                getToolStripMenuItem.Text = "Get items";
                 richTextBox1.Text = Properties.Settings.Default.checkList.Trim();
+            }
             this.Text = $"{str}: " + richTextBox1.Lines.Count().ToString();
         }
         private void ok_button_Click(object sender, EventArgs e)
@@ -79,12 +87,32 @@ namespace ItemChecker
                 this.Text = "CheckList: " + richTextBox1.Lines.Count().ToString();
             }
         }
-        private void getProxysToolStripMenuItem_Click(object sender, EventArgs e)
+        private void getToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Edit.openUrl("https://advanced.name/freeproxy/60e33a7a2c1db?type=http");
-            Edit.openUrl("https://geonode.com/free-proxy-list");
-            Edit.openUrl("https://awmproxy.net/freeproxy.php");
-            Edit.openUrl("http://free-proxy.cz/en/proxylist/country/all/http/ping/all");
+            if (request.Contains("ProxyList"))
+            {
+                Edit.openUrl("https://advanced.name/freeproxy/60e33a7a2c1db?type=http");
+                Edit.openUrl("https://geonode.com/free-proxy-list");
+                Edit.openUrl("https://awmproxy.net/freeproxy.php");
+                Edit.openUrl("http://free-proxy.cz/en/proxylist/country/all/http/ping/all");
+            }
+            else if (request.Contains("SortList"))
+            {
+                richTextBox1.Clear();
+                ThreadPool.QueueUserWorkItem(writeInRichTextbox);
+            }
+        }
+        void writeInRichTextbox(object state)
+        {
+            var json = Request.GetRequest("https://loot.farm/fullprice.json");
+            JArray jArray = JArray.Parse(json);
+
+            string str = null;
+            for (int i = 0; i < jArray.Count; i++)
+            {
+                str += jArray[i]["name"].ToString() + "\n";
+            }
+            Invoke(new MethodInvoker(delegate { richTextBox1.Text = str.Trim(); }));
         }
     }
 }

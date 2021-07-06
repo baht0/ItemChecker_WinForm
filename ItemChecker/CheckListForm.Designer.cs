@@ -35,7 +35,7 @@ namespace ItemChecker
             this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.selectFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getProxysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +83,7 @@ namespace ItemChecker
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectFileToolStripMenuItem,
-            this.getProxysToolStripMenuItem});
+            this.getToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(453, 24);
@@ -97,13 +97,12 @@ namespace ItemChecker
             this.selectFileToolStripMenuItem.Text = "Select File";
             this.selectFileToolStripMenuItem.Click += new System.EventHandler(this.selectFileToolStripMenuItem_Click);
             // 
-            // getProxysToolStripMenuItem
+            // getToolStripMenuItem
             // 
-            this.getProxysToolStripMenuItem.Name = "getProxysToolStripMenuItem";
-            this.getProxysToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
-            this.getProxysToolStripMenuItem.Text = "Get proxys";
-            this.getProxysToolStripMenuItem.Visible = false;
-            this.getProxysToolStripMenuItem.Click += new System.EventHandler(this.getProxysToolStripMenuItem_Click);
+            this.getToolStripMenuItem.Name = "getToolStripMenuItem";
+            this.getToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.getToolStripMenuItem.Text = "Get";
+            this.getToolStripMenuItem.Click += new System.EventHandler(this.getToolStripMenuItem_Click);
             // 
             // CheckListForm
             // 
@@ -138,6 +137,6 @@ namespace ItemChecker
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem selectFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem getProxysToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getToolStripMenuItem;
     }
 }

@@ -99,6 +99,7 @@ namespace ItemChecker
             this.inventoryLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.marketLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.settings_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exit_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loading_panel = new System.Windows.Forms.Panel();
             this.ver_label = new System.Windows.Forms.Label();
@@ -201,31 +202,31 @@ namespace ItemChecker
             // 
             this.settings_MainStripMenu.Image = global::ItemChecker.Properties.Resources.setting;
             this.settings_MainStripMenu.Name = "settings_MainStripMenu";
-            this.settings_MainStripMenu.Size = new System.Drawing.Size(134, 22);
+            this.settings_MainStripMenu.Size = new System.Drawing.Size(116, 22);
             this.settings_MainStripMenu.Text = "Settings";
             this.settings_MainStripMenu.Click += new System.EventHandler(this.settings_MainStripMenu_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(131, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(113, 6);
             // 
             // restart_MainStripMenu
             // 
             this.restart_MainStripMenu.Name = "restart_MainStripMenu";
-            this.restart_MainStripMenu.Size = new System.Drawing.Size(134, 22);
+            this.restart_MainStripMenu.Size = new System.Drawing.Size(116, 22);
             this.restart_MainStripMenu.Text = "Restart";
             this.restart_MainStripMenu.Click += new System.EventHandler(this.restart_MainStripMenu_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(131, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -684,9 +685,10 @@ namespace ItemChecker
             this.toolStripSeparator5,
             this.links_toolStripMenuItem,
             this.toolStripSeparator9,
+            this.settings_toolStripMenuItem,
             this.exit_toolStripMenuItem});
             this.taskbar_contextMenuStrip.Name = "taskbar_contextMenuStrip";
-            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(155, 104);
+            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(155, 126);
             // 
             // checkOwnList_toolStripMenuItem
             // 
@@ -763,6 +765,14 @@ namespace ItemChecker
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(151, 6);
+            // 
+            // settings_toolStripMenuItem
+            // 
+            this.settings_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.setting;
+            this.settings_toolStripMenuItem.Name = "settings_toolStripMenuItem";
+            this.settings_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.settings_toolStripMenuItem.Text = "Settings";
+            this.settings_toolStripMenuItem.Click += new System.EventHandler(this.settings_toolStripMenuItem_Click);
             // 
             // exit_toolStripMenuItem
             // 
@@ -1015,6 +1025,7 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         public System.Windows.Forms.Label cancel_label;
+        private System.Windows.Forms.ToolStripMenuItem settings_toolStripMenuItem;
     }
 }
 

@@ -141,7 +141,7 @@ namespace ItemChecker.Net
             var json = JsonConvert.DeserializeObject<RootObject[]>(str);
             List<string> list = new List<string>();
 
-            foreach (var rootObject in json) list.Add(Edit.replaceUnavailable(rootObject.market_hash_name));
+            foreach (var rootObject in json) list.Add(Edit.replaceSymbols(rootObject.market_hash_name));
             return list;
         }
         public List<string> GetUnavailable()
@@ -151,7 +151,7 @@ namespace ItemChecker.Net
             var json = JsonConvert.DeserializeObject<RootObject[]>(str);
             List<string> list = new List<string>();
 
-            foreach (var rootObject in json) list.Add(Edit.replaceUnavailable(rootObject.market_hash_name));
+            foreach (var rootObject in json) list.Add(Edit.replaceSymbols(rootObject.market_hash_name));
             return list;
         }
         private class RootObject

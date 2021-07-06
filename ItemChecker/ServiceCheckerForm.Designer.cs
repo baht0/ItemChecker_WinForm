@@ -30,16 +30,17 @@ namespace ItemChecker
         public void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiceCheckerForm));
-            this.ownList_menuStrip = new System.Windows.Forms.MenuStrip();
+            this.servChecker_menuStrip = new System.Windows.Forms.MenuStrip();
             this.add_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.check_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ownList_statusStrip = new System.Windows.Forms.StatusStrip();
+            this.extractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.servChecker_statusStrip = new System.Windows.Forms.StatusStrip();
             this.count_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.space_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.updated_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.status_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.textBox = new System.Windows.Forms.TextBox();
-            this.ownList_dataGridView = new System.Windows.Forms.DataGridView();
+            this.servChecker_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,23 +58,24 @@ namespace ItemChecker
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.quick_button = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.ownList_menuStrip.SuspendLayout();
-            this.ownList_statusStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ownList_dataGridView)).BeginInit();
+            this.servChecker_menuStrip.SuspendLayout();
+            this.servChecker_statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.servChecker_dataGridView)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ownList_menuStrip
+            // servChecker_menuStrip
             // 
-            this.ownList_menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.servChecker_menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.add_toolStripMenuItem,
-            this.check_toolStripMenuItem});
-            this.ownList_menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.ownList_menuStrip.Name = "ownList_menuStrip";
-            this.ownList_menuStrip.Size = new System.Drawing.Size(883, 24);
-            this.ownList_menuStrip.TabIndex = 0;
-            this.ownList_menuStrip.Text = "menuStrip1";
+            this.check_toolStripMenuItem,
+            this.extractToolStripMenuItem});
+            this.servChecker_menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.servChecker_menuStrip.Name = "servChecker_menuStrip";
+            this.servChecker_menuStrip.Size = new System.Drawing.Size(883, 24);
+            this.servChecker_menuStrip.TabIndex = 0;
+            this.servChecker_menuStrip.Text = "menuStrip1";
             // 
             // add_toolStripMenuItem
             // 
@@ -89,18 +91,25 @@ namespace ItemChecker
             this.check_toolStripMenuItem.Text = "Check";
             this.check_toolStripMenuItem.Click += new System.EventHandler(this.check_toolStripMenuItem_Click);
             // 
-            // ownList_statusStrip
+            // extractToolStripMenuItem
             // 
-            this.ownList_statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.extractToolStripMenuItem.Name = "extractToolStripMenuItem";
+            this.extractToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
+            this.extractToolStripMenuItem.Text = "Extract to *.cvs";
+            this.extractToolStripMenuItem.Click += new System.EventHandler(this.extractToolStripMenuItem_Click);
+            // 
+            // servChecker_statusStrip
+            // 
+            this.servChecker_statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.count_toolStripStatusLabel,
             this.space_toolStripStatusLabel,
             this.updated_toolStripStatusLabel,
             this.status_toolStripStatusLabel});
-            this.ownList_statusStrip.Location = new System.Drawing.Point(0, 495);
-            this.ownList_statusStrip.Name = "ownList_statusStrip";
-            this.ownList_statusStrip.Size = new System.Drawing.Size(883, 22);
-            this.ownList_statusStrip.TabIndex = 1;
-            this.ownList_statusStrip.Text = "statusStrip1";
+            this.servChecker_statusStrip.Location = new System.Drawing.Point(0, 495);
+            this.servChecker_statusStrip.Name = "servChecker_statusStrip";
+            this.servChecker_statusStrip.Size = new System.Drawing.Size(883, 22);
+            this.servChecker_statusStrip.TabIndex = 1;
+            this.servChecker_statusStrip.Text = "statusStrip1";
             // 
             // count_toolStripStatusLabel
             // 
@@ -111,7 +120,7 @@ namespace ItemChecker
             // space_toolStripStatusLabel
             // 
             this.space_toolStripStatusLabel.Name = "space_toolStripStatusLabel";
-            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(817, 17);
+            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(536, 17);
             this.space_toolStripStatusLabel.Spring = true;
             // 
             // updated_toolStripStatusLabel
@@ -138,16 +147,17 @@ namespace ItemChecker
             this.textBox.TabIndex = 2;
             this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
-            // ownList_dataGridView
+            // servChecker_dataGridView
             // 
-            this.ownList_dataGridView.AllowUserToAddRows = false;
-            this.ownList_dataGridView.AllowUserToDeleteRows = false;
-            this.ownList_dataGridView.AllowUserToResizeRows = false;
-            this.ownList_dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.servChecker_dataGridView.AllowUserToAddRows = false;
+            this.servChecker_dataGridView.AllowUserToDeleteRows = false;
+            this.servChecker_dataGridView.AllowUserToResizeRows = false;
+            this.servChecker_dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ownList_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ownList_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.servChecker_dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.servChecker_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.servChecker_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn7,
             this.dataGridViewTextBoxColumn8,
             this.dataGridViewTextBoxColumn9,
@@ -157,74 +167,74 @@ namespace ItemChecker
             this.Column1,
             this.Column2,
             this.Column3});
-            this.ownList_dataGridView.Location = new System.Drawing.Point(12, 110);
-            this.ownList_dataGridView.Name = "ownList_dataGridView";
-            this.ownList_dataGridView.ReadOnly = true;
-            this.ownList_dataGridView.RowHeadersVisible = false;
-            this.ownList_dataGridView.RowTemplate.Height = 25;
-            this.ownList_dataGridView.Size = new System.Drawing.Size(859, 373);
-            this.ownList_dataGridView.TabIndex = 9;
-            this.ownList_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellDoubleClick);
-            this.ownList_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellEnter);
-            this.ownList_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellLeave);
-            this.ownList_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ownList_dataGridView_KeyDown);
+            this.servChecker_dataGridView.Location = new System.Drawing.Point(12, 110);
+            this.servChecker_dataGridView.Name = "servChecker_dataGridView";
+            this.servChecker_dataGridView.ReadOnly = true;
+            this.servChecker_dataGridView.RowHeadersVisible = false;
+            this.servChecker_dataGridView.RowTemplate.Height = 25;
+            this.servChecker_dataGridView.Size = new System.Drawing.Size(859, 373);
+            this.servChecker_dataGridView.TabIndex = 9;
+            this.servChecker_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellDoubleClick);
+            this.servChecker_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellEnter);
+            this.servChecker_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellLeave);
+            this.servChecker_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ownList_dataGridView_KeyDown);
             // 
             // dataGridViewTextBoxColumn7
             // 
+            this.dataGridViewTextBoxColumn7.FillWeight = 0.000422392F;
             this.dataGridViewTextBoxColumn7.HeaderText = "";
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.ReadOnly = true;
             this.dataGridViewTextBoxColumn7.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn7.Width = 5;
             // 
             // dataGridViewTextBoxColumn8
             // 
+            this.dataGridViewTextBoxColumn8.FillWeight = 310F;
             this.dataGridViewTextBoxColumn8.HeaderText = "Item";
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 342;
             // 
             // dataGridViewTextBoxColumn9
             // 
+            this.dataGridViewTextBoxColumn9.FillWeight = 70F;
             this.dataGridViewTextBoxColumn9.HeaderText = "Price (S1)";
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            this.dataGridViewTextBoxColumn9.Width = 65;
             // 
             // dataGridViewTextBoxColumn10
             // 
+            this.dataGridViewTextBoxColumn10.FillWeight = 70F;
             this.dataGridViewTextBoxColumn10.HeaderText = "Price (S1)";
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
-            this.dataGridViewTextBoxColumn10.Width = 65;
             // 
             // dataGridViewTextBoxColumn11
             // 
+            this.dataGridViewTextBoxColumn11.FillWeight = 70F;
             this.dataGridViewTextBoxColumn11.HeaderText = "Price (S2)";
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
             this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            this.dataGridViewTextBoxColumn11.Width = 65;
             // 
             // dataGridViewTextBoxColumn12
             // 
+            this.dataGridViewTextBoxColumn12.FillWeight = 70F;
             this.dataGridViewTextBoxColumn12.HeaderText = "Price (S2)";
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
-            this.dataGridViewTextBoxColumn12.Width = 65;
             // 
             // Column1
             // 
+            this.Column1.FillWeight = 60F;
             this.Column1.HeaderText = "Precent";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
-            this.Column1.Width = 65;
             // 
             // Column2
             // 
+            this.Column2.FillWeight = 80F;
             this.Column2.HeaderText = "Difference";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            this.Column2.Width = 65;
             // 
             // Column3
             // 
@@ -330,21 +340,21 @@ namespace ItemChecker
             this.ClientSize = new System.Drawing.Size(883, 517);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.ownList_dataGridView);
-            this.Controls.Add(this.ownList_statusStrip);
-            this.Controls.Add(this.ownList_menuStrip);
+            this.Controls.Add(this.servChecker_dataGridView);
+            this.Controls.Add(this.servChecker_statusStrip);
+            this.Controls.Add(this.servChecker_menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.ownList_menuStrip;
+            this.MainMenuStrip = this.servChecker_menuStrip;
             this.MinimumSize = new System.Drawing.Size(899, 556);
             this.Name = "ServiceCheckerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ServiceChecker";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServiceCheckerForm_FormClosing);
-            this.ownList_menuStrip.ResumeLayout(false);
-            this.ownList_menuStrip.PerformLayout();
-            this.ownList_statusStrip.ResumeLayout(false);
-            this.ownList_statusStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ownList_dataGridView)).EndInit();
+            this.servChecker_menuStrip.ResumeLayout(false);
+            this.servChecker_menuStrip.PerformLayout();
+            this.servChecker_statusStrip.ResumeLayout(false);
+            this.servChecker_statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.servChecker_dataGridView)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -356,8 +366,8 @@ namespace ItemChecker
 
         #endregion
 
-        public System.Windows.Forms.MenuStrip ownList_menuStrip;
-        public System.Windows.Forms.StatusStrip ownList_statusStrip;
+        public System.Windows.Forms.MenuStrip servChecker_menuStrip;
+        public System.Windows.Forms.StatusStrip servChecker_statusStrip;
         public System.Windows.Forms.ToolStripMenuItem add_toolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem check_toolStripMenuItem;
         public System.Windows.Forms.ToolStripStatusLabel count_toolStripStatusLabel;
@@ -365,7 +375,7 @@ namespace ItemChecker
         public System.Windows.Forms.ToolStripStatusLabel updated_toolStripStatusLabel;
         public System.Windows.Forms.ToolStripStatusLabel status_toolStripStatusLabel;
         public System.Windows.Forms.TextBox textBox;
-        public System.Windows.Forms.DataGridView ownList_dataGridView;
+        public System.Windows.Forms.DataGridView servChecker_dataGridView;
         public System.Windows.Forms.GroupBox groupBox1;
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox secondSer_comboBox;
@@ -374,14 +384,15 @@ namespace ItemChecker
         public System.Windows.Forms.GroupBox groupBox2;
         public System.Windows.Forms.Button quick_button;
         public System.Windows.Forms.Label label3;
-        public System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        public System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-        public System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-        public System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-        public System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
-        public System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
-        public System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        public System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        public System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.ToolStripMenuItem extractToolStripMenuItem;
     }
 }

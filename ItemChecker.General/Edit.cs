@@ -50,7 +50,7 @@ namespace ItemChecker.Support
             return idOrder.Replace("mybuyorder_", "");
         }
 
-        public static String replaceUnavailable(string str)
+        public static String replaceSymbols(string str)
         {
             str = str.Replace("â„¢", "™");
             str = str.Replace("â˜…", "★");

@@ -277,6 +277,20 @@ namespace ItemChecker.Presenter
                 mainForm.timer_StripStatus.Visible = false;
                 mainForm.push_linkLabel.Text = "Push..."; }));
         }
+        public static void updateSettings()
+        {
+            if (Properties.Settings.Default.UpdateSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                GeneralConfig.Default.Upgrade();
+                SteamConfig.Default.Upgrade();
+                TryskinsConfig.Default.Upgrade();
+                WithdrawConfig.Default.Upgrade();
+                FloatConfig.Default.Upgrade();
+                Properties.Settings.Default.UpdateSettings = false;
+                Properties.Settings.Default.Save();
+            }
+        }
 
         public static void messageBalloonTip(string str = "Loading is complete. Open to show.", ToolTipIcon icon = ToolTipIcon.Info, int sec = 5)
         {

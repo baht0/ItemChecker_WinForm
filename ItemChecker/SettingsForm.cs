@@ -193,7 +193,7 @@ namespace ItemChecker
                 {
                     str += i + "\r\n";
                 }
-                File.WriteAllText("extract/steamList_" + DateTime.Now.ToString("yyyy.MM.dd_hh.mm") + ".txt", str);
+                File.WriteAllText($"extract/steamList_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.txt", str);
             }
         }
         private void extractTry_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -207,7 +207,7 @@ namespace ItemChecker
                 {
                     str += i + "\r\n";
                 }
-                File.WriteAllText("extract/tryskinsList_" + DateTime.Now.ToString("yyyy.MM.dd_hh.mm") + ".txt", str);
+                File.WriteAllText($"extract/tryskinsList_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.txt", str);
             }
         }
         private void openFolder_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
