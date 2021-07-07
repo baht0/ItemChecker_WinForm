@@ -77,8 +77,8 @@ namespace ItemChecker.Support
         //time
         public static String convertTime(double time)
         {
-            DateTime end = DateTime.Now;
             DateTime start = UnixTimeToDateTime(time);
+            DateTime end = DateTime.Now;
             double tick = (end - start).TotalSeconds;
 
             TimeSpan tm = TimeSpan.FromSeconds(tick);
@@ -89,6 +89,18 @@ namespace ItemChecker.Support
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddMilliseconds(unixtime).ToLocalTime();
             return dtDateTime;
-        }                
+        }
+        public static String calcTimeLeft(DateTime start, int count, int i)
+        {
+            double sec = (count - ++i) / calcTimeLeftSpeed(start, i);
+            TimeSpan time = TimeSpan.FromSeconds(sec);
+            return time.ToString("hh'h 'mm'min'");
+        }
+        public static Double calcTimeLeftSpeed(DateTime start, int i)
+        {
+            DateTime now = DateTime.Now;
+            var time_passed = now.Subtract(start).TotalSeconds;
+            return Math.Round(++i / time_passed, 1);
+        }
     }
 }

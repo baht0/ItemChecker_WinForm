@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
-using System.Text;
+using ItemChecker.Settings;
 using System.IO;
 
 namespace ItemChecker
@@ -23,8 +23,24 @@ namespace ItemChecker
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ServiceChecker.checkStop = true;
-            Main.loading = false;
+            if (Main.loading | servChecker_dataGridView.Rows.Count > 100)
+            {
+                DialogResult result = MessageBox.Show(
+                  "Do you want to close?",
+                  "Warning",
+                  MessageBoxButtons.YesNo,
+                  MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    ServiceChecker.checkStop = true;
+                    Main.loading = false;
+                }
+                else if (result == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         //menu
@@ -45,6 +61,8 @@ namespace ItemChecker
                 updated_toolStripStatusLabel.Visible = false;
                 status_toolStripStatusLabel.Text = "Checking the list...";
                 status_toolStripStatusLabel.Visible = true;
+                if (GeneralConfig.Default.proxy)
+                    timeLeft_toolStripStatusLabel.Visible = true;
                 count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
                 this.Text = $"ServiceChecker: {firstSer_comboBox.Text} -> {secondSer_comboBox.Text}";
                 ServiceChecker.service_one = ser_1;
@@ -56,35 +74,9 @@ namespace ItemChecker
         }
         private void extractToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (servChecker_dataGridView.Rows.Count > 0)
-                {
-
-                    string csv = null;
-                    foreach (DataGridViewColumn column in servChecker_dataGridView.Columns)
-                    {
-                        csv += column.HeaderText + ',';
-                    }
-                    csv += "\r\n";
-                    foreach (DataGridViewRow row in servChecker_dataGridView.Rows)
-                    {
-                        foreach (DataGridViewCell cell in row.Cells)
-                        {
-                            csv += cell.Value;
-                            csv += ",";
-                        }
-                        csv += "\r\n";
-                    }
-                    File.WriteAllText(Application.StartupPath.Replace(@"\", @"\\") + $"extract\\serviceChecker_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.csv", Edit.replaceSymbols(csv));
-                }
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorLog(exp, Main.version);
-                Exceptions.errorMessage(exp, currMethodName);
-            }
+            status_toolStripStatusLabel.Text = "Extract the list to *.csv...";
+            status_toolStripStatusLabel.Visible = true;
+            ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.extractCsv);
         }
 
         //comboboxs

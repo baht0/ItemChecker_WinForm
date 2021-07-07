@@ -32,6 +32,8 @@ namespace ItemChecker
             else if (str.Contains("SortList"))
             {
                 getToolStripMenuItem.Text = "Get items";
+                lootFarmToolStripMenuItem.Visible = true;
+                csMoneyToolStripMenuItem.Visible = true;
                 richTextBox1.Text = Properties.Settings.Default.checkList.Trim();
             }
             this.Text = $"{str}: " + richTextBox1.Lines.Count().ToString();
@@ -91,26 +93,43 @@ namespace ItemChecker
         {
             if (request.Contains("ProxyList"))
             {
-                Edit.openUrl("https://advanced.name/freeproxy/60e33a7a2c1db?type=http");
+                Edit.openUrl("https://advanced.name/freeproxy?type=http");
                 Edit.openUrl("https://geonode.com/free-proxy-list");
                 Edit.openUrl("https://awmproxy.net/freeproxy.php");
                 Edit.openUrl("http://free-proxy.cz/en/proxylist/country/all/http/ping/all");
             }
-            else if (request.Contains("SortList"))
+        }
+        private void lootFarmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (request.Contains("SortList"))
             {
                 richTextBox1.Clear();
-                ThreadPool.QueueUserWorkItem(writeInRichTextbox);
+                ThreadPool.QueueUserWorkItem(WriteInRichTextbox, new object[] { "https://loot.farm/fullprice.json" });
             }
         }
-        void writeInRichTextbox(object state)
+        private void csMoneyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var json = Request.GetRequest("https://loot.farm/fullprice.json");
+            if (request.Contains("SortList"))
+            {
+                richTextBox1.Clear();
+                ThreadPool.QueueUserWorkItem(WriteInRichTextbox, new object[] { "https://broskins.com/csmoneyfeed.php?_=1625556262031" });
+            }
+        }
+        void WriteInRichTextbox(object state)
+        {
+            object[] args = state as object[];
+            string url = args[0].ToString();
+            var json = Request.GetRequest(url);
+            if (url.Contains("csmoney"))
+                json = JObject.Parse(json)["data"].ToString();
             JArray jArray = JArray.Parse(json);
 
             string str = null;
             for (int i = 0; i < jArray.Count; i++)
             {
-                str += jArray[i]["name"].ToString() + "\n";
+                string item = jArray[i]["name"].ToString();
+                if (!Main.unavailable.Contains(item))
+                    str += item + "\n";
             }
             Invoke(new MethodInvoker(delegate { richTextBox1.Text = str.Trim(); }));
         }

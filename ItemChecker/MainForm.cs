@@ -10,7 +10,6 @@ using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
 using ItemChecker.Settings;
-using OpenQA.Selenium;
 using Keys = System.Windows.Forms.Keys;
 
 namespace ItemChecker
@@ -29,8 +28,7 @@ namespace ItemChecker
                     "The program is already running!",
                     "Warning",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                    );
+                    MessageBoxIcon.Warning );
                 Process.GetCurrentProcess().Kill();
             }
             foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
@@ -303,6 +301,10 @@ namespace ItemChecker
         {
             if (e.KeyCode == Keys.Enter | e.KeyCode == Keys.Insert) ThreadPool.QueueUserWorkItem(TryskinsPresenter.addQueue);
         }
+        private void tryskins_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            TryskinsPresenter.drawDTGView();
+        }
         //buyorder table
         private void buyOrder_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -369,6 +371,10 @@ namespace ItemChecker
                     ThreadPool.QueueUserWorkItem(BuyOrderPresenter.CancelOrder);
             }
         }
+        private void buyOrder_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            BuyOrderPresenter.drawDTGView();
+        }
         //withdraw
         private void withdraw_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -427,6 +433,10 @@ namespace ItemChecker
                 }
             }
             catch { }
+        }
+        private void withdraw_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            WithdrawPresenter.drawDTGView();
         }
 
         //tree

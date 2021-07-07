@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
-using System.ComponentModel;
+using System.Data;
 
 namespace ItemChecker.Presenter
 {
@@ -21,7 +21,7 @@ namespace ItemChecker.Presenter
             try
             {
                 withdrawCheck();
-                createWithdraw();
+                createDTable();
             }
             catch (Exception exp)
             {
@@ -107,52 +107,60 @@ namespace ItemChecker.Presenter
                 double st = Edit.removeDol(prices[2].Trim());
 
                 Withdraw.item.Add(item_name);
-                Withdraw.sales.Add(sales);
                 Withdraw.csm.Add(csm);
                 Withdraw.st.Add(st);
+                Withdraw.sales.Add(sales);
                 Withdraw.precent.Add(precent);
                 mainForm.withdraw_dataGridView.Columns[1].HeaderText = $"Item (Withdraw) - {Withdraw.item.Count}";
             }
         }
-        public static void createWithdraw()
+        public static void createDTable()
         {
-            try
-            {
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.status_StripStatus.Text = "Table Withdraw...";
-                    mainForm.withdraw_dataGridView.Columns[4].ValueType = typeof(Int32);
-                    mainForm.withdraw_dataGridView.Columns[5].ValueType = typeof(Double);
-                }));
-                for (int i = 0; i < Withdraw.item.Count(); i++)
-                {
-                    mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.withdraw_dataGridView.Rows.Add();
-                        mainForm.withdraw_dataGridView.Rows[i].Cells[1].Value = Withdraw.item[i];
-                        mainForm.withdraw_dataGridView.Rows[i].Cells[2].Value = Withdraw.csm[i] + "$";
-                        mainForm.withdraw_dataGridView.Rows[i].Cells[3].Value = Withdraw.st[i] + "$";
-                        mainForm.withdraw_dataGridView.Rows[i].Cells[4].Value = Withdraw.sales[i];
-                        mainForm.withdraw_dataGridView.Rows[i].Cells[5].Value = Withdraw.precent[i];
-                    }));
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.status_StripStatus.Text = "Table Withdraw...";
+                mainForm.withdraw_dataGridView.Columns[4].ValueType = typeof(Int32);
+                mainForm.withdraw_dataGridView.Columns[5].ValueType = typeof(Double);
+            }));
+            MainPresenter.clearDTGView(mainForm.withdraw_dataGridView);
 
-                    if (Withdraw.precent[i] < 5) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[5].Style.BackColor = Color.LightSalmon; }));
-                    if (Withdraw.precent[i] > 10) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[5].Style.BackColor = Color.PaleGreen; }));
-                    if (Withdraw.sales[i] > 1000) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
-                    if (Withdraw.item[i].Contains("Sticker") || Withdraw.item[i].Contains("Graffiti")) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DeepSkyBlue; }));
-                    if (Withdraw.item[i].Contains("StatTrak")) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
-                    if (Withdraw.item[i].Contains("★")) mainForm.withdraw_dataGridView.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
-                    mainForm.Invoke(new Action(() => { mainForm.withdraw_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.LightGray; }));
-                }
-            }
-            catch (Exception exp)
+            DataTable table = new DataTable();
+            for (int i = 0; i < mainForm.withdraw_dataGridView.ColumnCount; ++i)
             {
-                Exceptions.errorLog(exp, Main.version);
+                table.Columns.Add(new DataColumn(mainForm.withdraw_dataGridView.Columns[i].Name));
+                mainForm.withdraw_dataGridView.Columns[i].DataPropertyName = mainForm.withdraw_dataGridView.Columns[i].Name;
             }
-            finally
+            for (int i = 0; i < Withdraw.item.Count; i++)
             {
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.withdraw_dataGridView.Sort(mainForm.withdraw_dataGridView.Columns[4], ListSortDirection.Descending);
-                    mainForm.status_StripStatus.Visible = false;
-                }));
+                table.Rows.Add(null,
+                        Withdraw.item[i],
+                        Withdraw.csm[i] + "$",
+                        Withdraw.st[i] + "$",
+                        Withdraw.sales[i],
+                        Withdraw.precent[i]);
+            }
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.withdraw_dataGridView.DataSource = table; }));
+            drawDTGView();
+        }
+        public static void drawDTGView()
+        {
+            foreach (DataGridViewRow row in mainForm.withdraw_dataGridView.Rows)
+            {
+                var item = row.Cells[1].Value.ToString();
+                var sales = Convert.ToDouble(row.Cells[4].Value.ToString());
+                var precent = Edit.removeSymbol(row.Cells[5].Value.ToString());
+                if (precent < 5)
+                    row.Cells[5].Style.BackColor = Color.LightSalmon;
+                if (precent > 10)
+                    row.Cells[5].Style.BackColor = Color.PaleGreen;
+                if (sales > 1000)
+                    row.Cells[4].Style.BackColor = Color.MediumSeaGreen;
+                if (item.Contains("Sticker") | item.Contains("Graffiti"))
+                    row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
+                if (item.Contains("StatTrak"))
+                    row.Cells[0].Style.BackColor = Color.Orange;
+                if (item.Contains("★"))
+                    row.Cells[0].Style.BackColor = Color.DarkViolet;
+                row.Cells[2].Style.BackColor = Color.LightGray;
             }
         }
     }

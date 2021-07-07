@@ -36,6 +36,7 @@ namespace ItemChecker
             this.extractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.servChecker_statusStrip = new System.Windows.Forms.StatusStrip();
             this.count_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timeLeft_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.space_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.updated_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.status_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -102,6 +103,7 @@ namespace ItemChecker
             // 
             this.servChecker_statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.count_toolStripStatusLabel,
+            this.timeLeft_toolStripStatusLabel,
             this.space_toolStripStatusLabel,
             this.updated_toolStripStatusLabel,
             this.status_toolStripStatusLabel});
@@ -117,10 +119,17 @@ namespace ItemChecker
             this.count_toolStripStatusLabel.Size = new System.Drawing.Size(51, 17);
             this.count_toolStripStatusLabel.Text = "Count: -";
             // 
+            // timeLeft_toolStripStatusLabel
+            // 
+            this.timeLeft_toolStripStatusLabel.Name = "timeLeft_toolStripStatusLabel";
+            this.timeLeft_toolStripStatusLabel.Size = new System.Drawing.Size(64, 17);
+            this.timeLeft_toolStripStatusLabel.Text = "TimeLeft: -";
+            this.timeLeft_toolStripStatusLabel.Visible = false;
+            // 
             // space_toolStripStatusLabel
             // 
             this.space_toolStripStatusLabel.Name = "space_toolStripStatusLabel";
-            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(536, 17);
+            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(817, 17);
             this.space_toolStripStatusLabel.Spring = true;
             // 
             // updated_toolStripStatusLabel
@@ -394,5 +403,6 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.ToolStripMenuItem extractToolStripMenuItem;
+        public System.Windows.Forms.ToolStripStatusLabel timeLeft_toolStripStatusLabel;
     }
 }

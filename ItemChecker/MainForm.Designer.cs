@@ -553,6 +553,7 @@ namespace ItemChecker
             this.tryskins_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tryskins_dataGridView_CellDoubleClick);
             this.tryskins_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.tryskins_dataGridView_CellEnter);
             this.tryskins_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tryskins_dataGridView_CellLeave);
+            this.tryskins_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tryskins_dataGridView_ColumnHeaderMouseClick);
             this.tryskins_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tryskins_dataGridView_KeyDown);
             // 
             // color
@@ -622,6 +623,7 @@ namespace ItemChecker
             this.buyOrder_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.buyOrder_dataGridView_CellDoubleClick);
             this.buyOrder_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.buyOrder_dataGridView_CellEnter);
             this.buyOrder_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.buyOrder_dataGridView_CellLeave);
+            this.buyOrder_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.buyOrder_dataGridView_ColumnHeaderMouseClick);
             this.buyOrder_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.buyOrder_dataGridView_KeyDown);
             // 
             // dataGridViewTextBoxColumn1
@@ -837,6 +839,7 @@ namespace ItemChecker
             this.withdraw_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellDoubleClick);
             this.withdraw_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellEnter);
             this.withdraw_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellLeave);
+            this.withdraw_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.withdraw_dataGridView_ColumnHeaderMouseClick);
             // 
             // dataGridViewTextBoxColumn7
             // 

@@ -4,7 +4,6 @@ using System.Threading;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium;
-using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Globalization;
@@ -16,6 +15,7 @@ using ItemChecker.Settings;
 using ItemChecker.Net;
 using System.Linq;
 using System.Collections.Generic;
+using System.Data;
 
 namespace ItemChecker.Presenter
 {
@@ -88,15 +88,7 @@ namespace ItemChecker.Presenter
                 }
                 while (!response.Item2);
 
-                double my_order = Convert.ToDouble(BuyOrder.price[i]);
-                var buy_order = Math.Round(my_order / Main.course, 2);
-                var csm_sell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
-                var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
-                var diff = Math.Round((csm_sell * Main.course) - my_order, 2);
-
-                BuyOrder.csm_price.Add(csm_sell);
-                BuyOrder.precent.Add(prec);
-                BuyOrder.difference.Add(diff);
+                parseOrder(response.Item1, i);
             }
             MainPresenter.progressInvoke();
         }
@@ -112,15 +104,7 @@ namespace ItemChecker.Presenter
                     string url = @"http://188.166.72.201:8080/singleitem?i=" + BuyOrder.url[i];
                     var response = Request.GetRequest(url, Main.proxyList[id]);
 
-                    double my_order = Convert.ToDouble(BuyOrder.price[i]);
-                    var buy_order = Math.Round(my_order / Main.course, 2);
-                    var csm_sell = Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString());
-                    var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
-                    var diff = Math.Round((csm_sell * Main.course) - my_order, 2);
-
-                    BuyOrder.csm_price.Add(csm_sell);
-                    BuyOrder.precent.Add(prec);
-                    BuyOrder.difference.Add(diff);
+                    parseOrder(response, i);
                 }
                 catch
                 {
@@ -132,81 +116,78 @@ namespace ItemChecker.Presenter
             }
             MainPresenter.progressInvoke();
         }
-        public static void createSteamTable()
+        private static void parseOrder(string response, int i)
+        {
+            double my_order = Convert.ToDouble(BuyOrder.price[i]);
+            var buy_order = Math.Round(my_order / Main.course, 2);
+            var csm_sell = Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString());
+            var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
+            var diff = Math.Round((csm_sell * Main.course) - my_order, 2);
+
+            BuyOrder.csm_price.Add(csm_sell);
+            BuyOrder.precent.Add(prec);
+            BuyOrder.difference.Add(diff);
+        }
+        public static void createDTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.status_StripStatus.Text = "Write Steam...";
-                mainForm.buyOrder_dataGridView.Rows.Clear();
-            }));
-            int s = 0;
+                mainForm.buyOrder_dataGridView.Columns[4].ValueType = mainForm.buyOrder_dataGridView.Columns[5].ValueType = typeof(Double); }));
+            MainPresenter.clearDTGView(mainForm.buyOrder_dataGridView);
 
+            DataTable table = new DataTable();
+            for (int i = 0; i < mainForm.buyOrder_dataGridView.ColumnCount; ++i)
+            {
+                table.Columns.Add(new DataColumn(mainForm.buyOrder_dataGridView.Columns[i].Name));
+                mainForm.buyOrder_dataGridView.Columns[i].DataPropertyName = mainForm.buyOrder_dataGridView.Columns[i].Name;
+            }
             for (int i = 0; i < BuyOrder.item.Count; i++)
             {
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Rows.Add(); }));
-                if (!Main.overstock.Contains(BuyOrder.item[i]) & !Main.unavailable.Contains(BuyOrder.item[i]))
-                {
-                    mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[1].Value = BuyOrder.item[i];
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = BuyOrder.price[i] + "₽";
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[3].Value = BuyOrder.csm_price[i] + "$";
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Value = BuyOrder.precent[i];
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[5].Value = BuyOrder.difference[i];
-                    }));
+                table.Rows.Add(null,
+                        BuyOrder.item[i],
+                        BuyOrder.price[i] + "₽",
+                        BuyOrder.csm_price[i] + "$",
+                        BuyOrder.precent[i],
+                        BuyOrder.difference[i] );
 
-                    if (BuyOrder.precent[i] < 25) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.OrangeRed; }));
-                    if (BuyOrder.precent[i] > 35) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.MediumSeaGreen; }));
-                    if (Convert.ToDouble(BuyOrder.price[i]) > Steam.balance) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Crimson; }));
-                    if (BuyOrder.item[i].Contains("Sticker") || BuyOrder.item[i].Contains("Graffiti")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DeepSkyBlue; }));
-                    if (BuyOrder.item[i].Contains("Souvenir")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Yellow; }));
-                    if (BuyOrder.item[i].Contains("StatTrak")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.Orange; }));
-                    if (BuyOrder.item[i].Contains("★")) mainForm.Invoke(new Action(() => { mainForm.buyOrder_dataGridView.Rows[i].Cells[0].Style.BackColor = Color.DarkViolet; }));
-                    if (BuyOrder.precent[i] <= SteamConfig.Default.autoDelete & BuyOrder.precent[i] != -100)
-                    {
-                        Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
-                        BuyOrder.removeAtItem(BuyOrder.item.IndexOf(BuyOrder.item[i]));
-                        mainForm.Invoke(new Action(() => {
-                            mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
-                            mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Style.BackColor = Color.Red;
-                            mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = "Cancel";
-                            mainForm.cancel_label.Text = "Cancel: " + BuyOrder.int_cancel++.ToString();
-                            mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
-                        continue;
-                    }
-                }
-                else if (Main.overstock.Contains(BuyOrder.item[i]))
+                mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}"; }));
+            }
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.DataSource = table; }));
+            drawDTGView();
+        }
+        public static void drawDTGView()
+        {
+            foreach (DataGridViewRow row in mainForm.buyOrder_dataGridView.Rows)
+            {
+                var item = row.Cells[1].Value.ToString();
+                var price = Edit.removeSymbol(row.Cells[2].Value.ToString());
+                var precent = Edit.removeDol(row.Cells[4].Value.ToString());
+                if (precent < 25)
+                    row.Cells[4].Style.BackColor = Color.OrangeRed;
+                if (precent > 35)
+                    row.Cells[4].Style.BackColor = Color.MediumSeaGreen;
+                if (price > Steam.balance)
+                    row.Cells[2].Style.BackColor = Color.Crimson;
+                if (item.Contains("Sticker") | item.Contains("Graffiti"))
+                    row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
+                if (item.Contains("Souvenir"))
+                    row.Cells[0].Style.BackColor = Color.Yellow;
+                if (item.Contains("StatTrak"))
+                    row.Cells[0].Style.BackColor = Color.Orange;
+                if (item.Contains("★"))
+                    row.Cells[0].Style.BackColor = Color.DarkViolet;
+                if (precent <= SteamConfig.Default.autoDelete & precent != -100)
                 {
-                    s++;
-                    mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.steamMarket_label.ForeColor = Color.Red;
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[1].Style.BackColor = Color.Red;
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.Red;
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[1].Value = BuyOrder.item[i];
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = BuyOrder.price[i] + "₽";
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[3].Value = "Overstock";
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Value = BuyOrder.precent[i];
-                    }));
-                }
-                else if (Main.unavailable.Contains(BuyOrder.item[i]))
-                {
-                    s++;
-                    mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.steamMarket_label.ForeColor = Color.Red;
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[1].Style.BackColor = Color.Red;
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Style.BackColor = Color.Red;
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[1].Value = BuyOrder.item[i];
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[2].Value = BuyOrder.price[i] + "₽";
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[3].Value = "Unavailable";
-                        mainForm.buyOrder_dataGridView.Rows[i].Cells[4].Value = BuyOrder.precent[i];
-                    }));
+                    int id = BuyOrder.item.IndexOf(item);
+                    Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[id], Main.sessionid));
+                    BuyOrder.removeAtItem(id);
+                    row.Cells[2].Style.BackColor = Color.Red;
+                    row.Cells[2].Value = "Cancel";
+                    mainForm.Invoke(new Action(() => {
+                        mainForm.cancel_label.Text = "Cancel: " + BuyOrder.int_cancel++.ToString();
+                        mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
                 }
             }
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.buyOrder_dataGridView.Columns[4].ValueType = mainForm.buyOrder_dataGridView.Columns[5].ValueType = typeof(Double);
-                mainForm.buyOrder_dataGridView.Sort(mainForm.buyOrder_dataGridView.Columns[5], ListSortDirection.Ascending);
-                mainForm.steamMarket_label.Text = "SteamMarket: " + Convert.ToString(s);
-            }));
-
-            MainPresenter.progressInvoke();
         }
 
         //place order

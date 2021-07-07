@@ -36,6 +36,8 @@ namespace ItemChecker
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.selectFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.getToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lootFarmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.csMoneyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -99,10 +101,29 @@ namespace ItemChecker
             // 
             // getToolStripMenuItem
             // 
+            this.getToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lootFarmToolStripMenuItem,
+            this.csMoneyToolStripMenuItem});
             this.getToolStripMenuItem.Name = "getToolStripMenuItem";
             this.getToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.getToolStripMenuItem.Text = "Get";
             this.getToolStripMenuItem.Click += new System.EventHandler(this.getToolStripMenuItem_Click);
+            // 
+            // lootFarmToolStripMenuItem
+            // 
+            this.lootFarmToolStripMenuItem.Name = "lootFarmToolStripMenuItem";
+            this.lootFarmToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lootFarmToolStripMenuItem.Text = "Loot.Farm";
+            this.lootFarmToolStripMenuItem.Visible = false;
+            this.lootFarmToolStripMenuItem.Click += new System.EventHandler(this.lootFarmToolStripMenuItem_Click);
+            // 
+            // csMoneyToolStripMenuItem
+            // 
+            this.csMoneyToolStripMenuItem.Name = "csMoneyToolStripMenuItem";
+            this.csMoneyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.csMoneyToolStripMenuItem.Text = "Cs.Money";
+            this.csMoneyToolStripMenuItem.Visible = false;
+            this.csMoneyToolStripMenuItem.Click += new System.EventHandler(this.csMoneyToolStripMenuItem_Click);
             // 
             // CheckListForm
             // 
@@ -138,5 +159,7 @@ namespace ItemChecker
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem selectFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lootFarmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem csMoneyToolStripMenuItem;
     }
 }

@@ -12,6 +12,7 @@ using ItemChecker.Support;
 using ItemChecker.Net;
 using ItemChecker.Model;
 using System.IO;
+using System.Data;
 
 namespace ItemChecker.Presenter
 {
@@ -154,15 +155,15 @@ namespace ItemChecker.Presenter
                     BuyOrderPresenter.checkOrdersProxy();
                 else
                     BuyOrderPresenter.checkOrders();
-                BuyOrderPresenter.createSteamTable();
+                BuyOrderPresenter.createDTable();
             }
             else progressInvoke(3);
         }
         private static void loadDataTryskins()
         {
-            TryskinsPresenter.checkTryskins();
+            TryskinsPresenter.getItemsTryskins();
             if (TrySkins.item.Count > 0)
-                TryskinsPresenter.createTryTable();
+                TryskinsPresenter.createDTable();
             else progressInvoke();
         }
 
@@ -208,7 +209,7 @@ namespace ItemChecker.Presenter
                 else if (Main.reload == 4)//withdraw
                 {
                     WithdrawPresenter.withdrawCheck();
-                    WithdrawPresenter.createWithdraw();
+                    WithdrawPresenter.createDTable();
                 }
             }
             catch (Exception exp)
@@ -228,6 +229,12 @@ namespace ItemChecker.Presenter
             }
         }
         //other
+        public static void clearDTGView(DataGridView dataGridView)
+        {
+            DataTable DT = (DataTable)dataGridView.DataSource;
+            if (DT != null)
+                mainForm.Invoke(new MethodInvoker(delegate { DT.Rows.Clear(); }));
+        }
         public static void clearAll()
         {
             stopPush();
