@@ -29,8 +29,6 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 Exceptions.errorLog(exp, Main.version);
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorMessage(exp, currMethodName);
             }
         }
     }

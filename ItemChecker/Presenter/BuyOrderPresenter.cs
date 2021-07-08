@@ -130,9 +130,7 @@ namespace ItemChecker.Presenter
         }
         public static void createDTable()
         {
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Write Steam...";
-                mainForm.buyOrder_dataGridView.Columns[4].ValueType = mainForm.buyOrder_dataGridView.Columns[5].ValueType = typeof(Double); }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Steam..."; }));
             MainPresenter.clearDTGView(mainForm.buyOrder_dataGridView);
 
             DataTable table = new DataTable();
@@ -141,6 +139,8 @@ namespace ItemChecker.Presenter
                 table.Columns.Add(new DataColumn(mainForm.buyOrder_dataGridView.Columns[i].Name));
                 mainForm.buyOrder_dataGridView.Columns[i].DataPropertyName = mainForm.buyOrder_dataGridView.Columns[i].Name;
             }
+            table.Columns[4].DataType = typeof(Double);
+            table.Columns[5].DataType = typeof(Double);
             for (int i = 0; i < BuyOrder.item.Count; i++)
             {
                 table.Rows.Add(null,

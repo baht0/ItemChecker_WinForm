@@ -56,14 +56,17 @@ namespace ItemChecker.Presenter
 
             items = checkItem(items);
 
-            if (TryskinsConfig.Default.fastTime)
-                checkItems(items);
-            else if (TryskinsConfig.Default.longTime)
+            if (items.Any())
             {
-                if (!GeneralConfig.Default.proxy)
-                    checkItemsMrinka(items);
-                else
-                    checkItemsMrinkaProxy(items);
+                if (TryskinsConfig.Default.fastTime)
+                    checkItems(items);
+                else if (TryskinsConfig.Default.longTime)
+                {
+                    if (!GeneralConfig.Default.proxy)
+                        checkItemsMrinka(items);
+                    else
+                        checkItemsMrinkaProxy(items);
+                }
             }
             MainPresenter.progressInvoke();
         }
@@ -74,7 +77,12 @@ namespace ItemChecker.Presenter
                 string[] str = items[i].Text.Split("\n");
                 string item_name = str[0].Trim();
 
-                if (TrySkins.item.Contains(item_name) | BuyOrder.item.Contains(item_name))
+                if (item_name.Contains("Или криво настроили фильтры") | item_name.Contains("Or poorly configured filters"))
+                {
+                    items.Clear();
+                    mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_dataGridView.Rows.Add(null, "TrySkins returned empty list."); }));
+                }
+                else if (TrySkins.item.Contains(item_name) | BuyOrder.item.Contains(item_name))
                 {
                     items.RemoveAt(i);
                 }
@@ -191,17 +199,17 @@ namespace ItemChecker.Presenter
         }
         public static void createDTable()
         {
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Write Tryskins...";
-                mainForm.tryskins_dataGridView.Columns[4].ValueType = mainForm.tryskins_dataGridView.Columns[5].ValueType = typeof(Double); }));
-            MainPresenter.clearDTGView(mainForm.tryskins_dataGridView);
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Tryskins...";}));
 
+            MainPresenter.clearDTGView(mainForm.tryskins_dataGridView);
             DataTable table = new DataTable();
             for (int i = 0; i < mainForm.tryskins_dataGridView.ColumnCount; ++i)
             {
-                table.Columns.Add(new DataColumn(mainForm.tryskins_dataGridView.Columns[i].Name));
+                table.Columns.Add(new DataColumn( mainForm.tryskins_dataGridView.Columns[i].Name ));
                 mainForm.tryskins_dataGridView.Columns[i].DataPropertyName = mainForm.tryskins_dataGridView.Columns[i].Name;
             }
+            table.Columns[4].DataType = typeof(Double);
+            table.Columns[5].DataType = typeof(Double);
             for (int i = 0; i < TrySkins.item.Count; i++)
             {
                 table.Rows.Add(null,

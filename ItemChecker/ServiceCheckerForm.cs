@@ -6,7 +6,6 @@ using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
 using ItemChecker.Settings;
-using System.IO;
 
 namespace ItemChecker
 {
@@ -23,7 +22,7 @@ namespace ItemChecker
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Main.loading | servChecker_dataGridView.Rows.Count > 100)
+            if (Main.loading | servChecker_dataGridView.Rows.Count > 200)
             {
                 DialogResult result = MessageBox.Show(
                   "Do you want to close?",
@@ -200,6 +199,10 @@ namespace ItemChecker
         {
             if (e.KeyCode == Keys.Enter | e.KeyCode == Keys.Insert & ServiceChecker.service_one == 0)
                 ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.addQueue);
+        }
+        private void servChecker_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            ServiceCheckerPresenter.drawDTGView();
         }
     }
 }

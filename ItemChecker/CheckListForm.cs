@@ -128,7 +128,7 @@ namespace ItemChecker
             for (int i = 0; i < jArray.Count; i++)
             {
                 string item = jArray[i]["name"].ToString();
-                if (!Main.unavailable.Contains(item))
+                if (!Main.unavailable.Contains(item) & !Main.overstock.Contains(item) & url.Contains("csmoney"))
                     str += item + "\n";
             }
             Invoke(new MethodInvoker(delegate { richTextBox1.Text = str.Trim(); }));
