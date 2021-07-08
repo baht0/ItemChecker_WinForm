@@ -117,21 +117,33 @@ namespace ItemChecker
         }
         void WriteInRichTextbox(object state)
         {
-            object[] args = state as object[];
-            string url = args[0].ToString();
-            var json = Request.GetRequest(url);
-            if (url.Contains("csmoney"))
-                json = JObject.Parse(json)["data"].ToString();
-            JArray jArray = JArray.Parse(json);
-
-            string str = null;
-            for (int i = 0; i < jArray.Count; i++)
+            try
             {
-                string item = jArray[i]["name"].ToString();
-                if (!Main.unavailable.Contains(item) & !Main.overstock.Contains(item) & url.Contains("csmoney"))
-                    str += item + "\n";
+                object[] args = state as object[];
+                string url = args[0].ToString();
+                var json = Request.GetRequest(url);
+                if (url.Contains("csmoney"))
+                    json = JObject.Parse(json)["data"].ToString();
+                JArray jArray = JArray.Parse(json);
+
+                string str = null;
+                for (int i = 0; i < jArray.Count; i++)
+                {
+                    string item = jArray[i]["name"].ToString();
+                    if (url.Contains("loot.farm"))
+                        str += item + "\n";
+                    else if (!Main.unavailable.Contains(item) & !Main.overstock.Contains(item))
+                        str += item + "\n";
+
+                }
+                Invoke(new MethodInvoker(delegate { richTextBox1.Text = str.Trim(); }));
             }
-            Invoke(new MethodInvoker(delegate { richTextBox1.Text = str.Trim(); }));
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+            }
         }
     }
 }

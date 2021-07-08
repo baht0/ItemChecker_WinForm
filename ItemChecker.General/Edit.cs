@@ -69,9 +69,17 @@ namespace ItemChecker.Support
 
             return value.ToString() + "₽";
         }
-        public static Double difference(double csm, double st, double currency)
+        public static Double Precent(double a, double b) //from A to B
         {
-            return Math.Round((csm - st) * currency, 2);
+            return Math.Round(((b - a) / a) * 100, 2);
+        }
+        public static Double Difference(double a, double b)
+        {
+            return Math.Round((a - b), 2);
+        }
+        public static Double Difference(double a, double b, double currency)
+        {
+            return Math.Round((a - b) * currency, 2);
         }
 
         //time
@@ -92,15 +100,18 @@ namespace ItemChecker.Support
         }
         public static String calcTimeLeft(DateTime start, int count, int i)
         {
-            double sec = (count - ++i) / calcTimeLeftSpeed(start, i);
-            TimeSpan time = TimeSpan.FromSeconds(sec);
-            return time.ToString("hh'h 'mm'min'");
+            double min = (count - ++i) / calcTimeLeftSpeed(start, i);
+            TimeSpan time = TimeSpan.FromMinutes(min);
+            if (min > 60)
+                return time.ToString("hh'h 'mm'min'");
+            else
+                return time.ToString("mm'min 'ss'sec.'");
         }
         public static Double calcTimeLeftSpeed(DateTime start, int i)
         {
             DateTime now = DateTime.Now;
-            var time_passed = now.Subtract(start).TotalSeconds;
-            return Math.Round(++i / time_passed, 1);
+            var time_passed = now.Subtract(start).TotalMinutes;
+            return Math.Round(++i / time_passed, 2);
         }
     }
 }

@@ -121,12 +121,12 @@ namespace ItemChecker.Presenter
             double my_order = Convert.ToDouble(BuyOrder.price[i]);
             var buy_order = Math.Round(my_order / Main.course, 2);
             var csm_sell = Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString());
-            var prec = Math.Round(((csm_sell - buy_order) / buy_order) * 100, 2);
-            var diff = Math.Round((csm_sell * Main.course) - my_order, 2);
+            var precent = Edit.Precent(buy_order, csm_sell);
+            var different = Edit.Difference(csm_sell * Main.course, my_order);
 
             BuyOrder.csm_price.Add(csm_sell);
-            BuyOrder.precent.Add(prec);
-            BuyOrder.difference.Add(diff);
+            BuyOrder.precent.Add(precent);
+            BuyOrder.difference.Add(different);
         }
         public static void createDTable()
         {

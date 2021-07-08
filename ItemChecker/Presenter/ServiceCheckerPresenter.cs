@@ -17,6 +17,8 @@ namespace ItemChecker.Presenter
 {
     class ServiceCheckerPresenter
     {
+        static DateTime start;
+        static int i;
         public static void checkMain(object state)
         {
             try
@@ -24,6 +26,7 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 ServiceChecker._clear();
+                ThreadPool.QueueUserWorkItem(TimeLeft);
                 if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
                     if (GeneralConfig.Default.proxy & !String.IsNullOrEmpty(Properties.Settings.Default.proxyList))
                         checkMrinkaProxy();
@@ -55,7 +58,8 @@ namespace ItemChecker.Presenter
         }
         private static void checkMrinka()
         {
-            for (int i = 0; i < Main.checkList.Count; i++)
+            start = DateTime.Now;
+            for (i = 0; i < Main.checkList.Count; i++)
             {
                 if (!ServiceChecker.checkStop)
                 {
@@ -65,24 +69,21 @@ namespace ItemChecker.Presenter
                         response = Request.MrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
                         if (!response.Item2)
                         {
-                            serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Check List (429). Please Wait..."; }));
+                            serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list (429). Please Wait..."; }));
                             Thread.Sleep(30000);
                         }
                     }
                     while (!response.Item2);
                     parseMrinka(i, response.Item1);
-
-                    serviceCheckerForm.Invoke(new Action(() => { 
-                        serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
-                        serviceCheckerForm.status_toolStripStatusLabel.Text = "Check List..."; }));
                 }
                 else break;
             }
         }
         private static void checkMrinkaProxy()
         {
+            start = DateTime.Now;
             int id = 0;
-            for (int i = 0; i < Main.checkList.Count; i++)
+            for (i = 0; i < Main.checkList.Count; i++)
             {
                 if (!ServiceChecker.checkStop)
                 {
@@ -90,9 +91,6 @@ namespace ItemChecker.Presenter
                     {
                         string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
                         string response = Request.GetRequest(url, Main.proxyList[id]);
-
-                        parseMrinka(i, response);
-                        serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}"; }));
                     }
                     catch
                     {
@@ -132,6 +130,7 @@ namespace ItemChecker.Presenter
                 ServiceChecker.price2_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString()));
                 ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
                 ServiceChecker.csmUpdated.Add(JObject.Parse(response)["csm"]["updated"].ToString());
+
                 if (Main.unavailable.Contains(Main.checkList[i]))
                     ServiceChecker.status.Add("Unavailable");
                 else if (Main.overstock.Contains(Main.checkList[i]))
@@ -142,6 +141,7 @@ namespace ItemChecker.Presenter
         }
         private static void checkLootFarm()
         {
+            start = DateTime.Now;
             var json = Request.GetRequest("https://loot.farm/fullprice.json");
             JArray jArray = JArray.Parse(json);
             List<string> str = new List<string>();
@@ -152,7 +152,7 @@ namespace ItemChecker.Presenter
                     str.Add(jArray[i]["name"].ToString());
                 else break;
             }
-            for (int i = 0; i < Main.checkList.Count; i++)
+            for (i = 0; i < Main.checkList.Count; i++)
             {
                 if (!ServiceChecker.checkStop)
                 {
@@ -194,9 +194,20 @@ namespace ItemChecker.Presenter
                             ServiceChecker.status.Add("Unknown");
                         }
                     }
-                    serviceCheckerForm.Invoke(new Action(() => { serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}"; }));
                 }
                 else break;
+            }
+        }
+        private static void TimeLeft(object state)
+        {
+            while (i < Main.checkList.Count)
+            {
+                serviceCheckerForm.Invoke(new Action(() => {
+                    serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
+                    serviceCheckerForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}";
+                    serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list...";
+                }));
+                Thread.Sleep(1000);
             }
         }
 
@@ -216,17 +227,22 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    ServiceChecker.precent.Add(Math.Round(((ServiceChecker.price2_two[i] - ServiceChecker.price_one[i]) / ServiceChecker.price_one[i]) * 100, 2));
-                    double difference = Math.Round(ServiceChecker.price2_two[i] - ServiceChecker.price_one[i], 2);
-                    ServiceChecker.difference.Add(Edit.removeSymbol(Edit.funcConvert(difference, Main.course)));
-
-                    if (ServiceChecker.price_one[i] == 0)
-                        ServiceChecker.precent.Add(0);
-                    if (ServiceChecker.service_one == 0) //steam buyorder
+                    if (ServiceChecker.price_one[i] == 0) ServiceChecker.precent.Add(0);
+                    if (ServiceChecker.service_one == 0) //steam -> (any)
                     {
-                        ServiceChecker.precent.Add(Math.Round(((ServiceChecker.price2_two[i] - ServiceChecker.price2_one[i]) / ServiceChecker.price2_one[i]) * 100, 2));
-                        ServiceChecker.difference.Add(Math.Round(ServiceChecker.price2_two[i] - ServiceChecker.price2_one[i], 2));
+                        double precent = Edit.Precent(ServiceChecker.price2_one[i], ServiceChecker.price2_two[i]);
+                        double difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price2_one[i], Main.course);
+                        ServiceChecker.precent.Add(precent);
+                        ServiceChecker.difference.Add(difference);
                     }
+                    else //(any) -> (any)
+                    {
+                        double precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price_two[i]);
+                        double difference = Edit.Difference(ServiceChecker.price_two[i], ServiceChecker.price_one[i], Main.course);
+                        ServiceChecker.precent.Add(precent);
+                        ServiceChecker.difference.Add(difference);
+                    }
+                    
                     table.Rows.Add(null,
                         Main.checkList[i],
                         ServiceChecker.price_one[i] + "$",

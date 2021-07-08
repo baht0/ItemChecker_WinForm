@@ -33,6 +33,7 @@ namespace ItemChecker
                 if (result == DialogResult.Yes)
                 {
                     ServiceChecker.checkStop = true;
+                    ServiceChecker._clear();
                     Main.loading = false;
                 }
                 else if (result == DialogResult.No)
@@ -54,7 +55,7 @@ namespace ItemChecker
             int ser_2 = secondSer_comboBox.SelectedIndex;
             if (Main.checkList.Count != 0 & !Main.loading & ser_1 != ser_2)
             {
-                servChecker_dataGridView.Rows.Clear();
+                MainPresenter.clearDTGView(servChecker_dataGridView);
                 servChecker_menuStrip.Enabled = false;
                 quick_button.Enabled = false;
                 updated_toolStripStatusLabel.Visible = false;
@@ -63,7 +64,7 @@ namespace ItemChecker
                 if (GeneralConfig.Default.proxy)
                     timeLeft_toolStripStatusLabel.Visible = true;
                 count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
-                this.Text = $"ServiceChecker: {firstSer_comboBox.Text} -> {secondSer_comboBox.Text}";
+                services_toolStripStatusLabel.Text = $"{firstSer_comboBox.Text} -> {secondSer_comboBox.Text}";
                 ServiceChecker.service_one = ser_1;
                 ServiceChecker.service_two = ser_2;
                 Main.loading = true;
