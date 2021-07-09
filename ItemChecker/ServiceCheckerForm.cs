@@ -64,7 +64,7 @@ namespace ItemChecker
                 if (GeneralConfig.Default.proxy)
                     timeLeft_toolStripStatusLabel.Visible = true;
                 count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
-                services_toolStripStatusLabel.Text = $"{firstSer_comboBox.Text} -> {secondSer_comboBox.Text}";
+                services_toolStripStatusLabel.Text = $"{firstSer_comboBox.Text} ➤ {secondSer_comboBox.Text}";
                 ServiceChecker.service_one = ser_1;
                 ServiceChecker.service_two = ser_2;
                 Main.loading = true;

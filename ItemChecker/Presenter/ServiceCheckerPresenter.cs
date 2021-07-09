@@ -74,6 +74,8 @@ namespace ItemChecker.Presenter
                         }
                     }
                     while (!response.Item2);
+
+                    serviceCheckerForm.Invoke(new Action(() => { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list..."; }));
                     parseMrinka(i, response.Item1);
                 }
                 else break;
@@ -204,11 +206,12 @@ namespace ItemChecker.Presenter
             {
                 serviceCheckerForm.Invoke(new Action(() => {
                     serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
-                    serviceCheckerForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}";
-                    serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list...";
-                }));
-                Thread.Sleep(1000);
+                    serviceCheckerForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}"; }));
+                Thread.Sleep(500);
             }
+            serviceCheckerForm.Invoke(new Action(() => {
+                serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {Main.checkList.Count}";
+                serviceCheckerForm.Text = "ServiceChecker";}));
         }
 
         private static void createDTable()
@@ -227,7 +230,8 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    if (ServiceChecker.price_one[i] == 0) ServiceChecker.precent.Add(0);
+                    if (ServiceChecker.price_one[i] == 0) 
+                        ServiceChecker.precent.Add(0);
                     if (ServiceChecker.service_one == 0) //steam -> (any)
                     {
                         double precent = Edit.Precent(ServiceChecker.price2_one[i], ServiceChecker.price2_two[i]);

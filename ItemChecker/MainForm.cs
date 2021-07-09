@@ -172,6 +172,8 @@ namespace ItemChecker
                     withdraw_MainStripMenu.Text = "Close Withdraw";
                     withdraw_dataGridView.Visible = true;
                     withdrawReload_MainStripMenu.Enabled = true;
+                    status_StripStatus.Text = "Check Withdraw...";
+                    status_StripStatus.Visible = true;
                     Main.loading = true;
                     ThreadPool.QueueUserWorkItem(WithdrawPresenter.withdraw);
                 }

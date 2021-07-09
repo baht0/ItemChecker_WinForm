@@ -19,7 +19,7 @@ namespace ItemChecker.Presenter
         public static void withdraw(object state)
         {
             try
-            {
+            {                
                 withdrawCheck();
                 createDTable();
             }
@@ -42,10 +42,7 @@ namespace ItemChecker.Presenter
         public static void withdrawCheck()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Check Withdraw...";
-                mainForm.status_StripStatus.Visible = true;
-                mainForm.withdraw_dataGridView.Rows.Clear(); }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check Withdraw...";}));
 
             Withdraw._clear();
             if (WithdrawConfig.Default.souvenir) Withdraw.souvenir = 1;
@@ -70,57 +67,59 @@ namespace ItemChecker.Presenter
                 List<IWebElement> items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
                 if (items.Count > 1)
                 {
-                    getWithdrawTryskins(items);
+                    checkItems(items);
                     if (items.Count < 30) break;
                     page++;
                 }
                 else if (items.Count == 1)
                 {
-                    try
+                    string[] str = items[0].Text.Split("\n");
+                    string item_name = str[0].Trim();
+
+                    if (item_name.Contains("Или криво настроили фильтры") | item_name.Contains("Or poorly configured filters"))
                     {
-                        getWithdrawTryskins(items);
-                        break;
+                        MainPresenter.clearDTGView(mainForm.withdraw_dataGridView);
+                        MainPresenter.messageBalloonTip("TrySkins returned empty list.", ToolTipIcon.Error);
                     }
-                    catch
-                    {
-                        Withdraw._clear();
-                        mainForm.Invoke(new MethodInvoker(delegate {
-                            mainForm.withdraw_dataGridView.Rows.Add();
-                            mainForm.withdraw_dataGridView.Rows[0].Cells[1].Value = "TrySkins return empty list."; }));
-                        break;
-                    }
+                    else checkItems(items);
+                    break;
                 }
-            }            
+            }
         }
-        private static void getWithdrawTryskins(List<IWebElement> items)
-        {
+        private static void checkItems(List<IWebElement> items)
+        {            
             foreach (IWebElement item in items)
             {
-                string[] str = item.Text.Split("\n");
-                string item_name = str[0].Trim();
-                int sales = Convert.ToInt32(str[2].Trim());
-                double precent = Edit.removeSymbol(str[5].Trim());
-                str[4] = str[4].Replace("★ ", null);
-                str[4] = str[4].Replace("🕐 ", null);
-                string[] prices = str[4].Split(" ");
-                double csm = Edit.removeDol(prices[0].Trim());
-                double st = Edit.removeDol(prices[2].Trim());
+                try
+                {
+                    string[] str = item.Text.Split("\n");
+                    string item_name = str[0].Trim();
+                    int sales = Convert.ToInt32(str[2].Trim());
 
-                Withdraw.item.Add(item_name);
-                Withdraw.csm.Add(csm);
-                Withdraw.st.Add(st);
-                Withdraw.sales.Add(sales);
-                Withdraw.precent.Add(precent);
-                mainForm.withdraw_dataGridView.Columns[1].HeaderText = $"Item (Withdraw) - {Withdraw.item.Count}";
+                    double precent = Edit.removeSymbol(str[5].Trim());
+                    str[4] = str[4].Replace("★ ", null);
+                    str[4] = str[4].Replace("🕐 ", null);
+                    string[] prices = str[4].Split(" ");
+                    double csm = Edit.removeDol(prices[0].Trim());
+                    double st = Edit.removeDol(prices[2].Trim());
+
+                    Withdraw.item.Add(item_name);
+                    Withdraw.csm.Add(csm);
+                    Withdraw.st.Add(st);
+                    Withdraw.sales.Add(sales);
+                    Withdraw.precent.Add(precent);
+                    mainForm.withdraw_dataGridView.Columns[1].HeaderText = $"Item (Withdraw) - {Withdraw.item.Count}";
+                }
+                catch
+                {
+                    continue;
+                }                
             }
+            
         }
         public static void createDTable()
         {
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Table Withdraw...";
-                mainForm.withdraw_dataGridView.Columns[4].ValueType = typeof(Int32);
-                mainForm.withdraw_dataGridView.Columns[5].ValueType = typeof(Double);
-            }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Table Withdraw..."; }));
             MainPresenter.clearDTGView(mainForm.withdraw_dataGridView);
 
             DataTable table = new DataTable();
@@ -129,6 +128,8 @@ namespace ItemChecker.Presenter
                 table.Columns.Add(new DataColumn(mainForm.withdraw_dataGridView.Columns[i].Name));
                 mainForm.withdraw_dataGridView.Columns[i].DataPropertyName = mainForm.withdraw_dataGridView.Columns[i].Name;
             }
+            table.Columns[4].DataType = typeof(Double);
+            table.Columns[5].DataType = typeof(Double);
             for (int i = 0; i < Withdraw.item.Count; i++)
             {
                 table.Rows.Add(null,

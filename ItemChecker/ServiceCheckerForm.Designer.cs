@@ -37,6 +37,7 @@ namespace ItemChecker
             this.servChecker_statusStrip = new System.Windows.Forms.StatusStrip();
             this.count_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.timeLeft_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.services_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.space_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.updated_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.status_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,7 +60,6 @@ namespace ItemChecker
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.quick_button = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.services_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.servChecker_menuStrip.SuspendLayout();
             this.servChecker_statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.servChecker_dataGridView)).BeginInit();
@@ -107,8 +107,8 @@ namespace ItemChecker
             this.timeLeft_toolStripStatusLabel,
             this.services_toolStripStatusLabel,
             this.space_toolStripStatusLabel,
-            this.updated_toolStripStatusLabel,
-            this.status_toolStripStatusLabel});
+            this.status_toolStripStatusLabel,
+            this.updated_toolStripStatusLabel});
             this.servChecker_statusStrip.Location = new System.Drawing.Point(0, 495);
             this.servChecker_statusStrip.Name = "servChecker_statusStrip";
             this.servChecker_statusStrip.Size = new System.Drawing.Size(883, 22);
@@ -127,6 +127,12 @@ namespace ItemChecker
             this.timeLeft_toolStripStatusLabel.Size = new System.Drawing.Size(64, 17);
             this.timeLeft_toolStripStatusLabel.Text = "TimeLeft: -";
             this.timeLeft_toolStripStatusLabel.Visible = false;
+            // 
+            // services_toolStripStatusLabel
+            // 
+            this.services_toolStripStatusLabel.Name = "services_toolStripStatusLabel";
+            this.services_toolStripStatusLabel.Size = new System.Drawing.Size(66, 17);
+            this.services_toolStripStatusLabel.Text = "From -> To";
             // 
             // space_toolStripStatusLabel
             // 
@@ -344,12 +350,6 @@ namespace ItemChecker
             this.label3.Size = new System.Drawing.Size(69, 15);
             this.label3.TabIndex = 4;
             this.label3.Text = "Item Name:";
-            // 
-            // services_toolStripStatusLabel
-            // 
-            this.services_toolStripStatusLabel.Name = "services_toolStripStatusLabel";
-            this.services_toolStripStatusLabel.Size = new System.Drawing.Size(66, 17);
-            this.services_toolStripStatusLabel.Text = "From -> To";
             // 
             // ServiceCheckerForm
             // 

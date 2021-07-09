@@ -74,9 +74,7 @@ namespace ItemChecker.Presenter
         }
         private static void acceptTrade()
         {
-            mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.status_StripStatus.Text = "Accept Trades...";
-            }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Accept Trades..."; }));
             for (int i = 0; i < TradeOffer.tradeofferid.Count; i++)
             {
                 Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/tradeoffer/" + TradeOffer.tradeofferid[i]);
@@ -85,8 +83,8 @@ namespace ItemChecker.Presenter
 
                 MainPresenter.progressInvoke();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.tradeOffers_linkLabel.Text = "Incoming: " + Convert.ToString(TradeOffer.tradeofferid.Count - (i + 1)); }));
-                MainPresenter.messageBalloonTip("Acceptance of trades is complete.");
             }
+            MainPresenter.messageBalloonTip("Acceptance of trades is complete.");
         }
     }
 }
