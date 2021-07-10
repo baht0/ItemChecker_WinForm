@@ -17,8 +17,8 @@ namespace ItemChecker.Presenter
 {
     class ServiceCheckerPresenter
     {
-        static DateTime start;
         static int i;
+        static DateTime start;
         public static void checkMain(object state)
         {
             try
@@ -26,6 +26,8 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 ServiceChecker._clear();
+                if (ServiceChecker.dataTable != null)
+                    ResetFilter();
                 ThreadPool.QueueUserWorkItem(TimeLeft);
                 if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
                     if (GeneralConfig.Default.proxy & !String.IsNullOrEmpty(Properties.Settings.Default.proxyList))
@@ -50,7 +52,14 @@ namespace ItemChecker.Presenter
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
                         serviceCheckerForm.servChecker_menuStrip.Enabled = true;
                         serviceCheckerForm.quick_button.Enabled = true;
-                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[7], ListSortDirection.Descending); }));
+
+                        serviceCheckerForm.Filters_groupBox.Enabled = true;
+                        serviceCheckerForm.Prices_groupBox.Enabled = true;
+                        serviceCheckerForm.Precent_groupBox.Enabled = true;
+                        serviceCheckerForm.buttons_groupBox.Enabled = true;
+
+                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[7], ListSortDirection.Descending);
+                    }));
                     drawDTGView();
                     MainPresenter.messageBalloonTip();
                 }
@@ -217,21 +226,20 @@ namespace ItemChecker.Presenter
         private static void createDTable()
         {
             serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Write to the table..."; }));
+            MainPresenter.clearDGV(serviceCheckerForm.servChecker_dataGridView);
 
-            DataTable table = new DataTable();
-            for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.ColumnCount; ++i)
-            {
-                table.Columns.Add(new DataColumn(serviceCheckerForm.servChecker_dataGridView.Columns[i].Name));
-                serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
-            }
-            table.Columns[6].DataType = typeof(Double);
-            table.Columns[7].DataType = typeof(Double);
+            if (ServiceChecker.dataTable.Columns.Count == 0)
+                for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.ColumnCount; ++i)
+                {
+                    ServiceChecker.dataTable.Columns.Add(new DataColumn(serviceCheckerForm.servChecker_dataGridView.Columns[i].Name));
+                    serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                    if (i >= 2 & i <= 7)
+                        ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
+                }
             for (int i = 0; i < Main.checkList.Count; i++)
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    if (ServiceChecker.price_one[i] == 0) 
-                        ServiceChecker.precent.Add(0);
                     if (ServiceChecker.service_one == 0) //steam -> (any)
                     {
                         double precent = Edit.Precent(ServiceChecker.price2_one[i], ServiceChecker.price2_two[i]);
@@ -241,18 +249,18 @@ namespace ItemChecker.Presenter
                     }
                     else //(any) -> (any)
                     {
-                        double precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price_two[i]);
-                        double difference = Edit.Difference(ServiceChecker.price_two[i], ServiceChecker.price_one[i], Main.course);
+                        double precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price2_two[i]);
+                        double difference = Edit.Difference(ServiceChecker.price_two[i], ServiceChecker.price2_one[i], Main.course);
                         ServiceChecker.precent.Add(precent);
                         ServiceChecker.difference.Add(difference);
                     }
-                    
-                    table.Rows.Add(null,
+
+                    ServiceChecker.dataTable.Rows.Add(null,
                         Main.checkList[i],
-                        ServiceChecker.price_one[i] + "$",
-                        ServiceChecker.price2_one[i] + "$",
-                        ServiceChecker.price_two[i] + "$",
-                        ServiceChecker.price2_two[i] + "$",
+                        ServiceChecker.price_one[i],
+                        ServiceChecker.price2_one[i],
+                        ServiceChecker.price_two[i],
+                        ServiceChecker.price2_two[i],
                         ServiceChecker.precent[i],
                         ServiceChecker.difference[i],
                         ServiceChecker.status[i]);
@@ -261,7 +269,7 @@ namespace ItemChecker.Presenter
                 }
                 else break;
             }
-            serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.servChecker_dataGridView.DataSource = table; }));
+            serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
         }
         public static void drawDTGView()
         {
@@ -313,6 +321,42 @@ namespace ItemChecker.Presenter
                 row.Cells[2].Style.BackColor = Color.LightGray;
                 row.Cells[4].Style.BackColor = Color.LightGray;
             }
+        }
+        public static void Filter(object state)
+        {
+            try
+            {
+                object[] args = state as object[];
+                string str = args[0].ToString();
+                DataGridView dataGridView = serviceCheckerForm.servChecker_dataGridView;
+
+                DataView dataView = ServiceChecker.dataTable.DefaultView;
+                dataView.RowFilter = str;
+                DataTable dt = dataView.ToTable();
+
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate { dataGridView.DataSource = dt; }));
+                drawDTGView();
+            }
+            catch (Exception exp)
+            {
+                Exceptions.errorLog(exp, Main.version);
+            }
+        }
+        public static void ResetFilter()
+        {
+            serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                serviceCheckerForm.category_comboBox.SelectedIndex = 0;
+                serviceCheckerForm.other_comboBox.SelectedIndex = 0;
+                serviceCheckerForm.status_comboBox.SelectedIndex = 0;
+
+                serviceCheckerForm.column_comboBox.SelectedIndex = 0;
+                serviceCheckerForm.priceFrom_numericUpDown.Value = 0;
+                serviceCheckerForm.priceTo_numericUpDown.Value = 0;
+
+                serviceCheckerForm.precentFrom_numericUpDown.Value = 0;
+                serviceCheckerForm.precentTo_numericUpDown.Value = 0; }));
+
+            ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
         }
 
         public static void addQueue(object state)

@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
-using ItemChecker.Settings;
 
 namespace ItemChecker
 {
@@ -19,6 +18,17 @@ namespace ItemChecker
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             firstSer_comboBox.SelectedIndex = 0;
             secondSer_comboBox.SelectedIndex = 1;
+        }
+        private void ServiceCheckerForm_Load(object sender, EventArgs e)
+        {
+            category_comboBox.SelectedIndex = 0;
+            other_comboBox.SelectedIndex = 0;
+            status_comboBox.SelectedIndex = 0;
+            column_comboBox.SelectedIndex = 0;
+            Filters_groupBox.Enabled = false;
+            Prices_groupBox.Enabled = false;
+            Precent_groupBox.Enabled = false;
+            buttons_groupBox.Enabled = false;
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -55,20 +65,23 @@ namespace ItemChecker
             int ser_2 = secondSer_comboBox.SelectedIndex;
             if (Main.checkList.Count != 0 & !Main.loading & ser_1 != ser_2)
             {
-                MainPresenter.clearDTGView(servChecker_dataGridView);
+                ServiceChecker.service_one = ser_1;
+                ServiceChecker.service_two = ser_2;
+                while (column_comboBox.Items.Count > 1)
+                    column_comboBox.Items.RemoveAt(1);
+                for (int i = 1; i <= 4; i++)
+                    column_comboBox.Items.Insert(i, servChecker_dataGridView.Columns[i + 1].HeaderText);
+
                 servChecker_menuStrip.Enabled = false;
                 quick_button.Enabled = false;
                 updated_toolStripStatusLabel.Visible = false;
                 status_toolStripStatusLabel.Text = "Checking the list...";
                 status_toolStripStatusLabel.Visible = true;
-                if (GeneralConfig.Default.proxy)
-                    timeLeft_toolStripStatusLabel.Visible = true;
                 count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
-                services_toolStripStatusLabel.Text = $"{firstSer_comboBox.Text} ➤ {secondSer_comboBox.Text}";
-                ServiceChecker.service_one = ser_1;
-                ServiceChecker.service_two = ser_2;
-                Main.loading = true;
+                services_toolStripStatusLabel.Text = $"From {firstSer_comboBox.Text} To {secondSer_comboBox.Text}";
+                services_toolStripStatusLabel.Visible = true;
 
+                Main.loading = true;
                 ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkMain);
             }
         }
@@ -176,7 +189,7 @@ namespace ItemChecker
                 if (1 < cell & cell < 6)
                 {
                     Main.save_str = str;
-                    servChecker_dataGridView.Rows[row].Cells[cell].Value = Edit.funcConvert(str, Main.course);
+                    servChecker_dataGridView.Rows[row].Cells[cell].Value = Math.Round(Convert.ToDouble(str) * Main.course, 2);
                 }
                 if (secondSer_comboBox.SelectedIndex == 0)
                 {
@@ -192,8 +205,8 @@ namespace ItemChecker
             if (1 < cell & cell < 6)
             {
                 int row = Convert.ToInt32(servChecker_dataGridView.CurrentCell.RowIndex);
-                servChecker_dataGridView.Rows[row].Cells[cell].Value = Main.save_str;
-                Main.save_str = "";
+                servChecker_dataGridView.Rows[row].Cells[cell].Value = Convert.ToDouble(Main.save_str);
+                Main.save_str = null;
             }
         }
         private void ownList_dataGridView_KeyDown(object sender, KeyEventArgs e)
@@ -204,6 +217,64 @@ namespace ItemChecker
         private void servChecker_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             ServiceCheckerPresenter.drawDTGView();
+        }
+
+        //filters
+        private void apply_button_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string filter = string.Empty;
+                //filters
+                if (category_comboBox.SelectedIndex != 0)
+                {
+                    if (category_comboBox.SelectedIndex != 1)
+                        filter += $"AND item_Column LIKE '{category_comboBox.Text}%'";
+                    else
+                        for (int i = 2; i < 6; i++)
+                            filter += $"AND item_Column NOT LIKE '{category_comboBox.Items[i]}%'";
+                }
+                else if (other_comboBox.SelectedIndex != 0)
+                    filter += $"AND item_Column LIKE '%{other_comboBox.Text}%'";
+                if (status_comboBox.SelectedIndex != 0)
+                    filter += $"AND status_Column LIKE '%{status_comboBox.Text}%'";
+                //prices
+                if (column_comboBox.SelectedIndex != 0 & priceFrom_numericUpDown.Value != 0)
+                    filter += $"AND price{column_comboBox.SelectedIndex}_Column > {priceFrom_numericUpDown.Value}";
+                if (column_comboBox.SelectedIndex != 0 & priceTo_numericUpDown.Value != 0)
+                    filter += $"AND price{column_comboBox.SelectedIndex}_Column < {priceTo_numericUpDown.Value}";
+                //precent
+                if (precentFrom_numericUpDown.Value != 0)
+                    filter += $"AND precent_Column > {precentFrom_numericUpDown.Value}";
+                if (precentTo_numericUpDown.Value != 0)
+                    filter += $"AND precent_Column < {precentTo_numericUpDown.Value}";
+
+                if (filter != string.Empty)
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { filter.Remove(0, 4) });
+                else
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { string.Empty });
+            }
+            catch (Exception exp)
+            {
+                Exceptions.errorLog(exp, Main.version);
+                MessageBox.Show("Nothing found.", "Filter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void reset_button_Click(object sender, EventArgs e)
+        {
+            ServiceCheckerPresenter.ResetFilter();
+        }
+        private void category_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = other_comboBox.SelectedIndex;
+            if (index != 0)
+                other_comboBox.SelectedIndex = 0;
+        }
+        private void other_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = category_comboBox.SelectedIndex;
+            if (index != 0)
+                category_comboBox.SelectedIndex = 0;
         }
     }
 }

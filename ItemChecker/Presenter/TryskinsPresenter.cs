@@ -14,6 +14,7 @@ using ItemChecker.Settings;
 using ItemChecker.Net;
 using System.Data;
 using OpenQA.Selenium.Support.UI;
+using System.ComponentModel;
 
 namespace ItemChecker.Presenter
 {
@@ -202,7 +203,7 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Tryskins...";}));
 
-            MainPresenter.clearDTGView(mainForm.tryskins_dataGridView);
+            MainPresenter.clearDGV(mainForm.tryskins_dataGridView);
             DataTable table = new DataTable();
             for (int i = 0; i < mainForm.tryskins_dataGridView.ColumnCount; ++i)
             {
@@ -220,7 +221,9 @@ namespace ItemChecker.Presenter
                         TrySkins.precent[i],
                         TrySkins.difference[i]);
             }
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_dataGridView.DataSource = table; }));
+            mainForm.Invoke(new MethodInvoker(delegate { 
+                mainForm.tryskins_dataGridView.DataSource = table;
+                mainForm.tryskins_dataGridView.Sort(mainForm.tryskins_dataGridView.Columns[5], ListSortDirection.Descending); }));
             drawDTGView();
             MainPresenter.progressInvoke();
         }

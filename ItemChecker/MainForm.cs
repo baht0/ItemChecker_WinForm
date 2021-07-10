@@ -28,9 +28,10 @@ namespace ItemChecker
                     "The program is already running!",
                     "Warning",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning );
+                    MessageBoxIcon.Error );
                 Process.GetCurrentProcess().Kill();
             }
+            //foreach (Process proc in Process.GetProcessesByName("chrome")) proc.Kill();
             foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
             foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
             notifyIcon.Visible = true;
@@ -145,7 +146,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 4;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 2 });
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 0 });
             }
         }
         //tools
@@ -280,7 +281,7 @@ namespace ItemChecker
                 if (cell == 2 || cell == 3 & str != "")
                 {
                     Main.save_str = str;
-                    tryskins_dataGridView.Rows[row].Cells[cell].Value = Edit.funcConvert(str, Main.course);
+                    tryskins_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, Main.course);
                 }
             }
             catch { }
@@ -340,7 +341,7 @@ namespace ItemChecker
                 if (cell == 3)
                 {
                     Main.save_str = str;
-                    buyOrder_dataGridView.Rows[row].Cells[cell].Value = Edit.funcConvert(str, Main.course);
+                    buyOrder_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, Main.course);
                 }
             }
             catch { }
@@ -417,7 +418,7 @@ namespace ItemChecker
                 if (cell == 2 || cell == 3)
                 {
                     Main.save_str = str;
-                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Edit.funcConvert(str, Main.course);
+                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, Main.course);
                 }
             }
             catch { }

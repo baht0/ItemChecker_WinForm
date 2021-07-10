@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 
 namespace ItemChecker.Model
 {
@@ -6,6 +7,7 @@ namespace ItemChecker.Model
     {
         public static bool checkStop = false;
         public static int service_one, service_two;
+        public static DataTable dataTable = new DataTable();
 
         public static List<string> stUpdated = new List<string>();
         public static List<string> csmUpdated = new List<string>();
@@ -18,6 +20,8 @@ namespace ItemChecker.Model
         public static List<string> status = new List<string>();
         public static void _clear()
         {
+            ServiceChecker.dataTable.Clear();
+
             ServiceChecker.price_one.Clear();
             ServiceChecker.price2_one.Clear();
             ServiceChecker.price_two.Clear();

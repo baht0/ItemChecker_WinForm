@@ -56,7 +56,7 @@ namespace ItemChecker.Support
             str = str.Replace("â˜…", "★");
             return str;
         }
-        public static String funcConvert(string str, double currency)
+        public static String currencyConverter(string str, double currency)
         {
             double value = Convert.ToDouble(removeSymbol(str), CultureInfo.InvariantCulture);
             value = Math.Round(value * currency, 2);
@@ -71,7 +71,10 @@ namespace ItemChecker.Support
         }
         public static Double Precent(double a, double b) //from A to B
         {
-            return Math.Round(((b - a) / a) * 100, 2);
+            if (a != 0)
+                return Math.Round(((b - a) / a) * 100, 2);
+            else
+                return 0;
         }
         public static Double Difference(double a, double b)
         {
@@ -104,8 +107,10 @@ namespace ItemChecker.Support
             TimeSpan time = TimeSpan.FromMinutes(min);
             if (min > 60)
                 return time.ToString("hh'h 'mm'min'");
-            else
+            else if (min > 1)
                 return time.ToString("mm'min 'ss'sec.'");
+            else
+                return time.ToString("ss'sec.'");
         }
         public static Double calcTimeLeftSpeed(DateTime start, int i)
         {

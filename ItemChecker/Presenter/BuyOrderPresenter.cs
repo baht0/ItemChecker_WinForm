@@ -16,6 +16,7 @@ using ItemChecker.Net;
 using System.Linq;
 using System.Collections.Generic;
 using System.Data;
+using System.ComponentModel;
 
 namespace ItemChecker.Presenter
 {
@@ -131,7 +132,7 @@ namespace ItemChecker.Presenter
         public static void createDTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Steam..."; }));
-            MainPresenter.clearDTGView(mainForm.buyOrder_dataGridView);
+            MainPresenter.clearDGV(mainForm.buyOrder_dataGridView);
 
             DataTable table = new DataTable();
             for (int i = 0; i < mainForm.buyOrder_dataGridView.ColumnCount; ++i)
@@ -152,7 +153,9 @@ namespace ItemChecker.Presenter
 
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}"; }));
             }
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.DataSource = table; }));
+            mainForm.Invoke(new MethodInvoker(delegate { 
+                mainForm.buyOrder_dataGridView.DataSource = table;
+                mainForm.buyOrder_dataGridView.Sort(mainForm.buyOrder_dataGridView.Columns[5], ListSortDirection.Ascending); }));
             drawDTGView();
         }
         public static void drawDTGView()

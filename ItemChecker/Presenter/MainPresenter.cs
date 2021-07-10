@@ -141,8 +141,7 @@ namespace ItemChecker.Presenter
             {
                 mainForm.course_label.Text = Main.course.ToString() + " ₽";
                 mainForm.overstock_label.Text =  "Overstock: " + Main.overstock.Count.ToString();
-                mainForm.unavailable_label.Text = "Unavailable: " + Main.unavailable.Count.ToString();
-            }));
+                mainForm.unavailable_label.Text = "Unavailable: " + Main.unavailable.Count.ToString(); }));
 
             progressInvoke();
         }
@@ -177,9 +176,12 @@ namespace ItemChecker.Presenter
                 object[] args = state as object[];
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = false;
-                    mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
-                    mainForm.progressBar_StripStatus.Value = 0;
-                    mainForm.progressBar_StripStatus.Visible = true;
+                    if (Convert.ToInt32(args[0]) != 0)
+                    {
+                        mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
+                        mainForm.progressBar_StripStatus.Value = 0;
+                        mainForm.progressBar_StripStatus.Visible = true;
+                    }
                     mainForm.status_StripStatus.Text = "Processing...";
                     mainForm.status_StripStatus.Visible = true; }));
 
@@ -229,7 +231,7 @@ namespace ItemChecker.Presenter
             }
         }
         //other
-        public static void clearDTGView(DataGridView dataGridView)
+        public static void clearDGV(DataGridView dataGridView)
         {
             DataTable DT = (DataTable)dataGridView.DataSource;
             if (DT != null)
