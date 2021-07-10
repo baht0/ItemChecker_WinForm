@@ -128,7 +128,7 @@ namespace ItemChecker.Presenter
                 ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
                 ServiceChecker.price2_two.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
                 ServiceChecker.stUpdated.Add(JObject.Parse(response)["steam"]["updated"].ToString());
-                ServiceChecker.status.Add("Unknown");
+                ServiceChecker.status.Add("Tradable");
             }
             if (ServiceChecker.service_one == 1)
             {
@@ -250,7 +250,7 @@ namespace ItemChecker.Presenter
                     else //(any) -> (any)
                     {
                         double precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price2_two[i]);
-                        double difference = Edit.Difference(ServiceChecker.price_two[i], ServiceChecker.price2_one[i], Main.course);
+                        double difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price_one[i], Main.course);
                         ServiceChecker.precent.Add(precent);
                         ServiceChecker.difference.Add(difference);
                     }
@@ -318,8 +318,16 @@ namespace ItemChecker.Presenter
                     row.Cells[1].Style.BackColor = Color.Red;
                     row.Cells[8].Style.BackColor = Color.Red;
                 }
-                row.Cells[2].Style.BackColor = Color.LightGray;
-                row.Cells[4].Style.BackColor = Color.LightGray;
+                if (ServiceChecker.service_one == 0) //steam -> (any)
+                {
+                    row.Cells[3].Style.BackColor = Color.LightGray;
+                    row.Cells[5].Style.BackColor = Color.LightGray;
+                }
+                else //(any) -> (any)
+                {
+                    row.Cells[2].Style.BackColor = Color.LightGray;
+                    row.Cells[5].Style.BackColor = Color.LightGray;
+                }
             }
         }
         public static void Filter(object state)
@@ -334,7 +342,10 @@ namespace ItemChecker.Presenter
                 dataView.RowFilter = str;
                 DataTable dt = dataView.ToTable();
 
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate { dataGridView.DataSource = dt; }));
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
+                    dataGridView.DataSource = dt;
+                    serviceCheckerForm.servChecker_dataGridView.Enabled = true;
+                    serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[7], ListSortDirection.Descending); }));
                 drawDTGView();
             }
             catch (Exception exp)
@@ -354,7 +365,9 @@ namespace ItemChecker.Presenter
                 serviceCheckerForm.priceTo_numericUpDown.Value = 0;
 
                 serviceCheckerForm.precentFrom_numericUpDown.Value = 0;
-                serviceCheckerForm.precentTo_numericUpDown.Value = 0; }));
+                serviceCheckerForm.precentTo_numericUpDown.Value = 0;
+                serviceCheckerForm.hide100_checkBox.Checked = false;
+                serviceCheckerForm.hide0_checkBox.Checked = false; }));
 
             ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
         }
@@ -440,7 +453,10 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Visible = false; }));
+                    serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
+                        serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
+                        serviceCheckerForm.servChecker_dataGridView.Enabled = true;
+                    }));
                     MainPresenter.messageBalloonTip("Extraction was completed.");
                 }
             }

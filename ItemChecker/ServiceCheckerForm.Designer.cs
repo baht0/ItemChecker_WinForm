@@ -74,6 +74,8 @@ namespace ItemChecker
             this.column_label = new System.Windows.Forms.Label();
             this.column_comboBox = new System.Windows.Forms.ComboBox();
             this.Precent_groupBox = new System.Windows.Forms.GroupBox();
+            this.hide0_checkBox = new System.Windows.Forms.CheckBox();
+            this.hide100_checkBox = new System.Windows.Forms.CheckBox();
             this.precentTo_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.precentFrom_numericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -104,7 +106,7 @@ namespace ItemChecker
             this.extractToolStripMenuItem});
             this.servChecker_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.servChecker_menuStrip.Name = "servChecker_menuStrip";
-            this.servChecker_menuStrip.Size = new System.Drawing.Size(883, 24);
+            this.servChecker_menuStrip.Size = new System.Drawing.Size(977, 24);
             this.servChecker_menuStrip.TabIndex = 0;
             this.servChecker_menuStrip.Text = "menuStrip1";
             // 
@@ -139,7 +141,7 @@ namespace ItemChecker
             this.updated_toolStripStatusLabel});
             this.servChecker_statusStrip.Location = new System.Drawing.Point(0, 495);
             this.servChecker_statusStrip.Name = "servChecker_statusStrip";
-            this.servChecker_statusStrip.Size = new System.Drawing.Size(883, 22);
+            this.servChecker_statusStrip.Size = new System.Drawing.Size(977, 22);
             this.servChecker_statusStrip.TabIndex = 1;
             this.servChecker_statusStrip.Text = "statusStrip1";
             // 
@@ -159,7 +161,7 @@ namespace ItemChecker
             // space_toolStripStatusLabel
             // 
             this.space_toolStripStatusLabel.Name = "space_toolStripStatusLabel";
-            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(817, 17);
+            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(911, 17);
             this.space_toolStripStatusLabel.Spring = true;
             // 
             // status_toolStripStatusLabel
@@ -182,7 +184,7 @@ namespace ItemChecker
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox.Location = new System.Drawing.Point(6, 37);
             this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(495, 23);
+            this.textBox.Size = new System.Drawing.Size(589, 23);
             this.textBox.TabIndex = 2;
             this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
@@ -211,7 +213,7 @@ namespace ItemChecker
             this.servChecker_dataGridView.ReadOnly = true;
             this.servChecker_dataGridView.RowHeadersVisible = false;
             this.servChecker_dataGridView.RowTemplate.Height = 25;
-            this.servChecker_dataGridView.Size = new System.Drawing.Size(859, 298);
+            this.servChecker_dataGridView.Size = new System.Drawing.Size(953, 301);
             this.servChecker_dataGridView.TabIndex = 9;
             this.servChecker_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellDoubleClick);
             this.servChecker_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellEnter);
@@ -348,7 +350,7 @@ namespace ItemChecker
             this.groupBox2.Controls.Add(this.textBox);
             this.groupBox2.Location = new System.Drawing.Point(283, 30);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(588, 74);
+            this.groupBox2.Size = new System.Drawing.Size(682, 74);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Quick check";
@@ -356,7 +358,7 @@ namespace ItemChecker
             // quick_button
             // 
             this.quick_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.quick_button.Location = new System.Drawing.Point(507, 37);
+            this.quick_button.Location = new System.Drawing.Point(601, 37);
             this.quick_button.Name = "quick_button";
             this.quick_button.Size = new System.Drawing.Size(75, 23);
             this.quick_button.TabIndex = 6;
@@ -491,6 +493,7 @@ namespace ItemChecker
             // priceFrom_numericUpDown
             // 
             this.priceFrom_numericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.priceFrom_numericUpDown.DecimalPlaces = 1;
             this.priceFrom_numericUpDown.Location = new System.Drawing.Point(104, 37);
             this.priceFrom_numericUpDown.Maximum = new decimal(new int[] {
             9999999,
@@ -505,6 +508,7 @@ namespace ItemChecker
             // priceTo_numericUpDown
             // 
             this.priceTo_numericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.priceTo_numericUpDown.DecimalPlaces = 1;
             this.priceTo_numericUpDown.Location = new System.Drawing.Point(192, 37);
             this.priceTo_numericUpDown.Maximum = new decimal(new int[] {
             9999999,
@@ -571,20 +575,43 @@ namespace ItemChecker
             // Precent_groupBox
             // 
             this.Precent_groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Precent_groupBox.Controls.Add(this.hide0_checkBox);
+            this.Precent_groupBox.Controls.Add(this.hide100_checkBox);
             this.Precent_groupBox.Controls.Add(this.precentTo_numericUpDown);
             this.Precent_groupBox.Controls.Add(this.label5);
             this.Precent_groupBox.Controls.Add(this.precentFrom_numericUpDown);
             this.Precent_groupBox.Controls.Add(this.label8);
             this.Precent_groupBox.Location = new System.Drawing.Point(608, 417);
             this.Precent_groupBox.Name = "Precent_groupBox";
-            this.Precent_groupBox.Size = new System.Drawing.Size(185, 75);
+            this.Precent_groupBox.Size = new System.Drawing.Size(279, 75);
             this.Precent_groupBox.TabIndex = 36;
             this.Precent_groupBox.TabStop = false;
             this.Precent_groupBox.Text = "Precent (%)";
             // 
+            // hide0_checkBox
+            // 
+            this.hide0_checkBox.AutoSize = true;
+            this.hide0_checkBox.Location = new System.Drawing.Point(182, 43);
+            this.hide0_checkBox.Name = "hide0_checkBox";
+            this.hide0_checkBox.Size = new System.Drawing.Size(78, 19);
+            this.hide0_checkBox.TabIndex = 40;
+            this.hide0_checkBox.Text = "Hide (0%)";
+            this.hide0_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // hide100_checkBox
+            // 
+            this.hide100_checkBox.AutoSize = true;
+            this.hide100_checkBox.Location = new System.Drawing.Point(182, 19);
+            this.hide100_checkBox.Name = "hide100_checkBox";
+            this.hide100_checkBox.Size = new System.Drawing.Size(95, 19);
+            this.hide100_checkBox.TabIndex = 39;
+            this.hide100_checkBox.Text = "Hide (-100%)";
+            this.hide100_checkBox.UseVisualStyleBackColor = true;
+            // 
             // precentTo_numericUpDown
             // 
             this.precentTo_numericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.precentTo_numericUpDown.DecimalPlaces = 1;
             this.precentTo_numericUpDown.Location = new System.Drawing.Point(94, 37);
             this.precentTo_numericUpDown.Maximum = new decimal(new int[] {
             1000,
@@ -614,6 +641,7 @@ namespace ItemChecker
             // precentFrom_numericUpDown
             // 
             this.precentFrom_numericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.precentFrom_numericUpDown.DecimalPlaces = 1;
             this.precentFrom_numericUpDown.Location = new System.Drawing.Point(6, 37);
             this.precentFrom_numericUpDown.Maximum = new decimal(new int[] {
             999,
@@ -667,9 +695,9 @@ namespace ItemChecker
             this.buttons_groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttons_groupBox.Controls.Add(this.reset_button);
             this.buttons_groupBox.Controls.Add(this.apply_button);
-            this.buttons_groupBox.Location = new System.Drawing.Point(799, 417);
+            this.buttons_groupBox.Location = new System.Drawing.Point(893, 417);
             this.buttons_groupBox.Name = "buttons_groupBox";
-            this.buttons_groupBox.Size = new System.Drawing.Size(72, 75);
+            this.buttons_groupBox.Size = new System.Drawing.Size(71, 75);
             this.buttons_groupBox.TabIndex = 39;
             this.buttons_groupBox.TabStop = false;
             // 
@@ -677,7 +705,7 @@ namespace ItemChecker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(883, 517);
+            this.ClientSize = new System.Drawing.Size(977, 517);
             this.Controls.Add(this.buttons_groupBox);
             this.Controls.Add(this.Precent_groupBox);
             this.Controls.Add(this.Prices_groupBox);
@@ -689,7 +717,7 @@ namespace ItemChecker
             this.Controls.Add(this.servChecker_menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.servChecker_menuStrip;
-            this.MinimumSize = new System.Drawing.Size(899, 556);
+            this.MinimumSize = new System.Drawing.Size(993, 556);
             this.Name = "ServiceCheckerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ServiceChecker";
@@ -773,5 +801,7 @@ namespace ItemChecker
         public System.Windows.Forms.DataGridViewTextBoxColumn precent_Column;
         public System.Windows.Forms.DataGridViewTextBoxColumn difference_Column;
         public System.Windows.Forms.DataGridViewTextBoxColumn status_Column;
+        public System.Windows.Forms.CheckBox hide0_checkBox;
+        public System.Windows.Forms.CheckBox hide100_checkBox;
     }
 }

@@ -16,11 +16,12 @@ namespace ItemChecker
             InitializeComponent();
             Program.serviceCheckerForm = this;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            firstSer_comboBox.SelectedIndex = 0;
-            secondSer_comboBox.SelectedIndex = 1;
         }
         private void ServiceCheckerForm_Load(object sender, EventArgs e)
         {
+            firstSer_comboBox.SelectedIndex = 0;
+            secondSer_comboBox.SelectedIndex = 1;
+
             category_comboBox.SelectedIndex = 0;
             other_comboBox.SelectedIndex = 0;
             status_comboBox.SelectedIndex = 0;
@@ -32,7 +33,7 @@ namespace ItemChecker
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Main.loading | servChecker_dataGridView.Rows.Count > 200)
+            if (Main.loading | ServiceChecker.dataTable.Rows.Count > 150)
             {
                 DialogResult result = MessageBox.Show(
                   "Do you want to close?",
@@ -89,6 +90,8 @@ namespace ItemChecker
         {
             status_toolStripStatusLabel.Text = "Extract the list to *.csv...";
             status_toolStripStatusLabel.Visible = true;
+            ServiceCheckerPresenter.ResetFilter();
+            servChecker_dataGridView.Enabled = false;
             ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.extractCsv);
         }
 
@@ -248,11 +251,16 @@ namespace ItemChecker
                     filter += $"AND precent_Column > {precentFrom_numericUpDown.Value}";
                 if (precentTo_numericUpDown.Value != 0)
                     filter += $"AND precent_Column < {precentTo_numericUpDown.Value}";
+                if (hide100_checkBox.Checked)
+                    filter += $"AND precent_Column <> -100";
+                if (hide0_checkBox.Checked)
+                    filter += $"AND precent_Column <> 0";
 
                 if (filter != string.Empty)
                     ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { filter.Remove(0, 4) });
                 else
                     ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { string.Empty });
+                servChecker_dataGridView.Enabled = false;
             }
             catch (Exception exp)
             {
