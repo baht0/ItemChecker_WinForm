@@ -33,6 +33,8 @@ namespace ItemChecker
             this.servChecker_menuStrip = new System.Windows.Forms.MenuStrip();
             this.add_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.check_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.csv_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.servChecker_statusStrip = new System.Windows.Forms.StatusStrip();
             this.count_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -103,7 +105,7 @@ namespace ItemChecker
             this.servChecker_menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.add_toolStripMenuItem,
             this.check_toolStripMenuItem,
-            this.extractToolStripMenuItem});
+            this.csv_toolStripMenuItem});
             this.servChecker_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.servChecker_menuStrip.Name = "servChecker_menuStrip";
             this.servChecker_menuStrip.Size = new System.Drawing.Size(977, 24);
@@ -124,12 +126,28 @@ namespace ItemChecker
             this.check_toolStripMenuItem.Text = "Check";
             this.check_toolStripMenuItem.Click += new System.EventHandler(this.check_toolStripMenuItem_Click);
             // 
+            // csv_toolStripMenuItem
+            // 
+            this.csv_toolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.extractToolStripMenuItem,
+            this.importToolStripMenuItem});
+            this.csv_toolStripMenuItem.Name = "csv_toolStripMenuItem";
+            this.csv_toolStripMenuItem.Size = new System.Drawing.Size(81, 20);
+            this.csv_toolStripMenuItem.Text = "Format CSV";
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem1_Click);
+            // 
             // extractToolStripMenuItem
             // 
             this.extractToolStripMenuItem.Name = "extractToolStripMenuItem";
-            this.extractToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
-            this.extractToolStripMenuItem.Text = "Extract to *.cvs";
-            this.extractToolStripMenuItem.Click += new System.EventHandler(this.extractToolStripMenuItem_Click);
+            this.extractToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.extractToolStripMenuItem.Text = "Extract";
+            this.extractToolStripMenuItem.Click += new System.EventHandler(this.extractToolStripMenuItem1_Click);
             // 
             // servChecker_statusStrip
             // 
@@ -768,7 +786,6 @@ namespace ItemChecker
         public System.Windows.Forms.GroupBox groupBox2;
         public System.Windows.Forms.Button quick_button;
         public System.Windows.Forms.Label label3;
-        public System.Windows.Forms.ToolStripMenuItem extractToolStripMenuItem;
         public System.Windows.Forms.ToolStripStatusLabel services_toolStripStatusLabel;
         public System.Windows.Forms.ComboBox category_comboBox;
         public System.Windows.Forms.Label category_label;
@@ -803,5 +820,8 @@ namespace ItemChecker
         public System.Windows.Forms.DataGridViewTextBoxColumn status_Column;
         public System.Windows.Forms.CheckBox hide0_checkBox;
         public System.Windows.Forms.CheckBox hide100_checkBox;
+        private System.Windows.Forms.ToolStripMenuItem csv_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extractToolStripMenuItem;
     }
 }

@@ -130,7 +130,8 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Info..."; }));
 
             SteamPresenter.getBalance();
-            Main.course = Request.GetCourse(GeneralConfig.Default.currencyApiKey);
+            //Main.course = Request.GetCourse(GeneralConfig.Default.currencyApiKey);
+            Main.course = 74.36;
             Steam.balance_usd = Math.Round(Steam.balance / Main.course, 2);
 
             Request request = new Request();

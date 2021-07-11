@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 
 namespace ItemChecker.Presenter
 {
@@ -50,16 +51,8 @@ namespace ItemChecker.Presenter
                     Main.loading = false;
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-                        serviceCheckerForm.servChecker_menuStrip.Enabled = true;
-                        serviceCheckerForm.quick_button.Enabled = true;
 
-                        serviceCheckerForm.Filters_groupBox.Enabled = true;
-                        serviceCheckerForm.Prices_groupBox.Enabled = true;
-                        serviceCheckerForm.Precent_groupBox.Enabled = true;
-                        serviceCheckerForm.buttons_groupBox.Enabled = true;
-
-                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[7], ListSortDirection.Descending);
-                    }));
+                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                     drawDTGView();
                     MainPresenter.messageBalloonTip();
                 }
@@ -288,7 +281,7 @@ namespace ItemChecker.Presenter
                 if (precent == 0 | precent == -100)
                     row.Cells[6].Style.BackColor = Color.Gray;
                 if (price2_one > Steam.balance_usd & ServiceChecker.service_one == 0)
-                    row.Cells[4].Style.BackColor = Color.Crimson;
+                    row.Cells[3].Style.BackColor = Color.Crimson;
                 if (item.Contains("Sticker") | item.Contains("Graffiti"))
                     row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
                 if (item.Contains("Souvenir"))
@@ -344,8 +337,7 @@ namespace ItemChecker.Presenter
 
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
                     dataGridView.DataSource = dt;
-                    serviceCheckerForm.servChecker_dataGridView.Enabled = true;
-                    serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[7], ListSortDirection.Descending); }));
+                    serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                 drawDTGView();
             }
             catch (Exception exp)
@@ -424,13 +416,15 @@ namespace ItemChecker.Presenter
             {
                 if (serviceCheckerForm.servChecker_dataGridView.Rows.Count > 0)
                 {
-
                     string csv = null;
+                    //Columns
                     foreach (DataGridViewColumn column in serviceCheckerForm.servChecker_dataGridView.Columns)
                     {
-                        csv += column.HeaderText + ',';
+                        csv += $"{column.HeaderText},";
                     }
+                    csv = csv.Substring(0, csv.Length - 1);
                     csv += "\r\n";
+                    //Rows
                     foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
                     {
                         foreach (DataGridViewCell cell in row.Cells)
@@ -438,9 +432,10 @@ namespace ItemChecker.Presenter
                             csv += cell.Value;
                             csv += ",";
                         }
+                        csv = csv.Substring(0, csv.Length - 1);
                         csv += "\r\n";
                     }
-                    System.IO.File.WriteAllText(Application.StartupPath.Replace(@"\", @"\\") + $"extract\\serviceChecker_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.csv", Edit.replaceSymbols(csv));
+                    File.WriteAllText(Application.StartupPath.Replace(@"\", @"\\") + $"extract\\serviceChecker_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.csv", Edit.replaceSymbols(csv));
                 }
             }
             catch (Exception exp)
@@ -455,9 +450,60 @@ namespace ItemChecker.Presenter
                 {
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-                        serviceCheckerForm.servChecker_dataGridView.Enabled = true;
-                    }));
+                        serviceCheckerForm.servChecker_dataGridView.Enabled = true; }));
                     MainPresenter.messageBalloonTip("Extraction was completed.");
+                }
+            }
+        }
+        public static void importCsv(object state)
+        {
+            try
+            {
+                object[] args = state as object[];
+                string filePath = args[0].ToString();
+                string[] lines = File.ReadAllLines(filePath);
+                MainPresenter.clearDGV(serviceCheckerForm.servChecker_dataGridView);
+
+                if (ServiceChecker.dataTable.Columns.Count == 0)
+                    for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.ColumnCount; ++i)
+                    {
+                        ServiceChecker.dataTable.Columns.Add(new DataColumn(serviceCheckerForm.servChecker_dataGridView.Columns[i].Name));
+                        serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                        if (i >= 2 & i <= 7)
+                            ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
+                    }
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string[] rowValue = lines[i].Split(',');
+                    DataRow row = ServiceChecker.dataTable.NewRow();
+                    for (int j = 0; j <= 8; j++)
+                    {
+                        row[j] = rowValue[j];
+                        if (j >= 2 & j <= 7)
+                            row[j] = Convert.ToDouble(rowValue[j]);
+                    }
+                    ServiceChecker.dataTable.Rows.Add(row);
+                }
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                    serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
+                    serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+            }
+            finally
+            {
+                if (!ServiceChecker.checkStop)
+                {
+                    Main.loading = false;
+                    serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                        serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
+                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
+                    MainPresenter.messageBalloonTip("Importing was completed.");
+                    drawDTGView();
                 }
             }
         }

@@ -26,10 +26,6 @@ namespace ItemChecker
             other_comboBox.SelectedIndex = 0;
             status_comboBox.SelectedIndex = 0;
             column_comboBox.SelectedIndex = 0;
-            Filters_groupBox.Enabled = false;
-            Prices_groupBox.Enabled = false;
-            Precent_groupBox.Enabled = false;
-            buttons_groupBox.Enabled = false;
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -57,8 +53,11 @@ namespace ItemChecker
         //menu
         private void add_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            checkList.ShowDialog();
-            count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
+            if (!Main.loading)
+            {
+                checkList.ShowDialog();
+                count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
+            }
         }
         private void check_toolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -73,8 +72,6 @@ namespace ItemChecker
                 for (int i = 1; i <= 4; i++)
                     column_comboBox.Items.Insert(i, servChecker_dataGridView.Columns[i + 1].HeaderText);
 
-                servChecker_menuStrip.Enabled = false;
-                quick_button.Enabled = false;
                 updated_toolStripStatusLabel.Visible = false;
                 status_toolStripStatusLabel.Text = "Checking the list...";
                 status_toolStripStatusLabel.Visible = true;
@@ -86,13 +83,37 @@ namespace ItemChecker
                 ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkMain);
             }
         }
-        private void extractToolStripMenuItem_Click(object sender, EventArgs e)
+        private void extractToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            status_toolStripStatusLabel.Text = "Extract the list to *.csv...";
-            status_toolStripStatusLabel.Visible = true;
-            ServiceCheckerPresenter.ResetFilter();
-            servChecker_dataGridView.Enabled = false;
-            ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.extractCsv);
+            if (!Main.loading & servChecker_dataGridView.Rows != null)
+            {
+                Main.loading = true;
+                status_toolStripStatusLabel.Text = "Extract the list to *.csv...";
+                status_toolStripStatusLabel.Visible = true;
+                servChecker_dataGridView.Enabled = false;
+                ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.extractCsv);
+            }
+        }
+        private void importToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (!Main.loading)
+            {
+                OpenFileDialog dialog = new()
+                {
+                    InitialDirectory = Application.StartupPath,
+                    RestoreDirectory = true,
+                    Filter = "Extraction (csv)|*.csv"
+                };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    Main.loading = true;
+                    status_toolStripStatusLabel.Text = "Import the list from *.csv...";
+                    status_toolStripStatusLabel.Visible = true;
+                    ServiceCheckerPresenter.ResetFilter();
+                    MainPresenter.clearDGV(servChecker_dataGridView);
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName });
+                }
+            }
         }
 
         //comboboxs
@@ -139,7 +160,7 @@ namespace ItemChecker
         //quick
         private void quick_button_Click(object sender, EventArgs e)
         {
-            if (textBox.Text != "")
+            if (textBox.Text != "" & !Main.loading)
             {
                 Main.checkList.Clear();
                 Main.checkList.Add(textBox.Text.Trim());
@@ -227,40 +248,42 @@ namespace ItemChecker
         {
             try
             {
-                string filter = string.Empty;
-                //filters
-                if (category_comboBox.SelectedIndex != 0)
+                if (!Main.loading & ServiceChecker.dataTable != null)
                 {
-                    if (category_comboBox.SelectedIndex != 1)
-                        filter += $"AND item_Column LIKE '{category_comboBox.Text}%'";
-                    else
-                        for (int i = 2; i < 6; i++)
-                            filter += $"AND item_Column NOT LIKE '{category_comboBox.Items[i]}%'";
-                }
-                else if (other_comboBox.SelectedIndex != 0)
-                    filter += $"AND item_Column LIKE '%{other_comboBox.Text}%'";
-                if (status_comboBox.SelectedIndex != 0)
-                    filter += $"AND status_Column LIKE '%{status_comboBox.Text}%'";
-                //prices
-                if (column_comboBox.SelectedIndex != 0 & priceFrom_numericUpDown.Value != 0)
-                    filter += $"AND price{column_comboBox.SelectedIndex}_Column > {priceFrom_numericUpDown.Value}";
-                if (column_comboBox.SelectedIndex != 0 & priceTo_numericUpDown.Value != 0)
-                    filter += $"AND price{column_comboBox.SelectedIndex}_Column < {priceTo_numericUpDown.Value}";
-                //precent
-                if (precentFrom_numericUpDown.Value != 0)
-                    filter += $"AND precent_Column > {precentFrom_numericUpDown.Value}";
-                if (precentTo_numericUpDown.Value != 0)
-                    filter += $"AND precent_Column < {precentTo_numericUpDown.Value}";
-                if (hide100_checkBox.Checked)
-                    filter += $"AND precent_Column <> -100";
-                if (hide0_checkBox.Checked)
-                    filter += $"AND precent_Column <> 0";
+                    string filter = string.Empty;
+                    //filters
+                    if (category_comboBox.SelectedIndex != 0)
+                    {
+                        if (category_comboBox.SelectedIndex != 1)
+                            filter += $"AND item_Column LIKE '{category_comboBox.Text}%'";
+                        else
+                            for (int i = 2; i < 6; i++)
+                                filter += $"AND item_Column NOT LIKE '{category_comboBox.Items[i]}%'";
+                    }
+                    else if (other_comboBox.SelectedIndex != 0)
+                        filter += $"AND item_Column LIKE '%{other_comboBox.Text}%'";
+                    if (status_comboBox.SelectedIndex != 0)
+                        filter += $"AND status_Column LIKE '%{status_comboBox.Text}%'";
+                    //prices
+                    if (column_comboBox.SelectedIndex != 0 & priceFrom_numericUpDown.Value != 0)
+                        filter += $"AND price{column_comboBox.SelectedIndex}_Column > {priceFrom_numericUpDown.Value}";
+                    if (column_comboBox.SelectedIndex != 0 & priceTo_numericUpDown.Value != 0)
+                        filter += $"AND price{column_comboBox.SelectedIndex}_Column < {priceTo_numericUpDown.Value}";
+                    //precent
+                    if (precentFrom_numericUpDown.Value != 0)
+                        filter += $"AND precent_Column > {precentFrom_numericUpDown.Value}";
+                    if (precentTo_numericUpDown.Value != 0)
+                        filter += $"AND precent_Column < {precentTo_numericUpDown.Value}";
+                    if (hide100_checkBox.Checked)
+                        filter += $"AND precent_Column <> -100";
+                    if (hide0_checkBox.Checked)
+                        filter += $"AND precent_Column <> 0";
 
-                if (filter != string.Empty)
-                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { filter.Remove(0, 4) });
-                else
-                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { string.Empty });
-                servChecker_dataGridView.Enabled = false;
+                    if (filter != string.Empty)
+                        ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { filter.Remove(0, 4) });
+                    else
+                        ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { string.Empty });
+                }                
             }
             catch (Exception exp)
             {
@@ -270,7 +293,8 @@ namespace ItemChecker
         }
         private void reset_button_Click(object sender, EventArgs e)
         {
-            ServiceCheckerPresenter.ResetFilter();
+            if(!Main.loading & ServiceChecker.dataTable != null)
+                ServiceCheckerPresenter.ResetFilter();
         }
         private void category_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
