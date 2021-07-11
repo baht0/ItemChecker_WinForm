@@ -48,7 +48,6 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    Main.loading = false;
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
 
@@ -56,6 +55,7 @@ namespace ItemChecker.Presenter
                     drawDTGView();
                     MainPresenter.messageBalloonTip();
                 }
+                Main.loading = false;
             }
         }
         private static void checkMrinka()
@@ -212,20 +212,21 @@ namespace ItemChecker.Presenter
                 Thread.Sleep(500);
             }
             serviceCheckerForm.Invoke(new Action(() => {
-                serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {Main.checkList.Count}";
+                serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: -";
                 serviceCheckerForm.Text = "ServiceChecker";}));
         }
 
         private static void createDTable()
         {
             serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Write to the table..."; }));
-            MainPresenter.clearDGV(serviceCheckerForm.servChecker_dataGridView);
+            MainPresenter.clearDGVRows(serviceCheckerForm.servChecker_dataGridView);
 
             if (ServiceChecker.dataTable.Columns.Count == 0)
-                for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.ColumnCount; ++i)
+                for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
                 {
-                    ServiceChecker.dataTable.Columns.Add(new DataColumn(serviceCheckerForm.servChecker_dataGridView.Columns[i].Name));
-                    serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                    string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                    ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
+                    serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
                     if (i >= 2 & i <= 7)
                         ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
                 }
@@ -344,6 +345,10 @@ namespace ItemChecker.Presenter
             {
                 Exceptions.errorLog(exp, Main.version);
             }
+            finally
+            {
+                Main.loading = false;
+            }
         }
         public static void ResetFilter()
         {
@@ -417,13 +422,8 @@ namespace ItemChecker.Presenter
                 if (serviceCheckerForm.servChecker_dataGridView.Rows.Count > 0)
                 {
                     string csv = null;
-                    //Columns
-                    foreach (DataGridViewColumn column in serviceCheckerForm.servChecker_dataGridView.Columns)
-                    {
-                        csv += $"{column.HeaderText},";
-                    }
-                    csv = csv.Substring(0, csv.Length - 1);
-                    csv += "\r\n";
+                    //services
+                    csv += $"{ServiceChecker.service_one},{ServiceChecker.service_two}\r\n";
                     //Rows
                     foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
                     {
@@ -453,6 +453,7 @@ namespace ItemChecker.Presenter
                         serviceCheckerForm.servChecker_dataGridView.Enabled = true; }));
                     MainPresenter.messageBalloonTip("Extraction was completed.");
                 }
+                Main.loading = false;
             }
         }
         public static void importCsv(object state)
@@ -462,16 +463,28 @@ namespace ItemChecker.Presenter
                 object[] args = state as object[];
                 string filePath = args[0].ToString();
                 string[] lines = File.ReadAllLines(filePath);
-                MainPresenter.clearDGV(serviceCheckerForm.servChecker_dataGridView);
+                string[] service = lines[0].Split(',');
+                MainPresenter.clearDGVRows(serviceCheckerForm.servChecker_dataGridView);
 
+                ServiceChecker.service_one = Convert.ToInt32(service[0]);
+                ServiceChecker.service_two = Convert.ToInt32(service[1]);
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                    serviceCheckerForm.firstSer_comboBox.SelectedIndex = ServiceChecker.service_one;
+                    serviceCheckerForm.secondSer_comboBox.SelectedIndex = ServiceChecker.service_two;
+                    serviceCheckerForm.services_toolStripStatusLabel.Text = $"From {serviceCheckerForm.firstSer_comboBox.Text} To {serviceCheckerForm.secondSer_comboBox.Text}";
+                    serviceCheckerForm.services_toolStripStatusLabel.Visible = true; }));
+
+                //Column
                 if (ServiceChecker.dataTable.Columns.Count == 0)
-                    for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.ColumnCount; ++i)
+                    for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
                     {
-                        ServiceChecker.dataTable.Columns.Add(new DataColumn(serviceCheckerForm.servChecker_dataGridView.Columns[i].Name));
-                        serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                        string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                        ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
+                        serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
                         if (i >= 2 & i <= 7)
                             ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
                     }
+                //rows
                 for (int i = 1; i < lines.Length; i++)
                 {
                     string[] rowValue = lines[i].Split(',');
@@ -498,13 +511,13 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    Main.loading = false;
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
                         serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                     MainPresenter.messageBalloonTip("Importing was completed.");
                     drawDTGView();
                 }
+                Main.loading = false;
             }
         }
     }

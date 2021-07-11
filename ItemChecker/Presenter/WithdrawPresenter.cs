@@ -78,7 +78,7 @@ namespace ItemChecker.Presenter
 
                     if (item_name.Contains("Или криво настроили фильтры") | item_name.Contains("Or poorly configured filters"))
                     {
-                        MainPresenter.clearDGV(mainForm.withdraw_dataGridView);
+                        MainPresenter.clearDGVRows(mainForm.withdraw_dataGridView);
                         MainPresenter.messageBalloonTip("TrySkins returned empty list.", ToolTipIcon.Error);
                     }
                     else checkItems(items);
@@ -120,7 +120,7 @@ namespace ItemChecker.Presenter
         public static void createDTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Table Withdraw..."; }));
-            MainPresenter.clearDGV(mainForm.withdraw_dataGridView);
+            MainPresenter.clearDGVRows(mainForm.withdraw_dataGridView);
 
             DataTable table = new DataTable();
             for (int i = 0; i < mainForm.withdraw_dataGridView.ColumnCount; ++i)

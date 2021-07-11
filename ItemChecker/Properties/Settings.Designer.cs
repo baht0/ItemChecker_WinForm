@@ -85,6 +85,18 @@ namespace ItemChecker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string proxyList {
+            get {
+                return ((string)(this["proxyList"]));
+            }
+            set {
+                this["proxyList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool UpdateSettings {
             get {
@@ -97,13 +109,13 @@ namespace ItemChecker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string proxyList {
+        [global::System.Configuration.DefaultSettingValueAttribute("74")]
+        public double course {
             get {
-                return ((string)(this["proxyList"]));
+                return ((double)(this["course"]));
             }
             set {
-                this["proxyList"] = value;
+                this["course"] = value;
             }
         }
     }

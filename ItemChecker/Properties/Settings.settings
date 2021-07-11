@@ -17,11 +17,14 @@
     <Setting Name="checkList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="proxyList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="UpdateSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="proxyList" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="course" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">74</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -130,8 +130,15 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Info..."; }));
 
             SteamPresenter.getBalance();
-            //Main.course = Request.GetCourse(GeneralConfig.Default.currencyApiKey);
-            Main.course = 74.36;
+            var course = Request.GetCourse(GeneralConfig.Default.currencyApiKey);
+            if (course != 0)
+            {
+                Main.course = course;
+                Properties.Settings.Default.course = course;
+                Properties.Settings.Default.Save();
+            }
+            else
+                Main.course = Properties.Settings.Default.course;
             Steam.balance_usd = Math.Round(Steam.balance / Main.course, 2);
 
             Request request = new Request();
@@ -232,7 +239,7 @@ namespace ItemChecker.Presenter
             }
         }
         //other
-        public static void clearDGV(DataGridView dataGridView)
+        public static void clearDGVRows(DataGridView dataGridView)
         {
             DataTable DT = (DataTable)dataGridView.DataSource;
             if (DT != null)

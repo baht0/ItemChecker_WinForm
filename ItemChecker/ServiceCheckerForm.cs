@@ -85,7 +85,7 @@ namespace ItemChecker
         }
         private void extractToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (!Main.loading & servChecker_dataGridView.Rows != null)
+            if (!Main.loading & servChecker_dataGridView.Rows.Count > 0)
             {
                 Main.loading = true;
                 status_toolStripStatusLabel.Text = "Extract the list to *.csv...";
@@ -110,7 +110,6 @@ namespace ItemChecker
                     status_toolStripStatusLabel.Text = "Import the list from *.csv...";
                     status_toolStripStatusLabel.Visible = true;
                     ServiceCheckerPresenter.ResetFilter();
-                    MainPresenter.clearDGV(servChecker_dataGridView);
                     ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName });
                 }
             }
@@ -250,6 +249,7 @@ namespace ItemChecker
             {
                 if (!Main.loading & ServiceChecker.dataTable != null)
                 {
+                    Main.loading = true;
                     string filter = string.Empty;
                     //filters
                     if (category_comboBox.SelectedIndex != 0)
