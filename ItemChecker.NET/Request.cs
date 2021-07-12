@@ -122,15 +122,15 @@ namespace ItemChecker.Net
         {
             try
             {
-                string url = @"https://free.currconv.com/api/v7/convert?q=USD_RUB&compact=ultra&apiKey=" + currency_api_key;
+                string url = @"https://openexchangerates.org/api/latest.json?app_id=" + currency_api_key;
                 var json = GetRequest(url);
 
-                return Math.Round(Convert.ToDouble(JObject.Parse(json)["USD_RUB"].ToString()), 2);
+                return Math.Round(Convert.ToDouble(JObject.Parse(json)["rates"]["RUB"].ToString()), 2);
             }
             catch (Exception exp)
             {
                 Exceptions.errorLog(exp, "1.0.0.0");
-                return 0.00;
+                return 0;
             }
         }
 

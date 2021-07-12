@@ -222,7 +222,8 @@ namespace ItemChecker
         }
         private void getCurr_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Support.Edit.openUrl("https://free.currencyconverterapi.com/free-api-key");
+            //Support.Edit.openUrl("https://free.currencyconverterapi.com/free-api-key");
+            Support.Edit.openUrl("https://openexchangerates.org/signup/free");
         }
 
         //withdraw
