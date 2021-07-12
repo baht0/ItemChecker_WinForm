@@ -88,10 +88,10 @@ namespace ItemChecker
             if (!Main.loading & servChecker_dataGridView.Rows.Count > 0)
             {
                 Main.loading = true;
-                status_toolStripStatusLabel.Text = "Extract the list to *.csv...";
+                status_toolStripStatusLabel.Text = "Export the list to *.csv...";
                 status_toolStripStatusLabel.Visible = true;
                 servChecker_dataGridView.Enabled = false;
-                ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.extractCsv);
+                ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.exportCsv);
             }
         }
         private void importToolStripMenuItem1_Click(object sender, EventArgs e)

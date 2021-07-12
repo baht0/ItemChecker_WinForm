@@ -203,7 +203,7 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Tryskins...";}));
 
-            MainPresenter.clearDGVRows(mainForm.tryskins_dataGridView);
+            MainPresenter.clearDTableRows(mainForm.tryskins_dataGridView);
             DataTable table = new DataTable();
             for (int i = 0; i < mainForm.tryskins_dataGridView.ColumnCount; ++i)
             {

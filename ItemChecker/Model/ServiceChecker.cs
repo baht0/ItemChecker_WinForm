@@ -20,8 +20,6 @@ namespace ItemChecker.Model
         public static List<string> status = new List<string>();
         public static void _clear()
         {
-            ServiceChecker.dataTable.Clear();
-
             ServiceChecker.price_one.Clear();
             ServiceChecker.price2_one.Clear();
             ServiceChecker.price_two.Clear();

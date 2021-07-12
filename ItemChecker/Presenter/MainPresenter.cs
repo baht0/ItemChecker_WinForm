@@ -239,7 +239,7 @@ namespace ItemChecker.Presenter
             }
         }
         //other
-        public static void clearDGVRows(DataGridView dataGridView)
+        public static void clearDTableRows(DataGridView dataGridView)
         {
             DataTable DT = (DataTable)dataGridView.DataSource;
             if (DT != null)

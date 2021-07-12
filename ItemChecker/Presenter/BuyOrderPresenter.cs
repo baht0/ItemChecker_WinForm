@@ -132,7 +132,7 @@ namespace ItemChecker.Presenter
         public static void createDTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Steam..."; }));
-            MainPresenter.clearDGVRows(mainForm.buyOrder_dataGridView);
+            MainPresenter.clearDTableRows(mainForm.buyOrder_dataGridView);
 
             DataTable table = new DataTable();
             for (int i = 0; i < mainForm.buyOrder_dataGridView.ColumnCount; ++i)
