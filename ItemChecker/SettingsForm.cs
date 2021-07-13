@@ -29,6 +29,7 @@ namespace ItemChecker
             minPrecent_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrecent;
             maxPrice_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrice;
             minPrice_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrice;
+            oldcsm_checkBox.Checked = TryskinsConfig.Default.oldDesign;
             //withdraw
             minPrecentW_numericUpDown.Value = WithdrawConfig.Default.minPrecent;
             maxPrecentW_numericUpDown.Value = WithdrawConfig.Default.maxPrecent;
@@ -72,10 +73,13 @@ namespace ItemChecker
             cancelOrder_checkBox.Checked = false;
             startupPush_checkBox.Checked = false;
             //tryskins
+            fast_radioButton.Checked = true;
+            long_radioButton.Checked = false;
             maxPrecent_numericUpDown.Value = 60;
             minPrecent_numericUpDown.Value = 27;
             maxPrice_numericUpDown.Value = 0;
             minPrice_numericUpDown.Value = 0;
+            oldcsm_checkBox.Checked = true;
             //withdraw
             minPrecentW_numericUpDown.Value = 3;
             maxPrecentW_numericUpDown.Value = 60;
@@ -87,8 +91,6 @@ namespace ItemChecker
             onlySt_checkBox.Checked = false;
             compareSta_checkBox.Checked = false;
 
-            fast_radioButton.Checked = true;
-            long_radioButton.Checked = false;
             //float
             maxPrecentFloat_numericUpDown.Value = Convert.ToDecimal(7);
             getItems_numericUpDown.Value = 40;
@@ -127,6 +129,7 @@ namespace ItemChecker
                     TryskinsConfig.Default.minTryskinsPrice = Convert.ToInt32(minPrice_numericUpDown.Value);
                     TryskinsConfig.Default.fastTime = fast_radioButton.Checked;
                     TryskinsConfig.Default.longTime = long_radioButton.Checked;
+                    TryskinsConfig.Default.oldDesign = oldcsm_checkBox.Checked;
                     //withdraw
                     WithdrawConfig.Default.minPrecent = Convert.ToInt32(minPrecentW_numericUpDown.Value);
                     WithdrawConfig.Default.maxPrecent = Convert.ToInt32(maxPrecentW_numericUpDown.Value);

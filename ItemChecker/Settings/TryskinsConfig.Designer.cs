@@ -12,7 +12,7 @@ namespace ItemChecker.Settings {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class TryskinsConfig : global::System.Configuration.ApplicationSettingsBase {
         
         private static TryskinsConfig defaultInstance = ((TryskinsConfig)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new TryskinsConfig())));
@@ -92,6 +92,18 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["longTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool oldDesign {
+            get {
+                return ((bool)(this["oldDesign"]));
+            }
+            set {
+                this["oldDesign"] = value;
             }
         }
     }

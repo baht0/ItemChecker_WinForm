@@ -243,28 +243,27 @@ namespace ItemChecker
             try
             {
                 int row = Convert.ToInt32(tryskins_dataGridView.CurrentCell.RowIndex.ToString());
-                string iname = tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
+                string item = tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
                 int cell = tryskins_dataGridView.CurrentCell.ColumnIndex;
-                string str = Edit.replaceUrl(iname);
+                string market_has_name = Edit.replaceUrl(item);
                 string url;
 
                 if (cell == 1)
                 {
-                    Clipboard.SetText(iname);
+                    Clipboard.SetText(item);
                 }
                 if (cell == 2)
                 {
-                    url = "https://steamcommunity.com/market/listings/730/" + str;
+                    url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
                     Edit.openUrl(url);
                 }
                 if (cell == 3)
                 {
-                    url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + str;
-                    Edit.openUrl(url);
+                    Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
                 }
                 if (cell == 4)
                 {
-                    url = TrySkins.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + str);
+                    url = TrySkins.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + market_has_name);
                     Edit.openUrl(url);
                 }
             }
@@ -312,23 +311,22 @@ namespace ItemChecker
         private void buyOrder_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int row = Convert.ToInt32(buyOrder_dataGridView.CurrentCell.RowIndex.ToString());
-            string iname = buyOrder_dataGridView.Rows[row].Cells[1].Value.ToString();
-            string str = Edit.replaceUrl(iname);
+            string item = buyOrder_dataGridView.Rows[row].Cells[1].Value.ToString();
+            string market_has_name = Edit.replaceUrl(item);
             string url;
 
             if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 1)
             {
-                Clipboard.SetText(iname);
+                Clipboard.SetText(item);
             }
             if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 2)
             {
-                url = "https://steamcommunity.com/market/listings/730/" + str;
+                url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
                 Edit.openUrl(url);
             }
             if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 3)
             {
-                url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + str;
-                Edit.openUrl(url);
+                Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
             }
         }
         private void buyOrder_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
@@ -384,25 +382,24 @@ namespace ItemChecker
             try
             {
                 int row = Convert.ToInt32(withdraw_dataGridView.CurrentCell.RowIndex.ToString());
-                string iname = withdraw_dataGridView.Rows[row].Cells[1].Value.ToString();
+                string item = withdraw_dataGridView.Rows[row].Cells[1].Value.ToString();
                 int cell = withdraw_dataGridView.CurrentCell.ColumnIndex;
-                string str = Edit.replaceUrl(iname);
+                string market_has_name = Edit.replaceUrl(item);
                 string url;
 
                 if (cell == 1 || cell == 2)
                 {
-                    url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + str;
-                    Edit.openUrl(url);
+                    Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
                     withdraw_dataGridView.Rows[row].Cells[1].Style.BackColor = System.Drawing.Color.Silver;
                 }
                 if (cell == 3 || cell == 4)
                 {
-                    url = "https://steamcommunity.com/market/listings/730/" + str;
+                    url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
                     Edit.openUrl(url);
                 }
                 if (cell == 5)
                 {
-                    url = Withdraw.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + str);
+                    url = Withdraw.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + market_has_name);
                     Edit.openUrl(url);
                 }
             }
@@ -476,7 +473,10 @@ namespace ItemChecker
         }
         private void csmoneyLink_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Edit.openUrl("https://old.cs.money");
+            if(!TryskinsConfig.Default.oldDesign)
+                Edit.openUrl("https://cs.money");
+            else
+                Edit.openUrl("https://old.cs.money");
         }
         private void tryskinsLink_toolStripMenuItem_Click(object sender, EventArgs e)
         {

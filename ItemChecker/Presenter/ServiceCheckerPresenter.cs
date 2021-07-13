@@ -124,7 +124,8 @@ namespace ItemChecker.Presenter
             else if (ServiceChecker.service_two == 0)
             {
                 ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
-                ServiceChecker.price2_two.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
+                double buyOrder = Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()) * 0.8696;
+                ServiceChecker.price2_two.Add(Math.Round(buyOrder, 2));
                 ServiceChecker.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
                 ServiceChecker.status.Add("Tradable");
             }
@@ -295,11 +296,11 @@ namespace ItemChecker.Presenter
                 var price2_one = Edit.removeDol(row.Cells[3].Value.ToString());
                 var precent = Convert.ToDouble(row.Cells[6].Value.ToString());
                 var status = row.Cells[8].Value.ToString();
-                if (precent >= 35)
+                if (precent >= 25)
                     row.Cells[6].Style.BackColor = Color.MediumSeaGreen;
-                if (precent <= 25)
+                if (precent <= 15)
                     row.Cells[6].Style.BackColor = Color.OrangeRed;
-                if (precent < 0)
+                if (precent < -10)
                     row.Cells[6].Style.BackColor = Color.Red;
                 if (precent == 0 | precent == -100)
                     row.Cells[6].Style.BackColor = Color.Gray;

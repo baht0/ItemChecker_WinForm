@@ -6,6 +6,7 @@ using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
 using System.Linq;
+using ItemChecker.Settings;
 
 namespace ItemChecker
 {
@@ -185,7 +186,7 @@ namespace ItemChecker
             int row = Convert.ToInt32(servChecker_dataGridView.CurrentCell.RowIndex.ToString());
             string iname = servChecker_dataGridView.Rows[row].Cells[1].Value.ToString();
             int index = servChecker_dataGridView.CurrentCell.ColumnIndex;
-            string url = null;
+            string market_has_name = Edit.replaceUrl(iname);
 
             if (index == 1)
             {
@@ -194,18 +195,16 @@ namespace ItemChecker
             if (index == 2 | index == 3)
             {
                 if (ServiceChecker.service_one == 0)
-                    url = "https://steamcommunity.com/market/listings/730/";
+                    Edit.openUrl("https://steamcommunity.com/market/listings/730/" + market_has_name);
                 if (ServiceChecker.service_one == 1)
-                    url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=";
-                Edit.openUrl(url + Edit.replaceUrl(iname));
+                    Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
             }
             if (index == 4 | index == 5)
             {
                 if (ServiceChecker.service_two == 0)
-                    url = "https://steamcommunity.com/market/listings/730/";
+                    Edit.openUrl("https://steamcommunity.com/market/listings/730/" + market_has_name);
                 if (ServiceChecker.service_two == 1)
-                    url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=";
-                Edit.openUrl(url + Edit.replaceUrl(iname));
+                    Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
             }
         }
         private void ownList_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)

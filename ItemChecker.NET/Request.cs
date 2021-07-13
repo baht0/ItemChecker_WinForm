@@ -93,13 +93,13 @@ namespace ItemChecker.Net
         }
         public static String inventoriesCsMoney(string market_hash_name)
         {
-            bool stattrak = false;
-            bool souvenir = false;
+            string stattrak = "false";
+            string souvenir = "false";
             if (market_hash_name.Contains("StatTrak"))
-                stattrak = true;
+                stattrak = "true";
             if (market_hash_name.Contains("Souvenir"))
-                souvenir = true;
-            string url = @"https://inventories.cs.money/5.0/load_bots_inventory/730?hasTradeLock=false&hasTradeLock=true&isMarket=false&isSouvenir=" + souvenir.ToString().ToLower() + "&isStatTrak=" + stattrak.ToString().ToLower() + "&limit=60&name=" + market_hash_name + "&offset=0&tradeLockDays=1&tradeLockDays=2&tradeLockDays=3&tradeLockDays=4&tradeLockDays=5&tradeLockDays=6&tradeLockDays=7&tradeLockDays=0";
+                souvenir = "true";
+            string url = @"https://inventories.cs.money/5.0/load_bots_inventory/730?hasTradeLock=false&hasTradeLock=true&isMarket=false&isSouvenir=" + souvenir + "&isStatTrak=" + stattrak + "&limit=60&name=" + market_hash_name + "&offset=0&tradeLockDays=1&tradeLockDays=2&tradeLockDays=3&tradeLockDays=4&tradeLockDays=5&tradeLockDays=6&tradeLockDays=7&tradeLockDays=0";
 
             return GetRequest(url);
         }

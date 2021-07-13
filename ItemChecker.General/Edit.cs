@@ -28,6 +28,24 @@ namespace ItemChecker.Support
             };
             Process.Start(psi);
         }
+        public static void openCsm(string market_hash_name, bool old)
+        {
+            string url;
+            if (!old)
+            {
+                string stattrak = "false";
+                string souvenir = "false";
+                if (market_hash_name.Contains("StatTrak"))
+                    stattrak = "true";
+                if (market_hash_name.Contains("Souvenir"))
+                    souvenir = "true";
+
+                url = "https://cs.money/csgo/trade/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link&search=" + market_hash_name + "&hasTradeLock=true&isStatTrak=" + stattrak + "&isMarket=false&isSouvenir=" + souvenir;
+            }
+            else
+                url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + market_hash_name;
+            openUrl(url);
+        }
 
         //remove
         public static Double removeRub(string rub)

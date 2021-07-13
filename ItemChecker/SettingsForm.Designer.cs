@@ -116,6 +116,8 @@ namespace ItemChecker
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.oldcsm_checkBox = new System.Windows.Forms.CheckBox();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).BeginInit();
@@ -153,6 +155,7 @@ namespace ItemChecker
             this.groupBox6.SuspendLayout();
             this.extract_groupBox.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // ok_button
@@ -756,6 +759,7 @@ namespace ItemChecker
             // 
             // tryskins_tabPage
             // 
+            this.tryskins_tabPage.Controls.Add(this.groupBox12);
             this.tryskins_tabPage.Controls.Add(this.groupBox9);
             this.tryskins_tabPage.Controls.Add(this.groupBox2);
             this.tryskins_tabPage.Location = new System.Drawing.Point(4, 22);
@@ -786,7 +790,7 @@ namespace ItemChecker
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(15, 26);
+            this.label10.Location = new System.Drawing.Point(18, 26);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(70, 13);
             this.label10.TabIndex = 1;
@@ -808,7 +812,7 @@ namespace ItemChecker
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 52);
+            this.label11.Location = new System.Drawing.Point(18, 52);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(67, 13);
             this.label11.TabIndex = 2;
@@ -830,7 +834,7 @@ namespace ItemChecker
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(15, 78);
+            this.label12.Location = new System.Drawing.Point(18, 78);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(57, 13);
             this.label12.TabIndex = 3;
@@ -852,7 +856,7 @@ namespace ItemChecker
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(15, 104);
+            this.label13.Location = new System.Drawing.Point(18, 104);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(54, 13);
             this.label13.TabIndex = 4;
@@ -1287,6 +1291,26 @@ namespace ItemChecker
             this.tabControl1.Size = new System.Drawing.Size(301, 339);
             this.tabControl1.TabIndex = 0;
             // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.oldcsm_checkBox);
+            this.groupBox12.Location = new System.Drawing.Point(20, 205);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(251, 52);
+            this.groupBox12.TabIndex = 2;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Open Cs.Money";
+            // 
+            // oldcsm_checkBox
+            // 
+            this.oldcsm_checkBox.AutoSize = true;
+            this.oldcsm_checkBox.Location = new System.Drawing.Point(15, 22);
+            this.oldcsm_checkBox.Name = "oldcsm_checkBox";
+            this.oldcsm_checkBox.Size = new System.Drawing.Size(121, 17);
+            this.oldcsm_checkBox.TabIndex = 0;
+            this.oldcsm_checkBox.Text = "Switch to old design";
+            this.oldcsm_checkBox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1354,6 +1378,8 @@ namespace ItemChecker
             this.extract_groupBox.ResumeLayout(false);
             this.extract_groupBox.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1447,5 +1473,7 @@ namespace ItemChecker
         private System.Windows.Forms.CheckBox startupPush_checkBox;
         private System.Windows.Forms.CheckBox proxy_checkBox;
         private System.Windows.Forms.Button proxy_button;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.CheckBox oldcsm_checkBox;
     }
 }
