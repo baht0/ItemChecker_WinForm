@@ -91,6 +91,18 @@ namespace ItemChecker.Net
                 return Tuple.Create("", false); 
             }
         }
+        public static String inventoriesCsMoney(string market_hash_name)
+        {
+            bool stattrak = false;
+            bool souvenir = false;
+            if (market_hash_name.Contains("StatTrak"))
+                stattrak = true;
+            if (market_hash_name.Contains("Souvenir"))
+                souvenir = true;
+            string url = @"https://inventories.cs.money/5.0/load_bots_inventory/730?hasTradeLock=false&hasTradeLock=true&isMarket=false&isSouvenir=" + souvenir.ToString().ToLower() + "&isStatTrak=" + stattrak.ToString().ToLower() + "&limit=60&name=" + market_hash_name + "&offset=0&tradeLockDays=1&tradeLockDays=2&tradeLockDays=3&tradeLockDays=4&tradeLockDays=5&tradeLockDays=6&tradeLockDays=7&tradeLockDays=0";
+
+            return GetRequest(url);
+        }
         public static String PriceOverview(string market_hash_name, int currency)
         {
             return GetRequest(@"https://steamcommunity.com/market/priceoverview/?country=RU&currency=" + currency + "&appid=730&market_hash_name=" + market_hash_name);
@@ -122,10 +134,21 @@ namespace ItemChecker.Net
         {
             try
             {
-                string url = @"https://openexchangerates.org/api/latest.json?app_id=" + currency_api_key;
-                var json = GetRequest(url);
+                if (currency_api_key.Length == 20)
+                {
+                    string url = @"https://free.currconv.com/api/v7/convert?q=USD_RUB&compact=ultra&apiKey=" + currency_api_key;
+                    var json = GetRequest(url);
 
-                return Math.Round(Convert.ToDouble(JObject.Parse(json)["rates"]["RUB"].ToString()), 2);
+                    return Math.Round(Convert.ToDouble(JObject.Parse(json)["USD_RUB"].ToString()), 2);
+                }
+                else
+                {
+                    string url = @"https://openexchangerates.org/api/latest.json?app_id=" + currency_api_key;
+                    var json = GetRequest(url);
+
+                    return Math.Round(Convert.ToDouble(JObject.Parse(json)["rates"]["RUB"].ToString()), 2);
+                }        
+
             }
             catch (Exception exp)
             {

@@ -19,7 +19,7 @@ namespace ItemChecker.Presenter
     class ServiceCheckerPresenter
     {
         static int i;
-        static DateTime start;
+        static DateTime start; 
         public static void checkMain(object state)
         {
             try
@@ -36,8 +36,7 @@ namespace ItemChecker.Presenter
                         checkMrinka();
                 if (ServiceChecker.service_one == 2 | ServiceChecker.service_two == 2)
                     checkLootFarm();
-
-                createDTable();
+                createDTable();                
             }
             catch (Exception exp)
             {
@@ -49,25 +48,26 @@ namespace ItemChecker.Presenter
                 {
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-
                         serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                     drawDTGView();
                     MainPresenter.messageBalloonTip();
+                    Main.loading = false;
                 }
-                Main.loading = false;
             }
         }
         private static void checkMrinka()
         {
-            start = DateTime.Now;
-            for (i = 0; i < Main.checkList.Count; i++)
+            try
             {
-                if (!ServiceChecker.checkStop)
+                start = DateTime.Now;
+                for (i = 0; i < Main.checkList.Count; i++)
                 {
+                    
+                    string market_hash_name = Edit.replaceUrl(Main.checkList[i]);
                     Tuple<String, Boolean> response = Tuple.Create("", false);
                     do
                     {
-                        response = Request.MrinkaRequest(Edit.replaceUrl(Main.checkList[i]));
+                        response = Request.MrinkaRequest(market_hash_name);
                         if (!response.Item2)
                         {
                             serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list (429). Please Wait..."; }));
@@ -75,11 +75,17 @@ namespace ItemChecker.Presenter
                         }
                     }
                     while (!response.Item2);
+                    serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list..."; }));
 
-                    serviceCheckerForm.Invoke(new Action(() => { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list..."; }));
-                    parseMrinka(i, response.Item1);
+                    parseJson(response.Item1);
                 }
-                else break;
+            }
+            catch (Exception exp)
+            {
+                if (ServiceChecker.checkStop)
+                    return;
+                else
+                    Exceptions.errorLog(exp, Main.version);
             }
         }
         private static void checkMrinkaProxy()
@@ -88,51 +94,51 @@ namespace ItemChecker.Presenter
             int id = 0;
             for (i = 0; i < Main.checkList.Count; i++)
             {
-                if (!ServiceChecker.checkStop)
+                if (ServiceChecker.checkStop)
+                    return;
+                try
                 {
-                    try
-                    {
-                        string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
-                        string response = Request.GetRequest(url, Main.proxyList[id]);
-                    }
-                    catch
-                    {
-                        i--;
-                        if (Main.proxyList.Count > id)
-                            id++;
-                        else
-                            id = 0;
-                    }
+                    string market_hash_name = Edit.replaceUrl(Main.checkList[i]);
+                    string url = @"http://188.166.72.201:8080/singleitem?i=" + market_hash_name;
+                    string response = Request.GetRequest(url, Main.proxyList[id]);
+                    parseJson(response);
                 }
-                else break;
+                catch
+                {
+                    i--;
+                    if (Main.proxyList.Count > id)
+                        id++;
+                    else
+                        id = 0;
+                }
             }
         }
-        private static void parseMrinka(int i, string response)
+        private static void parseJson(string response)
         {
             if (ServiceChecker.service_one == 0)
             {
                 ServiceChecker.price_one.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
                 ServiceChecker.price2_one.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
-                ServiceChecker.stUpdated.Add(JObject.Parse(response)["steam"]["updated"].ToString());
+                ServiceChecker.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
             }
             else if (ServiceChecker.service_two == 0)
             {
                 ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
                 ServiceChecker.price2_two.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
-                ServiceChecker.stUpdated.Add(JObject.Parse(response)["steam"]["updated"].ToString());
+                ServiceChecker.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
                 ServiceChecker.status.Add("Tradable");
             }
             if (ServiceChecker.service_one == 1)
             {
                 ServiceChecker.price2_one.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString()));
                 ServiceChecker.price_one.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
-                ServiceChecker.csmUpdated.Add(JObject.Parse(response)["csm"]["updated"].ToString());
+                ServiceChecker.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
             }
             else if (ServiceChecker.service_two == 1)
             {
                 ServiceChecker.price2_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString()));
                 ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
-                ServiceChecker.csmUpdated.Add(JObject.Parse(response)["csm"]["updated"].ToString());
+                ServiceChecker.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
 
                 if (Main.unavailable.Contains(Main.checkList[i]))
                     ServiceChecker.status.Add("Unavailable");
@@ -147,91 +153,102 @@ namespace ItemChecker.Presenter
             start = DateTime.Now;
             var json = Request.GetRequest("https://loot.farm/fullprice.json");
             JArray jArray = JArray.Parse(json);
-            List<string> str = new List<string>();
+            List<string> str = new();
 
             for (int i = 0; i < jArray.Count; i++)
             {
-                if (!ServiceChecker.checkStop)
-                    str.Add(jArray[i]["name"].ToString());
-                else break;
+                if (ServiceChecker.checkStop)
+                    return;
+                str.Add(jArray[i]["name"].ToString());
             }
             for (i = 0; i < Main.checkList.Count; i++)
             {
-                if (!ServiceChecker.checkStop)
+                if (ServiceChecker.checkStop)
+                    return;
+                if (str.Contains(Main.checkList[i]))
                 {
-                    if (str.Contains(Main.checkList[i]))
+                    int id = str.IndexOf(Main.checkList[i]);
+                    if (ServiceChecker.service_one == 2)
                     {
-                        int id = str.IndexOf(Main.checkList[i]);
-                        if (ServiceChecker.service_one == 2)
-                        {
-                            double price = Convert.ToDouble(jArray[id]["price"]) / 100;
-                            ServiceChecker.price_one.Add(price);
-                            ServiceChecker.price2_one.Add(Math.Round(price * 0.95, 2));
-                        }
-                        else if (ServiceChecker.service_two == 2)
-                        {
-                            double price = Convert.ToDouble(jArray[id]["price"]) / 100;
-                            ServiceChecker.price_two.Add(price);
-                            ServiceChecker.price2_two.Add(Math.Round(price * 0.95, 2));
-
-                            int have = Convert.ToInt32(jArray[id]["have"]);
-                            int max = Convert.ToInt32(jArray[id]["max"]);
-                            int count = max - have;
-                            if (count > 0)
-                                ServiceChecker.status.Add("Tradable");
-                            else if (count <= 0)
-                                ServiceChecker.status.Add("Overstock");
-                        }
+                        double price = Convert.ToDouble(jArray[id]["price"]) / 100;
+                        ServiceChecker.price_one.Add(price);
+                        ServiceChecker.price2_one.Add(Math.Round(price * 0.95, 2));
+                        int have = Convert.ToInt32(jArray[id]["have"]);
                     }
-                    else
+                    else if (ServiceChecker.service_two == 2)
                     {
-                        if (ServiceChecker.service_one == 2)
-                        {
-                            ServiceChecker.price_one.Add(0);
-                            ServiceChecker.price2_one.Add(0);
-                        }
-                        else if (ServiceChecker.service_two == 2)
-                        {
-                            ServiceChecker.price_two.Add(0);
-                            ServiceChecker.price2_two.Add(0);
-                            ServiceChecker.status.Add("Unknown");
-                        }
+                        double price = Convert.ToDouble(jArray[id]["price"]) / 100;
+                        ServiceChecker.price_two.Add(price);
+                        ServiceChecker.price2_two.Add(Math.Round(price * 0.95, 2));
+
+                        int have = Convert.ToInt32(jArray[id]["have"]);
+                        int max = Convert.ToInt32(jArray[id]["max"]);
+                        int count = max - have;
+                        if (count > 0)
+                            ServiceChecker.status.Add("Tradable");
+                        else if (count <= 0)
+                            ServiceChecker.status.Add("Overstock");
                     }
                 }
-                else break;
+                else
+                {
+                    if (ServiceChecker.service_one == 2)
+                    {
+                        ServiceChecker.price_one.Add(0);
+                        ServiceChecker.price2_one.Add(0);
+                    }
+                    else if (ServiceChecker.service_two == 2)
+                    {
+                        ServiceChecker.price_two.Add(0);
+                        ServiceChecker.price2_two.Add(0);
+                        ServiceChecker.status.Add("Unknown");
+                    }
+                }
             }
-        }
+        }       
         private static void TimeLeft(object state)
         {
-            while (i < Main.checkList.Count)
+            try
             {
+                while (i < Main.checkList.Count)
+                {
+                    serviceCheckerForm.Invoke(new Action(() => {
+                        serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
+                        serviceCheckerForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}";
+                    }));
+                    Thread.Sleep(500);
+                }
                 serviceCheckerForm.Invoke(new Action(() => {
-                    serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
-                    serviceCheckerForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}"; }));
-                Thread.Sleep(500);
+                    serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {Main.checkList.Count}";
+                    serviceCheckerForm.Text = "ServiceChecker";
+                }));
             }
-            serviceCheckerForm.Invoke(new Action(() => {
-                serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: -";
-                serviceCheckerForm.Text = "ServiceChecker";}));
+            catch (Exception exp)
+            {
+                if (ServiceChecker.checkStop)
+                    return;
+                else
+                    Exceptions.errorLog(exp, Main.version);
+            }            
         }
 
         private static void createDTable()
         {
-            serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Write to the table..."; }));
-            ServiceChecker.dataTable.Rows.Clear();
-
-            if (ServiceChecker.dataTable.Columns.Count == 0)
-                for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
-                {
-                    string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
-                    ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
-                    serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
-                    if (i >= 2 & i <= 7)
-                        ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
-                }
-            for (int i = 0; i < Main.checkList.Count; i++)
+            try
             {
-                if (!ServiceChecker.checkStop)
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Write to the table..."; }));
+                ServiceChecker.dataTable.Rows.Clear();
+
+                if (ServiceChecker.dataTable.Columns.Count == 0)
+                    for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
+                    {
+                        string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                        ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
+                        serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
+                        if (i >= 2 & i <= 7)
+                            ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
+                    }
+                for (int i = 0; i < Main.checkList.Count; i++)
                 {
                     if (ServiceChecker.service_one == 0) //steam -> (any)
                     {
@@ -260,9 +277,15 @@ namespace ItemChecker.Presenter
 
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {i + 1}"; }));
                 }
-                else break;
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
             }
-            serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
+            catch (Exception exp)
+            {
+                if (ServiceChecker.checkStop)
+                    return;
+                else
+                    Exceptions.errorLog(exp, Main.version);
+            }
         }
         public static void drawDTGView()
         {
@@ -339,38 +362,115 @@ namespace ItemChecker.Presenter
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
                     dataGridView.DataSource = dt;
                     if (str != string.Empty)
-                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending);
-                }));
+                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                 drawDTGView();
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
-            }
-            finally
-            {
-                Main.loading = false;
+                if(!ServiceChecker.checkStop)
+                    Exceptions.errorLog(exp, Main.version);
             }
         }
         public static void ResetFilter()
         {
-            serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                serviceCheckerForm.category_comboBox.SelectedIndex = 0;
-                serviceCheckerForm.other_comboBox.SelectedIndex = 0;
-                serviceCheckerForm.status_comboBox.SelectedIndex = 0;
+            try
+            {
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                    serviceCheckerForm.category_comboBox.SelectedIndex = 0;
+                    serviceCheckerForm.other_comboBox.SelectedIndex = 0;
+                    serviceCheckerForm.status_comboBox.SelectedIndex = 0;
 
-                serviceCheckerForm.column_comboBox.SelectedIndex = 0;
-                serviceCheckerForm.priceFrom_numericUpDown.Value = 0;
-                serviceCheckerForm.priceTo_numericUpDown.Value = 0;
+                    serviceCheckerForm.column_comboBox.SelectedIndex = 0;
+                    serviceCheckerForm.priceFrom_numericUpDown.Value = 0;
+                    serviceCheckerForm.priceTo_numericUpDown.Value = 0;
 
-                serviceCheckerForm.precentFrom_numericUpDown.Value = 0;
-                serviceCheckerForm.precentTo_numericUpDown.Value = 0;
-                serviceCheckerForm.hide100_checkBox.Checked = false;
-                serviceCheckerForm.hide0_checkBox.Checked = false; }));
+                    serviceCheckerForm.precentFrom_numericUpDown.Value = 0;
+                    serviceCheckerForm.precentTo_numericUpDown.Value = 0;
+                    serviceCheckerForm.hide100_checkBox.Checked = false;
+                    serviceCheckerForm.hide0_checkBox.Checked = false;
+                }));
 
-            ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
+                ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
+            }
+            catch (Exception exp)
+            {
+                if (ServiceChecker.checkStop)
+                    return;
+                else
+                    Exceptions.errorLog(exp, Main.version);
+            }
         }
 
+        public static void checkLootFarmItem(object state)
+        {
+            try
+            {
+                object[] args = state as object[];
+                string item = args[0].ToString();
+                var json = Request.GetRequest("https://loot.farm/fullprice.json");
+                JArray jArray = JArray.Parse(json);
+                int count = 0;
+
+                for (int i = 0; i < jArray.Count; i++)
+                {
+                    if (jArray[i]["name"].ToString().Contains(item))
+                    {
+                        count = Convert.ToInt32(jArray[i]["have"].ToString());
+                        break;
+                    }
+                }
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                    serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
+                    if (count > 0)
+                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
+                    else
+                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
+                }));
+            }
+            catch (Exception exp)
+            {
+                if (!ServiceChecker.checkStop)
+                    Exceptions.errorLog(exp, Main.version);
+            }            
+        }
+        public static void checkCsmItem(object state)
+        {
+            try
+            {
+                object[] args = state as object[];
+                string str = args[0].ToString();
+                string market_hash_name = Edit.replaceUrl(str);
+                var json = Request.inventoriesCsMoney(market_hash_name);
+                int count = 0;
+
+                if (!json.Contains("error"))
+                {
+                    json = JObject.Parse(json)["items"].ToString();
+                    JArray jArray = JArray.Parse(json);
+                    foreach (JObject j in jArray)
+                    {
+                        try {
+                            count += Convert.ToInt32(j["stackSize"].ToString());
+                        }
+                        catch {
+                            count++;
+                        }
+                    }
+                }
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                    serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
+                    if (count > 0)
+                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
+                    else
+                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
+                }));
+            }
+            catch (Exception exp)
+            {
+                if (!ServiceChecker.checkStop)
+                    Exceptions.errorLog(exp, Main.version);
+            }
+        }
         public static void addQueue(object state)
         {
             try
@@ -414,7 +514,8 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
+                if(ServiceChecker.checkStop)
+                    Exceptions.errorLog(exp, Main.version);
             }
         }
         public static void exportCsv(object state)
@@ -431,34 +532,38 @@ namespace ItemChecker.Presenter
                     {
                         foreach (DataGridViewCell cell in row.Cells)
                         {
-                            string str = cell.Value.ToString();
-                            if (str.Contains(","))
-                                str = str.Replace(",", ";");
-                            csv += str;
+                            string value = cell.Value.ToString();
+                            if (value.Contains(","))
+                                value = value.Replace(",", ";");
+
+                            csv += value;
                             csv += ",";
                         }
-                        csv = csv.Substring(0, csv.Length - 1);
+                        csv = csv.Remove(csv.Length - 1);
                         csv += "\r\n";
                     }
-                    File.WriteAllText(Application.StartupPath.Replace(@"\", @"\\") + $"extract\\serviceChecker_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.csv", Edit.replaceSymbols(csv));
+                    File.WriteAllText(Application.StartupPath.Replace(@"\", @"\\") + $"extract\\serviceChecker_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.csv", Edit.replaceSymbols(csv));
                 }
             }
             catch (Exception exp)
             {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorLog(exp, Main.version);
-                Exceptions.errorMessage(exp, currMethodName);
+                if (!ServiceChecker.checkStop)
+                {
+                    string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorMessage(exp, currMethodName);
+                }
             }
             finally
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
+                    serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
                         serviceCheckerForm.servChecker_dataGridView.Enabled = true; }));
                     MainPresenter.messageBalloonTip("Extraction was completed.");
+                    Main.loading = false;
                 }
-                Main.loading = false;
             }
         }
         public static void importCsv(object state)
@@ -467,6 +572,7 @@ namespace ItemChecker.Presenter
             {
                 object[] args = state as object[];
                 string filePath = args[0].ToString();
+                string fileName = args[1].ToString();
                 string[] lines = File.ReadAllLines(filePath);
                 string[] service = lines[0].Split(',');
                 ServiceChecker.dataTable.Rows.Clear();
@@ -476,7 +582,7 @@ namespace ItemChecker.Presenter
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                     serviceCheckerForm.firstSer_comboBox.SelectedIndex = ServiceChecker.service_one;
                     serviceCheckerForm.secondSer_comboBox.SelectedIndex = ServiceChecker.service_two;
-                    serviceCheckerForm.services_toolStripStatusLabel.Text = $"From {serviceCheckerForm.firstSer_comboBox.Text} To {serviceCheckerForm.secondSer_comboBox.Text}";
+                    serviceCheckerForm.services_toolStripStatusLabel.Text = $"From {serviceCheckerForm.firstSer_comboBox.Text} To {serviceCheckerForm.secondSer_comboBox.Text} ({fileName})";
                     serviceCheckerForm.services_toolStripStatusLabel.Visible = true;
 
                     while (serviceCheckerForm.column_comboBox.Items.Count > 1)
@@ -497,25 +603,28 @@ namespace ItemChecker.Presenter
                 //rows
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    string[] rowValue = lines[i].Split(',');
+                    string[] value = lines[i].Split(',');
                     DataRow row = ServiceChecker.dataTable.NewRow();
                     for (int j = 0; j <= 8; j++)
                     {
-                        row[j] = rowValue[j].Replace(";", ",");
+                        row[j] = value[j].Replace(";", ",");
                         if (j >= 2 & j <= 7)
-                            row[j] = Convert.ToDouble(rowValue[j]);
+                            row[j] = Convert.ToDouble(value[j]);
                     }
                     ServiceChecker.dataTable.Rows.Add(row);
                 }
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                    serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
-                    serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
+                    serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                        serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
+                        serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
             }
             catch (Exception exp)
             {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorLog(exp, Main.version);
-                Exceptions.errorMessage(exp, currMethodName);
+                if (!ServiceChecker.checkStop)
+                {
+                    string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorMessage(exp, currMethodName);
+                }
             }
             finally
             {
@@ -524,10 +633,10 @@ namespace ItemChecker.Presenter
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
                         serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
-                    MainPresenter.messageBalloonTip("Importing was completed.");
                     drawDTGView();
+                    MainPresenter.messageBalloonTip("Importing was completed.");
+                    Main.loading = false;
                 }
-                Main.loading = false;
             }
         }
     }

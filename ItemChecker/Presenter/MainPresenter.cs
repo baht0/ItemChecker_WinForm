@@ -325,15 +325,12 @@ namespace ItemChecker.Presenter
             {
                 mainForm.notifyIcon.Visible = false;
                 Main.Browser.Quit();
+                Application.Exit();
             }
             catch
             {
                 foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
                 foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
-            }
-            finally
-            {
-                Application.Exit();
                 foreach (Process proc in Process.GetProcessesByName("ItemChecker")) proc.Kill();
             }
         }

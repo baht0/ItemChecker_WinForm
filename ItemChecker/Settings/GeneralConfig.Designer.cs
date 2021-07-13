@@ -37,7 +37,7 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2e1738c3876683cb468f")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string currencyApiKey {
             get {
                 return ((string)(this["currencyApiKey"]));

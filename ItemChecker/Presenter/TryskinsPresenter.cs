@@ -56,7 +56,7 @@ namespace ItemChecker.Presenter
                 items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
             } while (items.Count > last);
 
-            items = checkItem(items);
+            items = checkItemsList(items);
 
             if (items.Any())
             {
@@ -72,7 +72,7 @@ namespace ItemChecker.Presenter
             }
             MainPresenter.progressInvoke();
         }
-        private static List<IWebElement> checkItem(List<IWebElement> items)
+        private static List<IWebElement> checkItemsList(List<IWebElement> items)
         {
             for (int i = 0; i < items.Count; i++)
             {

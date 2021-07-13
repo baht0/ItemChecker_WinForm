@@ -193,7 +193,7 @@ namespace ItemChecker
                 {
                     str += i + "\r\n";
                 }
-                File.WriteAllText($"extract/steamList_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.txt", str);
+                File.WriteAllText($"extract/steamList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
             }
         }
         private void extractTry_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -207,7 +207,7 @@ namespace ItemChecker
                 {
                     str += i + "\r\n";
                 }
-                File.WriteAllText($"extract/tryskinsList_{DateTime.Now.ToString("yyyy.MM.dd_hh.mm")}.txt", str);
+                File.WriteAllText($"extract/tryskinsList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
             }
         }
         private void openFolder_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -222,7 +222,7 @@ namespace ItemChecker
         }
         private void getCurr_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //Support.Edit.openUrl("https://free.currencyconverterapi.com/free-api-key");
+            Support.Edit.openUrl("https://free.currencyconverterapi.com/free-api-key");
             Support.Edit.openUrl("https://openexchangerates.org/signup/free");
         }
 

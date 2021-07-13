@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using ItemChecker.Support;
 using ItemChecker.Model;
 using ItemChecker.Presenter;
+using System.Linq;
 
 namespace ItemChecker
 {
@@ -14,6 +15,7 @@ namespace ItemChecker
         public ServiceCheckerForm()
         {
             InitializeComponent();
+            ServiceChecker.checkStop = false;
             Program.serviceCheckerForm = this;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
@@ -63,8 +65,10 @@ namespace ItemChecker
         {
             int ser_1 = firstSer_comboBox.SelectedIndex;
             int ser_2 = secondSer_comboBox.SelectedIndex;
+
             if (Main.checkList.Count != 0 & !Main.loading & ser_1 != ser_2)
             {
+                Main.loading = true;
                 ServiceChecker.service_one = ser_1;
                 ServiceChecker.service_two = ser_2;
                 while (column_comboBox.Items.Count > 1)
@@ -79,7 +83,6 @@ namespace ItemChecker
                 services_toolStripStatusLabel.Text = $"From {firstSer_comboBox.Text} To {secondSer_comboBox.Text}";
                 services_toolStripStatusLabel.Visible = true;
 
-                Main.loading = true;
                 ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkMain);
             }
         }
@@ -107,10 +110,13 @@ namespace ItemChecker
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Main.loading = true;
+                    ServiceChecker._clear();
                     status_toolStripStatusLabel.Text = "Import the list from *.csv...";
                     status_toolStripStatusLabel.Visible = true;
+                    string fileName = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName).ToString();
+                    fileName = fileName.Remove(0, 15).Replace("_", " ");
                     ServiceCheckerPresenter.ResetFilter();
-                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName });
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName, fileName });
                 }
             }
         }
@@ -140,7 +146,7 @@ namespace ItemChecker
             {
                 servChecker_dataGridView.Columns[4].HeaderText = "Price (ST)";
                 servChecker_dataGridView.Columns[5].HeaderText = "BuyOrder (ST)";
-                servChecker_dataGridView.Columns[8].HeaderText = "Status";
+                servChecker_dataGridView.Columns[8].HeaderText = "Status (ST)";
             }
             if (secondSer_comboBox.SelectedIndex == 1) //csmoney
             {
@@ -206,19 +212,40 @@ namespace ItemChecker
         {
             try
             {
-                string str = servChecker_dataGridView.CurrentCell.Value.ToString();
-                int row = Convert.ToInt32(servChecker_dataGridView.CurrentCell.RowIndex);
+                string value = servChecker_dataGridView.CurrentCell.Value.ToString();
+                int row = servChecker_dataGridView.CurrentCell.RowIndex;
                 int cell = servChecker_dataGridView.CurrentCell.ColumnIndex;
+
+                if (ServiceChecker.service_one == 1)
+                {
+                    availability_toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
+                    availability_toolStripStatusLabel.Text = $"Availability: Checking...";
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkCsmItem, new object[] { servChecker_dataGridView.Rows[row].Cells[1].Value.ToString() });
+                    availability_toolStripStatusLabel.Visible = true;
+                }
+                if (ServiceChecker.service_one == 2)
+                {
+                    availability_toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
+                    availability_toolStripStatusLabel.Text = $"Availability: Checking...";
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkLootFarmItem, new object[] { servChecker_dataGridView.Rows[row].Cells[1].Value.ToString() });
+                    availability_toolStripStatusLabel.Visible = true;
+                }
                 if (1 < cell & cell < 6)
                 {
-                    Main.save_str = str;
-                    servChecker_dataGridView.Rows[row].Cells[cell].Value = Math.Round(Convert.ToDouble(str) * Main.course, 2);
+                    Main.save_str = value;
+                    servChecker_dataGridView.Rows[row].Cells[cell].Value = Math.Round(Convert.ToDouble(value) * Main.course, 2);
                 }
-                if (secondSer_comboBox.SelectedIndex == 0)
+                if (ServiceChecker.stUpdated.Any() & ServiceChecker.csmUpdated.Any())
                 {
-                    updated_toolStripStatusLabel.Text = "Updated(h): " + Edit.convertTime(Convert.ToDouble(ServiceChecker.stUpdated[row])) + "(ST) | " + Edit.convertTime(Convert.ToDouble(ServiceChecker.csmUpdated[row])) + "(CSM)";
+                    value = servChecker_dataGridView.Rows[row].Cells[1].Value.ToString();
+                    int index = Main.checkList.IndexOf(value);
+                    updated_toolStripStatusLabel.Text = "Updated(h):";
+                    if (ServiceChecker.service_one == 0 | ServiceChecker.service_two == 0)
+                        updated_toolStripStatusLabel.Text += $" {Edit.convertTime(ServiceChecker.stUpdated[index])} (ST)";
+                    if (ServiceChecker.service_one == 1 | ServiceChecker.service_two == 1)
+                        updated_toolStripStatusLabel.Text += $" {Edit.convertTime(ServiceChecker.csmUpdated[index])} (CSM)";
                     updated_toolStripStatusLabel.Visible = true;
-                }
+                }                
             }
             catch { }
         }
@@ -249,7 +276,6 @@ namespace ItemChecker
             {
                 if (!Main.loading & ServiceChecker.dataTable != null)
                 {
-                    Main.loading = true;
                     string filter = string.Empty;
                     //filters
                     if (category_comboBox.SelectedIndex != 0)

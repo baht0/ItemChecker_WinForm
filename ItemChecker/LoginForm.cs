@@ -25,6 +25,7 @@ namespace ItemChecker
         {
             this.Show();
             this.Activate();
+            Main.loading = false;
         }
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
