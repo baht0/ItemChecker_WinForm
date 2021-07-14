@@ -362,6 +362,7 @@ namespace ItemChecker.Presenter
 
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
                     dataGridView.DataSource = dt;
+                    serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {dt.Rows.Count}";
                     if (str != string.Empty)
                         serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                 drawDTGView();
@@ -589,7 +590,8 @@ namespace ItemChecker.Presenter
                     while (serviceCheckerForm.column_comboBox.Items.Count > 1)
                         serviceCheckerForm.column_comboBox.Items.RemoveAt(1);
                     for (int i = 1; i <= 4; i++)
-                        serviceCheckerForm.column_comboBox.Items.Insert(i, serviceCheckerForm.servChecker_dataGridView.Columns[i + 1].HeaderText); }));
+                        serviceCheckerForm.column_comboBox.Items.Insert(i, serviceCheckerForm.servChecker_dataGridView.Columns[i + 1].HeaderText);
+                    serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {lines.Length - 1}"; }));
 
                 //Column
                 if (ServiceChecker.dataTable.Columns.Count == 0)

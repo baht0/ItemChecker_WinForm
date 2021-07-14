@@ -40,7 +40,7 @@ namespace ItemChecker.Support
                 if (market_hash_name.Contains("Souvenir"))
                     souvenir = "true";
 
-                url = "https://cs.money/csgo/trade/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link&search=" + market_hash_name + "&hasTradeLock=true&isStatTrak=" + stattrak + "&isMarket=false&isSouvenir=" + souvenir;
+                url = "https://cs.money/csgo/trade/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link&search=" + market_hash_name + "&sort=price&order=asc&hasRareFloat=false&hasRareStickers=false&hasRarePattern=false&hasTradeLock=true&isStatTrak=" + stattrak + "&isMarket=false&isSouvenir=" + souvenir;
             }
             else
                 url = "https://old.cs.money/?utm_source=sponsorship&utm_medium=tryskins&utm_campaign=trskns0819&utm_content=link#skin_name=" + market_hash_name;

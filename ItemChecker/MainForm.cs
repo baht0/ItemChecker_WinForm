@@ -301,7 +301,8 @@ namespace ItemChecker
         }
         private void tryskins_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter | e.KeyCode == Keys.Insert) ThreadPool.QueueUserWorkItem(TryskinsPresenter.addQueue);
+            if (e.KeyCode == Keys.Insert)
+                ThreadPool.QueueUserWorkItem(TryskinsPresenter.addQueue);
         }
         private void tryskins_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {

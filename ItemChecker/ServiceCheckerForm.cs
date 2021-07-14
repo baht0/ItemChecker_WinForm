@@ -146,7 +146,7 @@ namespace ItemChecker
             if (secondSer_comboBox.SelectedIndex == 0) //steam
             {
                 servChecker_dataGridView.Columns[4].HeaderText = "Price (ST)";
-                servChecker_dataGridView.Columns[5].HeaderText = "BuyOrder (ST)";
+                servChecker_dataGridView.Columns[5].HeaderText = "BuyOrder (ST) [+%]";
                 servChecker_dataGridView.Columns[8].HeaderText = "Status (ST)";
             }
             if (secondSer_comboBox.SelectedIndex == 1) //csmoney
@@ -260,7 +260,7 @@ namespace ItemChecker
         }
         private void ownList_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter | e.KeyCode == Keys.Insert & ServiceChecker.service_one == 0)
+            if (ServiceChecker.service_one == 0 & e.KeyCode == Keys.Insert)
                 ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.addQueue);
         }
         private void servChecker_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -282,8 +282,12 @@ namespace ItemChecker
                         if (category_comboBox.SelectedIndex != 1)
                             filter += $"AND item_Column LIKE '{category_comboBox.Text}%'";
                         else
+                        {
                             for (int i = 2; i < 6; i++)
-                                filter += $"AND item_Column NOT LIKE '{category_comboBox.Items[i]}%'";
+                                filter += $"AND item_Column NOT LIKE '%{category_comboBox.Items[i]}%'";
+                            for (int i = 3; i < 12; i++)
+                                filter += $"AND item_Column NOT LIKE '%{other_comboBox.Items[i]}%'";
+                        }
                     }
                     else if (other_comboBox.SelectedIndex != 0)
                         filter += $"AND item_Column LIKE '%{other_comboBox.Text}%'";
