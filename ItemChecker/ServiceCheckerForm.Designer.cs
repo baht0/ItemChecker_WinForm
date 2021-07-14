@@ -425,7 +425,7 @@ namespace ItemChecker
             this.Filters_groupBox.Controls.Add(this.category_comboBox);
             this.Filters_groupBox.Location = new System.Drawing.Point(12, 417);
             this.Filters_groupBox.Name = "Filters_groupBox";
-            this.Filters_groupBox.Size = new System.Drawing.Size(303, 75);
+            this.Filters_groupBox.Size = new System.Drawing.Size(301, 75);
             this.Filters_groupBox.TabIndex = 12;
             this.Filters_groupBox.TabStop = false;
             this.Filters_groupBox.Text = "Filters";
@@ -447,6 +447,7 @@ namespace ItemChecker
             this.other_comboBox.FormattingEnabled = true;
             this.other_comboBox.Items.AddRange(new object[] {
             "Any",
+            "Weapon",
             "Knife",
             "Gloves",
             "Sticker",
@@ -462,7 +463,6 @@ namespace ItemChecker
             this.other_comboBox.Name = "other_comboBox";
             this.other_comboBox.Size = new System.Drawing.Size(92, 23);
             this.other_comboBox.TabIndex = 37;
-            this.other_comboBox.SelectedIndexChanged += new System.EventHandler(this.other_comboBox_SelectedIndexChanged);
             // 
             // status_label
             // 
@@ -517,7 +517,6 @@ namespace ItemChecker
             this.category_comboBox.Name = "category_comboBox";
             this.category_comboBox.Size = new System.Drawing.Size(92, 23);
             this.category_comboBox.TabIndex = 29;
-            this.category_comboBox.SelectedIndexChanged += new System.EventHandler(this.category_comboBox_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -588,7 +587,7 @@ namespace ItemChecker
             this.Prices_groupBox.Controls.Add(this.label7);
             this.Prices_groupBox.Controls.Add(this.priceFrom_numericUpDown);
             this.Prices_groupBox.Controls.Add(this.label6);
-            this.Prices_groupBox.Location = new System.Drawing.Point(321, 417);
+            this.Prices_groupBox.Location = new System.Drawing.Point(319, 417);
             this.Prices_groupBox.Name = "Prices_groupBox";
             this.Prices_groupBox.Size = new System.Drawing.Size(283, 75);
             this.Prices_groupBox.TabIndex = 35;
@@ -630,7 +629,7 @@ namespace ItemChecker
             this.Precent_groupBox.Controls.Add(this.label5);
             this.Precent_groupBox.Controls.Add(this.precentFrom_numericUpDown);
             this.Precent_groupBox.Controls.Add(this.label8);
-            this.Precent_groupBox.Location = new System.Drawing.Point(610, 417);
+            this.Precent_groupBox.Location = new System.Drawing.Point(608, 417);
             this.Precent_groupBox.Name = "Precent_groupBox";
             this.Precent_groupBox.Size = new System.Drawing.Size(279, 75);
             this.Precent_groupBox.TabIndex = 36;
@@ -754,7 +753,7 @@ namespace ItemChecker
             this.buttons_groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttons_groupBox.Controls.Add(this.reset_button);
             this.buttons_groupBox.Controls.Add(this.apply_button);
-            this.buttons_groupBox.Location = new System.Drawing.Point(895, 417);
+            this.buttons_groupBox.Location = new System.Drawing.Point(893, 417);
             this.buttons_groupBox.Name = "buttons_groupBox";
             this.buttons_groupBox.Size = new System.Drawing.Size(71, 75);
             this.buttons_groupBox.TabIndex = 39;
