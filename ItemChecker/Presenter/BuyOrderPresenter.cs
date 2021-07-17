@@ -58,12 +58,8 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽"; }));
             if (BuyOrder.available_amount < 1000)
             {
+                MainPresenter.messageBalloonTip("Little available amount.\nCancellation of orders is possible.", ToolTipIcon.Warning);
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.ForeColor = Color.OrangeRed; }));
-                MessageBox.Show(
-                    "Little available amount.\nCancellation of orders is possible.",
-                    "Warning",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
             }
             else mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.ForeColor = Color.Black; }));
         }
@@ -82,8 +78,7 @@ namespace ItemChecker.Presenter
                         mainForm.Invoke(new MethodInvoker(delegate
                         {
                             mainForm.status_StripStatus.Text = "Calculate Steam (429). Please Wait...";
-                            mainForm.timer_StripStatus.Text = "Updating (429). Please Wait...";
-                        }));
+                            mainForm.timer_StripStatus.Text = "Updating (429). Please Wait..."; }));
                         Thread.Sleep(30000);
                     }
                 }
@@ -163,6 +158,7 @@ namespace ItemChecker.Presenter
             foreach (DataGridViewRow row in mainForm.buyOrder_dataGridView.Rows)
             {
                 var item = row.Cells[1].Value.ToString();
+                int id = BuyOrder.item.IndexOf(item);
                 var price = Edit.removeSymbol(row.Cells[2].Value.ToString());
                 var precent = Edit.removeDol(row.Cells[4].Value.ToString());
                 if (precent < 25)
@@ -170,7 +166,16 @@ namespace ItemChecker.Presenter
                 if (precent > 35)
                     row.Cells[4].Style.BackColor = Color.MediumSeaGreen;
                 if (price > Steam.balance)
+                {
                     row.Cells[2].Style.BackColor = Color.Crimson;
+                    if (SteamConfig.Default.cancelOrder)
+                    {
+                        autoCancelOrder(id);
+                        row.Cells[2].Style.BackColor = Color.Red;
+                        row.Cells[2].Value = "Cancel";;
+                    }
+                    MainPresenter.messageBalloonTip($"Not enough balance for item:\n{item}", ToolTipIcon.Warning);
+                }
                 if (item.Contains("Sticker") | item.Contains("Graffiti"))
                     row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
                 if (item.Contains("Souvenir"))
@@ -181,14 +186,22 @@ namespace ItemChecker.Presenter
                     row.Cells[0].Style.BackColor = Color.DarkViolet;
                 if (precent <= SteamConfig.Default.autoDelete & precent != -100)
                 {
-                    int id = BuyOrder.item.IndexOf(item);
-                    Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[id], Main.sessionid));
-                    BuyOrder.removeAtItem(id);
+                    autoCancelOrder(id);
                     row.Cells[2].Style.BackColor = Color.Red;
                     row.Cells[2].Value = "Cancel";
-                    mainForm.Invoke(new Action(() => {
-                        mainForm.cancel_label.Text = "Cancel: " + BuyOrder.int_cancel++.ToString();
-                        mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
+                }
+                if (Main.overstock.Contains(item) | Main.unavailable.Contains(item))
+                {
+                    row.Cells[3].Value = "Overstock";
+                    row.Cells[3].Style.BackColor = Color.OrangeRed;
+
+                    if (Main.unavailable.Contains(item))
+                    {
+                        row.Cells[3].Style.BackColor = Color.Red;
+                        row.Cells[3].Value = "Unavailable";
+                    }
+                    MainPresenter.messageBalloonTip("Buy orders contains inaccessible items!", ToolTipIcon.Error);
+                    MessageBox.Show($"Buy orders contains inaccessible items!\n{item}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
         }
@@ -277,6 +290,17 @@ namespace ItemChecker.Presenter
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Exceptions.errorMessage(exp, currMethodName);
             }
+        }
+        private static void autoCancelOrder(int id)
+        {
+            Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[id], Main.sessionid));
+            BuyOrder.removeAtItem(id);
+            availableAmount();
+
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
+                mainForm.cancel_label.Text = $"Cancel: {BuyOrder.int_cancel + 1}";
+                mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
         }
 
         //push...
@@ -377,21 +401,10 @@ namespace ItemChecker.Presenter
                         mainForm.push_label.Invoke(new MethodInvoker(() => mainForm.push_label.Text = "Push: " + Convert.ToString(BuyOrder.int_push)));
                         Thread.Sleep(1500);
                     }
-                    else if (Steam.balance < highest_buy_order | (highest_buy_order - my_order) >= BuyOrder.available_amount)
+                    else if (Steam.balance < highest_buy_order | (highest_buy_order - my_order) > BuyOrder.available_amount)
                     {
                         if (SteamConfig.Default.cancelOrder)
-                        {
-                            Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
-
-                            BuyOrder.removeAtItem(i);
-                            availableAmount();
-
-                            mainForm.Invoke(new MethodInvoker(delegate {
-                                mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
-                                mainForm.cancel_label.Text = "Cancel: " + BuyOrder.int_cancel++.ToString();
-                                mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
-                        }
-
+                            autoCancelOrder(i);
                         MainPresenter.messageBalloonTip($"Not enough balance for item:\n{BuyOrder.item[i]}", ToolTipIcon.Warning);
                     }
                 }

@@ -132,7 +132,7 @@ namespace ItemChecker
                     string item = jArray[i]["name"].ToString();
                     if (url.Contains("loot.farm"))
                         str += item + "\n";
-                    else if (!Main.unavailable.Contains(item) & !Main.overstock.Contains(item))
+                    else if (!Main.unavailable.Contains(item))
                         str += item + "\n";
 
                 }

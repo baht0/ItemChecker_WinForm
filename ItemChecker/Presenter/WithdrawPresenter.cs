@@ -11,6 +11,10 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
+using OpenQA.Selenium.Support.UI;
+using Newtonsoft.Json.Linq;
+using OpenQA.Selenium.Support.Extensions;
+using ItemChecker.Net;
 
 namespace ItemChecker.Presenter
 {
@@ -162,6 +166,151 @@ namespace ItemChecker.Presenter
                 if (item.Contains("★"))
                     row.Cells[0].Style.BackColor = Color.DarkViolet;
                 row.Cells[2].Style.BackColor = Color.LightGray;
+            }
+        }
+
+        //inventory
+        public static void inventoryCsm(object state)
+        {
+            try
+            {
+                loginCsm();
+
+                JArray items = getItems(checkInventory());
+                if(items.Count > 0)
+                {
+                    DialogResult result = MessageBox.Show($"There are '{items.Count}' items to withdraw.\nDo you want to withdraw?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        mainForm.Invoke(new MethodInvoker(delegate {
+                            mainForm.progressBar_StripStatus.Maximum = items.Count;
+                            mainForm.progressBar_StripStatus.Value = 0;
+                            mainForm.progressBar_StripStatus.Visible = true; }));
+                        withdrawItems(items);
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorMessage(exp, currMethodName);
+            }
+            finally
+            {
+                Main.loading = false;
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.status_StripStatus.Visible = false;
+                    mainForm.progressBar_StripStatus.Visible = false; }));
+                MainPresenter.messageBalloonTip("Checking inventory cs.money is completed.");
+            }
+        }
+        private static void loginCsm()
+        {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Cs.Money..."; }));
+            Main.Browser.Navigate().GoToUrl("https://cs.money/3.0/load_user_inventory/730?noCache=true&order=desc&sort=price");
+            IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+            string json = html.Text;
+            if (json.Contains("error"))
+            {
+                var code_error = JObject.Parse(json)["error"].ToString();
+                if (code_error == "6")
+                {
+                    string signIn_url = "https://auth.dota.trade/login?redirectUrl=https://cs.money/&callbackUrl=https://cs.money/login";
+                    Main.Browser.Navigate().GoToUrl(signIn_url);
+
+                    IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
+                    signins.Click();
+                    Thread.Sleep(300);
+                }
+            }
+        }
+        private static JArray checkInventory()
+        {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Getting inventory items..."; }));
+            int offset = 0;
+            JArray jArray = new();
+            while (true)
+            {
+                if (jArray.Count < offset)
+                    break;
+                Main.Browser.Navigate().GoToUrl("https://cs.money/3.0/load_user_inventory/730?limit=60&noCache=true&offset=" + offset + "&order=desc&sort=price");
+                IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+                string json = JObject.Parse(html.Text)["items"].ToString();
+                jArray.Merge(JArray.Parse(json));
+                offset += 60;
+            }
+            JArray items = new();
+            foreach (JObject j in jArray)
+            {
+                try
+                {
+                    j["tradeLock"].ToString();
+                }
+                catch
+                {
+                    try
+                    {
+                        j["isVirtual"].ToString();                        
+                        items.Add(j);
+                    }
+                    catch { }
+                }
+            }
+            return items;            
+        }
+        private static JArray getItems(JArray items_stack)
+        {
+            int i = 0;
+            JArray items = new();
+            foreach (JObject item in items_stack)
+            {
+                try
+                {
+                    int count = Convert.ToInt32(item["stackSize"].ToString());
+                    i += count;
+                    string stack_id = item["stackId"].ToString();
+                    Main.Browser.Navigate().GoToUrl("https://cs.money/2.0/get_user_stack/730/" + stack_id);
+                    IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+                    JArray jArray = JArray.Parse(html.Text);
+
+                    foreach (JObject stack_item in jArray)
+                    {
+                        JObject item_copy = item;
+                        item_copy["id"] = Convert.ToInt32(stack_item["id"].ToString());
+                        try
+                        {
+                            item_copy["float"] = stack_item["float"].ToString();
+                            item_copy["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
+                        }
+                        catch { }
+                        items.Add(item_copy);
+                    }
+                }
+                catch
+                {
+                    i+=1;
+                    items.Add(item);
+                }
+            }
+            return items;
+        }
+        private static void withdrawItems(JArray items)
+        {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Withdraw items..."; }));
+
+            MessageBox.Show(items.Count.ToString());
+            foreach (JObject item in items)
+            {
+                JObject json =
+                   new JObject(
+                       new JProperty("skins",
+                           new JObject(
+                               new JProperty("bot", new JArray(item)),
+                               new JProperty("user", new JArray()))));
+                Main.Browser.ExecuteJavaScript(Request.PostRequest(json, "https://cs.money/2.0/withdraw_skins"));
+                MainPresenter.progressInvoke();
+                Thread.Sleep(500);
             }
         }
     }

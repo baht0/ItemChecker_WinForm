@@ -25,8 +25,7 @@ namespace ItemChecker.Presenter
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                ServiceChecker._clear();
-                ResetFilter();
+                ClearAll(true, true, true);
 
                 ThreadPool.QueueUserWorkItem(TimeLeft);
                 if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
@@ -36,7 +35,7 @@ namespace ItemChecker.Presenter
                         checkMrinka();
                 if (ServiceChecker.service_one == 2 | ServiceChecker.service_two == 2)
                     checkLootFarm();
-                createDTable();                
+                createDTable();
             }
             catch (Exception exp)
             {
@@ -238,17 +237,7 @@ namespace ItemChecker.Presenter
             try
             {
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Write to the table..."; }));
-                ServiceChecker.dataTable.Rows.Clear();
 
-                if (ServiceChecker.dataTable.Columns.Count == 0)
-                    for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
-                    {
-                        string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
-                        ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
-                        serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
-                        if (i >= 2 & i <= 7)
-                            ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
-                    }
                 for (int i = 0; i < Main.checkList.Count; i++)
                 {
                     if (ServiceChecker.service_one == 0) //steam -> (any)
@@ -290,68 +279,91 @@ namespace ItemChecker.Presenter
         }
         public static void drawDTGView()
         {
-            foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
+            try
             {
-                var item = row.Cells[1].Value.ToString();
-                var price2_one = Edit.removeDol(row.Cells[3].Value.ToString());
-                var precent = Convert.ToDouble(row.Cells[6].Value.ToString());
-                var status = row.Cells[8].Value.ToString();
-                if (precent >= 25)
-                    row.Cells[6].Style.BackColor = Color.MediumSeaGreen;
-                if (precent <= 15)
-                    row.Cells[6].Style.BackColor = Color.OrangeRed;
-                if (precent < -10)
-                    row.Cells[6].Style.BackColor = Color.Red;
-                if (precent == 0 | precent == -100)
-                    row.Cells[6].Style.BackColor = Color.Gray;
-                if (price2_one > Steam.balance_usd & ServiceChecker.service_one == 0)
-                    row.Cells[3].Style.BackColor = Color.Crimson;
-                if (item.Contains("Sticker") | item.Contains("Graffiti"))
-                    row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
-                if (item.Contains("Souvenir"))
-                    row.Cells[0].Style.BackColor = Color.Yellow;
-                if (item.Contains("StatTrak"))
-                    row.Cells[0].Style.BackColor = Color.Orange;
-                if (item.Contains("★"))
-                    row.Cells[0].Style.BackColor = Color.DarkViolet;
-                if (BuyOrder.queue.Contains(Edit.replaceUrl(item)))
+                foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
                 {
-                    row.Cells[1].Style.BackColor = Color.LimeGreen;
-                    row.Cells[3].Style.BackColor = Color.LimeGreen;
-                }
-                if (BuyOrder.item.Contains(item))
-                {
-                    row.Cells[1].Style.BackColor = Color.CornflowerBlue;
-                    row.Cells[8].Style.BackColor = Color.CornflowerBlue;
-                    row.Cells[8].Value = "Ordered";
-                }
-                if (status.Contains("Overstock"))
-                {
-                    row.Cells[1].Style.BackColor = Color.OrangeRed;
-                    row.Cells[8].Style.BackColor = Color.OrangeRed;
-                }
-                if (status.Contains("Unavailable"))
-                {
-                    row.Cells[1].Style.BackColor = Color.Red;
-                    row.Cells[8].Style.BackColor = Color.Red;
-                }
-                if (ServiceChecker.service_one == 0) //steam -> (any)
-                {
-                    row.Cells[3].Style.BackColor = Color.LightGray;
-                    row.Cells[5].Style.BackColor = Color.LightGray;
-                }
-                else //(any) -> (any)
-                {
-                    row.Cells[2].Style.BackColor = Color.LightGray;
-                    row.Cells[5].Style.BackColor = Color.LightGray;
+                    var item = row.Cells[1].Value.ToString();
+                    var price2_one = Edit.removeDol(row.Cells[3].Value.ToString());
+                    var precent = Convert.ToDouble(row.Cells[6].Value.ToString());
+                    var status = row.Cells[8].Value.ToString();
+                    if (precent >= 20)
+                        row.Cells[6].Style.BackColor = Color.MediumSeaGreen;
+                    if (precent <= 0)
+                        row.Cells[6].Style.BackColor = Color.OrangeRed;
+                    if (precent < -15)
+                        row.Cells[6].Style.BackColor = Color.Red;
+                    if (precent == 0 | precent == -100)
+                        row.Cells[6].Style.BackColor = Color.Gray;
+                    if (price2_one > Steam.balance_usd & ServiceChecker.service_one == 0)
+                        row.Cells[3].Style.BackColor = Color.Crimson;
+                    if (item.Contains("Sticker") | item.Contains("Graffiti"))
+                        row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
+                    if (item.Contains("Souvenir"))
+                        row.Cells[0].Style.BackColor = Color.Yellow;
+                    if (item.Contains("StatTrak"))
+                        row.Cells[0].Style.BackColor = Color.Orange;
+                    if (item.Contains("★"))
+                        row.Cells[0].Style.BackColor = Color.DarkViolet;
+                    if (BuyOrder.queue.Contains(Edit.replaceUrl(item)))
+                    {
+                        row.Cells[1].Style.BackColor = Color.LimeGreen;
+                        row.Cells[3].Style.BackColor = Color.LimeGreen;
+                    }
+                    if (BuyOrder.item.Contains(item))
+                    {
+                        row.Cells[1].Style.BackColor = Color.CornflowerBlue;
+                        row.Cells[8].Style.BackColor = Color.CornflowerBlue;
+                        row.Cells[8].Value = "Ordered";
+                    }
+                    if (status.Contains("Overstock"))
+                    {
+                        row.Cells[1].Style.BackColor = Color.OrangeRed;
+                        row.Cells[8].Style.BackColor = Color.OrangeRed;
+                    }
+                    if (status.Contains("Unavailable"))
+                    {
+                        row.Cells[1].Style.BackColor = Color.Red;
+                        row.Cells[8].Style.BackColor = Color.Red;
+                    }
+                    if (ServiceChecker.service_one == 0) //steam -> (any)
+                    {
+                        row.Cells[3].Style.BackColor = Color.LightGray;
+                        row.Cells[5].Style.BackColor = Color.LightGray;
+                    }
+                    else //(any) -> (any)
+                    {
+                        row.Cells[2].Style.BackColor = Color.LightGray;
+                        row.Cells[5].Style.BackColor = Color.LightGray;
+                    }
                 }
             }
+            catch (Exception exp)
+            {
+                if (ServiceChecker.checkStop)
+                    return;
+                else
+                    Exceptions.errorLog(exp, Main.version);
+            }
+        }
+        public static void columnDTable()
+        {
+            if (ServiceChecker.dataTable.Columns.Count == 0)
+                for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
+                {
+                    string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
+                    ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
+                    serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
+                    if (i >= 2 & i <= 7)
+                        ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
+                }
         }
 
         public static void Filter(object state)
         {
             try
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
                 string str = args[0].ToString();
                 DataGridView dataGridView = serviceCheckerForm.servChecker_dataGridView;
@@ -373,11 +385,21 @@ namespace ItemChecker.Presenter
                     Exceptions.errorLog(exp, Main.version);
             }
         }
-        public static void ResetFilter()
+        public static void ClearAll(bool resetFilter, bool clearDTable, bool data)
         {
             try
             {
+                if (resetFilter)
+                    ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
+                if (clearDTable)
+                    MainPresenter.clearDTableRows(serviceCheckerForm.servChecker_dataGridView);
+                if (data)
+                    ServiceChecker._clear();
+
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                    serviceCheckerForm.quickCheck_textBox.Clear();
+                    serviceCheckerForm.search_textBox.Clear();
+
                     serviceCheckerForm.category_comboBox.SelectedIndex = 0;
                     serviceCheckerForm.other_comboBox.SelectedIndex = 0;
                     serviceCheckerForm.status_comboBox.SelectedIndex = 0;
@@ -389,10 +411,7 @@ namespace ItemChecker.Presenter
                     serviceCheckerForm.precentFrom_numericUpDown.Value = 0;
                     serviceCheckerForm.precentTo_numericUpDown.Value = 0;
                     serviceCheckerForm.hide100_checkBox.Checked = false;
-                    serviceCheckerForm.hide0_checkBox.Checked = false;
-                }));
-
-                ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
+                    serviceCheckerForm.hide0_checkBox.Checked = false; }));
             }
             catch (Exception exp)
             {
@@ -407,8 +426,10 @@ namespace ItemChecker.Presenter
         {
             try
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
                 string item = args[0].ToString();
+                int row = Convert.ToInt32(args[1]);
                 var json = Request.GetRequest("https://loot.farm/fullprice.json");
                 JArray jArray = JArray.Parse(json);
                 int count = 0;
@@ -424,9 +445,15 @@ namespace ItemChecker.Presenter
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                     serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
                     if (count > 0)
+                    {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
+                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
+                    }
                     else
+                    {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
+                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
+                    }
                 }));
             }
             catch (Exception exp)
@@ -439,8 +466,10 @@ namespace ItemChecker.Presenter
         {
             try
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
                 string str = args[0].ToString();
+                int row = Convert.ToInt32(args[1]);
                 string market_hash_name = Edit.replaceUrl(str);
                 var json = Request.inventoriesCsMoney(market_hash_name);
                 int count = 0;
@@ -462,9 +491,15 @@ namespace ItemChecker.Presenter
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                     serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
                     if (count > 0)
+                    {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
+                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
+                    }
                     else
+                    {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
+                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
+                    }
                 }));
             }
             catch (Exception exp)
@@ -524,6 +559,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 if (serviceCheckerForm.servChecker_dataGridView.Rows.Count > 0)
                 {
                     string csv = null;
@@ -541,7 +577,7 @@ namespace ItemChecker.Presenter
                             csv += value;
                             csv += ",";
                         }
-                        csv = csv.Remove(csv.Length - 1);
+                        csv = csv.Remove(csv.Length - 2);
                         csv += "\r\n";
                     }
                     File.WriteAllText(Application.StartupPath.Replace(@"\", @"\\") + $"extract\\serviceChecker_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.csv", Edit.replaceSymbols(csv));
@@ -572,12 +608,13 @@ namespace ItemChecker.Presenter
         {
             try
             {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
                 string filePath = args[0].ToString();
                 string fileName = args[1].ToString();
                 string[] lines = File.ReadAllLines(filePath);
                 string[] service = lines[0].Split(',');
-                ServiceChecker.dataTable.Rows.Clear();
+                ClearAll(true, true, true);
 
                 ServiceChecker.service_one = Convert.ToInt32(service[0]);
                 ServiceChecker.service_two = Convert.ToInt32(service[1]);
@@ -593,16 +630,6 @@ namespace ItemChecker.Presenter
                         serviceCheckerForm.column_comboBox.Items.Insert(i, serviceCheckerForm.servChecker_dataGridView.Columns[i + 1].HeaderText);
                     serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {lines.Length - 1}"; }));
 
-                //Column
-                if (ServiceChecker.dataTable.Columns.Count == 0)
-                    for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
-                    {
-                        string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
-                        ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
-                        serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
-                        if (i >= 2 & i <= 7)
-                            ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
-                    }
                 //rows
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -616,9 +643,12 @@ namespace ItemChecker.Presenter
                     }
                     ServiceChecker.dataTable.Rows.Add(row);
                 }
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                        serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
-                        serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
+                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                    serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
+                    serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
+                    serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable;
+                    serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
+                drawDTGView();
             }
             catch (Exception exp)
             {
@@ -633,10 +663,6 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                        serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
-                    drawDTGView();
                     MainPresenter.messageBalloonTip("Importing was completed.");
                     Main.loading = false;
                 }

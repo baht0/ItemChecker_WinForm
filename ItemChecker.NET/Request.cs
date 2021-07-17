@@ -14,7 +14,7 @@ namespace ItemChecker.Net
         public static String PostRequest(string body, string url)
         {
             string js_post = @"
-                async function postBuyOrder(url = '') {
+                async function postReq(url = '') {
                     const response = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
@@ -23,13 +23,28 @@ namespace ItemChecker.Net
                     });
                 return response.json();
                 }
-                postBuyOrder('" + url + @"').then(data => { return data; });";
+                postReq('" + url + @"').then(data => { return data; });";
+
+            return js_post;
+        }
+        public static String PostRequest(JObject json, string url)
+        {
+            string body = json.ToString(Formatting.None);
+            string js_post = @"
+                async function postReq(url = '') {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+                        body: '" + body + @"',
+                        credentials: 'include' });
+                return response.json(); }
+                postReq('" + url + @"').then(data => { return data; });";
 
             return js_post;
         }
         public static String BuyListing(string listing_id, double fee, double subtotal, double total, string sessionid)
         {
-            string body = "sessionid=" + sessionid + "&currency=5&fee=" + fee.ToString() + "&subtotal=" + subtotal.ToString() + "&total=" + total.ToString() + "&quantity=1&first_name=&last_name=&billing_address=&billing_address_two=&billing_country=&billing_city=&billing_state=&billing_postal_code=&save_my_address=1";
+            string body = $"sessionid={sessionid}&currency=5&fee={fee}&subtotal={subtotal}&total={total}&quantity=1&first_name=&last_name=&billing_address=&billing_address_two=&billing_country=&billing_city=&billing_state=&billing_postal_code=&save_my_address=1";
             string url = "https://steamcommunity.com/market/buylisting/" + listing_id;
 
             return PostRequest(body, url);
@@ -44,7 +59,7 @@ namespace ItemChecker.Net
         }
         public static String CancelBuyOrder(string buy_orderid, string sessionid)
         {
-            string body = "sessionid=" + sessionid + @"&buy_orderid=" + buy_orderid;
+            string body = $"sessionid={sessionid}&buy_orderid={buy_orderid}";
             string url = "https://steamcommunity.com/market/cancelbuyorder/";
 
             return PostRequest(body, url);

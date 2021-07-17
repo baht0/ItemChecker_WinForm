@@ -141,14 +141,6 @@ namespace ItemChecker
                 ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 1 });
             }
         }
-        private void withdrawReload_MainStripMenu_Click(object sender, EventArgs e)
-        {
-            if (!Main.loading)
-            {
-                Main.reload = 4;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 0 });
-            }
-        }
         //tools
         private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
         {
@@ -161,18 +153,19 @@ namespace ItemChecker
             {
                 CheckListForm fr = new CheckListForm("FloatList");
                 fr.ShowDialog();
-            }            
+            }
         }
-        private void withdrawTable_MainStripMenu_Click(object sender, EventArgs e)
+        //withdraw
+        private void showWithdraw_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Main.loading)
             {
                 if (!withdraw_dataGridView.Visible)
                 {
                     MainPresenter.stopPush();
-                    withdraw_MainStripMenu.Text = "Close Withdraw";
+                    showWithdraw_toolStripMenuItem.Text = "Close";
                     withdraw_dataGridView.Visible = true;
-                    withdrawReload_MainStripMenu.Enabled = true;
+                    reloadWithdraw_toolStripMenuItem.Enabled = true;
                     status_StripStatus.Text = "Check Withdraw...";
                     status_StripStatus.Visible = true;
                     Main.loading = true;
@@ -180,10 +173,28 @@ namespace ItemChecker
                 }
                 else
                 {
-                    withdrawReload_MainStripMenu.Enabled = false;
+                    reloadWithdraw_toolStripMenuItem.Enabled = false;
                     withdraw_dataGridView.Visible = false;
-                    withdraw_MainStripMenu.Text = "Withdraw";
+                    showWithdraw_toolStripMenuItem.Text = "Load";
                 }
+            }
+        }
+        private void reloadWithdraw_toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Main.loading)
+            {
+                Main.reload = 4;
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 0 });
+            }
+        }
+        private void checkCsmWithdraw_toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Main.loading)
+            {
+                Main.loading = true;
+                status_StripStatus.Text = "Checking Cs.Money...";
+                status_StripStatus.Visible = true;
+                ThreadPool.QueueUserWorkItem(WithdrawPresenter.inventoryCsm);
             }
         }
 
@@ -377,7 +388,7 @@ namespace ItemChecker
         {
             BuyOrderPresenter.drawDTGView();
         }
-        //withdraw
+        //withdraw table
         private void withdraw_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try

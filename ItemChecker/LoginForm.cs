@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Media;
 using System.Windows.Forms;
-using ItemChecker.Presenter;
 using ItemChecker.Model;
 using static ItemChecker.Program;
+using System.Diagnostics;
 
 namespace ItemChecker
 {
@@ -30,12 +30,7 @@ namespace ItemChecker
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!close)
-            {
-                mainForm.Hide();
-                this.Hide();
-                MainPresenter.exit();
-                e.Cancel = true;
-            }
+                exit();
         }
 
         //code
@@ -87,12 +82,29 @@ namespace ItemChecker
         }
         private void cancel_button_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
         private void settings_button_Click(object sender, EventArgs e)
         {
             SettingsForm fr = new SettingsForm();
             fr.ShowDialog();
+        }
+        private void exit()
+        {
+            try
+            {
+                this.Hide();
+                mainForm.Hide();
+                mainForm.notifyIcon.Visible = false;
+                Main.Browser.Quit();
+                Application.Exit();
+            }
+            catch
+            {
+                foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
+                foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
+                foreach (Process proc in Process.GetProcessesByName("ItemChecker")) proc.Kill();
+            }
         }
     }
 }

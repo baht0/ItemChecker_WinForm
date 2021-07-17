@@ -43,7 +43,7 @@ namespace ItemChecker
             this.availability_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.updated_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.status_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.textBox = new System.Windows.Forms.TextBox();
+            this.quickCheck_textBox = new System.Windows.Forms.TextBox();
             this.servChecker_dataGridView = new System.Windows.Forms.DataGridView();
             this.color_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,12 +54,14 @@ namespace ItemChecker
             this.precent_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.difference_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.availability_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.secondSer_comboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.firstSer_comboBox = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.clearQCheck_linkLabel = new System.Windows.Forms.LinkLabel();
             this.quick_button = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.Filters_groupBox = new System.Windows.Forms.GroupBox();
@@ -86,6 +88,10 @@ namespace ItemChecker
             this.apply_button = new System.Windows.Forms.Button();
             this.reset_button = new System.Windows.Forms.Button();
             this.buttons_groupBox = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.clearSearch_linkLabel = new System.Windows.Forms.LinkLabel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.search_textBox = new System.Windows.Forms.TextBox();
             this.servChecker_menuStrip.SuspendLayout();
             this.servChecker_statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.servChecker_dataGridView)).BeginInit();
@@ -99,6 +105,7 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.precentTo_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.precentFrom_numericUpDown)).BeginInit();
             this.buttons_groupBox.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // servChecker_menuStrip
@@ -109,7 +116,7 @@ namespace ItemChecker
             this.csv_toolStripMenuItem});
             this.servChecker_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.servChecker_menuStrip.Name = "servChecker_menuStrip";
-            this.servChecker_menuStrip.Size = new System.Drawing.Size(977, 24);
+            this.servChecker_menuStrip.Size = new System.Drawing.Size(1209, 24);
             this.servChecker_menuStrip.TabIndex = 0;
             this.servChecker_menuStrip.Text = "menuStrip1";
             // 
@@ -161,9 +168,9 @@ namespace ItemChecker
             this.availability_toolStripStatusLabel,
             this.updated_toolStripStatusLabel,
             this.status_toolStripStatusLabel});
-            this.servChecker_statusStrip.Location = new System.Drawing.Point(0, 495);
+            this.servChecker_statusStrip.Location = new System.Drawing.Point(0, 614);
             this.servChecker_statusStrip.Name = "servChecker_statusStrip";
-            this.servChecker_statusStrip.Size = new System.Drawing.Size(977, 22);
+            this.servChecker_statusStrip.Size = new System.Drawing.Size(1209, 22);
             this.servChecker_statusStrip.TabIndex = 1;
             this.servChecker_statusStrip.Text = "statusStrip1";
             // 
@@ -183,7 +190,7 @@ namespace ItemChecker
             // space_toolStripStatusLabel
             // 
             this.space_toolStripStatusLabel.Name = "space_toolStripStatusLabel";
-            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(911, 17);
+            this.space_toolStripStatusLabel.Size = new System.Drawing.Size(1143, 17);
             this.space_toolStripStatusLabel.Spring = true;
             // 
             // availability_toolStripStatusLabel
@@ -207,15 +214,15 @@ namespace ItemChecker
             this.status_toolStripStatusLabel.Text = "Processing...";
             this.status_toolStripStatusLabel.Visible = false;
             // 
-            // textBox
+            // quickCheck_textBox
             // 
-            this.textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.quickCheck_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox.Location = new System.Drawing.Point(6, 37);
-            this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(589, 23);
-            this.textBox.TabIndex = 2;
-            this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            this.quickCheck_textBox.Location = new System.Drawing.Point(6, 37);
+            this.quickCheck_textBox.Name = "quickCheck_textBox";
+            this.quickCheck_textBox.Size = new System.Drawing.Size(821, 23);
+            this.quickCheck_textBox.TabIndex = 2;
+            this.quickCheck_textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // servChecker_dataGridView
             // 
@@ -236,13 +243,14 @@ namespace ItemChecker
             this.price4_Column,
             this.precent_Column,
             this.difference_Column,
-            this.status_Column});
+            this.status_Column,
+            this.availability_Column});
             this.servChecker_dataGridView.Location = new System.Drawing.Point(12, 110);
             this.servChecker_dataGridView.Name = "servChecker_dataGridView";
             this.servChecker_dataGridView.ReadOnly = true;
             this.servChecker_dataGridView.RowHeadersVisible = false;
             this.servChecker_dataGridView.RowTemplate.Height = 25;
-            this.servChecker_dataGridView.Size = new System.Drawing.Size(953, 301);
+            this.servChecker_dataGridView.Size = new System.Drawing.Size(1185, 420);
             this.servChecker_dataGridView.TabIndex = 9;
             this.servChecker_dataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellDoubleClick);
             this.servChecker_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellEnter);
@@ -323,6 +331,16 @@ namespace ItemChecker
             this.status_Column.ReadOnly = true;
             this.status_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
+            // availability_Column
+            // 
+            this.availability_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.availability_Column.FillWeight = 1F;
+            this.availability_Column.HeaderText = "";
+            this.availability_Column.Name = "availability_Column";
+            this.availability_Column.ReadOnly = true;
+            this.availability_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.availability_Column.Width = 5;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label2);
@@ -384,20 +402,38 @@ namespace ItemChecker
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.clearQCheck_linkLabel);
             this.groupBox2.Controls.Add(this.quick_button);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.textBox);
+            this.groupBox2.Controls.Add(this.quickCheck_textBox);
             this.groupBox2.Location = new System.Drawing.Point(283, 30);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(682, 74);
+            this.groupBox2.Size = new System.Drawing.Size(914, 74);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Quick check";
             // 
+            // clearQCheck_linkLabel
+            // 
+            this.clearQCheck_linkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.clearQCheck_linkLabel.AutoSize = true;
+            this.clearQCheck_linkLabel.BackColor = System.Drawing.Color.White;
+            this.clearQCheck_linkLabel.DisabledLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.clearQCheck_linkLabel.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.clearQCheck_linkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.clearQCheck_linkLabel.LinkColor = System.Drawing.Color.Gray;
+            this.clearQCheck_linkLabel.Location = new System.Drawing.Point(808, 39);
+            this.clearQCheck_linkLabel.Name = "clearQCheck_linkLabel";
+            this.clearQCheck_linkLabel.Size = new System.Drawing.Size(18, 19);
+            this.clearQCheck_linkLabel.TabIndex = 10;
+            this.clearQCheck_linkLabel.TabStop = true;
+            this.clearQCheck_linkLabel.Text = "X";
+            this.clearQCheck_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.clearQCheck_linkLabel_LinkClicked);
+            // 
             // quick_button
             // 
             this.quick_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.quick_button.Location = new System.Drawing.Point(601, 37);
+            this.quick_button.Location = new System.Drawing.Point(833, 37);
             this.quick_button.Name = "quick_button";
             this.quick_button.Size = new System.Drawing.Size(75, 23);
             this.quick_button.TabIndex = 6;
@@ -423,7 +459,7 @@ namespace ItemChecker
             this.Filters_groupBox.Controls.Add(this.status_comboBox);
             this.Filters_groupBox.Controls.Add(this.category_label);
             this.Filters_groupBox.Controls.Add(this.category_comboBox);
-            this.Filters_groupBox.Location = new System.Drawing.Point(12, 417);
+            this.Filters_groupBox.Location = new System.Drawing.Point(12, 536);
             this.Filters_groupBox.Name = "Filters_groupBox";
             this.Filters_groupBox.Size = new System.Drawing.Size(301, 75);
             this.Filters_groupBox.TabIndex = 12;
@@ -587,7 +623,7 @@ namespace ItemChecker
             this.Prices_groupBox.Controls.Add(this.label7);
             this.Prices_groupBox.Controls.Add(this.priceFrom_numericUpDown);
             this.Prices_groupBox.Controls.Add(this.label6);
-            this.Prices_groupBox.Location = new System.Drawing.Point(319, 417);
+            this.Prices_groupBox.Location = new System.Drawing.Point(319, 536);
             this.Prices_groupBox.Name = "Prices_groupBox";
             this.Prices_groupBox.Size = new System.Drawing.Size(283, 75);
             this.Prices_groupBox.TabIndex = 35;
@@ -629,7 +665,7 @@ namespace ItemChecker
             this.Precent_groupBox.Controls.Add(this.label5);
             this.Precent_groupBox.Controls.Add(this.precentFrom_numericUpDown);
             this.Precent_groupBox.Controls.Add(this.label8);
-            this.Precent_groupBox.Location = new System.Drawing.Point(608, 417);
+            this.Precent_groupBox.Location = new System.Drawing.Point(608, 536);
             this.Precent_groupBox.Name = "Precent_groupBox";
             this.Precent_groupBox.Size = new System.Drawing.Size(279, 75);
             this.Precent_groupBox.TabIndex = 36;
@@ -750,20 +786,70 @@ namespace ItemChecker
             // 
             // buttons_groupBox
             // 
-            this.buttons_groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttons_groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttons_groupBox.Controls.Add(this.reset_button);
             this.buttons_groupBox.Controls.Add(this.apply_button);
-            this.buttons_groupBox.Location = new System.Drawing.Point(893, 417);
+            this.buttons_groupBox.Location = new System.Drawing.Point(1126, 536);
             this.buttons_groupBox.Name = "buttons_groupBox";
             this.buttons_groupBox.Size = new System.Drawing.Size(71, 75);
             this.buttons_groupBox.TabIndex = 39;
             this.buttons_groupBox.TabStop = false;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.clearSearch_linkLabel);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.search_textBox);
+            this.groupBox3.Location = new System.Drawing.Point(893, 536);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(227, 75);
+            this.groupBox3.TabIndex = 42;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Search";
+            // 
+            // clearSearch_linkLabel
+            // 
+            this.clearSearch_linkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.clearSearch_linkLabel.AutoSize = true;
+            this.clearSearch_linkLabel.BackColor = System.Drawing.Color.White;
+            this.clearSearch_linkLabel.DisabledLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.clearSearch_linkLabel.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.clearSearch_linkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.clearSearch_linkLabel.LinkColor = System.Drawing.Color.Gray;
+            this.clearSearch_linkLabel.Location = new System.Drawing.Point(202, 38);
+            this.clearSearch_linkLabel.Name = "clearSearch_linkLabel";
+            this.clearSearch_linkLabel.Size = new System.Drawing.Size(18, 19);
+            this.clearSearch_linkLabel.TabIndex = 9;
+            this.clearSearch_linkLabel.TabStop = true;
+            this.clearSearch_linkLabel.Text = "X";
+            this.clearSearch_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.clearSearch_linkLabel_LinkClicked);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 19);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(69, 15);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Item Name:";
+            // 
+            // search_textBox
+            // 
+            this.search_textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.search_textBox.Location = new System.Drawing.Point(6, 37);
+            this.search_textBox.Name = "search_textBox";
+            this.search_textBox.Size = new System.Drawing.Size(215, 23);
+            this.search_textBox.TabIndex = 7;
+            // 
             // ServiceCheckerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(977, 517);
+            this.ClientSize = new System.Drawing.Size(1209, 636);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.buttons_groupBox);
             this.Controls.Add(this.Precent_groupBox);
             this.Controls.Add(this.Prices_groupBox);
@@ -775,7 +861,7 @@ namespace ItemChecker
             this.Controls.Add(this.servChecker_menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.servChecker_menuStrip;
-            this.MinimumSize = new System.Drawing.Size(993, 556);
+            this.MinimumSize = new System.Drawing.Size(1225, 675);
             this.Name = "ServiceCheckerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ServiceChecker";
@@ -801,6 +887,8 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.precentTo_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.precentFrom_numericUpDown)).EndInit();
             this.buttons_groupBox.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -816,7 +904,7 @@ namespace ItemChecker
         public System.Windows.Forms.ToolStripStatusLabel space_toolStripStatusLabel;
         public System.Windows.Forms.ToolStripStatusLabel updated_toolStripStatusLabel;
         public System.Windows.Forms.ToolStripStatusLabel status_toolStripStatusLabel;
-        public System.Windows.Forms.TextBox textBox;
+        public System.Windows.Forms.TextBox quickCheck_textBox;
         public System.Windows.Forms.DataGridView servChecker_dataGridView;
         public System.Windows.Forms.GroupBox groupBox1;
         public System.Windows.Forms.Label label2;
@@ -854,6 +942,7 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem csv_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        public System.Windows.Forms.ToolStripStatusLabel availability_toolStripStatusLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn color_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn price1_Column;
@@ -863,6 +952,11 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn precent_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn difference_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn status_Column;
-        public System.Windows.Forms.ToolStripStatusLabel availability_toolStripStatusLabel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn availability_Column;
+        private System.Windows.Forms.GroupBox groupBox3;
+        public System.Windows.Forms.Label label10;
+        public System.Windows.Forms.TextBox search_textBox;
+        private System.Windows.Forms.LinkLabel clearSearch_linkLabel;
+        private System.Windows.Forms.LinkLabel clearQCheck_linkLabel;
     }
 }

@@ -253,6 +253,10 @@ namespace ItemChecker.Presenter
             BuyOrder._clearQueue();
             Withdraw._clear();
 
+            clearDTableRows(mainForm.tryskins_dataGridView);
+            clearDTableRows(mainForm.buyOrder_dataGridView);
+            clearDTableRows(mainForm.withdraw_dataGridView);
+
             mainForm.Invoke(new MethodInvoker(delegate
             {
                 mainForm.steamMarket_label.Text = "SteamMarket: -";
@@ -269,11 +273,8 @@ namespace ItemChecker.Presenter
                 mainForm.status_StripStatus.Text = "Processing...";
                 mainForm.status_StripStatus.Visible = true;
 
-                mainForm.tryskins_dataGridView.Rows.Clear();
-                mainForm.buyOrder_dataGridView.Rows.Clear();
-                mainForm.withdraw_dataGridView.Rows.Clear();
                 mainForm.withdraw_dataGridView.Visible = false;
-                mainForm.withdraw_MainStripMenu.Text = "Withdraw";
+                mainForm.showWithdraw_toolStripMenuItem.Text = "Withdraw";
 
                 mainForm.reload_MainStripMenu.Enabled = false;
                 mainForm.progressBar_StripStatus.Value = 0;
@@ -309,11 +310,11 @@ namespace ItemChecker.Presenter
             }
         }
 
-        public static void messageBalloonTip(string str = "Loading is complete. Open to show.", ToolTipIcon icon = ToolTipIcon.Info, int sec = 5)
+        public static void messageBalloonTip(string str = "Loading is complete. Open to show.", ToolTipIcon icon = ToolTipIcon.Info)
         {
             mainForm.notifyIcon.BalloonTipText = str;
             mainForm.notifyIcon.BalloonTipIcon = icon;
-            mainForm.notifyIcon.ShowBalloonTip(sec);
+            mainForm.notifyIcon.ShowBalloonTip(3);
         }
         public static void progressInvoke(int i = 1)
         {

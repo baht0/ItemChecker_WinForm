@@ -13,7 +13,7 @@ namespace ItemChecker
     public partial class ServiceCheckerForm : Form
     {
         int past_row = 0;
-        CheckListForm checkList = new CheckListForm("SortList");
+        CheckListForm checkListForm = new CheckListForm("SortList");
         public ServiceCheckerForm()
         {
             InitializeComponent();
@@ -30,6 +30,7 @@ namespace ItemChecker
             other_comboBox.SelectedIndex = 0;
             status_comboBox.SelectedIndex = 0;
             column_comboBox.SelectedIndex = 0;
+            ServiceCheckerPresenter.columnDTable();
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -44,7 +45,7 @@ namespace ItemChecker
                 if (result == DialogResult.Yes)
                 {
                     ServiceChecker.checkStop = true;
-                    ServiceChecker._clear();
+                    ServiceCheckerPresenter.ClearAll(true, true, true);
                     Main.loading = false;
                 }
                 else if (result == DialogResult.No)
@@ -52,6 +53,8 @@ namespace ItemChecker
                     e.Cancel = true;
                 }
             }
+            else
+                ServiceCheckerPresenter.ClearAll(true, true, true);
         }
 
         //menu
@@ -59,7 +62,7 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
-                checkList.ShowDialog();
+                checkListForm.ShowDialog();
                 count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
             }
         }
@@ -112,12 +115,10 @@ namespace ItemChecker
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Main.loading = true;
-                    ServiceChecker._clear();
                     status_toolStripStatusLabel.Text = "Import the list from *.csv...";
                     status_toolStripStatusLabel.Visible = true;
                     string fileName = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName).ToString();
                     fileName = fileName.Remove(0, 15).Replace("_", " ");
-                    ServiceCheckerPresenter.ResetFilter();
                     ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName, fileName });
                 }
             }
@@ -167,10 +168,10 @@ namespace ItemChecker
         //quick
         private void quick_button_Click(object sender, EventArgs e)
         {
-            if (textBox.Text != "" & !Main.loading)
+            if (quickCheck_textBox.Text != "" & !Main.loading)
             {
                 Main.checkList.Clear();
-                Main.checkList.Add(textBox.Text.Trim());
+                Main.checkList.Add(quickCheck_textBox.Text.Trim());
 
                 check_toolStripMenuItem.PerformClick();
             }
@@ -220,7 +221,7 @@ namespace ItemChecker
                 {
                     availability_toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
                     availability_toolStripStatusLabel.Text = $"Availability: Checking...";
-                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkCsmItem, new object[] { servChecker_dataGridView.Rows[row].Cells[1].Value.ToString() });
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkCsmItem, new object[] { servChecker_dataGridView.Rows[row].Cells[1].Value.ToString(), row });
                     availability_toolStripStatusLabel.Visible = true;
                     past_row = row;
                 }
@@ -228,7 +229,7 @@ namespace ItemChecker
                 {
                     availability_toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
                     availability_toolStripStatusLabel.Text = $"Availability: Checking...";
-                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkLootFarmItem, new object[] { servChecker_dataGridView.Rows[row].Cells[1].Value.ToString() });
+                    ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkLootFarmItem, new object[] { servChecker_dataGridView.Rows[row].Cells[1].Value.ToString(), row });
                     availability_toolStripStatusLabel.Visible = true;
                     past_row = row;
                 }
@@ -253,10 +254,10 @@ namespace ItemChecker
         }
         private void ownList_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
+            int row = servChecker_dataGridView.CurrentCell.RowIndex;
             int cell = servChecker_dataGridView.CurrentCell.ColumnIndex;
             if (1 < cell & cell < 6)
             {
-                int row = Convert.ToInt32(servChecker_dataGridView.CurrentCell.RowIndex);
                 servChecker_dataGridView.Rows[row].Cells[cell].Value = Convert.ToDouble(Main.save_str);
                 Main.save_str = null;
             }
@@ -276,9 +277,12 @@ namespace ItemChecker
         {
             try
             {
-                if (!Main.loading & ServiceChecker.dataTable != null)
+                if (!Main.loading & ServiceChecker.dataTable.Rows.Count > 1)
                 {
                     string filter = string.Empty;
+                    //search
+                    if (!String.IsNullOrEmpty(search_textBox.Text))
+                        filter += $"AND item_Column LIKE '%{search_textBox.Text}%'";
                     //filters
                     if (category_comboBox.SelectedIndex != 0)
                     {
@@ -288,14 +292,14 @@ namespace ItemChecker
                         {
                             for (int i = 2; i < 6; i++)
                                 filter += $"AND item_Column NOT LIKE '%{category_comboBox.Items[i]}%'";
-                            for (int i = 4; i < 12; i++)
+                            for (int i = 4; i < 13; i++)
                                 filter += $"AND item_Column NOT LIKE '%{other_comboBox.Items[i]}%'";
                         }
                     }
                     else if (other_comboBox.SelectedIndex != 0)
                     {
                         if (other_comboBox.SelectedIndex == 1)
-                            for (int i = 4; i < 12; i++)
+                            for (int i = 4; i < 13; i++)
                                 filter += $"AND item_Column NOT LIKE '%{other_comboBox.Items[i]}%'";
                         else
                             filter += $"AND item_Column LIKE '%{other_comboBox.Text}%'";
@@ -326,13 +330,24 @@ namespace ItemChecker
             catch (Exception exp)
             {
                 Exceptions.errorLog(exp, Main.version);
-                MessageBox.Show("Nothing found.", "Filter", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         private void reset_button_Click(object sender, EventArgs e)
         {
             if(!Main.loading & ServiceChecker.dataTable != null)
-                ServiceCheckerPresenter.ResetFilter();
+                ServiceCheckerPresenter.ClearAll(true, false, false);
+        }
+
+        //X
+        private void clearQCheck_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!String.IsNullOrEmpty(quickCheck_textBox.Text))
+                quickCheck_textBox.Clear();
+        }
+        private void clearSearch_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!String.IsNullOrEmpty(search_textBox.Text))
+                search_textBox.Clear();
         }
     }
 }
