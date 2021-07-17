@@ -24,7 +24,7 @@ namespace ItemChecker.Presenter
 
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.balance_StripStatus.Text = "Balance: " + balance.Text;
-                    mainForm.available_label.Text = "Available: " + Convert.ToString(Steam.balance * 10) + "₽"; }));
+                    mainForm.available_label.Text = $"Available: {Math.Round(Steam.balance * 10, 2)}₽"; }));
             }
             catch (Exception exp)
             {

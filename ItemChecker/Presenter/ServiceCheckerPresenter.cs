@@ -570,10 +570,15 @@ namespace ItemChecker.Presenter
                     {
                         foreach (DataGridViewCell cell in row.Cells)
                         {
-                            string value = cell.Value.ToString();
-                            if (value.Contains(","))
-                                value = value.Replace(",", ";");
-
+                            var value = cell.Value;
+                            if (value.ToString().Contains(","))
+                            {
+                                value = value.ToString().Replace(",", ";");
+                            }
+                            if(cell.ColumnIndex >= 2 & cell.ColumnIndex <= 7)
+                            {
+                                value = Math.Round(Convert.ToDouble(value) * 100);
+                            }
                             csv += value;
                             csv += ",";
                         }
@@ -639,7 +644,7 @@ namespace ItemChecker.Presenter
                     {
                         row[j] = value[j].Replace(";", ",");
                         if (j >= 2 & j <= 7)
-                            row[j] = Convert.ToDouble(value[j]);
+                            row[j] = Math.Round(Convert.ToDouble(value[j]) / 100, 2);
                     }
                     ServiceChecker.dataTable.Rows.Add(row);
                 }

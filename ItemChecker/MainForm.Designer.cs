@@ -293,8 +293,7 @@ namespace ItemChecker
             this.reloadWithdraw_toolStripMenuItem,
             this.toolStripSeparator6,
             this.checkCsmWithdraw_toolStripMenuItem});
-            this.withdraw_toolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("withdraw_toolStripMenuItem.Image")));
-            this.withdraw_toolStripMenuItem.ImageTransparentColor = System.Drawing.Color.White;
+            this.withdraw_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.down;
             this.withdraw_toolStripMenuItem.Name = "withdraw_toolStripMenuItem";
             this.withdraw_toolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.withdraw_toolStripMenuItem.Text = "Withdraw";
@@ -302,7 +301,7 @@ namespace ItemChecker
             // showWithdraw_toolStripMenuItem
             // 
             this.showWithdraw_toolStripMenuItem.Name = "showWithdraw_toolStripMenuItem";
-            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.showWithdraw_toolStripMenuItem.Text = "Load";
             this.showWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.showWithdraw_toolStripMenuItem_Click);
             // 
@@ -310,19 +309,19 @@ namespace ItemChecker
             // 
             this.reloadWithdraw_toolStripMenuItem.Enabled = false;
             this.reloadWithdraw_toolStripMenuItem.Name = "reloadWithdraw_toolStripMenuItem";
-            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.reloadWithdraw_toolStripMenuItem.Text = "Reload";
             this.reloadWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.reloadWithdraw_toolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(121, 6);
             // 
             // checkCsmWithdraw_toolStripMenuItem
             // 
             this.checkCsmWithdraw_toolStripMenuItem.Name = "checkCsmWithdraw_toolStripMenuItem";
-            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.checkCsmWithdraw_toolStripMenuItem.Text = "Inventory";
             this.checkCsmWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.checkCsmWithdraw_toolStripMenuItem_Click);
             // 
