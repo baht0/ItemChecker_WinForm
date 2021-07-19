@@ -52,6 +52,7 @@ namespace ItemChecker
             this.reloadWithdraw_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.checkCsmWithdraw_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkFavorite_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tools_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.checkOwnList_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.floatCheck_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -292,7 +293,8 @@ namespace ItemChecker
             this.showWithdraw_toolStripMenuItem,
             this.reloadWithdraw_toolStripMenuItem,
             this.toolStripSeparator6,
-            this.checkCsmWithdraw_toolStripMenuItem});
+            this.checkCsmWithdraw_toolStripMenuItem,
+            this.checkFavorite_ToolStripMenuItem});
             this.withdraw_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.down;
             this.withdraw_toolStripMenuItem.Name = "withdraw_toolStripMenuItem";
             this.withdraw_toolStripMenuItem.Size = new System.Drawing.Size(86, 20);
@@ -301,7 +303,7 @@ namespace ItemChecker
             // showWithdraw_toolStripMenuItem
             // 
             this.showWithdraw_toolStripMenuItem.Name = "showWithdraw_toolStripMenuItem";
-            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showWithdraw_toolStripMenuItem.Text = "Load";
             this.showWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.showWithdraw_toolStripMenuItem_Click);
             // 
@@ -309,21 +311,28 @@ namespace ItemChecker
             // 
             this.reloadWithdraw_toolStripMenuItem.Enabled = false;
             this.reloadWithdraw_toolStripMenuItem.Name = "reloadWithdraw_toolStripMenuItem";
-            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reloadWithdraw_toolStripMenuItem.Text = "Reload";
             this.reloadWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.reloadWithdraw_toolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(121, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
             // 
             // checkCsmWithdraw_toolStripMenuItem
             // 
             this.checkCsmWithdraw_toolStripMenuItem.Name = "checkCsmWithdraw_toolStripMenuItem";
-            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.checkCsmWithdraw_toolStripMenuItem.Text = "Inventory";
             this.checkCsmWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.checkCsmWithdraw_toolStripMenuItem_Click);
+            // 
+            // checkFavorite_ToolStripMenuItem
+            // 
+            this.checkFavorite_ToolStripMenuItem.Name = "checkFavorite_ToolStripMenuItem";
+            this.checkFavorite_ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkFavorite_ToolStripMenuItem.Text = "CheckFavorite";
+            this.checkFavorite_ToolStripMenuItem.Click += new System.EventHandler(this.checkFavorite_ToolStripMenuItem_Click);
             // 
             // tools_MainStripMenu
             // 
@@ -1061,6 +1070,7 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem checkCsmWithdraw_toolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem showWithdraw_toolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem checkFavorite_ToolStripMenuItem;
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Timers;
 
 namespace ItemChecker.Model
 {
@@ -12,6 +13,11 @@ namespace ItemChecker.Model
         public static int souvenir { get; set; }
         public static int sticker { get; set; }
         public static string url { get; set; }
+
+        //auto
+        public static List<string> favoriteList = new();
+        public static Timer timer = new();
+        public static int tick { get; set; }
 
         public static void _clear()
         {

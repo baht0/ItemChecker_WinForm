@@ -41,7 +41,7 @@ namespace ItemChecker.Presenter
                     if (SteamConfig.Default.startupPush)
                     {
                         Main.loading = false;
-                        BuyOrderPresenter.pushStart();
+                        BuyOrderPresenter.startPush();
                     }
                     cancelTokenSource.Cancel();
                 }
@@ -68,7 +68,7 @@ namespace ItemChecker.Presenter
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
             ChromeOptions option = new ChromeOptions();
-            option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions");
+            option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions", "--disable-blink-features=AutomationControlled", "ignore-certificate-errors");
             if (GeneralConfig.Default.profile) option.AddArguments(@"--user-data-dir=" + Application.StartupPath.Replace(@"\", @"\\") + "\\profile", "profile-directory=Default");
             else Directory.Delete(Application.StartupPath.Replace(@"\", @"\\") + "\\profile", true);
             option.Proxy = null;
@@ -180,16 +180,14 @@ namespace ItemChecker.Presenter
             try
             {
                 Main.loading = true;
-                stopPush();
+                BuyOrderPresenter.stopPush();
+                WithdrawPresenter.stopCheckFavorite();
                 object[] args = state as object[];
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = false;
-                    if (Convert.ToInt32(args[0]) != 0)
-                    {
-                        mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
-                        mainForm.progressBar_StripStatus.Value = 0;
-                        mainForm.progressBar_StripStatus.Visible = true;
-                    }
+                    mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
+                    mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.status_StripStatus.Text = "Processing...";
                     mainForm.status_StripStatus.Visible = true; }));
 
@@ -215,11 +213,6 @@ namespace ItemChecker.Presenter
                 {
                     preparationData();
                     BuyOrderPresenter.availableAmount();
-                }
-                else if (Main.reload == 4)//withdraw
-                {
-                    WithdrawPresenter.withdrawCheck();
-                    WithdrawPresenter.createDTable();
                 }
             }
             catch (Exception exp)
@@ -247,7 +240,8 @@ namespace ItemChecker.Presenter
         }
         public static void clearAll()
         {
-            stopPush();
+            BuyOrderPresenter.stopPush();
+            WithdrawPresenter.stopCheckFavorite();
             TrySkins._clear();
             BuyOrder._clear();
             BuyOrder._clearQueue();
@@ -285,16 +279,7 @@ namespace ItemChecker.Presenter
                 mainForm.tradeOffers_linkLabel.Text = "Incoming: -";
                 mainForm.balance_StripStatus.Text = "Balance: 0.00";
             }));
-        }
-        public static void stopPush()
-        {
-            Main.timer.Stop();
-            BuyOrder.tick = 0;
-            mainForm.Invoke(new MethodInvoker(delegate
-            {
-                mainForm.timer_StripStatus.Visible = false;
-                mainForm.push_linkLabel.Text = "Push..."; }));
-        }
+        }        
         public static void updateSettings()
         {
             if (Properties.Settings.Default.UpdateSettings)

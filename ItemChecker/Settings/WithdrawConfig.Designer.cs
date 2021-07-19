@@ -12,7 +12,7 @@ namespace ItemChecker.Settings {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class WithdrawConfig : global::System.Configuration.ApplicationSettingsBase {
         
         private static WithdrawConfig defaultInstance = ((WithdrawConfig)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new WithdrawConfig())));
@@ -128,6 +128,18 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["compareSta"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string favoriteList {
+            get {
+                return ((string)(this["favoriteList"]));
+            }
+            set {
+                this["favoriteList"] = value;
             }
         }
     }

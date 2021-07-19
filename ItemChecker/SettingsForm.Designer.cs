@@ -71,6 +71,8 @@ namespace ItemChecker
             this.median_radioButton = new System.Windows.Forms.RadioButton();
             this.lowest_radioButton = new System.Windows.Forms.RadioButton();
             this.tryskins_tabPage = new System.Windows.Forms.TabPage();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.oldcsm_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
             this.minPrice_numericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -116,8 +118,7 @@ namespace ItemChecker
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.oldcsm_checkBox = new System.Windows.Forms.CheckBox();
+            this.favoriteItems_button = new System.Windows.Forms.Button();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).BeginInit();
@@ -138,6 +139,7 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.FN_numericUpDown)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.tryskins_tabPage.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minPrice_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPrice_numericUpDown)).BeginInit();
@@ -155,7 +157,6 @@ namespace ItemChecker
             this.groupBox6.SuspendLayout();
             this.extract_groupBox.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // ok_button
@@ -193,6 +194,7 @@ namespace ItemChecker
             // 
             // withdraw_tabPage
             // 
+            this.withdraw_tabPage.Controls.Add(this.favoriteItems_button);
             this.withdraw_tabPage.Controls.Add(this.groupBox8);
             this.withdraw_tabPage.Controls.Add(this.groupBox4);
             this.withdraw_tabPage.Location = new System.Drawing.Point(4, 22);
@@ -770,6 +772,26 @@ namespace ItemChecker
             this.tryskins_tabPage.Text = "TrySkins";
             this.tryskins_tabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.oldcsm_checkBox);
+            this.groupBox12.Location = new System.Drawing.Point(20, 205);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(251, 52);
+            this.groupBox12.TabIndex = 2;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Open Cs.Money";
+            // 
+            // oldcsm_checkBox
+            // 
+            this.oldcsm_checkBox.AutoSize = true;
+            this.oldcsm_checkBox.Location = new System.Drawing.Point(15, 22);
+            this.oldcsm_checkBox.Name = "oldcsm_checkBox";
+            this.oldcsm_checkBox.Size = new System.Drawing.Size(121, 17);
+            this.oldcsm_checkBox.TabIndex = 0;
+            this.oldcsm_checkBox.Text = "Switch to old design";
+            this.oldcsm_checkBox.UseVisualStyleBackColor = true;
+            // 
             // groupBox9
             // 
             this.groupBox9.Controls.Add(this.label10);
@@ -1291,25 +1313,15 @@ namespace ItemChecker
             this.tabControl1.Size = new System.Drawing.Size(301, 339);
             this.tabControl1.TabIndex = 0;
             // 
-            // groupBox12
+            // favoriteItems_button
             // 
-            this.groupBox12.Controls.Add(this.oldcsm_checkBox);
-            this.groupBox12.Location = new System.Drawing.Point(20, 205);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(251, 52);
-            this.groupBox12.TabIndex = 2;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Open Cs.Money";
-            // 
-            // oldcsm_checkBox
-            // 
-            this.oldcsm_checkBox.AutoSize = true;
-            this.oldcsm_checkBox.Location = new System.Drawing.Point(15, 22);
-            this.oldcsm_checkBox.Name = "oldcsm_checkBox";
-            this.oldcsm_checkBox.Size = new System.Drawing.Size(121, 17);
-            this.oldcsm_checkBox.TabIndex = 0;
-            this.oldcsm_checkBox.Text = "Switch to old design";
-            this.oldcsm_checkBox.UseVisualStyleBackColor = true;
+            this.favoriteItems_button.Location = new System.Drawing.Point(17, 269);
+            this.favoriteItems_button.Name = "favoriteItems_button";
+            this.favoriteItems_button.Size = new System.Drawing.Size(107, 23);
+            this.favoriteItems_button.TabIndex = 14;
+            this.favoriteItems_button.Text = "Favorite Items";
+            this.favoriteItems_button.UseVisualStyleBackColor = true;
+            this.favoriteItems_button.Click += new System.EventHandler(this.favoriteItems_button_Click);
             // 
             // SettingsForm
             // 
@@ -1353,6 +1365,8 @@ namespace ItemChecker
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tryskins_tabPage.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minPrice_numericUpDown)).EndInit();
@@ -1378,8 +1392,6 @@ namespace ItemChecker
             this.extract_groupBox.ResumeLayout(false);
             this.extract_groupBox.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1475,5 +1487,6 @@ namespace ItemChecker
         private System.Windows.Forms.Button proxy_button;
         private System.Windows.Forms.GroupBox groupBox12;
         private System.Windows.Forms.CheckBox oldcsm_checkBox;
+        private System.Windows.Forms.Button favoriteItems_button;
     }
 }

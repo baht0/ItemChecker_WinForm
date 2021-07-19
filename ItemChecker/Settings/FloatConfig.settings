@@ -26,5 +26,8 @@
     <Setting Name="maxFloatValue_BS" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0.500</Value>
     </Setting>
+    <Setting Name="floatList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

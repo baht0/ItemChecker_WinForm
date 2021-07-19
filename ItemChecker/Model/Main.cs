@@ -16,8 +16,6 @@ namespace ItemChecker.Model
         public static int reload { get; set; }
         public static bool loading { get; set; }
 
-        public static System.Timers.Timer timer = new System.Timers.Timer();
-
         //lists
         public static List<string> overstock = new List<string>();
         public static List<string> unavailable = new List<string>();

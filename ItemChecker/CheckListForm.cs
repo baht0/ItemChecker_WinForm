@@ -7,6 +7,7 @@ using ItemChecker.Model;
 using ItemChecker.Net;
 using ItemChecker.Presenter;
 using ItemChecker.Support;
+using ItemChecker.Settings;
 using Newtonsoft.Json.Linq;
 
 namespace ItemChecker
@@ -21,13 +22,7 @@ namespace ItemChecker
             if (str.Contains("FloatList"))
             {
                 getToolStripMenuItem.Visible = false;
-                richTextBox1.Text = Properties.Settings.Default.floatList.Trim();
-            }
-            else if (str.Contains("ProxyList"))
-            {
-                getToolStripMenuItem.Text = "Get proxys";
-                label1.Text = "Example: 127.0.0.1:80. Protocol: HTTP.";
-                richTextBox1.Text = Properties.Settings.Default.proxyList.Trim();
+                richTextBox1.Text = FloatConfig.Default.floatList.Trim();
             }
             else if (str.Contains("SortList"))
             {
@@ -36,7 +31,18 @@ namespace ItemChecker
                 csMoneyToolStripMenuItem.Visible = true;
                 richTextBox1.Text = Properties.Settings.Default.checkList.Trim();
             }
-            this.Text = $"{str}: " + richTextBox1.Lines.Count().ToString();
+            else if(str.Contains("FavoriteList"))
+            {
+                getToolStripMenuItem.Visible = false;
+                richTextBox1.Text = WithdrawConfig.Default.favoriteList.Trim();
+            }
+            else if (str.Contains("ProxyList"))
+            {
+                getToolStripMenuItem.Text = "Get proxys";
+                label1.Text = "Example: 127.0.0.1:80. Protocol: HTTP.";
+                richTextBox1.Text = GeneralConfig.Default.proxyList.Trim();
+            }
+            this.Text = $"{str}: {richTextBox1.Lines.Count()}";
         }
         private void ok_button_Click(object sender, EventArgs e)
         {
@@ -45,22 +51,28 @@ namespace ItemChecker
             {
                 Float.items.Clear();
                 Float.items.AddRange(richTextBox1.Lines);
-                Properties.Settings.Default.floatList = str;
+                FloatConfig.Default.floatList = str;
 
                 Main.loading = true;
                 ThreadPool.QueueUserWorkItem(FloatPresenter.Check);
-            }
-            else if (request.Contains("ProxyList"))
-            {
-                Main.proxyList.Clear();
-                Main.proxyList.AddRange(richTextBox1.Lines);
-                Properties.Settings.Default.proxyList = str;
             }
             else if (request.Contains("SortList"))
             {
                 Main.checkList.Clear();
                 Main.checkList.AddRange(richTextBox1.Lines);
                 Properties.Settings.Default.checkList = str;
+            }
+            else if (request.Contains("FavoriteList"))
+            {
+                Withdraw.favoriteList.Clear();
+                Withdraw.favoriteList.AddRange(richTextBox1.Lines);
+                WithdrawConfig.Default.favoriteList = str;
+            }
+            else if (request.Contains("ProxyList"))
+            {
+                Main.proxyList.Clear();
+                Main.proxyList.AddRange(richTextBox1.Lines);
+                GeneralConfig.Default.proxyList = str;
             }
             Properties.Settings.Default.Save();
             Close();

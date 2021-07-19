@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Timers;
 
 namespace ItemChecker.Model
 {
@@ -20,6 +21,7 @@ namespace ItemChecker.Model
         public static List<string> queue = new List<string>();
         public static double queue_rub { get; set; }
         //push
+        public static Timer timer = new();
         public static int tick { get; set; }
         public static int int_check = 0;
         public static int int_push = 0;

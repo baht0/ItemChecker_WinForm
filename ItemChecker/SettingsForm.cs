@@ -235,6 +235,11 @@ namespace ItemChecker
             if (!sticker_checkBox.Checked) onlySt_checkBox.Checked = false;
             onlySt_checkBox.Enabled = sticker_checkBox.Checked;
         }
+        private void favoriteItems_button_Click(object sender, EventArgs e)
+        {
+            CheckListForm checkListForm = new("FavoriteList");
+            checkListForm.ShowDialog();
+        }
 
         //proxy
         private void proxy_button_Click(object sender, EventArgs e)

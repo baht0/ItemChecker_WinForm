@@ -82,5 +82,17 @@ namespace ItemChecker.Settings {
                 this["proxy"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string proxyList {
+            get {
+                return ((string)(this["proxyList"]));
+            }
+            set {
+                this["proxyList"] = value;
+            }
+        }
     }
 }

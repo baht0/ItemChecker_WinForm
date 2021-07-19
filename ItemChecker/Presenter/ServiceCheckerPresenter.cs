@@ -29,7 +29,7 @@ namespace ItemChecker.Presenter
 
                 ThreadPool.QueueUserWorkItem(TimeLeft);
                 if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
-                    if (GeneralConfig.Default.proxy & !String.IsNullOrEmpty(Properties.Settings.Default.proxyList))
+                    if (GeneralConfig.Default.proxy & !String.IsNullOrEmpty(GeneralConfig.Default.proxyList))
                         checkMrinkaProxy();
                     else
                         checkMrinka();
@@ -297,15 +297,7 @@ namespace ItemChecker.Presenter
                         row.Cells[6].Style.BackColor = Color.Gray;
                     if (price2_one > Steam.balance_usd & ServiceChecker.service_one == 0)
                         row.Cells[3].Style.BackColor = Color.Crimson;
-                    if (item.Contains("Sticker") | item.Contains("Graffiti"))
-                        row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
-                    if (item.Contains("Souvenir"))
-                        row.Cells[0].Style.BackColor = Color.Yellow;
-                    if (item.Contains("StatTrak"))
-                        row.Cells[0].Style.BackColor = Color.Orange;
-                    if (item.Contains("★"))
-                        row.Cells[0].Style.BackColor = Color.DarkViolet;
-                    if (BuyOrder.queue.Contains(Edit.replaceUrl(item)))
+                    if (BuyOrder.queue.Contains(item))
                     {
                         row.Cells[1].Style.BackColor = Color.LimeGreen;
                         row.Cells[3].Style.BackColor = Color.LimeGreen;
@@ -326,16 +318,21 @@ namespace ItemChecker.Presenter
                         row.Cells[1].Style.BackColor = Color.Red;
                         row.Cells[8].Style.BackColor = Color.Red;
                     }
+                    row.Cells[2].Style.BackColor = Color.LightGray;
+                    row.Cells[5].Style.BackColor = Color.LightGray;
                     if (ServiceChecker.service_one == 0) //steam -> (any)
                     {
                         row.Cells[3].Style.BackColor = Color.LightGray;
-                        row.Cells[5].Style.BackColor = Color.LightGray;
+                        row.Cells[2].Style.BackColor = Color.White;
                     }
-                    else //(any) -> (any)
-                    {
-                        row.Cells[2].Style.BackColor = Color.LightGray;
-                        row.Cells[5].Style.BackColor = Color.LightGray;
-                    }
+                    if (item.Contains("Sticker") | item.Contains("Graffiti"))
+                        row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
+                    if (item.Contains("Souvenir"))
+                        row.Cells[0].Style.BackColor = Color.Yellow;
+                    if (item.Contains("StatTrak"))
+                        row.Cells[0].Style.BackColor = Color.Orange;
+                    if (item.Contains("★"))
+                        row.Cells[0].Style.BackColor = Color.DarkViolet;
                 }
             }
             catch (Exception exp)
@@ -468,39 +465,35 @@ namespace ItemChecker.Presenter
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
-                string str = args[0].ToString();
+                string name = args[0].ToString();
                 int row = Convert.ToInt32(args[1]);
-                string market_hash_name = Edit.replaceUrl(str);
+
+                string market_hash_name = Edit.replaceUrl(name);
                 var json = Request.inventoriesCsMoney(market_hash_name);
                 int count = 0;
 
                 if (!json.Contains("error"))
                 {
                     json = JObject.Parse(json)["items"].ToString();
-                    JArray jArray = JArray.Parse(json);
-                    foreach (JObject j in jArray)
+                    JArray items = JArray.Parse(json);
+                    foreach (JObject item in items)
                     {
-                        try {
-                            count += Convert.ToInt32(j["stackSize"].ToString());
-                        }
-                        catch {
+                        if (item.ContainsKey("stackSize"))
+                            count += Convert.ToInt32(item["stackSize"].ToString());
+                        else
                             count++;
-                        }
                     }
                 }
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                     serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
-                    if (count > 0)
-                    {
+                    if (count > 0) {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
                         serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
                     }
-                    else
-                    {
+                    else {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
                         serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
-                    }
-                }));
+                    } }));
             }
             catch (Exception exp)
             {

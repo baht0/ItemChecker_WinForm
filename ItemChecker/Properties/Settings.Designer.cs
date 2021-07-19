@@ -62,36 +62,12 @@ namespace ItemChecker.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string floatList {
-            get {
-                return ((string)(this["floatList"]));
-            }
-            set {
-                this["floatList"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string checkList {
             get {
                 return ((string)(this["checkList"]));
             }
             set {
                 this["checkList"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string proxyList {
-            get {
-                return ((string)(this["proxyList"]));
-            }
-            set {
-                this["proxyList"] = value;
             }
         }
         

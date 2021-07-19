@@ -240,6 +240,11 @@ namespace ItemChecker.Presenter
                     row.Cells[4].Style.BackColor = Color.MediumSeaGreen;
                 if (sta > Steam.balance_usd)
                     row.Cells[2].Style.BackColor = Color.Crimson;
+                if (BuyOrder.queue.Contains(item))
+                {
+                    row.Cells[1].Style.BackColor = Color.LimeGreen;
+                    row.Cells[2].Style.BackColor = Color.LimeGreen;
+                }
                 if (item.Contains("Sticker") | item.Contains("Graffiti"))
                     row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
                 if (item.Contains("Souvenir"))
@@ -268,8 +273,7 @@ namespace ItemChecker.Presenter
                     {
                         BuyOrder.queue_rub += Math.Round(sta * Main.course, 2);
                         BuyOrder.queue.Add(item);
-                        mainForm.Invoke(new MethodInvoker(delegate
-                        {
+                        mainForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
@@ -280,8 +284,7 @@ namespace ItemChecker.Presenter
                     {
                         BuyOrder.queue_rub -= Math.Round(sta * Main.course, 2);
                         BuyOrder.queue.Remove(item);
-                        mainForm.Invoke(new MethodInvoker(delegate
-                        {
+                        mainForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;

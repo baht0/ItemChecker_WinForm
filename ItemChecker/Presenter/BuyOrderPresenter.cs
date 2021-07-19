@@ -176,14 +176,6 @@ namespace ItemChecker.Presenter
                     }
                     MainPresenter.messageBalloonTip($"Not enough balance for item:\n{item}", ToolTipIcon.Warning);
                 }
-                if (item.Contains("Sticker") | item.Contains("Graffiti"))
-                    row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
-                if (item.Contains("Souvenir"))
-                    row.Cells[0].Style.BackColor = Color.Yellow;
-                if (item.Contains("StatTrak"))
-                    row.Cells[0].Style.BackColor = Color.Orange;
-                if (item.Contains("★"))
-                    row.Cells[0].Style.BackColor = Color.DarkViolet;
                 if (precent <= SteamConfig.Default.autoDelete & precent != -100)
                 {
                     autoCancelOrder(id);
@@ -194,15 +186,21 @@ namespace ItemChecker.Presenter
                 {
                     row.Cells[3].Value = "Overstock";
                     row.Cells[3].Style.BackColor = Color.OrangeRed;
-
                     if (Main.unavailable.Contains(item))
                     {
                         row.Cells[3].Style.BackColor = Color.Red;
                         row.Cells[3].Value = "Unavailable";
                     }
                     MainPresenter.messageBalloonTip("Buy orders contains inaccessible items!", ToolTipIcon.Error);
-                    MessageBox.Show($"Buy orders contains inaccessible items!\n{item}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
+                if (item.Contains("Sticker") | item.Contains("Graffiti"))
+                    row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
+                if (item.Contains("Souvenir"))
+                    row.Cells[0].Style.BackColor = Color.Yellow;
+                if (item.Contains("StatTrak"))
+                    row.Cells[0].Style.BackColor = Color.Orange;
+                if (item.Contains("★"))
+                    row.Cells[0].Style.BackColor = Color.DarkViolet;
             }
         }
 
@@ -304,11 +302,19 @@ namespace ItemChecker.Presenter
         }
 
         //push...
-        public static void pushStart()
+        public static void stopPush()
+        {
+            BuyOrder.timer.Enabled = false;
+            BuyOrder.tick = 0;
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.timer_StripStatus.Visible = false;
+                mainForm.push_linkLabel.Text = "Push..."; }));
+        }
+        public static void startPush()
         {
             if (BuyOrder.item.Count > 0 & !Main.loading)
             {
-                if (mainForm.push_linkLabel.Text == "Push...")
+                if (!BuyOrder.timer.Enabled & !Withdraw.timer.Enabled)
                 {
                     BuyOrder.tick = SteamConfig.Default.timer * 60;
 
@@ -316,12 +322,10 @@ namespace ItemChecker.Presenter
                         mainForm.timer_StripStatus.Visible = true;
                         mainForm.push_linkLabel.Text = "Stop..."; }));
 
-                    Main.timer.Start();
+                    BuyOrder.timer.Enabled = true;
                 }
-                else
-                {
-                    if (BuyOrder.tick > 1) MainPresenter.stopPush();
-                }
+                else if (BuyOrder.timer.Enabled & BuyOrder.tick > 1)
+                    BuyOrderPresenter.stopPush();
             }
         }
         public void timerTick(Object sender, ElapsedEventArgs e)
@@ -333,15 +337,16 @@ namespace ItemChecker.Presenter
             {
                 if (!Main.loading)
                 {
-                    Main.timer.Stop();
+                    BuyOrder.timer.Enabled = false;
                     mainForm.timer_StripStatus.Text = "Pushing...";
                     Main.loading = true;
                     ThreadPool.QueueUserWorkItem(push);
                 }
-                else MainPresenter.stopPush();
+                else
+                    BuyOrderPresenter.stopPush();
             }
         }
-        public void push(object state)
+        private void push(object state)
         {
             try
             {
@@ -372,9 +377,9 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                BuyOrder.tick = SteamConfig.Default.timer * 60;
-                Main.timer.Start();
                 Main.loading = false;
+                BuyOrder.tick = SteamConfig.Default.timer * 60;
+                BuyOrder.timer.Enabled = true;
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Visible = false; }));
             }
         }

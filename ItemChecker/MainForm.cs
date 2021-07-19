@@ -38,19 +38,22 @@ namespace ItemChecker
             ver_label.Text = "Version: " + Main.version;
 
             MainPresenter.updateSettings();
-
-            Main.proxyList.AddRange(Properties.Settings.Default.proxyList.Split("\n"));
         }
         public void MainForm_Shown(object sender, EventArgs e)
         {
-            status_StripStatus.Text = "Launch Browser...";
-            BuyOrderPresenter buyOrderPresenter = new BuyOrderPresenter();
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Main.loading = true;
+            status_StripStatus.Text = "Launch Browser...";
 
-            Main.timer.Elapsed += new ElapsedEventHandler(buyOrderPresenter.timerTick);
-            Main.timer.Interval = 1000;
-            Main.timer.AutoReset = true;
+            BuyOrderPresenter buyOrderPresenter = new();
+            WithdrawPresenter withdrawPresenter = new();
+            BuyOrder.timer.Elapsed += new ElapsedEventHandler(buyOrderPresenter.timerTick);
+            Withdraw.timer.Elapsed += new ElapsedEventHandler(withdrawPresenter.timerTick);
+            BuyOrder.timer.Interval = Withdraw.timer.Interval = 1000;
+
+            Main.proxyList.AddRange(GeneralConfig.Default.proxyList.Split("\n"));
+            Withdraw.favoriteList.AddRange(WithdrawConfig.Default.favoriteList.Split("\n"));
+
             ThreadPool.QueueUserWorkItem(MainPresenter.Start);
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -151,8 +154,8 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
-                CheckListForm fr = new CheckListForm("FloatList");
-                fr.ShowDialog();
+                CheckListForm checkListForm = new("FloatList");
+                checkListForm.ShowDialog();
             }
         }
         //withdraw
@@ -162,9 +165,11 @@ namespace ItemChecker
             {
                 if (!withdraw_dataGridView.Visible)
                 {
-                    MainPresenter.stopPush();
+                    BuyOrderPresenter.stopPush();
+                    WithdrawPresenter.stopCheckFavorite();
                     showWithdraw_toolStripMenuItem.Text = "Close";
                     withdraw_dataGridView.Visible = true;
+                    reload_MainStripMenu.Enabled = false;
                     reloadWithdraw_toolStripMenuItem.Enabled = true;
                     status_StripStatus.Text = "Check Withdraw...";
                     status_StripStatus.Visible = true;
@@ -174,6 +179,7 @@ namespace ItemChecker
                 else
                 {
                     reloadWithdraw_toolStripMenuItem.Enabled = false;
+                    reload_MainStripMenu.Enabled = true;
                     withdraw_dataGridView.Visible = false;
                     showWithdraw_toolStripMenuItem.Text = "Load";
                 }
@@ -183,8 +189,10 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
-                Main.reload = 4;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 0 });
+                status_StripStatus.Text = "Check Withdraw...";
+                status_StripStatus.Visible = true;
+                Main.loading = true;
+                ThreadPool.QueueUserWorkItem(WithdrawPresenter.withdraw);
             }
         }
         private void checkCsmWithdraw_toolStripMenuItem_Click(object sender, EventArgs e)
@@ -196,6 +204,10 @@ namespace ItemChecker
                 status_StripStatus.Visible = true;
                 ThreadPool.QueueUserWorkItem(WithdrawPresenter.inventoryCsm);
             }
+        }
+        private void checkFavorite_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WithdrawPresenter.checkStart();
         }
 
         //linkLabels
@@ -241,11 +253,12 @@ namespace ItemChecker
         }
         private void push_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            BuyOrderPresenter.pushStart();
+            BuyOrderPresenter.startPush();
         }
         private void timer_StripStatus_Click(object sender, EventArgs e)
         {
-            if (push_linkLabel.Text == "Stop...") BuyOrder.tick = 1;
+            if (push_linkLabel.Text == "Stop...")
+                BuyOrder.tick = 1;
         }
 
         //tryskins table

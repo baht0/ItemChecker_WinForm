@@ -14,27 +14,24 @@ namespace ItemChecker.Net
         public static String PostRequest(string body, string url)
         {
             string js_post = @"
-                async function postReq(url = '') {
+                async function postReq(url) {
                     const response = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
                         body: '" + body + @"',
-                        credentials: 'include'
-                    });
-                return response.json();
-                }
+                        credentials: 'include' });
+                return response.json(); }
                 postReq('" + url + @"').then(data => { return data; });";
 
             return js_post;
         }
-        public static String PostRequest(JObject json, string url)
+        public static String PostRequest(string contentType, string body, string url)
         {
-            string body = json.ToString(Formatting.None);
             string js_post = @"
-                async function postReq(url = '') {
+                async function postReq(url) {
                     const response = await fetch(url, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+                        headers: { 'Content-Type': '" + contentType + @"; charset=UTF-8' },
                         body: '" + body + @"',
                         credentials: 'include' });
                 return response.json(); }
