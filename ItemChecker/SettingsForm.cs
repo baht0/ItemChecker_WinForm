@@ -30,6 +30,8 @@ namespace ItemChecker
             maxPrice_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrice;
             minPrice_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrice;
             oldcsm_checkBox.Checked = TryskinsConfig.Default.oldDesign;
+            fast_radioButton.Checked = TryskinsConfig.Default.fastTime;
+            long_radioButton.Checked = TryskinsConfig.Default.longTime;
             //withdraw
             minPrecentW_numericUpDown.Value = WithdrawConfig.Default.minPrecent;
             maxPrecentW_numericUpDown.Value = WithdrawConfig.Default.maxPrecent;
@@ -40,9 +42,7 @@ namespace ItemChecker
             sticker_checkBox.Checked = WithdrawConfig.Default.sticker;
             onlySt_checkBox.Checked = WithdrawConfig.Default.onlySticker;
             compareSta_checkBox.Checked = WithdrawConfig.Default.compareSta;
-
-            fast_radioButton.Checked = TryskinsConfig.Default.fastTime;
-            long_radioButton.Checked = TryskinsConfig.Default.longTime;
+            favoriteTimer_numericUpDown.Value = WithdrawConfig.Default.timer;
             //float
             maxPrecentFloat_numericUpDown.Value = FloatConfig.Default.maxFloatPrecent;
             getItems_numericUpDown.Value = FloatConfig.Default.countGetItems;
@@ -90,7 +90,7 @@ namespace ItemChecker
             sticker_checkBox.Checked = false;
             onlySt_checkBox.Checked = false;
             compareSta_checkBox.Checked = false;
-
+            favoriteTimer_numericUpDown.Value = 15;
             //float
             maxPrecentFloat_numericUpDown.Value = Convert.ToDecimal(7);
             getItems_numericUpDown.Value = 40;
@@ -140,6 +140,7 @@ namespace ItemChecker
                     WithdrawConfig.Default.sticker = sticker_checkBox.Checked;
                     WithdrawConfig.Default.onlySticker = onlySt_checkBox.Checked;
                     WithdrawConfig.Default.compareSta = compareSta_checkBox.Checked;
+                    WithdrawConfig.Default.timer = Convert.ToInt32(favoriteTimer_numericUpDown.Value);
                     //float
                     FloatConfig.Default.maxFloatPrecent = maxPrecentFloat_numericUpDown.Value;
                     FloatConfig.Default.countGetItems = Convert.ToInt32(getItems_numericUpDown.Value);

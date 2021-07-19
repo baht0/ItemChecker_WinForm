@@ -142,5 +142,17 @@ namespace ItemChecker.Settings {
                 this["favoriteList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int timer {
+            get {
+                return ((int)(this["timer"]));
+            }
+            set {
+                this["timer"] = value;
+            }
+        }
     }
 }

@@ -338,12 +338,12 @@ namespace ItemChecker.Presenter
             {
                 if (!BuyOrder.timer.Enabled & !Withdraw.timer.Enabled)
                 {
-                    Withdraw.tick = 90;
+                    Withdraw.tick = WithdrawConfig.Default.timer;
 
                     mainForm.Invoke(new MethodInvoker(delegate {
                         mainForm.timer_StripStatus.Visible = true;
                         mainForm.checkFavorite_ToolStripMenuItem.ForeColor = Color.OrangeRed; }));
-
+                    loginCsm();
                     Withdraw.timer.Enabled = true;
                 }
                 else if (Withdraw.timer.Enabled & Withdraw.tick > 1)
@@ -410,9 +410,10 @@ namespace ItemChecker.Presenter
             }
             finally
             {
+                clearCart();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Visible = false; }));
                 Main.loading = false;
-                Withdraw.tick = 90;
+                Withdraw.tick = WithdrawConfig.Default.timer;
                 Withdraw.timer.Enabled = true;
             }
         }
@@ -467,6 +468,7 @@ namespace ItemChecker.Presenter
         }
         private void clearCart()
         {
+            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
             Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
         }
         private void sendOffer(JArray items, decimal sum)

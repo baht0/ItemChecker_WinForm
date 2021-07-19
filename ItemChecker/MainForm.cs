@@ -108,6 +108,8 @@ namespace ItemChecker
 
             if (result == DialogResult.Yes)
             {
+                BuyOrderPresenter.stopPush();
+                WithdrawPresenter.stopCheckFavorite();
                 MainPresenter.exit();
             }
         }
@@ -200,6 +202,8 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.loading = true;
+                BuyOrderPresenter.stopPush();
+                WithdrawPresenter.stopCheckFavorite();
                 status_StripStatus.Text = "Checking Cs.Money...";
                 status_StripStatus.Visible = true;
                 ThreadPool.QueueUserWorkItem(WithdrawPresenter.inventoryCsm);
