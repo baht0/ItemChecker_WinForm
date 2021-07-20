@@ -114,6 +114,7 @@ namespace ItemChecker
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.transactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.main_statusStrip.SuspendLayout();
             this.main_menuStrip.SuspendLayout();
             this.availability_groupBox.SuspendLayout();
@@ -303,7 +304,7 @@ namespace ItemChecker
             // showWithdraw_toolStripMenuItem
             // 
             this.showWithdraw_toolStripMenuItem.Name = "showWithdraw_toolStripMenuItem";
-            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.showWithdraw_toolStripMenuItem.Text = "Load";
             this.showWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.showWithdraw_toolStripMenuItem_Click);
             // 
@@ -311,26 +312,26 @@ namespace ItemChecker
             // 
             this.reloadWithdraw_toolStripMenuItem.Enabled = false;
             this.reloadWithdraw_toolStripMenuItem.Name = "reloadWithdraw_toolStripMenuItem";
-            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.reloadWithdraw_toolStripMenuItem.Text = "Reload";
             this.reloadWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.reloadWithdraw_toolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(146, 6);
             // 
             // checkCsmWithdraw_toolStripMenuItem
             // 
             this.checkCsmWithdraw_toolStripMenuItem.Name = "checkCsmWithdraw_toolStripMenuItem";
-            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.checkCsmWithdraw_toolStripMenuItem.Text = "Inventory";
             this.checkCsmWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.checkCsmWithdraw_toolStripMenuItem_Click);
             // 
             // checkFavorite_ToolStripMenuItem
             // 
             this.checkFavorite_ToolStripMenuItem.Name = "checkFavorite_ToolStripMenuItem";
-            this.checkFavorite_ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkFavorite_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.checkFavorite_ToolStripMenuItem.Text = "CheckFavorite";
             this.checkFavorite_ToolStripMenuItem.Click += new System.EventHandler(this.checkFavorite_ToolStripMenuItem_Click);
             // 
@@ -729,96 +730,97 @@ namespace ItemChecker
             this.settings_toolStripMenuItem,
             this.exit_toolStripMenuItem});
             this.taskbar_contextMenuStrip.Name = "taskbar_contextMenuStrip";
-            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(155, 126);
+            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(181, 148);
             // 
             // checkOwnList_toolStripMenuItem
             // 
             this.checkOwnList_toolStripMenuItem.Name = "checkOwnList_toolStripMenuItem";
-            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.checkOwnList_toolStripMenuItem.Text = "ServiceChecker";
             this.checkOwnList_toolStripMenuItem.Click += new System.EventHandler(this.checkOwnList_toolStripMenuItem_Click);
             // 
             // floatCheck_toolStripMenuItem
             // 
             this.floatCheck_toolStripMenuItem.Name = "floatCheck_toolStripMenuItem";
-            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.floatCheck_toolStripMenuItem.Text = "FloatCheck";
             this.floatCheck_toolStripMenuItem.Click += new System.EventHandler(this.floatCheck_toolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(151, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // links_toolStripMenuItem
             // 
             this.links_toolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tryskinsLink_toolStripMenuItem,
             this.toolStripSeparator10,
+            this.transactionsToolStripMenuItem,
             this.csmoneyLink_toolStripMenuItem,
             this.toolStripSeparator11,
             this.inventoryLink_toolStripMenuItem,
             this.marketLink_toolStripMenuItem});
             this.links_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.link;
             this.links_toolStripMenuItem.Name = "links_toolStripMenuItem";
-            this.links_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.links_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.links_toolStripMenuItem.Text = "Links";
             // 
             // tryskinsLink_toolStripMenuItem
             // 
             this.tryskinsLink_toolStripMenuItem.Name = "tryskinsLink_toolStripMenuItem";
-            this.tryskinsLink_toolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.tryskinsLink_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tryskinsLink_toolStripMenuItem.Text = "TrySkins";
             this.tryskinsLink_toolStripMenuItem.Click += new System.EventHandler(this.tryskinsLink_toolStripMenuItem_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(177, 6);
             // 
             // csmoneyLink_toolStripMenuItem
             // 
             this.csmoneyLink_toolStripMenuItem.Name = "csmoneyLink_toolStripMenuItem";
-            this.csmoneyLink_toolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.csmoneyLink_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.csmoneyLink_toolStripMenuItem.Text = "Cs.Money";
             this.csmoneyLink_toolStripMenuItem.Click += new System.EventHandler(this.csmoneyLink_toolStripMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(177, 6);
             // 
             // inventoryLink_toolStripMenuItem
             // 
             this.inventoryLink_toolStripMenuItem.Name = "inventoryLink_toolStripMenuItem";
-            this.inventoryLink_toolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.inventoryLink_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.inventoryLink_toolStripMenuItem.Text = "Inventory";
             this.inventoryLink_toolStripMenuItem.Click += new System.EventHandler(this.inventoryLink_toolStripMenuItem_Click);
             // 
             // marketLink_toolStripMenuItem
             // 
             this.marketLink_toolStripMenuItem.Name = "marketLink_toolStripMenuItem";
-            this.marketLink_toolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.marketLink_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.marketLink_toolStripMenuItem.Text = "SteamMarket";
             this.marketLink_toolStripMenuItem.Click += new System.EventHandler(this.marketLink_toolStripMenuItem_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(151, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
             // 
             // settings_toolStripMenuItem
             // 
             this.settings_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.setting;
             this.settings_toolStripMenuItem.Name = "settings_toolStripMenuItem";
-            this.settings_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.settings_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settings_toolStripMenuItem.Text = "Settings";
             this.settings_toolStripMenuItem.Click += new System.EventHandler(this.settings_toolStripMenuItem_Click);
             // 
             // exit_toolStripMenuItem
             // 
             this.exit_toolStripMenuItem.Name = "exit_toolStripMenuItem";
-            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exit_toolStripMenuItem.Text = "Exit";
             this.exit_toolStripMenuItem.Click += new System.EventHandler(this.exit_toolStripMenuItem_Click);
             // 
@@ -922,6 +924,13 @@ namespace ItemChecker
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             this.Column1.Width = 64;
+            // 
+            // transactionsToolStripMenuItem
+            // 
+            this.transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
+            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.transactionsToolStripMenuItem.Text = "Transactions";
+            this.transactionsToolStripMenuItem.Click += new System.EventHandler(this.transactionsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1071,6 +1080,7 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem checkCsmWithdraw_toolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem showWithdraw_toolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem checkFavorite_ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem transactionsToolStripMenuItem;
     }
 }
 

@@ -33,6 +33,10 @@ namespace ItemChecker
             this.cancel_button = new System.Windows.Forms.Button();
             this.default_button = new System.Windows.Forms.Button();
             this.withdraw_tabPage = new System.Windows.Forms.TabPage();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.favoriteTimer_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label25 = new System.Windows.Forms.Label();
             this.favoriteItems_button = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.onlySt_checkBox = new System.Windows.Forms.CheckBox();
@@ -119,10 +123,9 @@ namespace ItemChecker
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.groupBox13 = new System.Windows.Forms.GroupBox();
-            this.favoriteTimer_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label25 = new System.Windows.Forms.Label();
             this.withdraw_tabPage.SuspendLayout();
+            this.groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).BeginInit();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).BeginInit();
             this.groupBox4.SuspendLayout();
@@ -160,8 +163,6 @@ namespace ItemChecker
             this.groupBox6.SuspendLayout();
             this.extract_groupBox.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.groupBox13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // ok_button
@@ -210,13 +211,62 @@ namespace ItemChecker
             this.withdraw_tabPage.Text = "Withdraw";
             this.withdraw_tabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox13
+            // 
+            this.groupBox13.Controls.Add(this.label26);
+            this.groupBox13.Controls.Add(this.favoriteTimer_numericUpDown);
+            this.groupBox13.Controls.Add(this.label25);
+            this.groupBox13.Controls.Add(this.favoriteItems_button);
+            this.groupBox13.Location = new System.Drawing.Point(17, 260);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(260, 47);
+            this.groupBox13.TabIndex = 15;
+            this.groupBox13.TabStop = false;
+            this.groupBox13.Text = "CheckFavorite";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(6, 19);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(36, 13);
+            this.label26.TabIndex = 18;
+            this.label26.Text = "Timer:";
+            // 
+            // favoriteTimer_numericUpDown
+            // 
+            this.favoriteTimer_numericUpDown.Location = new System.Drawing.Point(48, 17);
+            this.favoriteTimer_numericUpDown.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.favoriteTimer_numericUpDown.Name = "favoriteTimer_numericUpDown";
+            this.favoriteTimer_numericUpDown.Size = new System.Drawing.Size(71, 20);
+            this.favoriteTimer_numericUpDown.TabIndex = 17;
+            this.favoriteTimer_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.favoriteTimer_numericUpDown.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(125, 24);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(29, 13);
+            this.label25.TabIndex = 16;
+            this.label25.Text = "Sec.";
+            // 
             // favoriteItems_button
             // 
-            this.favoriteItems_button.Location = new System.Drawing.Point(129, 15);
+            this.favoriteItems_button.Location = new System.Drawing.Point(160, 14);
             this.favoriteItems_button.Name = "favoriteItems_button";
-            this.favoriteItems_button.Size = new System.Drawing.Size(105, 23);
+            this.favoriteItems_button.Size = new System.Drawing.Size(75, 23);
             this.favoriteItems_button.TabIndex = 14;
-            this.favoriteItems_button.Text = "Favorite Items";
+            this.favoriteItems_button.Text = "Favorite";
             this.favoriteItems_button.UseVisualStyleBackColor = true;
             this.favoriteItems_button.Click += new System.EventHandler(this.favoriteItems_button_Click);
             // 
@@ -1328,45 +1378,6 @@ namespace ItemChecker
             this.tabControl1.Size = new System.Drawing.Size(301, 339);
             this.tabControl1.TabIndex = 0;
             // 
-            // groupBox13
-            // 
-            this.groupBox13.Controls.Add(this.favoriteTimer_numericUpDown);
-            this.groupBox13.Controls.Add(this.label25);
-            this.groupBox13.Controls.Add(this.favoriteItems_button);
-            this.groupBox13.Location = new System.Drawing.Point(17, 260);
-            this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(260, 47);
-            this.groupBox13.TabIndex = 15;
-            this.groupBox13.TabStop = false;
-            this.groupBox13.Text = "CheckFavorite";
-            // 
-            // favoriteTimer_numericUpDown
-            // 
-            this.favoriteTimer_numericUpDown.Location = new System.Drawing.Point(6, 18);
-            this.favoriteTimer_numericUpDown.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.favoriteTimer_numericUpDown.Name = "favoriteTimer_numericUpDown";
-            this.favoriteTimer_numericUpDown.Size = new System.Drawing.Size(87, 20);
-            this.favoriteTimer_numericUpDown.TabIndex = 17;
-            this.favoriteTimer_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.favoriteTimer_numericUpDown.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(99, 25);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(29, 13);
-            this.label25.TabIndex = 16;
-            this.label25.Text = "Sec.";
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1385,6 +1396,9 @@ namespace ItemChecker
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
             this.withdraw_tabPage.ResumeLayout(false);
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).EndInit();
@@ -1436,9 +1450,6 @@ namespace ItemChecker
             this.extract_groupBox.ResumeLayout(false);
             this.extract_groupBox.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.groupBox13.ResumeLayout(false);
-            this.groupBox13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1538,5 +1549,6 @@ namespace ItemChecker
         private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.NumericUpDown favoriteTimer_numericUpDown;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
     }
 }

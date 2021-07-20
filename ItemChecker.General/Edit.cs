@@ -51,17 +51,17 @@ namespace ItemChecker.Support
         public static Double removeRub(string rub)
         {
             string str = rub.Replace(",", ".");
-            return Convert.ToDouble(str.Substring(0, str.Length - 5));
+            return Convert.ToDouble(str.Substring(0, str.Length - 5), CultureInfo.InvariantCulture);
         }
         public static Double removeDol(string dol)
         {
             string str = dol.Replace("$", "");
-            return Convert.ToDouble(str.Replace(" USD", ""));
+            return Convert.ToDouble(str.Replace(" USD", ""), CultureInfo.InvariantCulture);
         }
         public static Double removeSymbol(string str)
         {
             str = str.Replace(",", ".");
-            return Convert.ToDouble(str.Substring(0, str.Length - 1));
+            return Convert.ToDouble(str.Substring(0, str.Length - 1), CultureInfo.InvariantCulture);
         }
         public static String buyOrderId(string idOrder)
         {

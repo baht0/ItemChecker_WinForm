@@ -215,26 +215,6 @@ namespace ItemChecker.Presenter
                 MainPresenter.messageBalloonTip("Checking inventory cs.money is completed.");
             }
         }
-        private static void loginCsm()
-        {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Cs.Money..."; }));
-            Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
-            IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-            string json = html.Text;
-            if (json.Contains("error"))
-            {
-                var code_error = JObject.Parse(json)["error"].ToString();
-                if (code_error == "6")
-                {
-                    string signIn_url = "https://auth.dota.trade/login?redirectUrl=https://cs.money/&callbackUrl=https://cs.money/login";
-                    Main.Browser.Navigate().GoToUrl(signIn_url);
-
-                    IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
-                    signins.Click();
-                    Thread.Sleep(300);
-                }
-            }
-        }
         private static JArray checkInventory()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Getting inventory items..."; }));
@@ -399,7 +379,6 @@ namespace ItemChecker.Presenter
                                 items.Add(item);
                         }
                         addCart(items);
-                        pendingTrades();
                     }
                     MainPresenter.progressInvoke();
                 }
@@ -410,34 +389,13 @@ namespace ItemChecker.Presenter
             }
             finally
             {
+                pendingTrades();
                 clearCart();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Visible = false; }));
                 Main.loading = false;
                 Withdraw.tick = WithdrawConfig.Default.timer;
                 Withdraw.timer.Enabled = true;
             }
-        }
-        private JObject getStackItems(JObject item, JObject stack_item)
-        {
-            JObject item_copy = item;
-            if (item.ContainsKey("3d"))
-                item_copy["3d"] = stack_item["3d"].ToString();
-            if (item.ContainsKey("float"))
-                item_copy["float"] = stack_item["float"].ToString();
-            if (item.ContainsKey("id"))
-                item_copy["id"] = Convert.ToInt64(stack_item["id"].ToString());
-            if (item.ContainsKey("img"))
-                item_copy["img"] = stack_item["img"].ToString();
-            if (item.ContainsKey("pattern"))
-                item_copy["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
-            if (item.ContainsKey("preview"))
-                item_copy["preview"] = stack_item["preview"].ToString();
-            if (item.ContainsKey("screenshot"))
-                item_copy["screenshot"] = stack_item["screenshot"].ToString();
-            if (item.ContainsKey("steamId"))
-                item_copy["steamId"] = stack_item["steamId"].ToString();
-
-            return item_copy;
         }
         private void addCart(JArray items)
         {
@@ -466,11 +424,6 @@ namespace ItemChecker.Presenter
             sum *= -1;
             sendOffer(items, sum);
         }
-        private void clearCart()
-        {
-            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
-            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
-        }
         private void sendOffer(JArray items, decimal sum)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Send Offer..."; }));
@@ -490,20 +443,19 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Pending Trades..."; }));
 
+            Thread.Sleep(8000);
             Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
             JArray trades = JArray.Parse(html.Text);
-            foreach (JObject trade in trades)
+            foreach(JObject trade in trades)
             {
-                int status = Convert.ToInt32(trade["status"].ToString());
-                if (status == 0)
+                if (trade["status"].ToString() == "3")
                 {
-                    Int64 id = Convert.ToInt64(trade["id"].ToString());
-                    confirmVirtualOffer(id);
+                    confirmVirtualOffer(trade["id"].ToString());
                 }
             }
         }
-        private void confirmVirtualOffer(Int64 id)
+        private void confirmVirtualOffer(string id)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Confirm Virtual Offer..."; }));
 
@@ -512,6 +464,54 @@ namespace ItemChecker.Presenter
                         new JProperty("action", "confirm"));
             string body = json.ToString(Formatting.None);
             Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", body, "https://cs.money/confirm_virtual_offer"));
+        }
+
+        private static void loginCsm()
+        {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Cs.Money..."; }));
+            Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
+            IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+            string json = html.Text;
+            if (json.Contains("error"))
+            {
+                var code_error = JObject.Parse(json)["error"].ToString();
+                if (code_error == "6")
+                {
+                    string signIn_url = "https://auth.dota.trade/login?redirectUrl=https://cs.money/&callbackUrl=https://cs.money/login";
+                    Main.Browser.Navigate().GoToUrl(signIn_url);
+
+                    IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
+                    signins.Click();
+                    Thread.Sleep(300);
+                }
+            }
+        }
+        private JObject getStackItems(JObject item, JObject stack_item)
+        {
+            JObject item_copy = item;
+            if (item.ContainsKey("3d"))
+                item_copy["3d"] = stack_item["3d"].ToString();
+            if (item.ContainsKey("float"))
+                item_copy["float"] = stack_item["float"].ToString();
+            if (item.ContainsKey("id"))
+                item_copy["id"] = Convert.ToInt64(stack_item["id"].ToString());
+            if (item.ContainsKey("img"))
+                item_copy["img"] = stack_item["img"].ToString();
+            if (item.ContainsKey("pattern"))
+                item_copy["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
+            if (item.ContainsKey("preview"))
+                item_copy["preview"] = stack_item["preview"].ToString();
+            if (item.ContainsKey("screenshot"))
+                item_copy["screenshot"] = stack_item["screenshot"].ToString();
+            if (item.ContainsKey("steamId"))
+                item_copy["steamId"] = stack_item["steamId"].ToString();
+
+            return item_copy;
+        }
+        private void clearCart()
+        {
+            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
+            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
         }
     }
 }

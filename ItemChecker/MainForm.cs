@@ -507,6 +507,10 @@ namespace ItemChecker
             else
                 Edit.openUrl("https://old.cs.money");
         }
+        private void transactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Edit.openUrl("https://cs.money/transactions/");
+        }
         private void tryskinsLink_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             Edit.openUrl(TrySkins.url);

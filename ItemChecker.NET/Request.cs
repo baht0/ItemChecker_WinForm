@@ -107,11 +107,14 @@ namespace ItemChecker.Net
         {
             string stattrak = "false";
             string souvenir = "false";
+            string rarity = null;
             if (market_hash_name.Contains("StatTrak"))
                 stattrak = "true";
             if (market_hash_name.Contains("Souvenir"))
                 souvenir = "true";
-            string url = @"https://inventories.cs.money/5.0/load_bots_inventory/730?hasRareFloat=false&hasRarePattern=false&hasRareStickers=false&hasTradeLock=false&hasTradeLock=true&isMarket=false&isSouvenir=" + souvenir + "&isStatTrak=" + stattrak + "&limit=60&name=" + market_hash_name + "&offset=0&tradeLockDays=1&tradeLockDays=2&tradeLockDays=3&tradeLockDays=4&tradeLockDays=5&tradeLockDays=6&tradeLockDays=7&tradeLockDays=0";
+            if (market_hash_name.Contains("Sticker") & !market_hash_name.Contains("Holo") & !market_hash_name.Contains("Foil") & !market_hash_name.Contains("Gold"))
+                rarity = "&rarity=High%20Grade";
+            string url = @"https://inventories.cs.money/5.0/load_bots_inventory/730?hasRareFloat=false&hasRarePattern=false&hasRareStickers=false&hasTradeLock=false&hasTradeLock=true&isMarket=false&isSouvenir=" + souvenir + "&isStatTrak=" + stattrak + "&limit=60&name=" + market_hash_name + "&offset=0"+ rarity + "&tradeLockDays=1&tradeLockDays=2&tradeLockDays=3&tradeLockDays=4&tradeLockDays=5&tradeLockDays=6&tradeLockDays=7&tradeLockDays=0";
 
             return GetRequest(url);
         }
