@@ -47,6 +47,7 @@ namespace ItemChecker.Presenter
                 {
                     serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                         serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
+                        serviceCheckerForm.servChecker_dataGridView.Enabled = true;
                         serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                     drawDTGView();
                     MainPresenter.messageBalloonTip();

@@ -31,7 +31,8 @@ namespace ItemChecker
                     MessageBoxIcon.Error );
                 Process.GetCurrentProcess().Kill();
             }
-            //foreach (Process proc in Process.GetProcessesByName("chrome")) proc.Kill();
+            if(GeneralConfig.Default.exitChrome)
+                foreach (Process proc in Process.GetProcessesByName("chrome")) proc.Kill();
             foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
             foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
             notifyIcon.Visible = true;
@@ -277,9 +278,7 @@ namespace ItemChecker
                 string url;
 
                 if (cell == 1)
-                {
                     Clipboard.SetText(item);
-                }
                 if (cell == 2)
                 {
                     url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
@@ -418,6 +417,7 @@ namespace ItemChecker
 
                 if (cell == 1 || cell == 2)
                 {
+                    Clipboard.SetText(item);
                     Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
                     withdraw_dataGridView.Rows[row].Cells[1].Style.BackColor = System.Drawing.Color.Silver;
                 }

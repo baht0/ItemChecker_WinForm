@@ -11,23 +11,9 @@ namespace ItemChecker.Net
     public class Request
     {
         //post
-        public static String PostRequest(string body, string url)
+        public static String PostRequestFetch(string contentType, string body, string url)
         {
-            string js_post = @"
-                async function postReq(url) {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-                        body: '" + body + @"',
-                        credentials: 'include' });
-                return response.json(); }
-                postReq('" + url + @"').then(data => { return data; });";
-
-            return js_post;
-        }
-        public static String PostRequest(string contentType, string body, string url)
-        {
-            string js_post = @"
+            string js_fetch = @"
                 async function postReq(url) {
                     const response = await fetch(url, {
                         method: 'POST',
@@ -35,16 +21,34 @@ namespace ItemChecker.Net
                         body: '" + body + @"',
                         credentials: 'include' });
                 return response.json(); }
-                postReq('" + url + @"').then(data => { return data; });";
+                postReq('" + url + @"').then(data => console.log(data));";
 
-            return js_post;
+            return js_fetch;
+        }
+        public static String PostRequestFetchResponse(string contentType, string body, string url)
+        {
+            string js_fetch = @"
+                async function postReq(url) {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': '" + contentType + @"; charset=UTF-8' },
+                        body: '" + body + @"',
+                        credentials: 'include' });
+                return response.json(); }
+                postReq('" + url + @"').then(data => { 
+                        var myjson = JSON.stringify(data);
+                            document.open();
+                            document.write('<html><body><pre>' + myjson + '</pre></body></html>');
+                            document.close(); });";
+
+            return js_fetch;
         }
         public static String BuyListing(string listing_id, double fee, double subtotal, double total, string sessionid)
         {
             string body = $"sessionid={sessionid}&currency=5&fee={fee}&subtotal={subtotal}&total={total}&quantity=1&first_name=&last_name=&billing_address=&billing_address_two=&billing_country=&billing_city=&billing_state=&billing_postal_code=&save_my_address=1";
             string url = "https://steamcommunity.com/market/buylisting/" + listing_id;
 
-            return PostRequest(body, url);
+            return PostRequestFetch("application/x-www-form-urlencoded", body, url);
         }
         public static String CreateBuyOrder(string market_hash_name, double last_order, string sessionid)
         {
@@ -52,23 +56,22 @@ namespace ItemChecker.Net
             string body = "sessionid=" + sessionid + @"&currency=5&appid=730&market_hash_name=" + market_hash_name + @"&price_total=" + price_total + @"&quantity=1&billing_state=&save_my_address=0";
             string url = "https://steamcommunity.com/market/createbuyorder/";
 
-            return PostRequest(body, url);
+            return PostRequestFetch("application/x-www-form-urlencoded", body, url);
         }
         public static String CancelBuyOrder(string buy_orderid, string sessionid)
         {
             string body = $"sessionid={sessionid}&buy_orderid={buy_orderid}";
             string url = "https://steamcommunity.com/market/cancelbuyorder/";
 
-            return PostRequest(body, url);
+            return PostRequestFetch("application/x-www-form-urlencoded", body, url);
         }
         public static String AcceptTrade(string tradeofferid, string partner_id, string sessionid)
         {
             string body = "sessionid=" + sessionid + @"&serverid=1&tradeofferid=" + tradeofferid + @"&partner=" + partner_id + @"&captcha=";
             string url = "https://steamcommunity.com/tradeoffer/" + tradeofferid + "/accept";
 
-            return PostRequest(body, url);
+            return PostRequestFetch("application/x-www-form-urlencoded", body, url);
         }
-
         //get
         public static String GetRequest(string url)
         {
@@ -91,6 +94,17 @@ namespace ItemChecker.Net
             var json = sr.ReadToEnd();
 
             return json;
+        }
+        public static String GetRequestFetch(string url)
+        {
+            string js_fetch = @"fetch('" + url + @"')
+                          .then(response => json = response.json()).then(data => {
+                          var myjson = JSON.stringify(data);
+                            document.open();
+                            document.write('<html><body><pre>' + myjson + '</pre></body></html>');
+                            document.close(); });";
+
+            return js_fetch;
         }
         public static Tuple<String, Boolean> MrinkaRequest(string str)
         {
@@ -143,6 +157,16 @@ namespace ItemChecker.Net
 
             var highest_buy_order = Convert.ToDouble(JObject.Parse(json)["highest_buy_order"].ToString());
             return highest_buy_order / 100;
+        }
+        //delete
+        public static String DeleteRequestFetch(string url)
+        {
+            string js_fetch = @"
+                fetch('"+ url + @"', {
+                        method: 'DELETE'
+                    }).then(response => response.json()).then(data => console.log(data));";
+
+            return js_fetch;
         }
 
         public static Double GetCourse(string currency_api_key)

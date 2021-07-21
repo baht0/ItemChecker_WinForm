@@ -17,6 +17,7 @@ namespace ItemChecker
             currApiKey_textBox.Text = GeneralConfig.Default.currencyApiKey.Trim();
             wait_numericUpDown.Value = GeneralConfig.Default.wait;
             profile_checkBox.Checked = GeneralConfig.Default.profile;
+            exitChrome_checkBox.Checked = GeneralConfig.Default.exitChrome;
             proxy_checkBox.Checked = GeneralConfig.Default.proxy;
             //steam
             timer_numericUpDown.Value = SteamConfig.Default.timer;
@@ -65,6 +66,7 @@ namespace ItemChecker
             currApiKey_textBox.Text = "";
             wait_numericUpDown.Value = 15;
             profile_checkBox.Checked = true;
+            exitChrome_checkBox.Checked = false;
             proxy_checkBox.Checked = false;
             //steam
             timer_numericUpDown.Value = 10;
@@ -115,6 +117,7 @@ namespace ItemChecker
                     GeneralConfig.Default.currencyApiKey = currApiKey_textBox.Text;
                     GeneralConfig.Default.wait = Convert.ToInt32(wait_numericUpDown.Value);
                     GeneralConfig.Default.profile = profile_checkBox.Checked;
+                    GeneralConfig.Default.exitChrome = exitChrome_checkBox.Checked;
                     GeneralConfig.Default.proxy = proxy_checkBox.Checked;
                     //steam
                     SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
@@ -251,6 +254,13 @@ namespace ItemChecker
         private void proxy_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             proxy_button.Enabled = proxy_checkBox.Checked;
+        }
+        //chrome
+        private void exitChrome_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("All copies of Google Chrome will be closed before starting the program.", "Warning", MessageBoxButtons.OKCancel);
+            if (result != DialogResult.OK)
+                exitChrome_checkBox.Checked = false;
         }
     }
 }

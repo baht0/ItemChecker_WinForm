@@ -123,6 +123,7 @@ namespace ItemChecker
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.exitChrome_checkBox = new System.Windows.Forms.CheckBox();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).BeginInit();
@@ -237,7 +238,7 @@ namespace ItemChecker
             // 
             this.favoriteTimer_numericUpDown.Location = new System.Drawing.Point(48, 17);
             this.favoriteTimer_numericUpDown.Minimum = new decimal(new int[] {
-            5,
+            2,
             0,
             0,
             0});
@@ -1183,13 +1184,14 @@ namespace ItemChecker
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.exitChrome_checkBox);
             this.groupBox7.Controls.Add(this.label3);
             this.groupBox7.Controls.Add(this.label4);
             this.groupBox7.Controls.Add(this.profile_checkBox);
             this.groupBox7.Controls.Add(this.wait_numericUpDown);
             this.groupBox7.Location = new System.Drawing.Point(17, 111);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(260, 80);
+            this.groupBox7.Size = new System.Drawing.Size(260, 105);
             this.groupBox7.TabIndex = 13;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Browser";
@@ -1257,7 +1259,7 @@ namespace ItemChecker
             // proxy_checkBox
             // 
             this.proxy_checkBox.AutoSize = true;
-            this.proxy_checkBox.Location = new System.Drawing.Point(6, 67);
+            this.proxy_checkBox.Location = new System.Drawing.Point(6, 66);
             this.proxy_checkBox.Name = "proxy_checkBox";
             this.proxy_checkBox.Size = new System.Drawing.Size(73, 17);
             this.proxy_checkBox.TabIndex = 12;
@@ -1267,7 +1269,7 @@ namespace ItemChecker
             // 
             // proxy_button
             // 
-            this.proxy_button.Location = new System.Drawing.Point(85, 61);
+            this.proxy_button.Location = new System.Drawing.Point(85, 60);
             this.proxy_button.Name = "proxy_button";
             this.proxy_button.Size = new System.Drawing.Size(75, 23);
             this.proxy_button.TabIndex = 11;
@@ -1278,7 +1280,7 @@ namespace ItemChecker
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 18);
+            this.label2.Location = new System.Drawing.Point(6, 17);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 1;
@@ -1300,7 +1302,7 @@ namespace ItemChecker
             // currApiKey_textBox
             // 
             this.currApiKey_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.currApiKey_textBox.Location = new System.Drawing.Point(6, 34);
+            this.currApiKey_textBox.Location = new System.Drawing.Point(6, 33);
             this.currApiKey_textBox.Name = "currApiKey_textBox";
             this.currApiKey_textBox.Size = new System.Drawing.Size(248, 21);
             this.currApiKey_textBox.TabIndex = 6;
@@ -1322,9 +1324,9 @@ namespace ItemChecker
             // 
             this.extract_groupBox.Controls.Add(this.extractTry_linkLabel);
             this.extract_groupBox.Controls.Add(this.extractST_linkLabel);
-            this.extract_groupBox.Location = new System.Drawing.Point(17, 197);
+            this.extract_groupBox.Location = new System.Drawing.Point(17, 222);
             this.extract_groupBox.Name = "extract_groupBox";
-            this.extract_groupBox.Size = new System.Drawing.Size(260, 63);
+            this.extract_groupBox.Size = new System.Drawing.Size(260, 54);
             this.extract_groupBox.TabIndex = 8;
             this.extract_groupBox.TabStop = false;
             this.extract_groupBox.Text = "Extract";
@@ -1333,7 +1335,7 @@ namespace ItemChecker
             // 
             this.extractTry_linkLabel.AutoSize = true;
             this.extractTry_linkLabel.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.extractTry_linkLabel.Location = new System.Drawing.Point(6, 38);
+            this.extractTry_linkLabel.Location = new System.Drawing.Point(6, 35);
             this.extractTry_linkLabel.Name = "extractTry_linkLabel";
             this.extractTry_linkLabel.Size = new System.Drawing.Size(97, 13);
             this.extractTry_linkLabel.TabIndex = 1;
@@ -1377,6 +1379,17 @@ namespace ItemChecker
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(301, 339);
             this.tabControl1.TabIndex = 0;
+            // 
+            // exitChrome_checkBox
+            // 
+            this.exitChrome_checkBox.AutoSize = true;
+            this.exitChrome_checkBox.Location = new System.Drawing.Point(8, 81);
+            this.exitChrome_checkBox.Name = "exitChrome_checkBox";
+            this.exitChrome_checkBox.Size = new System.Drawing.Size(82, 17);
+            this.exitChrome_checkBox.TabIndex = 12;
+            this.exitChrome_checkBox.Text = "Exit Chrome";
+            this.exitChrome_checkBox.UseVisualStyleBackColor = true;
+            this.exitChrome_checkBox.CheckedChanged += new System.EventHandler(this.exitChrome_checkBox_CheckedChanged);
             // 
             // SettingsForm
             // 
@@ -1550,5 +1563,6 @@ namespace ItemChecker
         private System.Windows.Forms.NumericUpDown favoriteTimer_numericUpDown;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.CheckBox exitChrome_checkBox;
     }
 }

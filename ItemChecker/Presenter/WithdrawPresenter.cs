@@ -289,7 +289,7 @@ namespace ItemChecker.Presenter
                                    new JProperty("bot", new JArray(item)),
                                    new JProperty("user", new JArray()))));
                     string body = json.ToString(Formatting.None);
-                    Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", body, "https://cs.money/2.0/withdraw_skins"));
+                    Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/2.0/withdraw_skins"));
                 }
                 catch
                 {
@@ -357,6 +357,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
+                bool confirm = false;
                 foreach (string item_name in Withdraw.favoriteList)
                 {
                     mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Checking..."; }));
@@ -378,10 +379,12 @@ namespace ItemChecker.Presenter
                             else
                                 items.Add(item);
                         }
-                        addCart(items);
+                        bool send = addCart(items);
+                        if (!confirm) confirm = send;
                     }
                     MainPresenter.progressInvoke();
                 }
+                if (confirm) pendingTrades();
             }
             catch (Exception exp)
             {
@@ -389,46 +392,36 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                pendingTrades();
-                clearCart();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Visible = false; }));
                 Main.loading = false;
                 Withdraw.tick = WithdrawConfig.Default.timer;
                 Withdraw.timer.Enabled = true;
             }
         }
-        private void addCart(JArray items)
+        private Boolean addCart(JArray items)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Add Cart..."; }));
-            clearCart();
             Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
+            clearCart();
             decimal sum = 0;
             foreach (JObject item in items)
             {
-                try {
-                    JObject json = new JObject(
+                JObject json = new(
                            new JProperty("type", 2),
                            new JProperty("item", new JObject(item)));
-                    string body = json.ToString(Formatting.None);
-                    Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", body, "https://cs.money/add_cart"));
-                    sum += Convert.ToDecimal(item["price"].ToString());
-                }
-                catch {
-                    items.Remove(item);
-                    continue;
-                }
-                finally {
-                    Thread.Sleep(500);
-                }
+                string body = json.ToString(Formatting.None);
+                Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/add_cart"));
+                sum += Convert.ToDecimal(item["price"].ToString());
+                Thread.Sleep(100);
             }
-            sum *= -1;
-            sendOffer(items, sum);
+            sum *= -1;            
+            return sendOffer(items, sum);
         }
-        private void sendOffer(JArray items, decimal sum)
+        private Boolean sendOffer(JArray items, decimal sum)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Send Offer..."; }));
 
-            JObject json = new JObject(
+            JObject json = new(
                         new JProperty("skins",
                             new JObject(
                                 new JProperty("user", new JArray()),
@@ -437,35 +430,59 @@ namespace ItemChecker.Presenter
                             new JProperty("games", new JObject()),
                             new JProperty("isVirtual", false));
             string body = json.ToString(Formatting.None);
-            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", body, "https://cs.money/2.0/send_offer"));
+            Main.Browser.ExecuteJavaScript(Request.PostRequestFetchResponse("application/json", body, "https://cs.money/2.0/send_offer"));
+            IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+            JObject response = JObject.Parse(html.Text);
+            if (response.ContainsKey("error"))
+            {
+                JArray skins = JArray.Parse(response["details"]["skins"].ToString());
+                if (items.Count > skins.Count)
+                {
+                    JArray itemsCopy = items;
+                    foreach (JObject skinId in skins)
+                    {
+                        string id = skinId["skinId"].ToString();
+                        foreach (JObject item in items)
+                            if (item["id"].ToString() == id)
+                            {
+                                Main.Browser.ExecuteJavaScript(Request.DeleteRequestFetch("https://cs.money/remove_cart_item?type=2&id=" + id));
+                                sum -= Convert.ToDecimal(item["price"].ToString());
+                                itemsCopy.Remove(item);
+                            }
+                    }
+                    sendOffer(itemsCopy, sum);
+                    return true;
+                }
+                else return false;
+            }
+            else return true;
         }
         private void pendingTrades()
         {
+            Thread.Sleep(5000);
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Pending Trades..."; }));
 
-            Thread.Sleep(8000);
             Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
             JArray trades = JArray.Parse(html.Text);
             foreach(JObject trade in trades)
             {
                 if (trade["status"].ToString() == "3")
-                {
                     confirmVirtualOffer(trade["id"].ToString());
-                }
             }
         }
         private void confirmVirtualOffer(string id)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Confirm Virtual Offer..."; }));
 
-            JObject json = new JObject(
+            JObject json = new(
                         new JProperty("offer_id", id),
                         new JProperty("action", "confirm"));
             string body = json.ToString(Formatting.None);
-            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", body, "https://cs.money/confirm_virtual_offer"));
+            Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/confirm_virtual_offer"));
         }
 
+        //cs.money
         private static void loginCsm()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Cs.Money..."; }));
@@ -488,30 +505,44 @@ namespace ItemChecker.Presenter
         }
         private JObject getStackItems(JObject item, JObject stack_item)
         {
-            JObject item_copy = item;
-            if (item.ContainsKey("3d"))
-                item_copy["3d"] = stack_item["3d"].ToString();
-            if (item.ContainsKey("float"))
-                item_copy["float"] = stack_item["float"].ToString();
-            if (item.ContainsKey("id"))
-                item_copy["id"] = Convert.ToInt64(stack_item["id"].ToString());
-            if (item.ContainsKey("img"))
-                item_copy["img"] = stack_item["img"].ToString();
-            if (item.ContainsKey("pattern"))
-                item_copy["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
-            if (item.ContainsKey("preview"))
-                item_copy["preview"] = stack_item["preview"].ToString();
-            if (item.ContainsKey("screenshot"))
-                item_copy["screenshot"] = stack_item["screenshot"].ToString();
-            if (item.ContainsKey("steamId"))
-                item_copy["steamId"] = stack_item["steamId"].ToString();
+            if (stack_item.ContainsKey("3d"))
+                item["3d"] = stack_item["3d"].ToString();
+            if (stack_item.ContainsKey("float"))
+                item["float"] = stack_item["float"].ToString();
+            if (stack_item.ContainsKey("id"))
+                item["id"] = Convert.ToInt64(stack_item["id"].ToString());
+            if (stack_item.ContainsKey("img"))
+                item["img"] = stack_item["img"].ToString();
+            if (stack_item.ContainsKey("pattern"))
+                if (stack_item["pattern"].ToString() != "null")
+                    item["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
+            if (stack_item.ContainsKey("preview"))
+                item["preview"] = stack_item["preview"].ToString();
+            if (stack_item.ContainsKey("screenshot"))
+                item["screenshot"] = stack_item["screenshot"].ToString();
+            if (stack_item.ContainsKey("steamId"))
+                item["steamId"] = stack_item["steamId"].ToString();
 
-            return item_copy;
+            return item;
         }
         private void clearCart()
         {
-            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
-            Main.Browser.ExecuteJavaScript(Request.PostRequest("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
+            Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
+            Thread.Sleep(100);
+            Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
+        }
+        private void getCart()
+        {
+            Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
+            Main.Browser.ExecuteJavaScript(Request.GetRequestFetch("https://cs.money/get_cart?type=2"));
+            IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+            JArray cart = JArray.Parse(html.Text);
+            decimal sum = 0;
+            foreach (JObject item in cart)
+                sum += Convert.ToDecimal(item["price"].ToString());
+            sum *= -1;
+            if (cart.Any())
+                sendOffer(cart, sum);
         }
     }
 }

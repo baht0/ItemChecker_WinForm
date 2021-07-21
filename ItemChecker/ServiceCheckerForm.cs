@@ -7,13 +7,14 @@ using ItemChecker.Model;
 using ItemChecker.Presenter;
 using System.Linq;
 using ItemChecker.Settings;
+using System.IO;
 
 namespace ItemChecker
 {
     public partial class ServiceCheckerForm : Form
     {
         int past_row = 0;
-        CheckListForm checkListForm = new CheckListForm("SortList");
+        CheckListForm checkListForm = new("SortList");
         public ServiceCheckerForm()
         {
             InitializeComponent();
@@ -81,6 +82,7 @@ namespace ItemChecker
                 for (int i = 1; i <= 4; i++)
                     column_comboBox.Items.Insert(i, servChecker_dataGridView.Columns[i + 1].HeaderText);
 
+                servChecker_dataGridView.Enabled = false;
                 updated_toolStripStatusLabel.Visible = false;
                 status_toolStripStatusLabel.Text = "Checking the list...";
                 status_toolStripStatusLabel.Visible = true;
@@ -117,7 +119,7 @@ namespace ItemChecker
                     Main.loading = true;
                     status_toolStripStatusLabel.Text = "Import the list from *.csv...";
                     status_toolStripStatusLabel.Visible = true;
-                    string fileName = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName).ToString();
+                    string fileName = Path.GetFileNameWithoutExtension(dialog.FileName).ToString();
                     fileName = fileName.Remove(0, 15).Replace("_", " ");
                     ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName, fileName });
                 }
@@ -348,6 +350,28 @@ namespace ItemChecker
         {
             if (!String.IsNullOrEmpty(search_textBox.Text))
                 search_textBox.Clear();
+        }
+
+        private void extractListtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (servChecker_dataGridView.Rows.Count > 0)
+            {
+                status_toolStripStatusLabel.Text = "Export the list to *.txt...";
+                status_toolStripStatusLabel.Visible = true;
+                servChecker_dataGridView.Enabled = false;
+
+                DirectoryInfo dirInfo = new("extract");
+                if (!dirInfo.Exists)
+                    dirInfo.Create();
+                string str = "";
+                foreach (DataGridViewRow row in servChecker_dataGridView.Rows)
+                    str += row.Cells[1].Value + "\r\n";
+                str = str.Remove(str.Length - 1);
+                File.WriteAllText($"extract/serviceCheckerList_{DateTime.Now:dd.MM.yyyy_hh.mm}.txt", str);
+
+                status_toolStripStatusLabel.Visible = false;
+                servChecker_dataGridView.Enabled = true;
+            }
         }
     }
 }

@@ -94,5 +94,17 @@ namespace ItemChecker.Settings {
                 this["proxyList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool exitChrome {
+            get {
+                return ((bool)(this["exitChrome"]));
+            }
+            set {
+                this["exitChrome"] = value;
+            }
+        }
     }
 }

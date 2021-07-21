@@ -36,6 +36,7 @@ namespace ItemChecker
             this.csv_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extractListtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.servChecker_statusStrip = new System.Windows.Forms.StatusStrip();
             this.count_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.services_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -113,7 +114,8 @@ namespace ItemChecker
             this.servChecker_menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.add_toolStripMenuItem,
             this.check_toolStripMenuItem,
-            this.csv_toolStripMenuItem});
+            this.csv_toolStripMenuItem,
+            this.extractListtxtToolStripMenuItem});
             this.servChecker_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.servChecker_menuStrip.Name = "servChecker_menuStrip";
             this.servChecker_menuStrip.Size = new System.Drawing.Size(1209, 24);
@@ -139,8 +141,9 @@ namespace ItemChecker
             this.csv_toolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportToolStripMenuItem,
             this.importToolStripMenuItem});
+            this.csv_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.CSV;
             this.csv_toolStripMenuItem.Name = "csv_toolStripMenuItem";
-            this.csv_toolStripMenuItem.Size = new System.Drawing.Size(81, 20);
+            this.csv_toolStripMenuItem.Size = new System.Drawing.Size(97, 20);
             this.csv_toolStripMenuItem.Text = "Format CSV";
             // 
             // exportToolStripMenuItem
@@ -158,6 +161,13 @@ namespace ItemChecker
             this.importToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.importToolStripMenuItem.Text = "Import";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem1_Click);
+            // 
+            // extractListtxtToolStripMenuItem
+            // 
+            this.extractListtxtToolStripMenuItem.Name = "extractListtxtToolStripMenuItem";
+            this.extractListtxtToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
+            this.extractListtxtToolStripMenuItem.Text = "Extract list *.txt";
+            this.extractListtxtToolStripMenuItem.Click += new System.EventHandler(this.extractListtxtToolStripMenuItem_Click);
             // 
             // servChecker_statusStrip
             // 
@@ -958,5 +968,6 @@ namespace ItemChecker
         public System.Windows.Forms.TextBox search_textBox;
         private System.Windows.Forms.LinkLabel clearSearch_linkLabel;
         private System.Windows.Forms.LinkLabel clearQCheck_linkLabel;
+        private System.Windows.Forms.ToolStripMenuItem extractListtxtToolStripMenuItem;
     }
 }

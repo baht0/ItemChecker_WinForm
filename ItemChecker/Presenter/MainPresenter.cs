@@ -69,8 +69,10 @@ namespace ItemChecker.Presenter
             chromeDriverService.HideCommandPromptWindow = true;
             ChromeOptions option = new ChromeOptions();
             option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions", "--disable-blink-features=AutomationControlled", "ignore-certificate-errors");
-            if (GeneralConfig.Default.profile) option.AddArguments(@"--user-data-dir=" + Application.StartupPath.Replace(@"\", @"\\") + "\\profile", "profile-directory=Default");
-            else Directory.Delete(Application.StartupPath.Replace(@"\", @"\\") + "\\profile", true);
+            if (GeneralConfig.Default.profile)
+                option.AddArguments(@"--user-data-dir=" + Application.StartupPath.Replace(@"\", @"\\") + "\\profile", "profile-directory=Default");
+            else
+                Directory.Delete(Application.StartupPath.Replace(@"\", @"\\") + "\\profile", true);
             option.Proxy = null;
 
             Main.Browser = new ChromeDriver(chromeDriverService, option);
