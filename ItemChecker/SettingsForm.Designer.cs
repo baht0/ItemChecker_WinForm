@@ -107,6 +107,7 @@ namespace ItemChecker
             this.label6 = new System.Windows.Forms.Label();
             this.general_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.exitChrome_checkBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.profile_checkBox = new System.Windows.Forms.CheckBox();
@@ -123,7 +124,6 @@ namespace ItemChecker
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.exitChrome_checkBox = new System.Windows.Forms.CheckBox();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).BeginInit();
@@ -238,7 +238,7 @@ namespace ItemChecker
             // 
             this.favoriteTimer_numericUpDown.Location = new System.Drawing.Point(48, 17);
             this.favoriteTimer_numericUpDown.Minimum = new decimal(new int[] {
-            2,
+            5,
             0,
             0,
             0});
@@ -1196,6 +1196,16 @@ namespace ItemChecker
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Browser";
             // 
+            // exitChrome_checkBox
+            // 
+            this.exitChrome_checkBox.AutoSize = true;
+            this.exitChrome_checkBox.Location = new System.Drawing.Point(8, 81);
+            this.exitChrome_checkBox.Name = "exitChrome_checkBox";
+            this.exitChrome_checkBox.Size = new System.Drawing.Size(82, 17);
+            this.exitChrome_checkBox.TabIndex = 12;
+            this.exitChrome_checkBox.Text = "Exit Chrome";
+            this.exitChrome_checkBox.UseVisualStyleBackColor = true;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -1379,17 +1389,6 @@ namespace ItemChecker
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(301, 339);
             this.tabControl1.TabIndex = 0;
-            // 
-            // exitChrome_checkBox
-            // 
-            this.exitChrome_checkBox.AutoSize = true;
-            this.exitChrome_checkBox.Location = new System.Drawing.Point(8, 81);
-            this.exitChrome_checkBox.Name = "exitChrome_checkBox";
-            this.exitChrome_checkBox.Size = new System.Drawing.Size(82, 17);
-            this.exitChrome_checkBox.TabIndex = 12;
-            this.exitChrome_checkBox.Text = "Exit Chrome";
-            this.exitChrome_checkBox.UseVisualStyleBackColor = true;
-            this.exitChrome_checkBox.CheckedChanged += new System.EventHandler(this.exitChrome_checkBox_CheckedChanged);
             // 
             // SettingsForm
             // 

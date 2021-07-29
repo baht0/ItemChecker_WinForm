@@ -31,6 +31,8 @@ namespace ItemChecker
             other_comboBox.SelectedIndex = 0;
             status_comboBox.SelectedIndex = 0;
             column_comboBox.SelectedIndex = 0;
+            hide100_checkBox.Checked = true;
+            hide0_checkBox.Checked = true;
             ServiceCheckerPresenter.columnDTable();
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -366,7 +368,7 @@ namespace ItemChecker
                 string str = "";
                 foreach (DataGridViewRow row in servChecker_dataGridView.Rows)
                     str += row.Cells[1].Value + "\r\n";
-                str = str.Remove(str.Length - 1);
+                str = str.Remove(str.Length - 2);
                 File.WriteAllText($"extract/serviceCheckerList_{DateTime.Now:dd.MM.yyyy_hh.mm}.txt", str);
 
                 status_toolStripStatusLabel.Visible = false;

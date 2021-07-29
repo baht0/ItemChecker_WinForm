@@ -195,11 +195,10 @@ namespace ItemChecker
             {
                 DirectoryInfo dirInfo = new DirectoryInfo("extract");
                 if (!dirInfo.Exists) dirInfo.Create();
-                string str = "";
+                string str = null;
                 foreach (string i in BuyOrder.item)
-                {
                     str += i + "\r\n";
-                }
+                str = str.Remove(str.Length - 2);
                 File.WriteAllText($"extract/steamList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
             }
         }
@@ -209,11 +208,10 @@ namespace ItemChecker
             {
                 DirectoryInfo dirInfo = new DirectoryInfo("extract");
                 if (!dirInfo.Exists) dirInfo.Create();
-                string str = "";
+                string str = null;
                 foreach (string i in TrySkins.item)
-                {
                     str += i + "\r\n";
-                }
+                str = str.Remove(str.Length - 2);
                 File.WriteAllText($"extract/tryskinsList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
             }
         }
@@ -254,13 +252,6 @@ namespace ItemChecker
         private void proxy_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             proxy_button.Enabled = proxy_checkBox.Checked;
-        }
-        //chrome
-        private void exitChrome_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("All copies of Google Chrome will be closed before starting the program.", "Warning", MessageBoxButtons.OKCancel);
-            if (result != DialogResult.OK)
-                exitChrome_checkBox.Checked = false;
         }
     }
 }

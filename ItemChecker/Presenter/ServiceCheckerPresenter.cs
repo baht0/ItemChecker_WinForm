@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 
 namespace ItemChecker.Presenter
 {
@@ -350,8 +351,8 @@ namespace ItemChecker.Presenter
                 for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
                 {
                     string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
-                    ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
                     serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
+                    ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
                     if (i >= 2 & i <= 7)
                         ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
                 }
@@ -408,8 +409,8 @@ namespace ItemChecker.Presenter
 
                     serviceCheckerForm.precentFrom_numericUpDown.Value = 0;
                     serviceCheckerForm.precentTo_numericUpDown.Value = 0;
-                    serviceCheckerForm.hide100_checkBox.Checked = false;
-                    serviceCheckerForm.hide0_checkBox.Checked = false; }));
+                    serviceCheckerForm.hide100_checkBox.Checked = true;
+                    serviceCheckerForm.hide0_checkBox.Checked = true; }));
             }
             catch (Exception exp)
             {
@@ -420,6 +421,7 @@ namespace ItemChecker.Presenter
             }
         }
 
+        //other
         public static void checkLootFarmItem(object state)
         {
             try
@@ -429,30 +431,19 @@ namespace ItemChecker.Presenter
                 string item = args[0].ToString();
                 int row = Convert.ToInt32(args[1]);
                 var json = Request.GetRequest("https://loot.farm/fullprice.json");
-                JArray jArray = JArray.Parse(json);
-                int count = 0;
+                JArray fullPriceLF = JArray.Parse(json);
 
-                for (int i = 0; i < jArray.Count; i++)
-                {
-                    if (jArray[i]["name"].ToString().Contains(item))
-                    {
-                        count = Convert.ToInt32(jArray[i]["have"].ToString());
-                        break;
-                    }
-                }
+                int count = fullPriceLF.FirstOrDefault(x => x.Value<string>("name") == item).Value<int>("have");
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                     serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
-                    if (count > 0)
-                    {
+                    if (count > 0) {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
                         serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
                     }
-                    else
-                    {
+                    else {
                         serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
                         serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
-                    }
-                }));
+                    } }));
             }
             catch (Exception exp)
             {
@@ -549,6 +540,7 @@ namespace ItemChecker.Presenter
                     Exceptions.errorLog(exp, Main.version);
             }
         }
+
         public static void exportCsv(object state)
         {
             try

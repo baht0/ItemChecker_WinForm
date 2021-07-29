@@ -35,11 +35,12 @@ namespace ItemChecker.Net
                         body: '" + body + @"',
                         credentials: 'include' });
                 return response.json(); }
-                postReq('" + url + @"').then(data => { 
-                        var myjson = JSON.stringify(data);
-                            document.open();
-                            document.write('<html><body><pre>' + myjson + '</pre></body></html>');
-                            document.close(); });";
+                postReq('" + url + @"').then(data => {
+                        var json = JSON.stringify(data);
+                        document.open();
+                        document.write('<html><body><pre>' + json + '</pre></body></html>');
+                        document.close();
+                        });";
 
             return js_fetch;
         }

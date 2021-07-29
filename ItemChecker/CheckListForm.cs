@@ -84,7 +84,7 @@ namespace ItemChecker
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            this.Text = $"{request}: " + richTextBox1.Lines.Count().ToString();
+            this.Text = $"{request}: {richTextBox1.Lines.Count()}";
         }
 
         //menu
@@ -98,7 +98,7 @@ namespace ItemChecker
             {
                 richTextBox1.Clear();
                 richTextBox1.Text = File.ReadAllText(dialog.FileName);
-                this.Text = "CheckList: " + richTextBox1.Lines.Count().ToString();
+                this.Text = $"{request}: {richTextBox1.Lines.Count()}";
             }
         }
         private void getToolStripMenuItem_Click(object sender, EventArgs e)

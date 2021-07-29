@@ -31,19 +31,28 @@ namespace ItemChecker
                     MessageBoxIcon.Error );
                 Process.GetCurrentProcess().Kill();
             }
-            if(GeneralConfig.Default.exitChrome)
+            if (GeneralConfig.Default.exitChrome)
                 foreach (Process proc in Process.GetProcessesByName("chrome")) proc.Kill();
             foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
-            foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
-            notifyIcon.Visible = true;
-            ver_label.Text = "Version: " + Main.version;
-
-            MainPresenter.updateSettings();
+            foreach (Process proc in Process.GetProcessesByName("conhost"))
+            {
+                try {
+                    proc.Kill();
+                }
+                catch {
+                    continue;
+                }
+            }
         }
         public void MainForm_Shown(object sender, EventArgs e)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Main.loading = true;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
+            notifyIcon.Visible = true;
+            ver_label.Text = "Version: " + Main.version;
+            MainPresenter.updateSettings();
+
             status_StripStatus.Text = "Launch Browser...";
 
             BuyOrderPresenter buyOrderPresenter = new();
@@ -262,8 +271,10 @@ namespace ItemChecker
         }
         private void timer_StripStatus_Click(object sender, EventArgs e)
         {
-            if (push_linkLabel.Text == "Stop...")
+            if (BuyOrder.timer.Enabled)
                 BuyOrder.tick = 1;
+            else if (Withdraw.timer.Enabled)
+                Withdraw.tick = 1;
         }
 
         //tryskins table

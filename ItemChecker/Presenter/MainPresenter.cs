@@ -75,10 +75,11 @@ namespace ItemChecker.Presenter
                 Directory.Delete(Application.StartupPath.Replace(@"\", @"\\") + "\\profile", true);
             option.Proxy = null;
 
-            Main.Browser = new ChromeDriver(chromeDriverService, option);
+            Main.Browser = new ChromeDriver(chromeDriverService, option, TimeSpan.FromSeconds(30));
             Main.Browser.Manage().Window.Maximize();
             Main.Browser.Url = "https://steamcommunity.com/login/home/?goto=";
             Main.wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
+
             var cookie = Main.Browser.Manage().Cookies.GetCookieNamed("sessionid").ToString();
             Main.sessionid = cookie.Substring(10, 24);
 
@@ -317,8 +318,16 @@ namespace ItemChecker.Presenter
             }
             catch
             {
+                foreach (Process proc in Process.GetProcessesByName("chrome")) proc.Kill();
                 foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
-                foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
+                foreach (Process proc in Process.GetProcessesByName("conhost")) {
+                    try {
+                        proc.Kill();
+                    }
+                    catch {
+                        continue;
+                    }
+                }
                 foreach (Process proc in Process.GetProcessesByName("ItemChecker")) proc.Kill();
             }
         }
