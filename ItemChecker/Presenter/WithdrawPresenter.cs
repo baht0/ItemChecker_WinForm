@@ -369,30 +369,40 @@ namespace ItemChecker.Presenter
                 Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
                 foreach (string item_name in list)
                 {
-                    mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Checking..."; }));
-                    var json = Request.inventoriesCsMoney(Edit.replaceUrl(item_name));
-                    if (!json.Contains("error"))
+                    try
                     {
-                        JArray items = new();
-                        JArray inventory = JArray.Parse(JObject.Parse(json)["items"].ToString());
-                        foreach (JObject item in inventory)
+                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Checking..."; }));
+                        var json = Request.inventoriesCsMoney(Edit.replaceUrl(item_name));
+                        if (!json.Contains("error"))
                         {
-                            if (item.ContainsKey("stackSize"))
+                            JArray items = new();
+                            JArray inventory = JArray.Parse(JObject.Parse(json)["items"].ToString());
+                            foreach (JObject item in inventory)
                             {
-                                Main.Browser.Navigate().GoToUrl("https://inventories.cs.money/4.0/get_bot_stack/730/" + item["stackId"].ToString());
-                                IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-                                JArray stack = JArray.Parse(html.Text);
-                                foreach (JObject stack_item in stack)
-                                    items.Add(getStackItems(item, stack_item));
+                                if (item.ContainsKey("stackSize"))
+                                {
+                                    var response = Request.GetRequest("https://inventories.cs.money/4.0/get_bot_stack/730/" + item["stackId"].ToString());
+                                    JArray stack = JArray.Parse(response);
+                                    foreach (JObject stack_item in stack)
+                                        items.Add(getStackItems(item, stack_item));
+                                }
+                                else
+                                    items.Add(item);
                             }
-                            else
-                                items.Add(item);
+                            addCart(items);
                         }
-                        if (!addCart(items))
-                            ThreadPool.QueueUserWorkItem(pendingTrades);
                     }
-                    MainPresenter.progressInvoke();
+                    catch (Exception exp)
+                    {
+                        Exceptions.errorLog(exp, Main.version);
+                    }
+                    finally
+                    {
+                        ThreadPool.QueueUserWorkItem(pendingTrades);
+                        MainPresenter.progressInvoke();
+                    }
                 }
+                clearCart();
             }
             catch (Exception exp)
             {
@@ -400,7 +410,6 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                clearCart();
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.checkWith_label.Text = $"Check: {checkCount++}";
                     mainForm.progressBar_StripStatus.Visible = false; }));
@@ -412,7 +421,7 @@ namespace ItemChecker.Presenter
         private Boolean addCart(JArray items)
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Add Cart..."; }));
-            Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
+
             clearCart();
             decimal sum = 0;
             foreach (JObject item in items)
@@ -441,12 +450,6 @@ namespace ItemChecker.Presenter
                             new JProperty("games", new JObject()),
                             new JProperty("isVirtual", false));
             string body = json.ToString(Formatting.None);
-            //Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/2.0/send_offer"));
-            //return true;
-
-            //Main.Browser.ExecuteJavaScript(Request.PostRequestFetchResponse("application/json", body, "https://cs.money/2.0/send_offer"));
-            //IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-            //JObject response = JObject.Parse(html.Text);
 
             JObject response = sendRespons(body);
             if (response.ContainsKey("error"))
@@ -480,7 +483,6 @@ namespace ItemChecker.Presenter
         private void pendingTrades(object state)
         {
             Thread.Sleep(6000);
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Pending Trades..."; }));
 
             Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
@@ -491,8 +493,6 @@ namespace ItemChecker.Presenter
         }
         private void confirmVirtualOffer(string id)
         {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Confirm Virtual Offer..."; }));
-
             JObject json = new(
                         new JProperty("offer_id", id),
                         new JProperty("action", "confirm"));
@@ -514,8 +514,7 @@ namespace ItemChecker.Presenter
                 var code_error = JObject.Parse(json)["error"].ToString();
                 if (code_error == "6")
                 {
-                    string signIn_url = "https://auth.dota.trade/login?redirectUrl=https://cs.money/&callbackUrl=https://cs.money/login";
-                    Main.Browser.Navigate().GoToUrl(signIn_url);
+                    Main.Browser.Navigate().GoToUrl("https://auth.dota.trade/login?redirectUrl=https://cs.money/&callbackUrl=https://cs.money/login");
 
                     IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
                     signins.Click();

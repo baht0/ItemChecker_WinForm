@@ -416,7 +416,6 @@ namespace ItemChecker.Presenter
                 catch (Exception exp)
                 {
                     Exceptions.errorLog(exp, Main.version);
-                    continue;
                 }
                 finally
                 {
