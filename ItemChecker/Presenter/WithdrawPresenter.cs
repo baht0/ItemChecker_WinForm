@@ -22,8 +22,8 @@ namespace ItemChecker.Presenter
 {
     public class WithdrawPresenter
     {
-        private int withdrawCount = 1;
         private int checkCount = 1;
+        private static List<string> old_id = new();
         public static void withdraw(object state)
         {
             try
@@ -395,10 +395,11 @@ namespace ItemChecker.Presenter
                     catch (Exception exp)
                     {
                         Exceptions.errorLog(exp, Main.version);
+                        continue;
                     }
                     finally
                     {
-                        ThreadPool.QueueUserWorkItem(pendingTrades);
+                        pendingTrades();
                         MainPresenter.progressInvoke();
                     }
                 }
@@ -410,12 +411,12 @@ namespace ItemChecker.Presenter
             }
             finally
             {
+                Withdraw.tick = WithdrawConfig.Default.timer;
+                Withdraw.timer.Enabled = true;
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.checkWith_label.Text = $"Check: {checkCount++}";
                     mainForm.progressBar_StripStatus.Visible = false; }));
                 Main.loading = false;
-                Withdraw.tick = WithdrawConfig.Default.timer;
-                Withdraw.timer.Enabled = true;
             }
         }
         private Boolean addCart(JArray items)
@@ -480,26 +481,34 @@ namespace ItemChecker.Presenter
             }
             else return true;
         }
-        private void pendingTrades(object state)
+        private void pendingTrades()
         {
-            Thread.Sleep(6000);
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Pending Trades..."; }));
 
-            Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
+            Main.Browser.Navigate().GoToUrl("https://cs.money/2.0/get_transactions?type=0&status=0&appId=730&limit=20");
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-            JArray trades = JArray.Parse(html.Text);
-            foreach(JObject trade in trades)
-                if (trade["status"].ToString() == "3")
-                    confirmVirtualOffer(trade["id"].ToString());
+            string json = html.Text;
+            JArray trades = JArray.Parse(json);
+            if (trades.Any())
+                foreach (JObject trade in trades)
+                {
+                    string id = (string)trade["offers"][0]["id"];
+                    if (!old_id.Contains(id))
+                        confirmVirtualOffer(id);
+                }
         }
         private void confirmVirtualOffer(string id)
         {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Confirm Virtual Offer..."; }));
+
             JObject json = new(
                         new JProperty("offer_id", id),
                         new JProperty("action", "confirm"));
             string body = json.ToString(Formatting.None);
             Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/confirm_virtual_offer"));
 
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.withdraw_label.Text = $"Successful Trades: {withdrawCount++}"; }));
+            old_id.Add(id);
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.withdraw_label.Text = $"Successful Trades: {old_id.Count}"; }));
         }
 
         //cs.money
@@ -551,6 +560,7 @@ namespace ItemChecker.Presenter
             Main.Browser.ExecuteJavaScript(Request.PostRequestFetchResponse("application/json", body, "https://cs.money/2.0/send_offer"));
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
             string json = html.Text;
+            Thread.Sleep(100);
             Main.Browser.ExecuteJavaScript("window.close();");
             Main.Browser.SwitchTo().Window(Main.Browser.WindowHandles.First());
 
