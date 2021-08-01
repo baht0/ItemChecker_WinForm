@@ -46,16 +46,6 @@ namespace ItemChecker
             this.status_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.quickCheck_textBox = new System.Windows.Forms.TextBox();
             this.servChecker_dataGridView = new System.Windows.Forms.DataGridView();
-            this.color_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price1_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price2_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price3_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price4_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.precent_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.difference_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.status_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.availability_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.secondSer_comboBox = new System.Windows.Forms.ComboBox();
@@ -93,6 +83,16 @@ namespace ItemChecker
             this.clearSearch_linkLabel = new System.Windows.Forms.LinkLabel();
             this.label10 = new System.Windows.Forms.Label();
             this.search_textBox = new System.Windows.Forms.TextBox();
+            this.color_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price1_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price2_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price3_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price4_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.precent_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.difference_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.status_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.availability_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.servChecker_menuStrip.SuspendLayout();
             this.servChecker_statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.servChecker_dataGridView)).BeginInit();
@@ -125,8 +125,8 @@ namespace ItemChecker
             // add_toolStripMenuItem
             // 
             this.add_toolStripMenuItem.Name = "add_toolStripMenuItem";
-            this.add_toolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.add_toolStripMenuItem.Text = "Add List";
+            this.add_toolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.add_toolStripMenuItem.Text = "CheckList";
             this.add_toolStripMenuItem.Click += new System.EventHandler(this.add_toolStripMenuItem_Click);
             // 
             // check_toolStripMenuItem
@@ -267,89 +267,6 @@ namespace ItemChecker
             this.servChecker_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.ownList_dataGridView_CellLeave);
             this.servChecker_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.servChecker_dataGridView_ColumnHeaderMouseClick);
             this.servChecker_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ownList_dataGridView_KeyDown);
-            // 
-            // color_Column
-            // 
-            this.color_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.color_Column.FillWeight = 0.000422392F;
-            this.color_Column.HeaderText = "";
-            this.color_Column.Name = "color_Column";
-            this.color_Column.ReadOnly = true;
-            this.color_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.color_Column.Width = 5;
-            // 
-            // item_Column
-            // 
-            this.item_Column.FillWeight = 310F;
-            this.item_Column.HeaderText = "Item";
-            this.item_Column.Name = "item_Column";
-            this.item_Column.ReadOnly = true;
-            this.item_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price1_Column
-            // 
-            this.price1_Column.FillWeight = 70F;
-            this.price1_Column.HeaderText = "Price (S1)";
-            this.price1_Column.Name = "price1_Column";
-            this.price1_Column.ReadOnly = true;
-            this.price1_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price2_Column
-            // 
-            this.price2_Column.FillWeight = 70F;
-            this.price2_Column.HeaderText = "Price (S1)";
-            this.price2_Column.Name = "price2_Column";
-            this.price2_Column.ReadOnly = true;
-            this.price2_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price3_Column
-            // 
-            this.price3_Column.FillWeight = 70F;
-            this.price3_Column.HeaderText = "Price (S2)";
-            this.price3_Column.Name = "price3_Column";
-            this.price3_Column.ReadOnly = true;
-            this.price3_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price4_Column
-            // 
-            this.price4_Column.FillWeight = 70F;
-            this.price4_Column.HeaderText = "Price (S2)";
-            this.price4_Column.Name = "price4_Column";
-            this.price4_Column.ReadOnly = true;
-            this.price4_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // precent_Column
-            // 
-            this.precent_Column.FillWeight = 60F;
-            this.precent_Column.HeaderText = "Precent";
-            this.precent_Column.Name = "precent_Column";
-            this.precent_Column.ReadOnly = true;
-            this.precent_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // difference_Column
-            // 
-            this.difference_Column.HeaderText = "Difference [₽]";
-            this.difference_Column.Name = "difference_Column";
-            this.difference_Column.ReadOnly = true;
-            this.difference_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // status_Column
-            // 
-            this.status_Column.FillWeight = 80F;
-            this.status_Column.HeaderText = "Status";
-            this.status_Column.Name = "status_Column";
-            this.status_Column.ReadOnly = true;
-            this.status_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // availability_Column
-            // 
-            this.availability_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.availability_Column.FillWeight = 1F;
-            this.availability_Column.HeaderText = "";
-            this.availability_Column.Name = "availability_Column";
-            this.availability_Column.ReadOnly = true;
-            this.availability_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.availability_Column.Width = 5;
             // 
             // groupBox1
             // 
@@ -854,6 +771,99 @@ namespace ItemChecker
             this.search_textBox.Size = new System.Drawing.Size(215, 23);
             this.search_textBox.TabIndex = 7;
             // 
+            // color_Column
+            // 
+            this.color_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.color_Column.DataPropertyName = "color_Column";
+            this.color_Column.FillWeight = 0.000422392F;
+            this.color_Column.HeaderText = "";
+            this.color_Column.Name = "color_Column";
+            this.color_Column.ReadOnly = true;
+            this.color_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.color_Column.Width = 5;
+            // 
+            // item_Column
+            // 
+            this.item_Column.DataPropertyName = "item_Column";
+            this.item_Column.FillWeight = 310F;
+            this.item_Column.HeaderText = "Item";
+            this.item_Column.Name = "item_Column";
+            this.item_Column.ReadOnly = true;
+            this.item_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price1_Column
+            // 
+            this.price1_Column.DataPropertyName = "price1_Column";
+            this.price1_Column.FillWeight = 70F;
+            this.price1_Column.HeaderText = "Price (S1)";
+            this.price1_Column.Name = "price1_Column";
+            this.price1_Column.ReadOnly = true;
+            this.price1_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price2_Column
+            // 
+            this.price2_Column.DataPropertyName = "price2_Column";
+            this.price2_Column.FillWeight = 70F;
+            this.price2_Column.HeaderText = "Price (S1)";
+            this.price2_Column.Name = "price2_Column";
+            this.price2_Column.ReadOnly = true;
+            this.price2_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price3_Column
+            // 
+            this.price3_Column.DataPropertyName = "price3_Column";
+            this.price3_Column.FillWeight = 70F;
+            this.price3_Column.HeaderText = "Price (S2)";
+            this.price3_Column.Name = "price3_Column";
+            this.price3_Column.ReadOnly = true;
+            this.price3_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price4_Column
+            // 
+            this.price4_Column.DataPropertyName = "price4_Column";
+            this.price4_Column.FillWeight = 70F;
+            this.price4_Column.HeaderText = "Price (S2)";
+            this.price4_Column.Name = "price4_Column";
+            this.price4_Column.ReadOnly = true;
+            this.price4_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // precent_Column
+            // 
+            this.precent_Column.DataPropertyName = "precent_Column";
+            this.precent_Column.FillWeight = 60F;
+            this.precent_Column.HeaderText = "Precent";
+            this.precent_Column.Name = "precent_Column";
+            this.precent_Column.ReadOnly = true;
+            this.precent_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // difference_Column
+            // 
+            this.difference_Column.DataPropertyName = "difference_Column";
+            this.difference_Column.HeaderText = "Difference [₽]";
+            this.difference_Column.Name = "difference_Column";
+            this.difference_Column.ReadOnly = true;
+            this.difference_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // status_Column
+            // 
+            this.status_Column.DataPropertyName = "status_Column";
+            this.status_Column.FillWeight = 80F;
+            this.status_Column.HeaderText = "Status";
+            this.status_Column.Name = "status_Column";
+            this.status_Column.ReadOnly = true;
+            this.status_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // availability_Column
+            // 
+            this.availability_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.availability_Column.DataPropertyName = "availability_Column";
+            this.availability_Column.FillWeight = 1F;
+            this.availability_Column.HeaderText = "";
+            this.availability_Column.Name = "availability_Column";
+            this.availability_Column.ReadOnly = true;
+            this.availability_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.availability_Column.Width = 5;
+            // 
             // ServiceCheckerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -953,6 +963,12 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         public System.Windows.Forms.ToolStripStatusLabel availability_toolStripStatusLabel;
+        private System.Windows.Forms.GroupBox groupBox3;
+        public System.Windows.Forms.Label label10;
+        public System.Windows.Forms.TextBox search_textBox;
+        private System.Windows.Forms.LinkLabel clearSearch_linkLabel;
+        private System.Windows.Forms.LinkLabel clearQCheck_linkLabel;
+        private System.Windows.Forms.ToolStripMenuItem extractListtxtToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn color_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn price1_Column;
@@ -963,11 +979,5 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn difference_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn status_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn availability_Column;
-        private System.Windows.Forms.GroupBox groupBox3;
-        public System.Windows.Forms.Label label10;
-        public System.Windows.Forms.TextBox search_textBox;
-        private System.Windows.Forms.LinkLabel clearSearch_linkLabel;
-        private System.Windows.Forms.LinkLabel clearQCheck_linkLabel;
-        private System.Windows.Forms.ToolStripMenuItem extractListtxtToolStripMenuItem;
     }
 }

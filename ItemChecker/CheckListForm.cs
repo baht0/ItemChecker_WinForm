@@ -24,7 +24,7 @@ namespace ItemChecker
                 getToolStripMenuItem.Visible = false;
                 richTextBox1.Text = FloatConfig.Default.floatList.Trim();
             }
-            else if (str.Contains("SortList"))
+            else if (str.Contains("CheckList"))
             {
                 getToolStripMenuItem.Text = "Get items";
                 lootFarmToolStripMenuItem.Visible = true;
@@ -34,7 +34,7 @@ namespace ItemChecker
             else if(str.Contains("FavoriteList"))
             {
                 getToolStripMenuItem.Visible = false;
-                richTextBox1.Text = WithdrawConfig.Default.favoriteList.Trim();
+                richTextBox1.Text = WithdrawConfig.Default.favoriteItems.Trim();
             }
             else if (str.Contains("ProxyList"))
             {
@@ -56,7 +56,7 @@ namespace ItemChecker
                 Main.loading = true;
                 ThreadPool.QueueUserWorkItem(FloatPresenter.Check);
             }
-            else if (request.Contains("SortList"))
+            else if (request.Contains("CheckList"))
             {
                 Main.checkList.Clear();
                 Main.checkList.AddRange(richTextBox1.Lines);
@@ -64,9 +64,22 @@ namespace ItemChecker
             }
             else if (request.Contains("FavoriteList"))
             {
-                Withdraw.favoriteList.Clear();
-                Withdraw.favoriteList.AddRange(richTextBox1.Lines);
-                WithdrawConfig.Default.favoriteList = str;
+                Withdraw.favoriteItems.Clear();
+                Withdraw.favoriteItems.AddRange(richTextBox1.Lines);
+
+                //Withdraw.favoritePrices.Clear();
+                //foreach (string line in richTextBox1.Lines)
+                //{
+                //    decimal price = -1;
+                //    if (line.Contains(";"))
+                //    {
+                //        int i = line.LastIndexOf(';') + 1;
+                //        price = (Convert.ToDecimal(line.Substring(i)) / 100) + WithdrawConfig.Default.deviation;
+                //    }
+                //    Withdraw.favoritePrices.Add(price);
+                //}
+
+                WithdrawConfig.Default.favoriteItems = str;
             }
             else if (request.Contains("ProxyList"))
             {
@@ -74,7 +87,13 @@ namespace ItemChecker
                 Main.proxyList.AddRange(richTextBox1.Lines);
                 GeneralConfig.Default.proxyList = str;
             }
+
             Properties.Settings.Default.Save();
+            GeneralConfig.Default.Save();
+            SteamConfig.Default.Save();
+            TryskinsConfig.Default.Save();
+            WithdrawConfig.Default.Save();
+            FloatConfig.Default.Save();
             Close();
         }
         private void cancel_button_Click(object sender, EventArgs e)
@@ -90,10 +109,12 @@ namespace ItemChecker
         //menu
         private void selectFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.InitialDirectory = Application.StartupPath;
-            dialog.RestoreDirectory = true;
-            dialog.Filter = "Items List (txt)|*.txt";
+            OpenFileDialog dialog = new()
+            {
+                InitialDirectory = Application.StartupPath,
+                RestoreDirectory = true,
+                Filter = "Items List (txt)|*.txt"
+            };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 richTextBox1.Clear();

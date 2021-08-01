@@ -62,7 +62,7 @@ namespace ItemChecker
             BuyOrder.timer.Interval = Withdraw.timer.Interval = 1000;
 
             Main.proxyList.AddRange(GeneralConfig.Default.proxyList.Split("\n"));
-            Withdraw.favoriteList.AddRange(WithdrawConfig.Default.favoriteList.Split("\n"));
+            Withdraw.favoriteItems.AddRange(WithdrawConfig.Default.favoriteItems.Split("\n"));
 
             ThreadPool.QueueUserWorkItem(MainPresenter.Start);
         }
@@ -159,8 +159,11 @@ namespace ItemChecker
         //tools
         private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
         {
-            ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
-            serviceChecker.Show();
+            if ((Application.OpenForms["ServiceCheckerForm"] as ServiceCheckerForm) == null)
+            {
+                ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
+                serviceChecker.Show();
+            }
         }
         private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {

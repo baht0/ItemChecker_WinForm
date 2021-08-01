@@ -347,15 +347,14 @@ namespace ItemChecker.Presenter
         }
         public static void columnDTable()
         {
-            if (ServiceChecker.dataTable.Columns.Count == 0)
-                for (int i = 0; i < serviceCheckerForm.servChecker_dataGridView.Columns.Count; ++i)
-                {
-                    string nameColumn = serviceCheckerForm.servChecker_dataGridView.Columns[i].Name;
-                    serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
-                    ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
-                    if (i >= 2 & i <= 7)
-                        ServiceChecker.dataTable.Columns[i].DataType = typeof(decimal);
-                }
+            foreach (DataGridViewColumn column in serviceCheckerForm.servChecker_dataGridView.Columns)
+            {
+                if (ServiceChecker.dataTable.Columns.Contains(column.Name))
+                    break;
+                ServiceChecker.dataTable.Columns.Add(column.Name);
+                if (column.Index >= 2 & column.Index <= 7)
+                    ServiceChecker.dataTable.Columns[column.Index].DataType = typeof(decimal);
+            }
         }
 
         public static void Filter(object state)
@@ -541,6 +540,35 @@ namespace ItemChecker.Presenter
             }
         }
 
+        public static void exportTxt(object state)
+        {
+            DialogResult result = MessageBox.Show($"Add prices \"{serviceCheckerForm.servChecker_dataGridView.Columns[2].HeaderText}\" to the list you create?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == DialogResult.Cancel)
+                return;
+
+            serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                serviceCheckerForm.status_toolStripStatusLabel.Text = "Export the list to *.txt...";
+                serviceCheckerForm.status_toolStripStatusLabel.Visible = true;
+                serviceCheckerForm.servChecker_dataGridView.Enabled = false; }));
+
+            DirectoryInfo dirInfo = new("extract");
+            if (!dirInfo.Exists)
+                dirInfo.Create();
+            string str = "";
+            foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
+            {
+                str += row.Cells[1].Value;
+                if (result == DialogResult.Yes)
+                    str += ";" + Convert.ToDecimal(row.Cells[2].Value) * 100;
+                str += "\r\n";
+            }
+            str = str.Remove(str.Length - 2);
+            File.WriteAllText($"extract/serviceCheckerList_{DateTime.Now:dd.MM.yyyy_hh.mm}.txt", str);
+
+            serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
+                serviceCheckerForm.servChecker_dataGridView.Enabled = true; }));
+        }
         public static void exportCsv(object state)
         {
             try

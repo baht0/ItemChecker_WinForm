@@ -13,8 +13,8 @@ namespace ItemChecker
 {
     public partial class ServiceCheckerForm : Form
     {
-        int past_row = 0;
-        CheckListForm checkListForm = new("SortList");
+        int past_row = 1;
+        CheckListForm checkListForm = new("CheckList");
         public ServiceCheckerForm()
         {
             InitializeComponent();
@@ -357,23 +357,7 @@ namespace ItemChecker
         private void extractListtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (servChecker_dataGridView.Rows.Count > 0)
-            {
-                status_toolStripStatusLabel.Text = "Export the list to *.txt...";
-                status_toolStripStatusLabel.Visible = true;
-                servChecker_dataGridView.Enabled = false;
-
-                DirectoryInfo dirInfo = new("extract");
-                if (!dirInfo.Exists)
-                    dirInfo.Create();
-                string str = "";
-                foreach (DataGridViewRow row in servChecker_dataGridView.Rows)
-                    str += row.Cells[1].Value + "\r\n";
-                str = str.Remove(str.Length - 2);
-                File.WriteAllText($"extract/serviceCheckerList_{DateTime.Now:dd.MM.yyyy_hh.mm}.txt", str);
-
-                status_toolStripStatusLabel.Visible = false;
-                servChecker_dataGridView.Enabled = true;
-            }
+                ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.exportTxt);
         }
     }
 }

@@ -169,7 +169,7 @@ namespace ItemChecker.Presenter
                     row.Cells[0].Style.BackColor = Color.Orange;
                 if (item.Contains("★"))
                     row.Cells[0].Style.BackColor = Color.DarkViolet;
-                if (Withdraw.favoriteList.Contains(item))
+                if (Withdraw.favoriteItems.Contains(item))
                 {
                     row.Cells[1].Style.BackColor = Color.LightGray;
                     row.Cells[2].Style.BackColor = Color.LightGray;
@@ -318,14 +318,14 @@ namespace ItemChecker.Presenter
         }
         public static void checkStart()
         {
-            if (Withdraw.favoriteList.Count > 0 & !Main.loading)
+            if (Withdraw.favoriteItems.Count > 0 & !Main.loading)
             {
                 if (!BuyOrder.timer.Enabled & !Withdraw.timer.Enabled)
                 {
                     Withdraw.tick = WithdrawConfig.Default.timer;
 
                     mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.itemsWith_label.Text = $"Items: {Withdraw.favoriteList.Count}";
+                        mainForm.itemsWith_label.Text = $"Items: {Withdraw.favoriteItems.Count}";
                         mainForm.checkFavorite_groupBox.Visible = true;
                         mainForm.timer_StripStatus.Visible = true;
                         mainForm.checkFavorite_ToolStripMenuItem.ForeColor = Color.OrangeRed; }));
@@ -349,7 +349,7 @@ namespace ItemChecker.Presenter
 
                     mainForm.Invoke(new MethodInvoker(delegate {
                         mainForm.timer_StripStatus.Text = "Checking...";
-                        mainForm.progressBar_StripStatus.Maximum = Withdraw.favoriteList.Count;
+                        mainForm.progressBar_StripStatus.Maximum = Withdraw.favoriteItems.Count;
                         mainForm.progressBar_StripStatus.Value = 0;
                         mainForm.progressBar_StripStatus.Visible = true; }));
                     Main.loading = true;
@@ -365,7 +365,7 @@ namespace ItemChecker.Presenter
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-                List<string> list = Withdraw.favoriteList;
+                List<string> list = Withdraw.favoriteItems;
                 Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
                 foreach (string item_name in list)
                 {

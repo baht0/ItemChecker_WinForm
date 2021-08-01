@@ -237,9 +237,9 @@ namespace ItemChecker.Presenter
         //other
         public static void clearDTableRows(DataGridView dataGridView)
         {
-            DataTable DT = (DataTable)dataGridView.DataSource;
-            if (DT != null)
-                mainForm.Invoke(new MethodInvoker(delegate { DT.Rows.Clear(); }));
+            DataTable dataTable = (DataTable)dataGridView.DataSource;
+            if (dataTable != null)
+                mainForm.Invoke(new MethodInvoker(delegate { dataTable.Rows.Clear(); }));
         }
         public static void clearAll()
         {

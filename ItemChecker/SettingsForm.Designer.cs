@@ -34,28 +34,33 @@ namespace ItemChecker
             this.default_button = new System.Windows.Forms.Button();
             this.withdraw_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.deviation_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label26 = new System.Windows.Forms.Label();
             this.favoriteTimer_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label25 = new System.Windows.Forms.Label();
             this.favoriteItems_button = new System.Windows.Forms.Button();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
             this.onlySt_checkBox = new System.Windows.Forms.CheckBox();
+            this.compareSta_checkBox = new System.Windows.Forms.CheckBox();
             this.minSalesW_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.minPriceW_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
             this.souvenir_checkBox = new System.Windows.Forms.CheckBox();
-            this.sticker_checkBox = new System.Windows.Forms.CheckBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.compareSta_checkBox = new System.Windows.Forms.CheckBox();
-            this.minPriceW_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.maxPriceW_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
+            this.sticker_checkBox = new System.Windows.Forms.CheckBox();
             this.label24 = new System.Windows.Forms.Label();
             this.maxPrecentW_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label15 = new System.Windows.Forms.Label();
             this.minPrecentW_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
             this.float_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.maxPrecentFloat_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.getItems_numericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -79,20 +84,21 @@ namespace ItemChecker
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.oldcsm_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.minPrice_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
             this.maxPrice_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.minPrecent_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
             this.maxPrecent_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.long_radioButton = new System.Windows.Forms.RadioButton();
             this.fast_radioButton = new System.Windows.Forms.RadioButton();
             this.steam_tabPage = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.startupPush_checkBox = new System.Windows.Forms.CheckBox();
             this.cancelOrder_checkBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.steamApiKey_textBox = new System.Windows.Forms.TextBox();
@@ -101,6 +107,7 @@ namespace ItemChecker
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.startupPush_checkBox = new System.Windows.Forms.CheckBox();
             this.timer_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.updST_checkBox = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -126,10 +133,10 @@ namespace ItemChecker
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deviation_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).BeginInit();
-            this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minPriceW_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPriceW_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecentW_numericUpDown)).BeginInit();
@@ -202,7 +209,6 @@ namespace ItemChecker
             // withdraw_tabPage
             // 
             this.withdraw_tabPage.Controls.Add(this.groupBox13);
-            this.withdraw_tabPage.Controls.Add(this.groupBox8);
             this.withdraw_tabPage.Controls.Add(this.groupBox4);
             this.withdraw_tabPage.Location = new System.Drawing.Point(4, 22);
             this.withdraw_tabPage.Name = "withdraw_tabPage";
@@ -214,16 +220,62 @@ namespace ItemChecker
             // 
             // groupBox13
             // 
+            this.groupBox13.Controls.Add(this.label29);
+            this.groupBox13.Controls.Add(this.label27);
+            this.groupBox13.Controls.Add(this.deviation_numericUpDown);
             this.groupBox13.Controls.Add(this.label26);
             this.groupBox13.Controls.Add(this.favoriteTimer_numericUpDown);
             this.groupBox13.Controls.Add(this.label25);
             this.groupBox13.Controls.Add(this.favoriteItems_button);
-            this.groupBox13.Location = new System.Drawing.Point(17, 260);
+            this.groupBox13.Location = new System.Drawing.Point(17, 161);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(260, 47);
+            this.groupBox13.Size = new System.Drawing.Size(260, 95);
             this.groupBox13.TabIndex = 15;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "CheckFavorite";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label29.Location = new System.Drawing.Point(207, 42);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(14, 16);
+            this.label29.TabIndex = 22;
+            this.label29.Text = "$";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(6, 45);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(81, 13);
+            this.label27.TabIndex = 21;
+            this.label27.Text = "Max. Deviation:";
+            // 
+            // deviation_numericUpDown
+            // 
+            this.deviation_numericUpDown.DecimalPlaces = 2;
+            this.deviation_numericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.deviation_numericUpDown.Location = new System.Drawing.Point(129, 38);
+            this.deviation_numericUpDown.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.deviation_numericUpDown.Name = "deviation_numericUpDown";
+            this.deviation_numericUpDown.Size = new System.Drawing.Size(71, 20);
+            this.deviation_numericUpDown.TabIndex = 20;
+            this.deviation_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.deviation_numericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             // 
             // label26
             // 
@@ -236,7 +288,12 @@ namespace ItemChecker
             // 
             // favoriteTimer_numericUpDown
             // 
-            this.favoriteTimer_numericUpDown.Location = new System.Drawing.Point(48, 17);
+            this.favoriteTimer_numericUpDown.Location = new System.Drawing.Point(129, 12);
+            this.favoriteTimer_numericUpDown.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
             this.favoriteTimer_numericUpDown.Minimum = new decimal(new int[] {
             5,
             0,
@@ -255,7 +312,7 @@ namespace ItemChecker
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(125, 24);
+            this.label25.Location = new System.Drawing.Point(206, 19);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(29, 13);
             this.label25.TabIndex = 16;
@@ -263,38 +320,97 @@ namespace ItemChecker
             // 
             // favoriteItems_button
             // 
-            this.favoriteItems_button.Location = new System.Drawing.Point(160, 14);
+            this.favoriteItems_button.Location = new System.Drawing.Point(6, 66);
             this.favoriteItems_button.Name = "favoriteItems_button";
-            this.favoriteItems_button.Size = new System.Drawing.Size(75, 23);
+            this.favoriteItems_button.Size = new System.Drawing.Size(79, 23);
             this.favoriteItems_button.TabIndex = 14;
-            this.favoriteItems_button.Text = "Favorite";
+            this.favoriteItems_button.Text = "FavoriteList";
             this.favoriteItems_button.UseVisualStyleBackColor = true;
             this.favoriteItems_button.Click += new System.EventHandler(this.favoriteItems_button_Click);
             // 
-            // groupBox8
+            // groupBox4
             // 
-            this.groupBox8.Controls.Add(this.onlySt_checkBox);
-            this.groupBox8.Controls.Add(this.minSalesW_numericUpDown);
-            this.groupBox8.Controls.Add(this.label16);
-            this.groupBox8.Controls.Add(this.souvenir_checkBox);
-            this.groupBox8.Controls.Add(this.sticker_checkBox);
-            this.groupBox8.Location = new System.Drawing.Point(17, 166);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(260, 88);
-            this.groupBox8.TabIndex = 13;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Additionally";
+            this.groupBox4.Controls.Add(this.label15);
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.label30);
+            this.groupBox4.Controls.Add(this.label28);
+            this.groupBox4.Controls.Add(this.onlySt_checkBox);
+            this.groupBox4.Controls.Add(this.compareSta_checkBox);
+            this.groupBox4.Controls.Add(this.minSalesW_numericUpDown);
+            this.groupBox4.Controls.Add(this.minPriceW_numericUpDown);
+            this.groupBox4.Controls.Add(this.label16);
+            this.groupBox4.Controls.Add(this.souvenir_checkBox);
+            this.groupBox4.Controls.Add(this.maxPriceW_numericUpDown);
+            this.groupBox4.Controls.Add(this.sticker_checkBox);
+            this.groupBox4.Controls.Add(this.label24);
+            this.groupBox4.Controls.Add(this.maxPrecentW_numericUpDown);
+            this.groupBox4.Controls.Add(this.minPrecentW_numericUpDown);
+            this.groupBox4.Controls.Add(this.label14);
+            this.groupBox4.Location = new System.Drawing.Point(17, 12);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(260, 143);
+            this.groupBox4.TabIndex = 12;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "TrySkins Withdraw";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label15.Location = new System.Drawing.Point(235, 21);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(19, 16);
+            this.label15.TabIndex = 24;
+            this.label15.Text = "%";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(235, 47);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(14, 16);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "$";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(153, 44);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(10, 13);
+            this.label30.TabIndex = 23;
+            this.label30.Text = "-";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(153, 18);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(10, 13);
+            this.label28.TabIndex = 22;
+            this.label28.Text = "-";
             // 
             // onlySt_checkBox
             // 
             this.onlySt_checkBox.AutoSize = true;
             this.onlySt_checkBox.Enabled = false;
-            this.onlySt_checkBox.Location = new System.Drawing.Point(129, 66);
+            this.onlySt_checkBox.Location = new System.Drawing.Point(129, 120);
             this.onlySt_checkBox.Name = "onlySt_checkBox";
             this.onlySt_checkBox.Size = new System.Drawing.Size(83, 17);
             this.onlySt_checkBox.TabIndex = 19;
             this.onlySt_checkBox.Text = "Only Sticker";
             this.onlySt_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // compareSta_checkBox
+            // 
+            this.compareSta_checkBox.AutoSize = true;
+            this.compareSta_checkBox.Location = new System.Drawing.Point(129, 97);
+            this.compareSta_checkBox.Name = "compareSta_checkBox";
+            this.compareSta_checkBox.Size = new System.Drawing.Size(92, 17);
+            this.compareSta_checkBox.TabIndex = 20;
+            this.compareSta_checkBox.Text = "Compare STA";
+            this.compareSta_checkBox.UseVisualStyleBackColor = true;
             // 
             // minSalesW_numericUpDown
             // 
@@ -303,14 +419,14 @@ namespace ItemChecker
             0,
             0,
             0});
-            this.minSalesW_numericUpDown.Location = new System.Drawing.Point(129, 19);
+            this.minSalesW_numericUpDown.Location = new System.Drawing.Point(129, 68);
             this.minSalesW_numericUpDown.Maximum = new decimal(new int[] {
-            100000,
+            999999,
             0,
             0,
             0});
             this.minSalesW_numericUpDown.Name = "minSalesW_numericUpDown";
-            this.minSalesW_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.minSalesW_numericUpDown.Size = new System.Drawing.Size(100, 20);
             this.minSalesW_numericUpDown.TabIndex = 15;
             this.minSalesW_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.minSalesW_numericUpDown.Value = new decimal(new int[] {
@@ -319,64 +435,6 @@ namespace ItemChecker
             0,
             0});
             // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(15, 21);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(56, 13);
-            this.label16.TabIndex = 14;
-            this.label16.Text = "Min. Sales";
-            // 
-            // souvenir_checkBox
-            // 
-            this.souvenir_checkBox.AutoSize = true;
-            this.souvenir_checkBox.Location = new System.Drawing.Point(15, 43);
-            this.souvenir_checkBox.Name = "souvenir_checkBox";
-            this.souvenir_checkBox.Size = new System.Drawing.Size(68, 17);
-            this.souvenir_checkBox.TabIndex = 16;
-            this.souvenir_checkBox.Text = "Souvenir";
-            this.souvenir_checkBox.UseVisualStyleBackColor = true;
-            // 
-            // sticker_checkBox
-            // 
-            this.sticker_checkBox.AutoSize = true;
-            this.sticker_checkBox.Location = new System.Drawing.Point(15, 66);
-            this.sticker_checkBox.Name = "sticker_checkBox";
-            this.sticker_checkBox.Size = new System.Drawing.Size(59, 17);
-            this.sticker_checkBox.TabIndex = 17;
-            this.sticker_checkBox.Text = "Sticker";
-            this.sticker_checkBox.UseVisualStyleBackColor = true;
-            this.sticker_checkBox.CheckedChanged += new System.EventHandler(this.sticker_checkBox_CheckedChanged);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.compareSta_checkBox);
-            this.groupBox4.Controls.Add(this.minPriceW_numericUpDown);
-            this.groupBox4.Controls.Add(this.maxPriceW_numericUpDown);
-            this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Controls.Add(this.label24);
-            this.groupBox4.Controls.Add(this.maxPrecentW_numericUpDown);
-            this.groupBox4.Controls.Add(this.label15);
-            this.groupBox4.Controls.Add(this.minPrecentW_numericUpDown);
-            this.groupBox4.Controls.Add(this.label14);
-            this.groupBox4.Location = new System.Drawing.Point(17, 12);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(260, 148);
-            this.groupBox4.TabIndex = 12;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Withdraw";
-            // 
-            // compareSta_checkBox
-            // 
-            this.compareSta_checkBox.AutoSize = true;
-            this.compareSta_checkBox.Location = new System.Drawing.Point(15, 124);
-            this.compareSta_checkBox.Name = "compareSta_checkBox";
-            this.compareSta_checkBox.Size = new System.Drawing.Size(92, 17);
-            this.compareSta_checkBox.TabIndex = 20;
-            this.compareSta_checkBox.Text = "Compare STA";
-            this.compareSta_checkBox.UseVisualStyleBackColor = true;
-            // 
             // minPriceW_numericUpDown
             // 
             this.minPriceW_numericUpDown.Increment = new decimal(new int[] {
@@ -384,16 +442,35 @@ namespace ItemChecker
             0,
             0,
             0});
-            this.minPriceW_numericUpDown.Location = new System.Drawing.Point(129, 94);
+            this.minPriceW_numericUpDown.Location = new System.Drawing.Point(169, 42);
             this.minPriceW_numericUpDown.Maximum = new decimal(new int[] {
-            100000,
+            999999,
             0,
             0,
             0});
             this.minPriceW_numericUpDown.Name = "minPriceW_numericUpDown";
-            this.minPriceW_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.minPriceW_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.minPriceW_numericUpDown.TabIndex = 21;
             this.minPriceW_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(15, 75);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(59, 13);
+            this.label16.TabIndex = 14;
+            this.label16.Text = "Min. Sales:";
+            // 
+            // souvenir_checkBox
+            // 
+            this.souvenir_checkBox.AutoSize = true;
+            this.souvenir_checkBox.Location = new System.Drawing.Point(15, 97);
+            this.souvenir_checkBox.Name = "souvenir_checkBox";
+            this.souvenir_checkBox.Size = new System.Drawing.Size(68, 17);
+            this.souvenir_checkBox.TabIndex = 16;
+            this.souvenir_checkBox.Text = "Souvenir";
+            this.souvenir_checkBox.UseVisualStyleBackColor = true;
             // 
             // maxPriceW_numericUpDown
             // 
@@ -402,34 +479,36 @@ namespace ItemChecker
             0,
             0,
             0});
-            this.maxPriceW_numericUpDown.Location = new System.Drawing.Point(129, 68);
+            this.maxPriceW_numericUpDown.Location = new System.Drawing.Point(87, 42);
             this.maxPriceW_numericUpDown.Maximum = new decimal(new int[] {
-            100000,
+            999998,
             0,
             0,
             0});
             this.maxPriceW_numericUpDown.Name = "maxPriceW_numericUpDown";
-            this.maxPriceW_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.maxPriceW_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.maxPriceW_numericUpDown.TabIndex = 20;
             this.maxPriceW_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label5
+            // sticker_checkBox
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 101);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 13);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "Min. Price";
+            this.sticker_checkBox.AutoSize = true;
+            this.sticker_checkBox.Location = new System.Drawing.Point(15, 120);
+            this.sticker_checkBox.Name = "sticker_checkBox";
+            this.sticker_checkBox.Size = new System.Drawing.Size(59, 17);
+            this.sticker_checkBox.TabIndex = 17;
+            this.sticker_checkBox.Text = "Sticker";
+            this.sticker_checkBox.UseVisualStyleBackColor = true;
+            this.sticker_checkBox.CheckedChanged += new System.EventHandler(this.sticker_checkBox_CheckedChanged);
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(15, 75);
+            this.label24.Location = new System.Drawing.Point(15, 49);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(57, 13);
+            this.label24.Size = new System.Drawing.Size(34, 13);
             this.label24.TabIndex = 18;
-            this.label24.Text = "Max. Price";
+            this.label24.Text = "Price:";
             // 
             // maxPrecentW_numericUpDown
             // 
@@ -438,14 +517,19 @@ namespace ItemChecker
             0,
             0,
             0});
-            this.maxPrecentW_numericUpDown.Location = new System.Drawing.Point(129, 42);
-            this.maxPrecentW_numericUpDown.Minimum = new decimal(new int[] {
-            1,
+            this.maxPrecentW_numericUpDown.Location = new System.Drawing.Point(169, 16);
+            this.maxPrecentW_numericUpDown.Maximum = new decimal(new int[] {
+            9999,
             0,
             0,
             0});
+            this.maxPrecentW_numericUpDown.Minimum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            -2147483648});
             this.maxPrecentW_numericUpDown.Name = "maxPrecentW_numericUpDown";
-            this.maxPrecentW_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.maxPrecentW_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.maxPrecentW_numericUpDown.TabIndex = 13;
             this.maxPrecentW_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.maxPrecentW_numericUpDown.Value = new decimal(new int[] {
@@ -454,15 +538,6 @@ namespace ItemChecker
             0,
             0});
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(15, 49);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(70, 13);
-            this.label15.TabIndex = 12;
-            this.label15.Text = "Max. Precent";
-            // 
             // minPrecentW_numericUpDown
             // 
             this.minPrecentW_numericUpDown.Increment = new decimal(new int[] {
@@ -470,9 +545,9 @@ namespace ItemChecker
             0,
             0,
             0});
-            this.minPrecentW_numericUpDown.Location = new System.Drawing.Point(129, 16);
+            this.minPrecentW_numericUpDown.Location = new System.Drawing.Point(87, 16);
             this.minPrecentW_numericUpDown.Maximum = new decimal(new int[] {
-            99,
+            9998,
             0,
             0,
             0});
@@ -482,7 +557,7 @@ namespace ItemChecker
             0,
             -2147483648});
             this.minPrecentW_numericUpDown.Name = "minPrecentW_numericUpDown";
-            this.minPrecentW_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.minPrecentW_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.minPrecentW_numericUpDown.TabIndex = 12;
             this.minPrecentW_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.minPrecentW_numericUpDown.Value = new decimal(new int[] {
@@ -496,9 +571,9 @@ namespace ItemChecker
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(15, 23);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(67, 13);
+            this.label14.Size = new System.Drawing.Size(47, 13);
             this.label14.TabIndex = 12;
-            this.label14.Text = "Min. Precent";
+            this.label14.Text = "Precent:";
             // 
             // float_tabPage
             // 
@@ -515,6 +590,7 @@ namespace ItemChecker
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.label13);
             this.groupBox10.Controls.Add(this.maxPrecentFloat_numericUpDown);
             this.groupBox10.Controls.Add(this.label17);
             this.groupBox10.Controls.Add(this.getItems_numericUpDown);
@@ -526,15 +602,25 @@ namespace ItemChecker
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Float";
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label13.Location = new System.Drawing.Point(222, 19);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(19, 16);
+            this.label13.TabIndex = 25;
+            this.label13.Text = "%";
+            // 
             // maxPrecentFloat_numericUpDown
             // 
             this.maxPrecentFloat_numericUpDown.DecimalPlaces = 2;
             this.maxPrecentFloat_numericUpDown.Location = new System.Drawing.Point(129, 15);
             this.maxPrecentFloat_numericUpDown.Minimum = new decimal(new int[] {
-            1,
+            5,
             0,
             0,
-            0});
+            65536});
             this.maxPrecentFloat_numericUpDown.Name = "maxPrecentFloat_numericUpDown";
             this.maxPrecentFloat_numericUpDown.Size = new System.Drawing.Size(87, 20);
             this.maxPrecentFloat_numericUpDown.TabIndex = 9;
@@ -550,9 +636,9 @@ namespace ItemChecker
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(15, 22);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(70, 13);
+            this.label17.Size = new System.Drawing.Size(73, 13);
             this.label17.TabIndex = 8;
-            this.label17.Text = "Max. Precent";
+            this.label17.Text = "Max. Precent:";
             // 
             // getItems_numericUpDown
             // 
@@ -577,9 +663,9 @@ namespace ItemChecker
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(15, 48);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(83, 13);
+            this.label18.Size = new System.Drawing.Size(55, 13);
             this.label18.TabIndex = 10;
-            this.label18.Text = "Count Get Items";
+            this.label18.Text = "Get Items:";
             // 
             // groupBox5
             // 
@@ -634,9 +720,9 @@ namespace ItemChecker
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(15, 130);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(74, 13);
+            this.label23.Size = new System.Drawing.Size(77, 13);
             this.label23.TabIndex = 20;
-            this.label23.Text = "Battle-Scarred";
+            this.label23.Text = "Battle-Scarred:";
             // 
             // WW_numericUpDown
             // 
@@ -672,9 +758,9 @@ namespace ItemChecker
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(15, 104);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(57, 13);
+            this.label22.Size = new System.Drawing.Size(60, 13);
             this.label22.TabIndex = 18;
-            this.label22.Text = "Well-Worn";
+            this.label22.Text = "Well-Worn:";
             // 
             // FT_numericUpDown
             // 
@@ -710,9 +796,9 @@ namespace ItemChecker
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(15, 78);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(65, 13);
+            this.label21.Size = new System.Drawing.Size(68, 13);
             this.label21.TabIndex = 16;
-            this.label21.Text = "Field-Tested";
+            this.label21.Text = "Field-Tested:";
             // 
             // MW_numericUpDown
             // 
@@ -748,9 +834,9 @@ namespace ItemChecker
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(15, 52);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(71, 13);
+            this.label20.Size = new System.Drawing.Size(74, 13);
             this.label20.TabIndex = 14;
-            this.label20.Text = "Minimal Wear";
+            this.label20.Text = "Minimal Wear:";
             // 
             // FN_numericUpDown
             // 
@@ -776,9 +862,9 @@ namespace ItemChecker
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(15, 26);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(67, 13);
+            this.label19.Size = new System.Drawing.Size(70, 13);
             this.label19.TabIndex = 12;
-            this.label19.Text = "Factory New";
+            this.label19.Text = "Factory New:";
             // 
             // groupBox3
             // 
@@ -790,7 +876,7 @@ namespace ItemChecker
             this.groupBox3.Size = new System.Drawing.Size(260, 47);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Price";
+            this.groupBox3.Text = "Compare Price";
             // 
             // csm_radioButton
             // 
@@ -841,7 +927,7 @@ namespace ItemChecker
             // groupBox12
             // 
             this.groupBox12.Controls.Add(this.oldcsm_checkBox);
-            this.groupBox12.Location = new System.Drawing.Point(20, 205);
+            this.groupBox12.Location = new System.Drawing.Point(20, 151);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(251, 52);
             this.groupBox12.TabIndex = 2;
@@ -860,79 +946,120 @@ namespace ItemChecker
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.label33);
+            this.groupBox9.Controls.Add(this.label11);
+            this.groupBox9.Controls.Add(this.label32);
+            this.groupBox9.Controls.Add(this.label31);
             this.groupBox9.Controls.Add(this.label10);
             this.groupBox9.Controls.Add(this.minPrice_numericUpDown);
-            this.groupBox9.Controls.Add(this.label11);
             this.groupBox9.Controls.Add(this.maxPrice_numericUpDown);
             this.groupBox9.Controls.Add(this.label12);
             this.groupBox9.Controls.Add(this.minPrecent_numericUpDown);
-            this.groupBox9.Controls.Add(this.label13);
             this.groupBox9.Controls.Add(this.maxPrecent_numericUpDown);
-            this.groupBox9.Location = new System.Drawing.Point(17, 69);
+            this.groupBox9.Location = new System.Drawing.Point(20, 69);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(254, 130);
+            this.groupBox9.Size = new System.Drawing.Size(251, 76);
             this.groupBox9.TabIndex = 11;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "TrySkins";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label33.Location = new System.Drawing.Point(226, 49);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(14, 16);
+            this.label33.TabIndex = 27;
+            this.label33.Text = "$";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(144, 47);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(10, 13);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "-";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label32.Location = new System.Drawing.Point(226, 23);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(19, 16);
+            this.label32.TabIndex = 25;
+            this.label32.Text = "%";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(144, 21);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(10, 13);
+            this.label31.TabIndex = 23;
+            this.label31.Text = "-";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(18, 26);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(70, 13);
+            this.label10.Size = new System.Drawing.Size(47, 13);
             this.label10.TabIndex = 1;
-            this.label10.Text = "Max. Precent";
+            this.label10.Text = "Precent:";
             // 
             // minPrice_numericUpDown
             // 
-            this.minPrice_numericUpDown.Location = new System.Drawing.Point(129, 97);
+            this.minPrice_numericUpDown.Location = new System.Drawing.Point(160, 45);
             this.minPrice_numericUpDown.Maximum = new decimal(new int[] {
-            100000,
+            999998,
             0,
             0,
             0});
             this.minPrice_numericUpDown.Name = "minPrice_numericUpDown";
-            this.minPrice_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.minPrice_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.minPrice_numericUpDown.TabIndex = 10;
             this.minPrice_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(18, 52);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(67, 13);
-            this.label11.TabIndex = 2;
-            this.label11.Text = "Min. Precent";
-            // 
             // maxPrice_numericUpDown
             // 
-            this.maxPrice_numericUpDown.Location = new System.Drawing.Point(129, 71);
+            this.maxPrice_numericUpDown.Location = new System.Drawing.Point(78, 45);
             this.maxPrice_numericUpDown.Maximum = new decimal(new int[] {
-            100000,
+            999998,
             0,
             0,
             0});
             this.maxPrice_numericUpDown.Name = "maxPrice_numericUpDown";
-            this.maxPrice_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.maxPrice_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.maxPrice_numericUpDown.TabIndex = 9;
             this.maxPrice_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(18, 78);
+            this.label12.Location = new System.Drawing.Point(18, 52);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(57, 13);
+            this.label12.Size = new System.Drawing.Size(34, 13);
             this.label12.TabIndex = 3;
-            this.label12.Text = "Max. Price";
+            this.label12.Text = "Price:";
             // 
             // minPrecent_numericUpDown
             // 
-            this.minPrecent_numericUpDown.Location = new System.Drawing.Point(129, 45);
+            this.minPrecent_numericUpDown.Location = new System.Drawing.Point(78, 19);
+            this.minPrecent_numericUpDown.Maximum = new decimal(new int[] {
+            9998,
+            0,
+            0,
+            0});
+            this.minPrecent_numericUpDown.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
             this.minPrecent_numericUpDown.Name = "minPrecent_numericUpDown";
-            this.minPrecent_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.minPrecent_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.minPrecent_numericUpDown.TabIndex = 8;
             this.minPrecent_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.minPrecent_numericUpDown.Value = new decimal(new int[] {
@@ -941,20 +1068,21 @@ namespace ItemChecker
             0,
             0});
             // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(18, 104);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(54, 13);
-            this.label13.TabIndex = 4;
-            this.label13.Text = "Min. Price";
-            // 
             // maxPrecent_numericUpDown
             // 
-            this.maxPrecent_numericUpDown.Location = new System.Drawing.Point(129, 19);
+            this.maxPrecent_numericUpDown.Location = new System.Drawing.Point(160, 19);
+            this.maxPrecent_numericUpDown.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.maxPrecent_numericUpDown.Minimum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            -2147483648});
             this.maxPrecent_numericUpDown.Name = "maxPrecent_numericUpDown";
-            this.maxPrecent_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.maxPrecent_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.maxPrecent_numericUpDown.TabIndex = 7;
             this.maxPrecent_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.maxPrecent_numericUpDown.Value = new decimal(new int[] {
@@ -979,10 +1107,10 @@ namespace ItemChecker
             this.long_radioButton.AutoSize = true;
             this.long_radioButton.Location = new System.Drawing.Point(129, 21);
             this.long_radioButton.Name = "long_radioButton";
-            this.long_radioButton.Size = new System.Drawing.Size(101, 17);
+            this.long_radioButton.Size = new System.Drawing.Size(110, 17);
             this.long_radioButton.TabIndex = 1;
             this.long_radioButton.TabStop = true;
-            this.long_radioButton.Text = "Accurate (Long)";
+            this.long_radioButton.Text = "Accurate (Longer)";
             this.long_radioButton.UseVisualStyleBackColor = true;
             // 
             // fast_radioButton
@@ -1010,7 +1138,6 @@ namespace ItemChecker
             // 
             // groupBox11
             // 
-            this.groupBox11.Controls.Add(this.startupPush_checkBox);
             this.groupBox11.Controls.Add(this.cancelOrder_checkBox);
             this.groupBox11.Controls.Add(this.label1);
             this.groupBox11.Controls.Add(this.steamApiKey_textBox);
@@ -1020,29 +1147,19 @@ namespace ItemChecker
             this.groupBox11.Controls.Add(this.label8);
             this.groupBox11.Location = new System.Drawing.Point(17, 13);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(260, 152);
+            this.groupBox11.Size = new System.Drawing.Size(260, 128);
             this.groupBox11.TabIndex = 7;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Steam";
             // 
-            // startupPush_checkBox
-            // 
-            this.startupPush_checkBox.AutoSize = true;
-            this.startupPush_checkBox.Location = new System.Drawing.Point(6, 104);
-            this.startupPush_checkBox.Name = "startupPush_checkBox";
-            this.startupPush_checkBox.Size = new System.Drawing.Size(87, 17);
-            this.startupPush_checkBox.TabIndex = 14;
-            this.startupPush_checkBox.Text = "Startup Push";
-            this.startupPush_checkBox.UseVisualStyleBackColor = true;
-            // 
             // cancelOrder_checkBox
             // 
             this.cancelOrder_checkBox.AutoSize = true;
-            this.cancelOrder_checkBox.Location = new System.Drawing.Point(6, 127);
+            this.cancelOrder_checkBox.Location = new System.Drawing.Point(6, 103);
             this.cancelOrder_checkBox.Name = "cancelOrder_checkBox";
             this.cancelOrder_checkBox.Size = new System.Drawing.Size(242, 17);
             this.cancelOrder_checkBox.TabIndex = 13;
-            this.cancelOrder_checkBox.Text = "Cancel a buy order if the balance isn\'t enough";
+            this.cancelOrder_checkBox.Text = "Cancel a BuyOrder if the balance isn\'t enough";
             this.cancelOrder_checkBox.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -1110,16 +1227,27 @@ namespace ItemChecker
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.startupPush_checkBox);
             this.groupBox1.Controls.Add(this.timer_numericUpDown);
             this.groupBox1.Controls.Add(this.updST_checkBox);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(17, 171);
+            this.groupBox1.Location = new System.Drawing.Point(17, 147);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(260, 94);
+            this.groupBox1.Size = new System.Drawing.Size(260, 110);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "PushItems";
+            // 
+            // startupPush_checkBox
+            // 
+            this.startupPush_checkBox.AutoSize = true;
+            this.startupPush_checkBox.Location = new System.Drawing.Point(6, 88);
+            this.startupPush_checkBox.Name = "startupPush_checkBox";
+            this.startupPush_checkBox.Size = new System.Drawing.Size(89, 17);
+            this.startupPush_checkBox.TabIndex = 14;
+            this.startupPush_checkBox.Text = "StartUp Push";
+            this.startupPush_checkBox.UseVisualStyleBackColor = true;
             // 
             // timer_numericUpDown
             // 
@@ -1283,7 +1411,7 @@ namespace ItemChecker
             this.proxy_button.Name = "proxy_button";
             this.proxy_button.Size = new System.Drawing.Size(75, 23);
             this.proxy_button.TabIndex = 11;
-            this.proxy_button.Text = "Proxy";
+            this.proxy_button.Text = "ProxyList";
             this.proxy_button.UseVisualStyleBackColor = true;
             this.proxy_button.Click += new System.EventHandler(this.proxy_button_Click);
             // 
@@ -1410,12 +1538,11 @@ namespace ItemChecker
             this.withdraw_tabPage.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deviation_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.favoriteTimer_numericUpDown)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minSalesW_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minPriceW_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPriceW_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecentW_numericUpDown)).EndInit();
@@ -1497,9 +1624,7 @@ namespace ItemChecker
         private System.Windows.Forms.NumericUpDown maxPrice_numericUpDown;
         private System.Windows.Forms.NumericUpDown minPrecent_numericUpDown;
         private System.Windows.Forms.NumericUpDown maxPrecent_numericUpDown;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton long_radioButton;
@@ -1535,14 +1660,11 @@ namespace ItemChecker
         private System.Windows.Forms.NumericUpDown minSalesW_numericUpDown;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.NumericUpDown maxPrecentW_numericUpDown;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.NumericUpDown minPrecentW_numericUpDown;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown minPriceW_numericUpDown;
         private System.Windows.Forms.NumericUpDown maxPriceW_numericUpDown;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.CheckBox onlySt_checkBox;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.GroupBox groupBox10;
@@ -1563,5 +1685,17 @@ namespace ItemChecker
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.CheckBox exitChrome_checkBox;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.NumericUpDown deviation_numericUpDown;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label13;
     }
 }

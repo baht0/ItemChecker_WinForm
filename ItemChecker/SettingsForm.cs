@@ -44,6 +44,7 @@ namespace ItemChecker
             onlySt_checkBox.Checked = WithdrawConfig.Default.onlySticker;
             compareSta_checkBox.Checked = WithdrawConfig.Default.compareSta;
             favoriteTimer_numericUpDown.Value = WithdrawConfig.Default.timer;
+            deviation_numericUpDown.Value = WithdrawConfig.Default.deviation;
             //float
             maxPrecentFloat_numericUpDown.Value = FloatConfig.Default.maxFloatPrecent;
             getItems_numericUpDown.Value = FloatConfig.Default.countGetItems;
@@ -93,6 +94,7 @@ namespace ItemChecker
             onlySt_checkBox.Checked = false;
             compareSta_checkBox.Checked = false;
             favoriteTimer_numericUpDown.Value = 15;
+            deviation_numericUpDown.Value = 0.01m;
             //float
             maxPrecentFloat_numericUpDown.Value = Convert.ToDecimal(7);
             getItems_numericUpDown.Value = 40;
@@ -144,6 +146,7 @@ namespace ItemChecker
                     WithdrawConfig.Default.onlySticker = onlySt_checkBox.Checked;
                     WithdrawConfig.Default.compareSta = compareSta_checkBox.Checked;
                     WithdrawConfig.Default.timer = Convert.ToInt32(favoriteTimer_numericUpDown.Value);
+                    WithdrawConfig.Default.deviation = deviation_numericUpDown.Value;
                     //float
                     FloatConfig.Default.maxFloatPrecent = maxPrecentFloat_numericUpDown.Value;
                     FloatConfig.Default.countGetItems = Convert.ToInt32(getItems_numericUpDown.Value);

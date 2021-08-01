@@ -49,13 +49,13 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("500")]
-        public int minSales {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int minPrice {
             get {
-                return ((int)(this["minSales"]));
+                return ((int)(this["minPrice"]));
             }
             set {
-                this["minSales"] = value;
+                this["minPrice"] = value;
             }
         }
         
@@ -73,13 +73,13 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int minPrice {
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int minSales {
             get {
-                return ((int)(this["minPrice"]));
+                return ((int)(this["minSales"]));
             }
             set {
-                this["minPrice"] = value;
+                this["minSales"] = value;
             }
         }
         
@@ -133,18 +133,6 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string favoriteList {
-            get {
-                return ((string)(this["favoriteList"]));
-            }
-            set {
-                this["favoriteList"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int timer {
             get {
@@ -152,6 +140,42 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["timer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.01")]
+        public decimal deviation {
+            get {
+                return ((decimal)(this["deviation"]));
+            }
+            set {
+                this["deviation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string favoriteItems {
+            get {
+                return ((string)(this["favoriteItems"]));
+            }
+            set {
+                this["favoriteItems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string favoritePrices {
+            get {
+                return ((string)(this["favoritePrices"]));
+            }
+            set {
+                this["favoritePrices"] = value;
             }
         }
     }

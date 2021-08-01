@@ -8,14 +8,14 @@
     <Setting Name="maxPrecent" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">60</Value>
     </Setting>
-    <Setting Name="minSales" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">500</Value>
+    <Setting Name="minPrice" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="maxPrice" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="minPrice" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="minSales" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="souvenir" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -29,11 +29,17 @@
     <Setting Name="compareSta" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="favoriteList" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="timer" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="deviation" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0.01</Value>
+    </Setting>
+    <Setting Name="favoriteItems" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="favoritePrices" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
