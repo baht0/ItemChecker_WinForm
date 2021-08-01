@@ -12,12 +12,12 @@ namespace ItemChecker.Model
         public static List<double> csmUpdated = new();
 
         public static DataTable dataTable = new();
-        public static List<double> price_one = new();
-        public static List<double> price2_one = new();
-        public static List<double> price_two = new();
-        public static List<double> price2_two = new();
-        public static List<double> precent = new();
-        public static List<double> difference = new();
+        public static List<decimal> price_one = new();
+        public static List<decimal> price2_one = new();
+        public static List<decimal> price_two = new();
+        public static List<decimal> price2_two = new();
+        public static List<decimal> precent = new();
+        public static List<decimal> difference = new();
         public static List<string> status = new();
 
         public static void _clear()

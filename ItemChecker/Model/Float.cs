@@ -4,13 +4,13 @@ namespace ItemChecker.Model
 {
     public class Float
     {
-        public static double lowestPrice;
-        public static double medianPrice;
-        public static double csmPrice;
-        public static double precent;
-        public static double floatValue;
+        public static decimal lowestPrice;
+        public static decimal medianPrice;
+        public static decimal csmPrice;
+        public static decimal precent;
+        public static decimal floatValue;
         public static decimal maxFloat;
-        public static double priceCompare;
+        public static decimal priceCompare;
 
         public static List<string> items = new List<string>();
         public static List<string> listingId = new List<string>();

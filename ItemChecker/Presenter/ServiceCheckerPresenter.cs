@@ -118,28 +118,28 @@ namespace ItemChecker.Presenter
         {
             if (ServiceChecker.service_one == 0)
             {
-                ServiceChecker.price_one.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
-                ServiceChecker.price2_one.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
+                ServiceChecker.price_one.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
+                ServiceChecker.price2_one.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
                 ServiceChecker.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
             }
             else if (ServiceChecker.service_two == 0)
             {
-                ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
-                double buyOrder = Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString()) * 0.8696;
+                ServiceChecker.price_two.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
+                decimal buyOrder = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString()) * 0.8696m;
                 ServiceChecker.price2_two.Add(Math.Round(buyOrder, 2));
                 ServiceChecker.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
                 ServiceChecker.status.Add("Tradable");
             }
             if (ServiceChecker.service_one == 1)
             {
-                ServiceChecker.price2_one.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString()));
-                ServiceChecker.price_one.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
+                ServiceChecker.price2_one.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString()));
+                ServiceChecker.price_one.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
                 ServiceChecker.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
             }
             else if (ServiceChecker.service_two == 1)
             {
-                ServiceChecker.price2_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString()));
-                ServiceChecker.price_two.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
+                ServiceChecker.price2_two.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString()));
+                ServiceChecker.price_two.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
                 ServiceChecker.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
 
                 if (Main.unavailable.Contains(Main.checkList[i]))
@@ -172,16 +172,16 @@ namespace ItemChecker.Presenter
                     int id = str.IndexOf(Main.checkList[i]);
                     if (ServiceChecker.service_one == 2)
                     {
-                        double price = Convert.ToDouble(jArray[id]["price"]) / 100;
+                        decimal price = Convert.ToDecimal(jArray[id]["price"]) / 100;
                         ServiceChecker.price_one.Add(price);
-                        ServiceChecker.price2_one.Add(Math.Round(price * 0.95, 2));
+                        ServiceChecker.price2_one.Add(Math.Round(price * 0.95m, 2));
                         int have = Convert.ToInt32(jArray[id]["have"]);
                     }
                     else if (ServiceChecker.service_two == 2)
                     {
-                        double price = Convert.ToDouble(jArray[id]["price"]) / 100;
+                        decimal price = Convert.ToDecimal(jArray[id]["price"]) / 100;
                         ServiceChecker.price_two.Add(price);
-                        ServiceChecker.price2_two.Add(Math.Round(price * 0.95, 2));
+                        ServiceChecker.price2_two.Add(Math.Round(price * 0.95m, 2));
 
                         int have = Convert.ToInt32(jArray[id]["have"]);
                         int max = Convert.ToInt32(jArray[id]["max"]);
@@ -244,15 +244,15 @@ namespace ItemChecker.Presenter
                 {
                     if (ServiceChecker.service_one == 0) //steam -> (any)
                     {
-                        double precent = Edit.Precent(ServiceChecker.price2_one[i], ServiceChecker.price2_two[i]);
-                        double difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price2_one[i], Main.course);
+                        decimal precent = Edit.Precent(ServiceChecker.price2_one[i], ServiceChecker.price2_two[i]);
+                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price2_one[i], Main.course);
                         ServiceChecker.precent.Add(precent);
                         ServiceChecker.difference.Add(difference);
                     }
                     else //(any) -> (any)
                     {
-                        double precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price2_two[i]);
-                        double difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price_one[i], Main.course);
+                        decimal precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price2_two[i]);
+                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price_one[i], Main.course);
                         ServiceChecker.precent.Add(precent);
                         ServiceChecker.difference.Add(difference);
                     }
@@ -287,7 +287,7 @@ namespace ItemChecker.Presenter
                 {
                     var item = row.Cells[1].Value.ToString();
                     var price2_one = Edit.removeDol(row.Cells[3].Value.ToString());
-                    var precent = Convert.ToDouble(row.Cells[6].Value.ToString());
+                    var precent = Convert.ToDecimal(row.Cells[6].Value.ToString());
                     var status = row.Cells[8].Value.ToString();
                     if (precent >= 20)
                         row.Cells[6].Style.BackColor = Color.MediumSeaGreen;
@@ -354,7 +354,7 @@ namespace ItemChecker.Presenter
                     serviceCheckerForm.servChecker_dataGridView.Columns[i].DataPropertyName = nameColumn;
                     ServiceChecker.dataTable.Columns.Add(new DataColumn(nameColumn));
                     if (i >= 2 & i <= 7)
-                        ServiceChecker.dataTable.Columns[i].DataType = typeof(Double);
+                        ServiceChecker.dataTable.Columns[i].DataType = typeof(decimal);
                 }
         }
 
@@ -502,7 +502,7 @@ namespace ItemChecker.Presenter
                 int row = serviceCheckerForm.servChecker_dataGridView.CurrentCell.RowIndex;
                 int cell = serviceCheckerForm.servChecker_dataGridView.CurrentCell.ColumnIndex;
                 string item = serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[1].Value.ToString();
-                double sta = Edit.removeSymbol(serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[3].Value.ToString());
+                decimal sta = Edit.removeSymbol(serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[3].Value.ToString());
 
                 if (!BuyOrder.item.Contains(item) & cell != 3 & sta <= Steam.balance_usd)
                 {
@@ -563,7 +563,7 @@ namespace ItemChecker.Presenter
                             }
                             if(cell.ColumnIndex >= 2 & cell.ColumnIndex <= 7)
                             {
-                                value = Math.Round(Convert.ToDouble(value) * 100);
+                                value = Math.Round(Convert.ToDecimal(value) * 100);
                             }
                             csv += value;
                             csv += ",";
@@ -630,7 +630,7 @@ namespace ItemChecker.Presenter
                     {
                         row[j] = value[j].Replace(";", ",");
                         if (j >= 2 & j <= 7)
-                            row[j] = Math.Round(Convert.ToDouble(value[j]) / 100, 2);
+                            row[j] = Math.Round(Convert.ToDecimal(value[j]) / 100, 2);
                     }
                     ServiceChecker.dataTable.Rows.Add(row);
                 }

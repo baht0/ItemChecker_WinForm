@@ -63,15 +63,15 @@ namespace ItemChecker.Presenter
                         JProperty jProperty = attribute.ToObject<JProperty>();
                         string listing_id = jProperty.Name;
 
-                        double subtotal = Convert.ToDouble(JObject.Parse(json)["listinginfo"][listing_id]["converted_price"].ToString());
-                        double fee_steam = Convert.ToDouble(JObject.Parse(json)["listinginfo"][listing_id]["converted_steam_fee"].ToString());
-                        double fee_csgo = Convert.ToDouble(JObject.Parse(json)["listinginfo"][listing_id]["converted_publisher_fee"].ToString());
-                        double fee = fee_steam + fee_csgo;
-                        double total = subtotal + fee;
-                        double price = total / 100;
+                        decimal subtotal = Convert.ToDecimal(JObject.Parse(json)["listinginfo"][listing_id]["converted_price"].ToString());
+                        decimal fee_steam = Convert.ToDecimal(JObject.Parse(json)["listinginfo"][listing_id]["converted_steam_fee"].ToString());
+                        decimal fee_csgo = Convert.ToDecimal(JObject.Parse(json)["listinginfo"][listing_id]["converted_publisher_fee"].ToString());
+                        decimal fee = fee_steam + fee_csgo;
+                        decimal total = subtotal + fee;
+                        decimal price = total / 100;
 
                         Float.precent = Math.Round(((price - Float.priceCompare) / price) * 100, 2);
-                        if (Float.precent > Convert.ToDouble(FloatConfig.Default.maxFloatPrecent)) break;
+                        if (Float.precent > Convert.ToDecimal(FloatConfig.Default.maxFloatPrecent)) break;
 
                         string ass_id = JObject.Parse(json)["listinginfo"][listing_id]["asset"]["id"].ToString();
 
@@ -83,7 +83,7 @@ namespace ItemChecker.Presenter
                         else if (item.Contains("Field-Tested")) Float.maxFloat = FloatConfig.Default.maxFloatValue_FT;
                         else if (item.Contains("Well-Worn")) Float.maxFloat = FloatConfig.Default.maxFloatValue_WW;
                         else if (item.Contains("Battle-Scarred")) Float.maxFloat = FloatConfig.Default.maxFloatValue_BS;
-                        if (getFloatValue(link) < Convert.ToDouble(Float.maxFloat))
+                        if (getFloatValue(link) < Convert.ToDecimal(Float.maxFloat))
                         {
                             buyItem(item, price, listing_id, fee, subtotal, total);
                         }
@@ -119,7 +119,7 @@ namespace ItemChecker.Presenter
                     }
                 }
                 while (!response.Item2);
-                Float.csmPrice = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
+                Float.csmPrice = Convert.ToDecimal(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
                 Float.csmPrice = Math.Round(Float.csmPrice * Main.course, 2);
 
                 if (FloatConfig.Default.priceCompare == 0) Float.priceCompare = Float.lowestPrice;
@@ -131,14 +131,14 @@ namespace ItemChecker.Presenter
                 Exceptions.errorLog(exp, Main.version);
             }
         }
-        private static Double getFloatValue(string link)
+        private static Decimal getFloatValue(string link)
         {
             try
             {
                 string url = @"https://api.csgofloat.com/?url=" + link;
 
                 var json = Request.GetRequest(url);
-                Float.floatValue = Convert.ToDouble(JObject.Parse(json)["iteminfo"]["floatvalue"].ToString());
+                Float.floatValue = Convert.ToDecimal(JObject.Parse(json)["iteminfo"]["floatvalue"].ToString());
                 return Float.floatValue;
             }
             catch (Exception exp)
@@ -148,7 +148,7 @@ namespace ItemChecker.Presenter
             }
 
         }
-        private static void buyItem(string item, double price, string listing_id, double fee, double subtotal, double total)
+        private static void buyItem(string item, decimal price, string listing_id, decimal fee, decimal subtotal, decimal total)
         {
             Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
             SystemSounds.Asterisk.Play();

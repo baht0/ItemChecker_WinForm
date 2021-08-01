@@ -6,7 +6,7 @@
         public static string pass { get; set; }
         public static string code { get; set; }
 
-        public static double balance { get; set; }
-        public static double balance_usd { get; set; }
+        public static decimal balance { get; set; }
+        public static decimal balance_usd { get; set; }
     }
 }

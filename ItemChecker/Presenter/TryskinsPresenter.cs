@@ -24,7 +24,7 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check Tryskins..."; }));
             TrySkins._clear();
-            double min_sta = 2;
+            decimal min_sta = 2;
             if (TryskinsConfig.Default.minTryskinsPrice == 0)
             {
                 int j = 15;
@@ -37,7 +37,7 @@ namespace ItemChecker.Presenter
                 min_sta -= 2;
             }
             else min_sta = TryskinsConfig.Default.minTryskinsPrice;
-            double max_sta = Steam.balance_usd;
+            decimal max_sta = Steam.balance_usd;
             if (TryskinsConfig.Default.maxTryskinsPrice != 0)
                 max_sta = TryskinsConfig.Default.maxTryskinsPrice;
 
@@ -103,7 +103,7 @@ namespace ItemChecker.Presenter
             {
                 string[] str = items[i].Text.Split("\n");
                 string item_name = str[0].Trim();
-                string[] prices; double precent;
+                string[] prices; decimal precent;
 
                 if (str[1].Contains("$"))
                 {
@@ -115,8 +115,8 @@ namespace ItemChecker.Presenter
                     prices = str[4].Split(" ");
                     precent = Edit.removeSymbol(str[5].Trim());
                 }
-                double sta = Edit.removeDol(prices[0].Trim());
-                double csm = Edit.removeDol(prices[1].Trim());
+                decimal sta = Edit.removeDol(prices[0].Trim());
+                decimal csm = Edit.removeDol(prices[1].Trim());
 
                 TrySkins.item.Add(item_name);
                 TrySkins.sta.Add(sta);
@@ -145,8 +145,8 @@ namespace ItemChecker.Presenter
                 }
                 while (!response.Item2);
 
-                var highest_buy_order = Convert.ToDouble(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
-                var csm_sell = Convert.ToDouble(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
+                var highest_buy_order = Convert.ToDecimal(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
+                var csm_sell = Convert.ToDecimal(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
                 var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
 
                 if (precent > 0)
@@ -174,8 +174,8 @@ namespace ItemChecker.Presenter
                     string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
                     string response = Request.GetRequest(url, Main.proxyList[id]);
 
-                    var highest_buy_order = Convert.ToDouble(JObject.Parse(response)["steam"]["buyOrder"].ToString());
-                    var csm_sell = Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString());
+                    var highest_buy_order = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString());
+                    var csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());
                     var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
 
                     if (precent > 0)
@@ -210,8 +210,8 @@ namespace ItemChecker.Presenter
                 table.Columns.Add(new DataColumn( mainForm.tryskins_dataGridView.Columns[i].Name ));
                 mainForm.tryskins_dataGridView.Columns[i].DataPropertyName = mainForm.tryskins_dataGridView.Columns[i].Name;
             }
-            table.Columns[4].DataType = typeof(Double);
-            table.Columns[5].DataType = typeof(Double);
+            table.Columns[4].DataType = typeof(decimal);
+            table.Columns[5].DataType = typeof(decimal);
             for (int i = 0; i < TrySkins.item.Count; i++)
             {
                 table.Rows.Add(null,
@@ -265,7 +265,7 @@ namespace ItemChecker.Presenter
                 int row = mainForm.tryskins_dataGridView.CurrentCell.RowIndex;
                 int cell = mainForm.tryskins_dataGridView.CurrentCell.ColumnIndex;
                 string item = mainForm.tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
-                double sta = Edit.removeSymbol(mainForm.tryskins_dataGridView.Rows[row].Cells[2].Value.ToString());
+                decimal sta = Edit.removeSymbol(mainForm.tryskins_dataGridView.Rows[row].Cells[2].Value.ToString());
 
                 if (!BuyOrder.item.Contains(item) & cell != 2 & sta <= Steam.balance_usd)
                 {

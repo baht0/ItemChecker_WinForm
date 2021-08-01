@@ -7,19 +7,19 @@ namespace ItemChecker.Model
     {
         //order
         public static int my_buy_orders { get; set; }
-        public static double available_amount { get; set; }
-        public static double sum { get; set; }
+        public static decimal available_amount { get; set; }
+        public static decimal sum { get; set; }
 
         public static List<string> item = new List<string>();
         public static List<string> url = new List<string>();
         public static List<string> id = new List<string>();
-        public static List<double> price = new List<double>();
-        public static List<double> csm_price = new List<double>();
-        public static List<double> precent = new List<double>();
-        public static List<double> difference = new List<double>();
+        public static List<decimal> price = new List<decimal>();
+        public static List<decimal> csm_price = new List<decimal>();
+        public static List<decimal> precent = new List<decimal>();
+        public static List<decimal> difference = new List<decimal>();
         //place order
         public static List<string> queue = new List<string>();
-        public static double queue_rub { get; set; }
+        public static decimal queue_rub { get; set; }
         //push
         public static Timer timer = new();
         public static int tick { get; set; }

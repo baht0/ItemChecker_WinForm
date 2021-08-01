@@ -6,9 +6,9 @@ namespace ItemChecker.Model
     {
         public static List<string> item = new List<string>();
         public static List<int> sales = new List<int>();
-        public static List<double> csm = new List<double>();
-        public static List<double> st = new List<double>();
-        public static List<double> precent = new List<double>();
+        public static List<decimal> csm = new List<decimal>();
+        public static List<decimal> st = new List<decimal>();
+        public static List<decimal> precent = new List<decimal>();
         public static int souvenir { get; set; }
         public static int sticker { get; set; }
         public static string url { get; set; }

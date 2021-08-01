@@ -53,7 +53,7 @@ namespace ItemChecker.Presenter
         {
             BuyOrder.sum = 0;
             BuyOrder.available_amount = 0;
-            foreach (double item_price in BuyOrder.price) BuyOrder.sum += item_price;
+            foreach (decimal item_price in BuyOrder.price) BuyOrder.sum += item_price;
             BuyOrder.available_amount = Math.Round(Steam.balance * 10 - BuyOrder.sum, 2);
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.Text = "Available: " + BuyOrder.available_amount.ToString() + "₽"; }));
             if (BuyOrder.available_amount < 1000)
@@ -114,9 +114,9 @@ namespace ItemChecker.Presenter
         }
         private static void parseOrder(string response, int i)
         {
-            double my_order = Convert.ToDouble(BuyOrder.price[i]);
+            decimal my_order = Convert.ToDecimal(BuyOrder.price[i]);
             var buy_order = Math.Round(my_order / Main.course, 2);
-            var csm_sell = Convert.ToDouble(JObject.Parse(response)["csm"]["sell"].ToString());
+            var csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());
             var precent = Edit.Precent(buy_order, csm_sell);
             var different = Edit.Difference(csm_sell * Main.course, my_order);
 
@@ -135,8 +135,8 @@ namespace ItemChecker.Presenter
                 table.Columns.Add(new DataColumn(mainForm.buyOrder_dataGridView.Columns[i].Name));
                 mainForm.buyOrder_dataGridView.Columns[i].DataPropertyName = mainForm.buyOrder_dataGridView.Columns[i].Name;
             }
-            table.Columns[4].DataType = typeof(Double);
-            table.Columns[5].DataType = typeof(Double);
+            table.Columns[4].DataType = typeof(decimal);
+            table.Columns[5].DataType = typeof(decimal);
             for (int i = 0; i < BuyOrder.item.Count; i++)
             {
                 table.Rows.Add(null,
@@ -392,9 +392,9 @@ namespace ItemChecker.Presenter
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/" + BuyOrder.url[i]);
                     Thread.Sleep(500);
                     var ItemNameId = Request.ItemNameId(BuyOrder.url[i]);
-                    var highest_buy_order = Request.ItemOrdersHistogram(ItemNameId);
+                    decimal highest_buy_order = Request.ItemOrdersHistogram(ItemNameId);
 
-                    double my_order = BuyOrder.price[i];
+                    decimal my_order = BuyOrder.price[i];
 
                     if (highest_buy_order > my_order & Steam.balance >= highest_buy_order & (highest_buy_order - my_order) <= BuyOrder.available_amount)
                     {

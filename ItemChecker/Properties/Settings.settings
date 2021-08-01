@@ -17,7 +17,7 @@
     <Setting Name="UpdateSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="course" Type="System.Double" Scope="User">
+    <Setting Name="course" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">74</Value>
     </Setting>
   </Settings>

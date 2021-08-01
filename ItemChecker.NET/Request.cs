@@ -44,14 +44,14 @@ namespace ItemChecker.Net
 
             return js_fetch;
         }
-        public static String BuyListing(string listing_id, double fee, double subtotal, double total, string sessionid)
+        public static String BuyListing(string listing_id, decimal fee, decimal subtotal, decimal total, string sessionid)
         {
             string body = $"sessionid={sessionid}&currency=5&fee={fee}&subtotal={subtotal}&total={total}&quantity=1&first_name=&last_name=&billing_address=&billing_address_two=&billing_country=&billing_city=&billing_state=&billing_postal_code=&save_my_address=1";
             string url = "https://steamcommunity.com/market/buylisting/" + listing_id;
 
             return PostRequestFetch("application/x-www-form-urlencoded", body, url);
         }
-        public static String CreateBuyOrder(string market_hash_name, double last_order, string sessionid)
+        public static String CreateBuyOrder(string market_hash_name, decimal last_order, string sessionid)
         {
             string price_total = (last_order * 100 + 1).ToString();
             string body = "sessionid=" + sessionid + @"&currency=5&appid=730&market_hash_name=" + market_hash_name + @"&price_total=" + price_total + @"&quantity=1&billing_state=&save_my_address=0";
@@ -152,11 +152,11 @@ namespace ItemChecker.Net
             int id = Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(str, @"[^\d]+", ""));
             return id;
         }
-        public static Double ItemOrdersHistogram(int item_nameid)
+        public static decimal ItemOrdersHistogram(int item_nameid)
         {
             var json = GetRequest("https://steamcommunity.com/market/itemordershistogram?country=RU&language=english&currency=5&item_nameid=" + item_nameid + "&two_factor=0");
 
-            var highest_buy_order = Convert.ToDouble(JObject.Parse(json)["highest_buy_order"].ToString());
+            var highest_buy_order = Convert.ToDecimal(JObject.Parse(json)["highest_buy_order"].ToString());
             return highest_buy_order / 100;
         }
         //delete
@@ -170,7 +170,7 @@ namespace ItemChecker.Net
             return js_fetch;
         }
 
-        public static Double GetCourse(string currency_api_key)
+        public static decimal GetCourse(string currency_api_key)
         {
             try
             {
@@ -179,14 +179,14 @@ namespace ItemChecker.Net
                     string url = @"https://free.currconv.com/api/v7/convert?q=USD_RUB&compact=ultra&apiKey=" + currency_api_key;
                     var json = GetRequest(url);
 
-                    return Math.Round(Convert.ToDouble(JObject.Parse(json)["USD_RUB"].ToString()), 2);
+                    return Math.Round(Convert.ToDecimal(JObject.Parse(json)["USD_RUB"].ToString()), 2);
                 }
                 else
                 {
                     string url = @"https://openexchangerates.org/api/latest.json?app_id=" + currency_api_key;
                     var json = GetRequest(url);
 
-                    return Math.Round(Convert.ToDouble(JObject.Parse(json)["rates"]["RUB"].ToString()), 2);
+                    return Math.Round(Convert.ToDecimal(JObject.Parse(json)["rates"]["RUB"].ToString()), 2);
                 }        
 
             }

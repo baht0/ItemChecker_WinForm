@@ -4,12 +4,12 @@ namespace ItemChecker.Model
 {
     public class TrySkins
     {
-        public static List<string> item = new List<string>();
-        public static List<double> sta = new List<double>();
-        public static List<double> csm = new List<double>();
+        public static List<string> item = new();
+        public static List<decimal> sta = new();
+        public static List<decimal> csm = new();
 
-        public static List<double> precent = new List<double>();
-        public static List<double> difference = new List<double>();
+        public static List<decimal> precent = new();
+        public static List<decimal> difference = new();
 
         public static int t { get; set; }
         public static string url = "https://table.altskins.com/site/items";

@@ -104,12 +104,12 @@ namespace ItemChecker.Presenter
                     string item_name = str[0].Trim();
                     int sales = Convert.ToInt32(str[2].Trim());
 
-                    double precent = Edit.removeSymbol(str[5].Trim());
+                    decimal precent = Edit.removeSymbol(str[5].Trim());
                     str[4] = str[4].Replace("★ ", null);
                     str[4] = str[4].Replace("🕐 ", null);
                     string[] prices = str[4].Split(" ");
-                    double csm = Edit.removeDol(prices[0].Trim());
-                    double st = Edit.removeDol(prices[2].Trim());
+                    decimal csm = Edit.removeDol(prices[0].Trim());
+                    decimal st = Edit.removeDol(prices[2].Trim());
 
                     Withdraw.item.Add(item_name);
                     Withdraw.csm.Add(csm);
@@ -136,8 +136,8 @@ namespace ItemChecker.Presenter
                 table.Columns.Add(new DataColumn(mainForm.withdraw_dataGridView.Columns[i].Name));
                 mainForm.withdraw_dataGridView.Columns[i].DataPropertyName = mainForm.withdraw_dataGridView.Columns[i].Name;
             }
-            table.Columns[4].DataType = typeof(Double);
-            table.Columns[5].DataType = typeof(Double);
+            table.Columns[4].DataType = typeof(decimal);
+            table.Columns[5].DataType = typeof(decimal);
             for (int i = 0; i < Withdraw.item.Count; i++)
             {
                 table.Rows.Add(null,
@@ -155,7 +155,7 @@ namespace ItemChecker.Presenter
             foreach (DataGridViewRow row in mainForm.withdraw_dataGridView.Rows)
             {
                 var item = row.Cells[1].Value.ToString();
-                var sales = Convert.ToDouble(row.Cells[4].Value.ToString());
+                var sales = Convert.ToDecimal(row.Cells[4].Value.ToString());
                 var precent = Edit.removeSymbol(row.Cells[5].Value.ToString());
                 if (precent < 5)
                     row.Cells[5].Style.BackColor = Color.LightSalmon;

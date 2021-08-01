@@ -11,7 +11,7 @@ namespace ItemChecker.Model
         public static IWebDriver Browser { get; set; }
         public static WebDriverWait wait { get; set; }
         public static string sessionid { get; set; }
-        public static double course { get; set; }
+        public static decimal course { get; set; }
         public static string save_str { get; set; }
         public static int reload { get; set; }
         public static bool loading { get; set; }

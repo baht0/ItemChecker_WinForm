@@ -86,9 +86,9 @@ namespace ItemChecker.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("74")]
-        public double course {
+        public decimal course {
             get {
-                return ((double)(this["course"]));
+                return ((decimal)(this["course"]));
             }
             set {
                 this["course"] = value;

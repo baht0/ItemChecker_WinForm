@@ -48,20 +48,20 @@ namespace ItemChecker.Support
         }
 
         //remove
-        public static Double removeRub(string rub)
+        public static Decimal removeRub(string rub)
         {
             string str = rub.Replace(",", ".");
-            return Convert.ToDouble(str.Substring(0, str.Length - 5), CultureInfo.InvariantCulture);
+            return Convert.ToDecimal(str.Substring(0, str.Length - 5), CultureInfo.InvariantCulture);
         }
-        public static Double removeDol(string dol)
+        public static Decimal removeDol(string dol)
         {
             string str = dol.Replace("$", "");
-            return Convert.ToDouble(str.Replace(" USD", ""), CultureInfo.InvariantCulture);
+            return Convert.ToDecimal(str.Replace(" USD", ""), CultureInfo.InvariantCulture);
         }
-        public static Double removeSymbol(string str)
+        public static Decimal removeSymbol(string str)
         {
             str = str.Replace(",", ".");
-            return Convert.ToDouble(str.Substring(0, str.Length - 1), CultureInfo.InvariantCulture);
+            return Convert.ToDecimal(str.Substring(0, str.Length - 1), CultureInfo.InvariantCulture);
         }
         public static String buyOrderId(string idOrder)
         {
@@ -74,31 +74,31 @@ namespace ItemChecker.Support
             str = str.Replace("â˜…", "★");
             return str;
         }
-        public static String currencyConverter(string str, double currency)
+        public static String currencyConverter(string str, decimal currency)
         {
-            double value = Convert.ToDouble(removeSymbol(str), CultureInfo.InvariantCulture);
+            Decimal value = Convert.ToDecimal(removeSymbol(str), CultureInfo.InvariantCulture);
             value = Math.Round(value * currency, 2);
 
             return value.ToString() + "₽";
         }
-        public static String funcConvert(double value, double currency)
+        public static String funcConvert(decimal value, decimal currency)
         {
             value = Math.Round(value * currency, 2);
 
             return value.ToString() + "₽";
         }
-        public static Double Precent(double a, double b) //from A to B
+        public static Decimal Precent(decimal a, decimal b) //from A to B
         {
             if (a != 0)
                 return Math.Round(((b - a) / a) * 100, 2);
             else
                 return 0;
         }
-        public static Double Difference(double a, double b)
+        public static Decimal Difference(decimal a, decimal b)
         {
             return Math.Round((a - b), 2);
         }
-        public static Double Difference(double a, double b, double currency)
+        public static Decimal Difference(decimal a, decimal b, decimal currency)
         {
             return Math.Round((a - b) * currency, 2);
         }
