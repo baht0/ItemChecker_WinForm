@@ -560,7 +560,7 @@ namespace ItemChecker.Presenter
             {
                 str += row.Cells[1].Value;
                 if (result == DialogResult.Yes)
-                    str += ";" + Convert.ToDouble(row.Cells[2].Value) * 100;
+                    str += ";" + (int)(Convert.ToDecimal(row.Cells[2].Value) * 100);
                 str += "\r\n";
             }
             str = str.Remove(str.Length - 2);
@@ -592,7 +592,7 @@ namespace ItemChecker.Presenter
                             }
                             if(cell.ColumnIndex >= 2 & cell.ColumnIndex <= 7)
                             {
-                                value = Math.Round(Convert.ToDouble(value) * 100);
+                                value = (int)(Convert.ToDecimal(value) * 100);
                             }
                             csv += value;
                             csv += ",";

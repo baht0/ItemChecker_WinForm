@@ -20,6 +20,7 @@ namespace ItemChecker
         public CheckListForm(string str)
         {
             InitializeComponent();
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             request = str;
             if (str.Contains("FloatList"))
             {
@@ -48,7 +49,6 @@ namespace ItemChecker
         }
         private void ok_button_Click(object sender, EventArgs e)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             string str = richTextBox1.Text.Replace("\r\n", "\n");
             if (request.Contains("FloatList"))
             {
@@ -106,20 +106,35 @@ namespace ItemChecker
             {
                 InitialDirectory = Application.StartupPath,
                 RestoreDirectory = true,
-                Filter = "Items List (txt)|*.txt"
+                Filter = "ItemsList (txt)|*.txt"
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string text = File.ReadAllText(dialog.FileName);
-                if (text.Contains(";") & !request.Contains("FavoriteList"))
-                {
-                    MessageBox.Show($"The list contains the price or prices of items.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                if (!request.Contains("FavoriteList") & text.Contains(";"))
+                    text = clearPrices(text);
+
                 richTextBox1.Clear();
                 richTextBox1.Text = text;
                 this.Text = $"{request}: {richTextBox1.Lines.Count()}";
             }
+        }
+        private String clearPrices(string fileText)
+        {
+            string[] lines = fileText.Replace("\r\n", "\n").Split('\n');
+            string text = null;
+            foreach (string line in lines)
+            {
+                if (line.Contains(";"))
+                {
+                    int i = line.LastIndexOf(';');
+                    text += line.Substring(0, i) + "\r\n";
+                }
+                else
+                    text += line + "\r\n";
+            }
+            text = text.Remove(text.Length - 2);
+            return text;
         }
         private void getToolStripMenuItem_Click(object sender, EventArgs e)
         {

@@ -366,15 +366,14 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 List<string> favoriteItems = Withdraw.favoriteItems;
-                List<string> favoriteIte = favoriteItems;
                 Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
                 foreach (string favoriteItem in favoriteItems)
                 {
                     try
                     {
-                        string[] item_name = favoriteItem.Split(';');
+                        string[] item_line = favoriteItem.Split(';');
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Checking..."; }));
-                        var json = Request.inventoriesCsMoney(Edit.replaceUrl(item_name[0]));
+                        var json = Request.inventoriesCsMoney(Edit.replaceUrl(item_line[0]));
                         if (!json.Contains("error"))
                         {
                             JArray items = new();
@@ -383,7 +382,7 @@ namespace ItemChecker.Presenter
                             {
                                 if (favoriteItem.Contains(";"))
                                 {
-                                    decimal price = Convert.ToDecimal(item_name[1]) / 100 + WithdrawConfig.Default.deviation;
+                                    decimal price = Convert.ToDecimal(item_line[1]) / 100 + WithdrawConfig.Default.deviation;
                                     if (Convert.ToDecimal(item["price"]) / 100 > price)
                                         continue;
                                 }
