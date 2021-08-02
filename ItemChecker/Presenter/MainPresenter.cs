@@ -302,7 +302,7 @@ namespace ItemChecker.Presenter
         {
             mainForm.notifyIcon.BalloonTipText = str;
             mainForm.notifyIcon.BalloonTipIcon = icon;
-            mainForm.notifyIcon.ShowBalloonTip(3);
+            mainForm.notifyIcon.ShowBalloonTip(2);
         }
         public static void progressInvoke(int i = 1)
         {

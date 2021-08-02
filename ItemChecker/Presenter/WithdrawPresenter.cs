@@ -365,20 +365,28 @@ namespace ItemChecker.Presenter
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-                List<string> list = Withdraw.favoriteItems;
+                List<string> favoriteItems = Withdraw.favoriteItems;
+                List<string> favoriteIte = favoriteItems;
                 Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
-                foreach (string item_name in list)
+                foreach (string favoriteItem in favoriteItems)
                 {
                     try
                     {
+                        string[] item_name = favoriteItem.Split(';');
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Checking..."; }));
-                        var json = Request.inventoriesCsMoney(Edit.replaceUrl(item_name));
+                        var json = Request.inventoriesCsMoney(Edit.replaceUrl(item_name[0]));
                         if (!json.Contains("error"))
                         {
                             JArray items = new();
                             JArray inventory = JArray.Parse(JObject.Parse(json)["items"].ToString());
                             foreach (JObject item in inventory)
                             {
+                                if (favoriteItem.Contains(";"))
+                                {
+                                    decimal price = Convert.ToDecimal(item_name[1]) / 100 + WithdrawConfig.Default.deviation;
+                                    if (Convert.ToDecimal(item["price"]) / 100 > price)
+                                        continue;
+                                }
                                 if (item.ContainsKey("stackSize"))
                                 {
                                     var response = Request.GetRequest("https://inventories.cs.money/4.0/get_bot_stack/730/" + item["stackId"].ToString());
@@ -411,11 +419,12 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                Withdraw.tick = WithdrawConfig.Default.timer;
-                Withdraw.timer.Enabled = true;
                 mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.timer_StripStatus.Text = "Next check: 00:00";
                     mainForm.checkWith_label.Text = $"Check: {checkCount++}";
                     mainForm.progressBar_StripStatus.Visible = false; }));
+                Withdraw.tick = WithdrawConfig.Default.timer;
+                Withdraw.timer.Enabled = true;
                 Main.loading = false;
             }
         }

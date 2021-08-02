@@ -542,6 +542,7 @@ namespace ItemChecker.Presenter
 
         public static void exportTxt(object state)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             DialogResult result = MessageBox.Show($"Add prices \"{serviceCheckerForm.servChecker_dataGridView.Columns[2].HeaderText}\" to the list you create?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (result == DialogResult.Cancel)
                 return;
@@ -554,12 +555,12 @@ namespace ItemChecker.Presenter
             DirectoryInfo dirInfo = new("extract");
             if (!dirInfo.Exists)
                 dirInfo.Create();
-            string str = "";
+            string str = null;
             foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
             {
                 str += row.Cells[1].Value;
                 if (result == DialogResult.Yes)
-                    str += ";" + Convert.ToDecimal(row.Cells[2].Value) * 100;
+                    str += ";" + Convert.ToDouble(row.Cells[2].Value) * 100;
                 str += "\r\n";
             }
             str = str.Remove(str.Length - 2);
@@ -591,7 +592,7 @@ namespace ItemChecker.Presenter
                             }
                             if(cell.ColumnIndex >= 2 & cell.ColumnIndex <= 7)
                             {
-                                value = Math.Round(Convert.ToDecimal(value) * 100);
+                                value = Math.Round(Convert.ToDouble(value) * 100);
                             }
                             csv += value;
                             csv += ",";

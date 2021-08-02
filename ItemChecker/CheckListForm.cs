@@ -9,6 +9,8 @@ using ItemChecker.Presenter;
 using ItemChecker.Support;
 using ItemChecker.Settings;
 using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace ItemChecker
 {
@@ -46,6 +48,7 @@ namespace ItemChecker
         }
         private void ok_button_Click(object sender, EventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             string str = richTextBox1.Text.Replace("\r\n", "\n");
             if (request.Contains("FloatList"))
             {
@@ -66,23 +69,13 @@ namespace ItemChecker
             {
                 Withdraw.favoriteItems.Clear();
                 Withdraw.favoriteItems.AddRange(richTextBox1.Lines);
-
-                //Withdraw.favoritePrices.Clear();
-                //foreach (string line in richTextBox1.Lines)
-                //{
-                //    decimal price = -1;
-                //    if (line.Contains(";"))
-                //    {
-                //        int i = line.LastIndexOf(';') + 1;
-                //        price = (Convert.ToDecimal(line.Substring(i)) / 100) + WithdrawConfig.Default.deviation;
-                //    }
-                //    Withdraw.favoritePrices.Add(price);
-                //}
-
                 WithdrawConfig.Default.favoriteItems = str;
             }
             else if (request.Contains("ProxyList"))
             {
+                var matches = Regex.Matches(richTextBox1.Text, ":");
+                if (matches.Count < richTextBox1.Lines.Length)
+                    MessageBox.Show($"Not the entire list contains ports to addresses.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Main.proxyList.Clear();
                 Main.proxyList.AddRange(richTextBox1.Lines);
                 GeneralConfig.Default.proxyList = str;
@@ -117,8 +110,14 @@ namespace ItemChecker
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
+                string text = File.ReadAllText(dialog.FileName);
+                if (text.Contains(";") & !request.Contains("FavoriteList"))
+                {
+                    MessageBox.Show($"The list contains the price or prices of items.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 richTextBox1.Clear();
-                richTextBox1.Text = File.ReadAllText(dialog.FileName);
+                richTextBox1.Text = text;
                 this.Text = $"{request}: {richTextBox1.Lines.Count()}";
             }
         }

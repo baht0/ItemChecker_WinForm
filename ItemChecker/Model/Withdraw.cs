@@ -15,7 +15,6 @@ namespace ItemChecker.Model
 
         //auto
         public static List<string> favoriteItems = new();
-        public static List<decimal> favoritePrices = new();
         public static System.Timers.Timer timer = new();
         public static int tick { get; set; }
 
