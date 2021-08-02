@@ -260,7 +260,7 @@ namespace ItemChecker
             1,
             0,
             0,
-            65536});
+            131072});
             this.deviation_numericUpDown.Location = new System.Drawing.Point(129, 38);
             this.deviation_numericUpDown.Maximum = new decimal(new int[] {
             5,

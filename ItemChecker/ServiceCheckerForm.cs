@@ -341,6 +341,11 @@ namespace ItemChecker
             if(!Main.loading & ServiceChecker.dataTable != null)
                 ServiceCheckerPresenter.ClearAll(true, false, false);
         }
+        private void search_textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                apply_button.PerformClick();
+        }
 
         //X
         private void clearQCheck_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
