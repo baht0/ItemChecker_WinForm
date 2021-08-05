@@ -43,6 +43,8 @@ namespace ItemChecker
 
                 if (result == DialogResult.Yes)
                 {
+                    if ((Application.OpenForms["FiltersForm"] as FiltersForm) != null)
+                        Application.OpenForms["FiltersForm"].Close();
                     ServiceChecker.checkStop = true;
                     ServiceCheckerPresenter.ClearAll(true, true);
                     Main.loading = false;
@@ -53,7 +55,11 @@ namespace ItemChecker
                 }
             }
             else
+            {
+                if ((Application.OpenForms["FiltersForm"] as FiltersForm) != null)
+                    Application.OpenForms["FiltersForm"].Close();
                 ServiceCheckerPresenter.ClearAll(true, true);
+            }
         }
 
         //menu
@@ -313,6 +319,8 @@ namespace ItemChecker
                 FiltersForm filtersForm = new();
                 filtersForm.Show();
             }
+            else
+                Application.OpenForms["FiltersForm"].Activate();
         }
     }
 }

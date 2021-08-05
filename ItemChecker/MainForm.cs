@@ -164,6 +164,8 @@ namespace ItemChecker
                 ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
                 serviceChecker.Show();
             }
+            else
+                Application.OpenForms["ServiceCheckerForm"].Activate();
         }
         private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {
