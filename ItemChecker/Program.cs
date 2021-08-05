@@ -7,7 +7,6 @@ namespace ItemChecker
     {
         public static MainForm mainForm;
         public static ServiceCheckerForm serviceCheckerForm;
-        //public static SortList sortListFrm;
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>

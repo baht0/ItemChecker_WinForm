@@ -380,10 +380,13 @@ namespace ItemChecker.Presenter
                             JArray inventory = JArray.Parse(JObject.Parse(json)["items"].ToString());
                             foreach (JObject item in inventory)
                             {
+                                if ((string)item["fullName"] != item_line[0])
+                                    continue;
                                 if (favoriteItem.Contains(";"))
                                 {
-                                    decimal price = Convert.ToDecimal(item_line[1]) / 100 + WithdrawConfig.Default.deviation;
-                                    if (Convert.ToDecimal(item["price"]) / 100 > price)
+                                    decimal maxPrice = Convert.ToDecimal(item_line[1]) / 100 + WithdrawConfig.Default.deviation;
+                                    decimal price = Convert.ToDecimal(item["price"]);
+                                    if (price > maxPrice)
                                         continue;
                                 }
                                 if (item.ContainsKey("stackSize"))
@@ -396,7 +399,8 @@ namespace ItemChecker.Presenter
                                 else
                                     items.Add(item);
                             }
-                            addCart(items);
+                            if(items.Any())
+                                addCart(items);
                         }
                     }
                     catch (Exception exp)

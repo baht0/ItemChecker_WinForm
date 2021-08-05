@@ -8,6 +8,8 @@ using ItemChecker.Presenter;
 using System.Linq;
 using ItemChecker.Settings;
 using System.IO;
+using System.Data;
+using System.ComponentModel;
 
 namespace ItemChecker
 {
@@ -27,12 +29,6 @@ namespace ItemChecker
             firstSer_comboBox.SelectedIndex = 0;
             secondSer_comboBox.SelectedIndex = 1;
 
-            category_comboBox.SelectedIndex = 0;
-            other_comboBox.SelectedIndex = 0;
-            status_comboBox.SelectedIndex = 0;
-            column_comboBox.SelectedIndex = 0;
-            hide100_checkBox.Checked = true;
-            hide0_checkBox.Checked = true;
             ServiceCheckerPresenter.columnDTable();
         }
         private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -48,7 +44,7 @@ namespace ItemChecker
                 if (result == DialogResult.Yes)
                 {
                     ServiceChecker.checkStop = true;
-                    ServiceCheckerPresenter.ClearAll(true, true, true);
+                    ServiceCheckerPresenter.ClearAll(true, true);
                     Main.loading = false;
                 }
                 else if (result == DialogResult.No)
@@ -57,7 +53,7 @@ namespace ItemChecker
                 }
             }
             else
-                ServiceCheckerPresenter.ClearAll(true, true, true);
+                ServiceCheckerPresenter.ClearAll(true, true);
         }
 
         //menu
@@ -79,10 +75,9 @@ namespace ItemChecker
                 Main.loading = true;
                 ServiceChecker.service_one = ser_1;
                 ServiceChecker.service_two = ser_2;
-                while (column_comboBox.Items.Count > 1)
-                    column_comboBox.Items.RemoveAt(1);
-                for (int i = 1; i <= 4; i++)
-                    column_comboBox.Items.Insert(i, servChecker_dataGridView.Columns[i + 1].HeaderText);
+
+                for (int i = 2; i < 6; i++)
+                    Filters.prices.Add(servChecker_dataGridView.Columns[i].HeaderText);
 
                 servChecker_dataGridView.Enabled = false;
                 updated_toolStripStatusLabel.Visible = false;
@@ -126,6 +121,11 @@ namespace ItemChecker
                     ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName, fileName });
                 }
             }
+        }
+        private void extractListtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (servChecker_dataGridView.Rows.Count > 0)
+                ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.exportTxt);
         }
 
         //comboboxs
@@ -276,77 +276,6 @@ namespace ItemChecker
             ServiceCheckerPresenter.drawDTGView();
         }
 
-        //filters
-        private void apply_button_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!Main.loading & ServiceChecker.dataTable.Rows.Count > 1)
-                {
-                    string filter = string.Empty;
-                    //search
-                    if (!String.IsNullOrEmpty(search_textBox.Text))
-                        filter += $"AND item_Column LIKE '%{search_textBox.Text}%'";
-                    //filters
-                    if (category_comboBox.SelectedIndex != 0)
-                    {
-                        if (category_comboBox.SelectedIndex != 1)
-                            filter += $"AND item_Column LIKE '{category_comboBox.Text}%'";
-                        else
-                        {
-                            for (int i = 2; i < 6; i++)
-                                filter += $"AND item_Column NOT LIKE '%{category_comboBox.Items[i]}%'";
-                            for (int i = 4; i < 13; i++)
-                                filter += $"AND item_Column NOT LIKE '%{other_comboBox.Items[i]}%'";
-                        }
-                    }
-                    else if (other_comboBox.SelectedIndex != 0)
-                    {
-                        if (other_comboBox.SelectedIndex == 1)
-                            for (int i = 4; i < 13; i++)
-                                filter += $"AND item_Column NOT LIKE '%{other_comboBox.Items[i]}%'";
-                        else
-                            filter += $"AND item_Column LIKE '%{other_comboBox.Text}%'";
-                    }
-                    if (status_comboBox.SelectedIndex != 0)
-                        filter += $"AND status_Column LIKE '%{status_comboBox.Text}%'";
-                    //prices
-                    if (column_comboBox.SelectedIndex != 0 & priceFrom_numericUpDown.Value != 0)
-                        filter += $"AND price{column_comboBox.SelectedIndex}_Column > {priceFrom_numericUpDown.Value}";
-                    if (column_comboBox.SelectedIndex != 0 & priceTo_numericUpDown.Value != 0)
-                        filter += $"AND price{column_comboBox.SelectedIndex}_Column < {priceTo_numericUpDown.Value}";
-                    //precent
-                    if (precentFrom_numericUpDown.Value != 0)
-                        filter += $"AND precent_Column > {precentFrom_numericUpDown.Value}";
-                    if (precentTo_numericUpDown.Value != 0)
-                        filter += $"AND precent_Column < {precentTo_numericUpDown.Value}";
-                    if (hide100_checkBox.Checked)
-                        filter += $"AND precent_Column <> -100";
-                    if (hide0_checkBox.Checked)
-                        filter += $"AND precent_Column <> 0";
-
-                    if (filter != string.Empty)
-                        ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { filter.Remove(0, 4) });
-                    else
-                        ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { string.Empty });
-                }                
-            }
-            catch (Exception exp)
-            {
-                Exceptions.errorLog(exp, Main.version);
-            }
-        }
-        private void reset_button_Click(object sender, EventArgs e)
-        {
-            if(!Main.loading & ServiceChecker.dataTable != null)
-                ServiceCheckerPresenter.ClearAll(true, false, false);
-        }
-        private void search_textBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                apply_button.PerformClick();
-        }
-
         //X
         private void clearQCheck_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -359,10 +288,31 @@ namespace ItemChecker
                 search_textBox.Clear();
         }
 
-        private void extractListtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        //filters
+        private void search_textBox_TextChanged(object sender, EventArgs e)
         {
-            if (servChecker_dataGridView.Rows.Count > 0)
-                ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.exportTxt);
+            if (!Main.loading & ServiceChecker.dataTable.Rows.Count > 1)
+            {
+                DataView dataView = ServiceChecker.dataTable.DefaultView;
+                if (Filters.filter != string.Empty)
+                    dataView.RowFilter = $"{Filters.filter} AND item_Column LIKE '%{search_textBox.Text}%'";
+                else
+                    dataView.RowFilter = $"item_Column LIKE '%{search_textBox.Text}%'";
+                DataTable dt = dataView.ToTable();
+
+                servChecker_dataGridView.DataSource = dt;
+                servChecker_dataGridView.Columns[1].HeaderText = $"Item - {dt.Rows.Count}";
+                servChecker_dataGridView.Sort(servChecker_dataGridView.Columns[6], ListSortDirection.Descending);
+                ServiceCheckerPresenter.drawDTGView();
+            }            
+        }
+        private void filters_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if ((Application.OpenForms["FiltersForm"] as FiltersForm) == null & ServiceChecker.dataTable.Rows.Count > 0)
+            {
+                FiltersForm filtersForm = new();
+                filtersForm.Show();
+            }
         }
     }
 }

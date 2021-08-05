@@ -19,8 +19,10 @@ namespace ItemChecker.Presenter
                 IWebElement balance = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//a[@id='header_wallet_balance']")));
 
                 Steam.balance = Edit.removeRub(balance.Text);
-                if (Steam.balance == Math.Truncate(Steam.balance)) Steam.balance += 0.01m;
+                if (Steam.balance == Math.Truncate(Steam.balance))
+                    Steam.balance += 0.01m;
                 BuyOrder.my_buy_orders = Convert.ToInt32(count.Text);
+                Steam.balance_usd = Math.Round(Steam.balance / Main.course, 2);
 
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.balance_StripStatus.Text = "Balance: " + balance.Text;

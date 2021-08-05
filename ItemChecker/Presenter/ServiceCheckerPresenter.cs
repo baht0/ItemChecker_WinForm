@@ -26,7 +26,7 @@ namespace ItemChecker.Presenter
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                ClearAll(true, true, true);
+                ClearAll(true, true);
 
                 ThreadPool.QueueUserWorkItem(TimeLeft);
                 if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
@@ -369,12 +369,13 @@ namespace ItemChecker.Presenter
                 DataView dataView = ServiceChecker.dataTable.DefaultView;
                 dataView.RowFilter = str;
                 DataTable dt = dataView.ToTable();
+                Filters.filter = str;
 
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
                     dataGridView.DataSource = dt;
-                    serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {dt.Rows.Count}";
+                    dataGridView.Columns[1].HeaderText = $"Item - {dt.Rows.Count}";
                     if (str != string.Empty)
-                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
+                        dataGridView.Sort(dataGridView.Columns[6], ListSortDirection.Descending); }));
                 drawDTGView();
             }
             catch (Exception exp)
@@ -383,12 +384,13 @@ namespace ItemChecker.Presenter
                     Exceptions.errorLog(exp, Main.version);
             }
         }
-        public static void ClearAll(bool resetFilter, bool clearDTable, bool data)
+        public static void ClearAll(bool clearDTable, bool data)
         {
             try
             {
-                if (resetFilter)
-                    ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
+                ThreadPool.QueueUserWorkItem(Filter, new object[] { string.Empty });
+                Filters._clearAll();
+
                 if (clearDTable)
                     MainPresenter.clearDTableRows(serviceCheckerForm.servChecker_dataGridView);
                 if (data)
@@ -396,20 +398,7 @@ namespace ItemChecker.Presenter
 
                 serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                     serviceCheckerForm.quickCheck_textBox.Clear();
-                    serviceCheckerForm.search_textBox.Clear();
-
-                    serviceCheckerForm.category_comboBox.SelectedIndex = 0;
-                    serviceCheckerForm.other_comboBox.SelectedIndex = 0;
-                    serviceCheckerForm.status_comboBox.SelectedIndex = 0;
-
-                    serviceCheckerForm.column_comboBox.SelectedIndex = 0;
-                    serviceCheckerForm.priceFrom_numericUpDown.Value = 0;
-                    serviceCheckerForm.priceTo_numericUpDown.Value = 0;
-
-                    serviceCheckerForm.precentFrom_numericUpDown.Value = 0;
-                    serviceCheckerForm.precentTo_numericUpDown.Value = 0;
-                    serviceCheckerForm.hide100_checkBox.Checked = true;
-                    serviceCheckerForm.hide0_checkBox.Checked = true; }));
+                    serviceCheckerForm.search_textBox.Clear(); }));
             }
             catch (Exception exp)
             {
@@ -456,10 +445,10 @@ namespace ItemChecker.Presenter
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
-                string name = args[0].ToString();
+                string item_name = args[0].ToString();
                 int row = Convert.ToInt32(args[1]);
 
-                string market_hash_name = Edit.replaceUrl(name);
+                string market_hash_name = Edit.replaceUrl(item_name);
                 var json = Request.inventoriesCsMoney(market_hash_name);
                 int count = 0;
 
@@ -469,6 +458,8 @@ namespace ItemChecker.Presenter
                     JArray items = JArray.Parse(json);
                     foreach (JObject item in items)
                     {
+                        if ((string)item["fullName"] != item_name)
+                            continue;
                         if (item.ContainsKey("stackSize"))
                             count += Convert.ToInt32(item["stackSize"].ToString());
                         else
@@ -634,7 +625,7 @@ namespace ItemChecker.Presenter
                 string fileName = args[1].ToString();
                 string[] lines = File.ReadAllLines(filePath);
                 string[] service = lines[0].Split(',');
-                ClearAll(true, true, true);
+                ClearAll(true, true);
 
                 ServiceChecker.service_one = Convert.ToInt32(service[0]);
                 ServiceChecker.service_two = Convert.ToInt32(service[1]);
@@ -644,10 +635,8 @@ namespace ItemChecker.Presenter
                     serviceCheckerForm.services_toolStripStatusLabel.Text = $"From {serviceCheckerForm.firstSer_comboBox.Text} To {serviceCheckerForm.secondSer_comboBox.Text} ({fileName})";
                     serviceCheckerForm.services_toolStripStatusLabel.Visible = true;
 
-                    while (serviceCheckerForm.column_comboBox.Items.Count > 1)
-                        serviceCheckerForm.column_comboBox.Items.RemoveAt(1);
-                    for (int i = 1; i <= 4; i++)
-                        serviceCheckerForm.column_comboBox.Items.Insert(i, serviceCheckerForm.servChecker_dataGridView.Columns[i + 1].HeaderText);
+                    for (int i = 2; i < 6; i++)
+                        Filters.prices.Add(serviceCheckerForm.servChecker_dataGridView.Columns[i].HeaderText);
                     serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {lines.Length - 1}"; }));
 
                 //rows

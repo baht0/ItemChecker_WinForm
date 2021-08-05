@@ -148,7 +148,7 @@ namespace ItemChecker
         }
         private void lootFarmToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (request.Contains("SortList"))
+            if (request.Contains("CheckList"))
             {
                 richTextBox1.Clear();
                 ThreadPool.QueueUserWorkItem(WriteInRichTextbox, new object[] { "https://loot.farm/fullprice.json" });
@@ -156,7 +156,7 @@ namespace ItemChecker
         }
         private void csMoneyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (request.Contains("SortList"))
+            if (request.Contains("CheckList"))
             {
                 richTextBox1.Clear();
                 ThreadPool.QueueUserWorkItem(WriteInRichTextbox, new object[] { "https://broskins.com/csmoneyfeed.php?_=1625556262031" });
