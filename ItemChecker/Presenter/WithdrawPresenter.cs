@@ -422,13 +422,13 @@ namespace ItemChecker.Presenter
             }
             finally
             {
+                Main.loading = false;
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.timer_StripStatus.Text = "Next check: 00:00";
                     mainForm.checkWith_label.Text = $"Check: {checkCount++}";
                     mainForm.progressBar_StripStatus.Visible = false; }));
                 Withdraw.tick = WithdrawConfig.Default.timer;
                 Withdraw.timer.Enabled = true;
-                Main.loading = false;
             }
         }
         private Boolean addCart(JArray items)
@@ -583,19 +583,6 @@ namespace ItemChecker.Presenter
             Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
             Thread.Sleep(100);
             Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
-        }
-        private void getCart()
-        {
-            Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
-            Main.Browser.ExecuteJavaScript(Request.GetRequestFetch("https://cs.money/get_cart?type=2"));
-            IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-            JArray cart = JArray.Parse(html.Text);
-            decimal sum = 0;
-            foreach (JObject item in cart)
-                sum += Convert.ToDecimal(item["price"].ToString());
-            sum *= -1;
-            if (cart.Any())
-                sendOffer(cart, sum);
         }
     }
 }

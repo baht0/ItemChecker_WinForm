@@ -319,8 +319,8 @@ namespace ItemChecker
                 FiltersForm filtersForm = new();
                 filtersForm.Show();
             }
-            else
-                Application.OpenForms["FiltersForm"].Activate();
+            else if ((Application.OpenForms["FiltersForm"] as FiltersForm) != null)
+                    Application.OpenForms["FiltersForm"].Activate();
         }
     }
 }

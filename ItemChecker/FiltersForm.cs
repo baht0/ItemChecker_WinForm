@@ -155,7 +155,7 @@ namespace ItemChecker
                                 not = "NOT";
                             Filters.filter += createFilter(category_checkedListBox, "item_Column", not);
                         }
-                        else if (category_checkedListBox.GetItemCheckState(0) == CheckState.Checked)
+                        else
                         {
                             for (int i = 1; i < 5; i++)
                                 Filters.filter += $"AND item_Column NOT LIKE '%{category_checkedListBox.Items[i]}%'";
@@ -174,10 +174,18 @@ namespace ItemChecker
                     //exterior
                     if (exterior_checkedListBox.CheckedItems.Count > 0)
                     {
-                        string not = null;
-                        if (hide_checkedListBox.GetItemCheckState(2) == CheckState.Checked)
-                            not = "NOT";
-                        Filters.filter += createFilter(exterior_checkedListBox, "item_Column", not);
+                        if (exterior_checkedListBox.GetItemCheckState(0) == CheckState.Unchecked)
+                        {
+                            string not = null;
+                            if (hide_checkedListBox.GetItemCheckState(2) == CheckState.Checked)
+                                not = "NOT";
+                            Filters.filter += createFilter(exterior_checkedListBox, "item_Column", not);
+                        }
+                        else
+                        {
+                            for (int i = 1; i < 6; i++)
+                                Filters.filter += $"AND item_Column NOT LIKE '%{exterior_checkedListBox.Items[i]}%'";
+                        }
                     }
                     //types
                     if (types_checkedListBox.CheckedItems.Count > 0)
@@ -189,7 +197,7 @@ namespace ItemChecker
                                 not = "NOT";
                             Filters.filter += createFilter(types_checkedListBox, "item_Column", not);
                         }
-                        else if (types_checkedListBox.GetItemCheckState(0) == CheckState.Checked)
+                        else
                             for (int i = 2; i < 12; i++)
                                 Filters.filter += $"AND item_Column NOT LIKE '%{types_checkedListBox.Items[i]}%'";
                     }
@@ -348,6 +356,15 @@ namespace ItemChecker
                 else
                     for (int i = 1; i < 12; i++)
                         types_checkedListBox.SetItemCheckState(i, CheckState.Unchecked);
+        }
+        private void exterior_checkedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (int index in exterior_checkedListBox.CheckedIndices)
+                if (index != 0)
+                    exterior_checkedListBox.SetItemCheckState(0, CheckState.Unchecked);
+                else
+                    for (int i = 1; i < 6; i++)
+                        exterior_checkedListBox.SetItemCheckState(i, CheckState.Unchecked);
         }
     }
 }

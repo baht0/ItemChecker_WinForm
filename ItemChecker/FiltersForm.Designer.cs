@@ -237,16 +237,17 @@ namespace ItemChecker
             this.exterior_checkedListBox.CheckOnClick = true;
             this.exterior_checkedListBox.FormattingEnabled = true;
             this.exterior_checkedListBox.Items.AddRange(new object[] {
+            "Not Painted",
             "Battle-Scarred",
             "Well-Worn",
             "Field-Tested",
             "Minimal Wear",
-            "Factory New",
-            "Not Painted"});
+            "Factory New"});
             this.exterior_checkedListBox.Location = new System.Drawing.Point(6, 22);
             this.exterior_checkedListBox.Name = "exterior_checkedListBox";
             this.exterior_checkedListBox.Size = new System.Drawing.Size(100, 108);
             this.exterior_checkedListBox.TabIndex = 2;
+            this.exterior_checkedListBox.SelectedIndexChanged += new System.EventHandler(this.exterior_checkedListBox_SelectedIndexChanged);
             // 
             // Filters_groupBox
             // 
