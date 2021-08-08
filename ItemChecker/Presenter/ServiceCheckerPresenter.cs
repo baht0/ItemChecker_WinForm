@@ -26,7 +26,6 @@ namespace ItemChecker.Presenter
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                ClearAll(true, true);
 
                 ThreadPool.QueueUserWorkItem(TimeLeft);
                 if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
@@ -392,7 +391,7 @@ namespace ItemChecker.Presenter
                 Filters._clearAll();
 
                 if (clearDTable)
-                    MainPresenter.clearDTableRows(serviceCheckerForm.servChecker_dataGridView);
+                    ServiceChecker.dataTable.Clear();
                 if (data)
                     ServiceChecker._clear();
 
@@ -625,7 +624,6 @@ namespace ItemChecker.Presenter
                 string fileName = args[1].ToString();
                 string[] lines = File.ReadAllLines(filePath);
                 string[] service = lines[0].Split(',');
-                ClearAll(true, true);
 
                 ServiceChecker.service_one = Convert.ToInt32(service[0]);
                 ServiceChecker.service_two = Convert.ToInt32(service[1]);

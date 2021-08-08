@@ -70,7 +70,6 @@ namespace ItemChecker
             this.filters_linkLabel = new System.Windows.Forms.LinkLabel();
             this.clearSearch_linkLabel = new System.Windows.Forms.LinkLabel();
             this.search_textBox = new System.Windows.Forms.TextBox();
-            this.testestestestestestestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.servChecker_menuStrip.SuspendLayout();
             this.servChecker_statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.servChecker_dataGridView)).BeginInit();
@@ -85,8 +84,7 @@ namespace ItemChecker
             this.add_toolStripMenuItem,
             this.check_toolStripMenuItem,
             this.csv_toolStripMenuItem,
-            this.extractListtxtToolStripMenuItem,
-            this.testestestestestestestToolStripMenuItem});
+            this.extractListtxtToolStripMenuItem});
             this.servChecker_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.servChecker_menuStrip.Name = "servChecker_menuStrip";
             this.servChecker_menuStrip.Size = new System.Drawing.Size(1089, 24);
@@ -506,12 +504,6 @@ namespace ItemChecker
             this.search_textBox.TabIndex = 7;
             this.search_textBox.TextChanged += new System.EventHandler(this.search_textBox_TextChanged);
             // 
-            // testestestestestestestToolStripMenuItem
-            // 
-            this.testestestestestestestToolStripMenuItem.Name = "testestestestestestestToolStripMenuItem";
-            this.testestestestestestestToolStripMenuItem.Size = new System.Drawing.Size(128, 20);
-            this.testestestestestestestToolStripMenuItem.Text = "testestestestestestest";
-            // 
             // ServiceCheckerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -589,6 +581,5 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn availability_Column;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.LinkLabel filters_linkLabel;
-        private System.Windows.Forms.ToolStripMenuItem testestestestestestestToolStripMenuItem;
     }
 }

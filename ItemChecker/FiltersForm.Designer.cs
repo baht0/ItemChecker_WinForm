@@ -843,9 +843,9 @@ namespace ItemChecker
             this.Controls.Add(this.close_button);
             this.Controls.Add(this.apply_button);
             this.Controls.Add(this.tabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.MaximumSize = new System.Drawing.Size(387, 405);
-            this.MinimumSize = new System.Drawing.Size(387, 405);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FiltersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Filters";

@@ -86,8 +86,8 @@ namespace ItemChecker
         //file
         private void settings_MainStripMenu_Click(object sender, EventArgs e)
         {
-            SettingsForm fr = new SettingsForm();
-            fr.ShowDialog();     
+            SettingsForm settingsForm = new();
+            settingsForm.ShowDialog();     
         }
         private void restart_MainStripMenu_Click(object sender, EventArgs e)
         {
@@ -156,25 +156,6 @@ namespace ItemChecker
                 ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 1 });
             }
         }
-        //tools
-        private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
-        {
-            if ((Application.OpenForms["ServiceCheckerForm"] as ServiceCheckerForm) == null)
-            {
-                ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
-                serviceChecker.Show();
-            }
-            else
-                Application.OpenForms["ServiceCheckerForm"].Activate();
-        }
-        private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
-        {
-            if (!Main.loading)
-            {
-                CheckListForm checkListForm = new("FloatList");
-                checkListForm.ShowDialog();
-            }
-        }
         //withdraw
         private void showWithdraw_toolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -226,7 +207,38 @@ namespace ItemChecker
         }
         private void checkFavorite_ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WithdrawPresenter.checkStart();
+            if (Withdraw.favoriteItems.Any() & !Main.loading)
+                WithdrawPresenter.checkStart();
+            else if (!Withdraw.favoriteItems.Any())
+            {
+                SettingsForm settingsForm = new(3);
+                settingsForm.ShowDialog();
+            }
+        }
+        //tools
+        private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
+        {
+            if ((Application.OpenForms["ServiceCheckerForm"] as ServiceCheckerForm) == null)
+            {
+                ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
+                serviceChecker.Show();
+            }
+            else
+                Application.OpenForms["ServiceCheckerForm"].Activate();
+        }
+        private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
+        {
+            if (!Main.loading)
+            {
+                CheckListForm checkListForm = new("FloatList");
+                checkListForm.ShowDialog();
+            }
+        }
+        //about
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm aboutForm = new();
+            aboutForm.ShowDialog();
         }
 
         //linkLabels
@@ -244,7 +256,21 @@ namespace ItemChecker
                     Main.loading = true;
                     ThreadPool.QueueUserWorkItem(TradeOfferPresenter.tradeOffers);
                 }
-            }                
+            }
+            else if (String.IsNullOrEmpty(GeneralConfig.Default.steamApiKey))
+            {
+                DialogResult result = MessageBox.Show(
+                    "To continue you need a Steam API Key.",
+                    "Warning",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.OK)
+                {
+                    SettingsForm settingsForm = new(1);
+                    settingsForm.ShowDialog();
+                }
+            }
         }
         private void queue_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {

@@ -112,7 +112,7 @@ namespace ItemChecker
             // lootFarmToolStripMenuItem
             // 
             this.lootFarmToolStripMenuItem.Name = "lootFarmToolStripMenuItem";
-            this.lootFarmToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lootFarmToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.lootFarmToolStripMenuItem.Text = "Loot.Farm";
             this.lootFarmToolStripMenuItem.Visible = false;
             this.lootFarmToolStripMenuItem.Click += new System.EventHandler(this.lootFarmToolStripMenuItem_Click);
@@ -120,7 +120,7 @@ namespace ItemChecker
             // csMoneyToolStripMenuItem
             // 
             this.csMoneyToolStripMenuItem.Name = "csMoneyToolStripMenuItem";
-            this.csMoneyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.csMoneyToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.csMoneyToolStripMenuItem.Text = "Cs.Money";
             this.csMoneyToolStripMenuItem.Visible = false;
             this.csMoneyToolStripMenuItem.Click += new System.EventHandler(this.csMoneyToolStripMenuItem_Click);
@@ -135,7 +135,7 @@ namespace ItemChecker
             this.Controls.Add(this.cancel_button);
             this.Controls.Add(this.ok_button);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

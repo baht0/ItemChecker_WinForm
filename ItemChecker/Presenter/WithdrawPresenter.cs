@@ -317,24 +317,22 @@ namespace ItemChecker.Presenter
                 mainForm.checkFavorite_ToolStripMenuItem.ForeColor = Color.Black; }));
         }
         public static void checkStart()
-        {
-            if (Withdraw.favoriteItems.Count > 0 & !Main.loading)
+        {            
+            if (!BuyOrder.timer.Enabled & !Withdraw.timer.Enabled)
             {
-                if (!BuyOrder.timer.Enabled & !Withdraw.timer.Enabled)
-                {
-                    Withdraw.tick = WithdrawConfig.Default.timer;
+                Withdraw.tick = WithdrawConfig.Default.timer;
 
-                    mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.itemsWith_label.Text = $"Items: {Withdraw.favoriteItems.Count}";
-                        mainForm.checkFavorite_groupBox.Visible = true;
-                        mainForm.timer_StripStatus.Visible = true;
-                        mainForm.checkFavorite_ToolStripMenuItem.ForeColor = Color.OrangeRed; }));
-                    loginCsm();
-                    Withdraw.timer.Enabled = true;
-                }
-                else if (Withdraw.timer.Enabled & Withdraw.tick > 1)
-                    WithdrawPresenter.stopCheckFavorite();
+                mainForm.Invoke(new MethodInvoker(delegate {
+                    mainForm.itemsWith_label.Text = $"Items: {Withdraw.favoriteItems.Count}";
+                    mainForm.checkFavorite_groupBox.Visible = true;
+                    mainForm.timer_StripStatus.Visible = true;
+                    mainForm.checkFavorite_ToolStripMenuItem.ForeColor = Color.OrangeRed;
+                }));
+                loginCsm();
+                Withdraw.timer.Enabled = true;
             }
+            else if (Withdraw.timer.Enabled & Withdraw.tick > 1)
+                WithdrawPresenter.stopCheckFavorite();
         }
         public void timerTick(Object sender, ElapsedEventArgs e)
         {

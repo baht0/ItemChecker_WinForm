@@ -8,10 +8,14 @@ namespace ItemChecker
 {
     public partial class SettingsForm : Form
     {
-        public SettingsForm()
+        public SettingsForm(int tabPage = 0)
         {
             InitializeComponent();
 
+            tabControl.SelectedIndex = tabPage;
+        }
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
             //general
             steamApiKey_textBox.Text = GeneralConfig.Default.steamApiKey.Trim();
             currApiKey_textBox.Text = GeneralConfig.Default.currencyApiKey.Trim();

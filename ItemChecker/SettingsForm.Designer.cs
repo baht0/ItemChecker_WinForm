@@ -130,7 +130,7 @@ namespace ItemChecker
             this.extractTry_linkLabel = new System.Windows.Forms.LinkLabel();
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
             this.version_label = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.deviation_numericUpDown)).BeginInit();
@@ -170,7 +170,7 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.wait_numericUpDown)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.extract_groupBox.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // ok_button
@@ -351,7 +351,7 @@ namespace ItemChecker
             this.groupBox4.Size = new System.Drawing.Size(260, 143);
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "TrySkins Withdraw";
+            this.groupBox4.Text = "Table TrySkins";
             // 
             // label15
             // 
@@ -1504,19 +1504,19 @@ namespace ItemChecker
             this.version_label.TabIndex = 4;
             this.version_label.Text = "Version: 0.0.0.0";
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.general_tabPage);
-            this.tabControl1.Controls.Add(this.steam_tabPage);
-            this.tabControl1.Controls.Add(this.tryskins_tabPage);
-            this.tabControl1.Controls.Add(this.withdraw_tabPage);
-            this.tabControl1.Controls.Add(this.float_tabPage);
-            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tabControl1.Location = new System.Drawing.Point(2, 4);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(301, 339);
-            this.tabControl1.TabIndex = 0;
+            this.tabControl.Controls.Add(this.general_tabPage);
+            this.tabControl.Controls.Add(this.steam_tabPage);
+            this.tabControl.Controls.Add(this.tryskins_tabPage);
+            this.tabControl.Controls.Add(this.withdraw_tabPage);
+            this.tabControl.Controls.Add(this.float_tabPage);
+            this.tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.tabControl.Location = new System.Drawing.Point(2, 4);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(301, 339);
+            this.tabControl.TabIndex = 0;
             // 
             // SettingsForm
             // 
@@ -1526,8 +1526,8 @@ namespace ItemChecker
             this.Controls.Add(this.default_button);
             this.Controls.Add(this.cancel_button);
             this.Controls.Add(this.ok_button);
-            this.Controls.Add(this.tabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Controls.Add(this.tabControl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(320, 416);
             this.MinimizeBox = false;
@@ -1535,6 +1535,7 @@ namespace ItemChecker
             this.Name = "SettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
+            this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.withdraw_tabPage.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
@@ -1588,7 +1589,7 @@ namespace ItemChecker
             this.groupBox6.PerformLayout();
             this.extract_groupBox.ResumeLayout(false);
             this.extract_groupBox.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1653,7 +1654,7 @@ namespace ItemChecker
         private System.Windows.Forms.LinkLabel extractTry_linkLabel;
         private System.Windows.Forms.LinkLabel extractST_linkLabel;
         private System.Windows.Forms.Label version_label;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox sticker_checkBox;
         private System.Windows.Forms.CheckBox souvenir_checkBox;

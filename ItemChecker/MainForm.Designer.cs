@@ -56,6 +56,7 @@ namespace ItemChecker
             this.tools_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.checkOwnList_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.floatCheck_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.availability_groupBox = new System.Windows.Forms.GroupBox();
             this.steamMarket_label = new System.Windows.Forms.Label();
             this.tryskins_label = new System.Windows.Forms.Label();
@@ -189,7 +190,8 @@ namespace ItemChecker
             this.file_MainStripMenu,
             this.reload_MainStripMenu,
             this.withdraw_toolStripMenuItem,
-            this.tools_MainStripMenu});
+            this.tools_MainStripMenu,
+            this.aboutToolStripMenuItem});
             this.main_menuStrip.Location = new System.Drawing.Point(0, 0);
             this.main_menuStrip.Name = "main_menuStrip";
             this.main_menuStrip.Size = new System.Drawing.Size(600, 24);
@@ -362,6 +364,14 @@ namespace ItemChecker
             this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(154, 22);
             this.floatCheck_MainStripMenu.Text = "FloatCheck";
             this.floatCheck_MainStripMenu.Click += new System.EventHandler(this.floatCheck_MainStripMenu_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // availability_groupBox
             // 
@@ -1134,6 +1144,7 @@ namespace ItemChecker
         public System.Windows.Forms.Label withdraw_label;
         public System.Windows.Forms.Label checkWith_label;
         public System.Windows.Forms.Label itemsWith_label;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

@@ -16,7 +16,6 @@ namespace ItemChecker
     public partial class ServiceCheckerForm : Form
     {
         int past_row = 1;
-        CheckListForm checkListForm = new("CheckList");
         public ServiceCheckerForm()
         {
             InitializeComponent();
@@ -67,6 +66,7 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
+                CheckListForm checkListForm = new("CheckList");
                 checkListForm.ShowDialog();
                 count_toolStripStatusLabel.Text = "Count: " + Main.checkList.Count;
             }
@@ -93,6 +93,7 @@ namespace ItemChecker
                 services_toolStripStatusLabel.Text = $"From {firstSer_comboBox.Text} To {secondSer_comboBox.Text}";
                 services_toolStripStatusLabel.Visible = true;
 
+                ServiceCheckerPresenter.ClearAll(true, true);
                 ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.checkMain);
             }
         }
@@ -124,6 +125,7 @@ namespace ItemChecker
                     status_toolStripStatusLabel.Visible = true;
                     string fileName = Path.GetFileNameWithoutExtension(dialog.FileName).ToString();
                     fileName = fileName.Remove(0, 15).Replace("_", " ");
+                    ServiceCheckerPresenter.ClearAll(true, true);
                     ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.importCsv, new object[] { dialog.FileName, fileName });
                 }
             }
