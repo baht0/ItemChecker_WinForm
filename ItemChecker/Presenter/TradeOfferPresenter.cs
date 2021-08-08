@@ -47,7 +47,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                var json = Request.GetTradeOffers(GeneralConfig.Default.steamApiKey);
+                var json = Get.TradeOffers(GeneralConfig.Default.steamApiKey);
                 int count = ((JArray)JObject.Parse(json)["response"]["trade_offers_received"]).Count;
                 for (int i = 0; i < count; i++)
                 {
@@ -79,7 +79,7 @@ namespace ItemChecker.Presenter
             {
                 Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/tradeoffer/" + TradeOffer.tradeofferid[i]);
                 Thread.Sleep(1000);
-                Main.Browser.ExecuteJavaScript(Request.AcceptTrade(TradeOffer.tradeofferid[i], TradeOffer.partner_id[i], Main.sessionid));
+                Main.Browser.ExecuteJavaScript(Post.AcceptTrade(TradeOffer.tradeofferid[i], TradeOffer.partner_id[i], Main.sessionid));
 
                 MainPresenter.progressInvoke();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.tradeOffers_linkLabel.Text = "Incoming: " + Convert.ToString(TradeOffer.tradeofferid.Count - (i + 1)); }));

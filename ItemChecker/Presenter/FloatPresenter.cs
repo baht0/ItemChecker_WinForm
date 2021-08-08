@@ -53,7 +53,7 @@ namespace ItemChecker.Presenter
                     getPrice(url);
 
                     string url_request = @"https://steamcommunity.com/market/listings/730/" + url + "/render?start=0&count=" + FloatConfig.Default.countGetItems + "&currency=5&language=english&format=json";
-                    var json = Request.GetRequest(url_request);
+                    var json = Get.Request(url_request);
 
                     JObject obj = JObject.Parse(json);
                     var attributes = obj["listinginfo"].ToList<JToken>();
@@ -104,14 +104,14 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                var json = Request.PriceOverview(item, 5);
+                var json = Get.PriceOverview(item, 5);
                 Float.lowestPrice = Edit.removeRub(JObject.Parse(json)["lowest_price"].ToString());
                 Float.medianPrice = Edit.removeRub(JObject.Parse(json)["median_price"].ToString());
 
                 Tuple<String, Boolean> response = Tuple.Create("", false);
                 do
                 {
-                    response = Request.MrinkaRequest(Edit.replaceUrl(item));
+                    response = Get.MrinkaRequest(Edit.replaceUrl(item));
                     if (!response.Item2)
                     {
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Float Check (429). Please Wait..."; }));
@@ -137,7 +137,7 @@ namespace ItemChecker.Presenter
             {
                 string url = @"https://api.csgofloat.com/?url=" + link;
 
-                var json = Request.GetRequest(url);
+                var json = Get.Request(url);
                 Float.floatValue = Convert.ToDecimal(JObject.Parse(json)["iteminfo"]["floatvalue"].ToString());
                 return Float.floatValue;
             }
@@ -158,7 +158,7 @@ namespace ItemChecker.Presenter
                 "Buy item",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
-            if (result == DialogResult.Yes) Main.Browser.ExecuteJavaScript(Request.BuyListing(listing_id, fee, subtotal, total, Main.sessionid));
+            if (result == DialogResult.Yes) Main.Browser.ExecuteJavaScript(Post.BuyListing(listing_id, fee, subtotal, total, Main.sessionid));
         }
     }
 }

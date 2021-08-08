@@ -136,7 +136,7 @@ namespace ItemChecker.Presenter
                 Tuple<String, Boolean> response = Tuple.Create("", false);
                 do
                 {
-                    response = Request.MrinkaRequest(Edit.replaceUrl(item_name));
+                    response = Get.MrinkaRequest(Edit.replaceUrl(item_name));
                     if (!response.Item2)
                     {
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check TrySkins (429). Please Wait..."; }));
@@ -172,7 +172,7 @@ namespace ItemChecker.Presenter
                 try
                 {
                     string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
-                    string response = Request.GetRequest(url, Main.proxyList[id]);
+                    string response = Get.Request(url, Main.proxyList[id]);
 
                     var highest_buy_order = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString());
                     var csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());

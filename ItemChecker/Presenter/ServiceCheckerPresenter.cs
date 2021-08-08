@@ -67,7 +67,7 @@ namespace ItemChecker.Presenter
                     Tuple<String, Boolean> response = Tuple.Create("", false);
                     do
                     {
-                        response = Request.MrinkaRequest(market_hash_name);
+                        response = Get.MrinkaRequest(market_hash_name);
                         if (!response.Item2)
                         {
                             serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list (429). Please Wait..."; }));
@@ -100,7 +100,7 @@ namespace ItemChecker.Presenter
                 {
                     string market_hash_name = Edit.replaceUrl(Main.checkList[i]);
                     string url = @"http://188.166.72.201:8080/singleitem?i=" + market_hash_name;
-                    string response = Request.GetRequest(url, Main.proxyList[id]);
+                    string response = Get.Request(url, Main.proxyList[id]);
                     parseJson(response);
                 }
                 catch
@@ -152,7 +152,7 @@ namespace ItemChecker.Presenter
         private static void checkLootFarm()
         {
             start = DateTime.Now;
-            var json = Request.GetRequest("https://loot.farm/fullprice.json");
+            var json = Get.Request("https://loot.farm/fullprice.json");
             JArray jArray = JArray.Parse(json);
             List<string> str = new();
 
@@ -417,7 +417,7 @@ namespace ItemChecker.Presenter
                 object[] args = state as object[];
                 string item = args[0].ToString();
                 int row = Convert.ToInt32(args[1]);
-                var json = Request.GetRequest("https://loot.farm/fullprice.json");
+                var json = Get.Request("https://loot.farm/fullprice.json");
                 JArray fullPriceLF = JArray.Parse(json);
 
                 int count = fullPriceLF.FirstOrDefault(x => x.Value<string>("name") == item).Value<int>("have");
@@ -448,7 +448,7 @@ namespace ItemChecker.Presenter
                 int row = Convert.ToInt32(args[1]);
 
                 string market_hash_name = Edit.replaceUrl(item_name);
-                var json = Request.inventoriesCsMoney(market_hash_name);
+                var json = Get.inventoriesCsMoney(market_hash_name);
                 int count = 0;
 
                 if (!json.Contains("error"))

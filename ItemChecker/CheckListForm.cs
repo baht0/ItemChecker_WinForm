@@ -168,7 +168,7 @@ namespace ItemChecker
             {
                 object[] args = state as object[];
                 string url = args[0].ToString();
-                var json = Request.GetRequest(url);
+                var json = Get.Request(url);
                 if (url.Contains("csmoney"))
                     json = JObject.Parse(json)["data"].ToString();
                 JArray jArray = JArray.Parse(json);

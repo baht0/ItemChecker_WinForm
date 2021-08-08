@@ -72,7 +72,7 @@ namespace ItemChecker.Presenter
                 Tuple<String, Boolean> response = Tuple.Create("", false);
                 do
                 {
-                    response = Request.MrinkaRequest(BuyOrder.url[i]);
+                    response = Get.MrinkaRequest(BuyOrder.url[i]);
                     if (!response.Item2)
                     {
                         mainForm.Invoke(new MethodInvoker(delegate
@@ -98,7 +98,7 @@ namespace ItemChecker.Presenter
                 try
                 {
                     string url = @"http://188.166.72.201:8080/singleitem?i=" + BuyOrder.url[i];
-                    var response = Request.GetRequest(url, Main.proxyList[id]);
+                    var response = Get.Request(url, Main.proxyList[id]);
 
                     parseOrder(response, i);
                 }
@@ -245,11 +245,11 @@ namespace ItemChecker.Presenter
                 {
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/" + Edit.replaceUrl(BuyOrder.queue[i]));
                     Thread.Sleep(500);
-                    var ItemNameId = Request.ItemNameId(Edit.replaceUrl(BuyOrder.queue[i]));
-                    var highest_buy_order = Request.ItemOrdersHistogram(ItemNameId);
+                    var ItemNameId = Get.ItemNameId(Edit.replaceUrl(BuyOrder.queue[i]));
+                    var highest_buy_order = Get.ItemOrdersHistogram(ItemNameId);
 
                     if (Steam.balance > highest_buy_order) 
-                        Main.Browser.ExecuteJavaScript(Request.CreateBuyOrder(BuyOrder.queue[i], highest_buy_order, Main.sessionid));
+                        Main.Browser.ExecuteJavaScript(Post.CreateBuyOrder(BuyOrder.queue[i], highest_buy_order, Main.sessionid));
                 }
                 catch (Exception exp)
                 {
@@ -272,7 +272,7 @@ namespace ItemChecker.Presenter
                 string item = mainForm.buyOrder_dataGridView.CurrentCell.Value.ToString();
 
                 int index = BuyOrder.item.IndexOf(item);
-                Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[index], Main.sessionid));
+                Main.Browser.ExecuteJavaScript(Post.CancelBuyOrder(BuyOrder.id[index], Main.sessionid));
 
                 BuyOrder.removeAtItem(index);
                 availableAmount();
@@ -291,7 +291,7 @@ namespace ItemChecker.Presenter
         }
         private static void autoCancelOrder(int id)
         {
-            Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[id], Main.sessionid));
+            Main.Browser.ExecuteJavaScript(Post.CancelBuyOrder(BuyOrder.id[id], Main.sessionid));
             BuyOrder.removeAtItem(id);
             availableAmount();
 
@@ -391,16 +391,16 @@ namespace ItemChecker.Presenter
                 {
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/" + BuyOrder.url[i]);
                     Thread.Sleep(500);
-                    var ItemNameId = Request.ItemNameId(BuyOrder.url[i]);
-                    decimal highest_buy_order = Request.ItemOrdersHistogram(ItemNameId);
+                    var ItemNameId = Get.ItemNameId(BuyOrder.url[i]);
+                    decimal highest_buy_order = Get.ItemOrdersHistogram(ItemNameId);
 
                     decimal my_order = BuyOrder.price[i];
 
                     if (highest_buy_order > my_order & Steam.balance >= highest_buy_order & (highest_buy_order - my_order) <= BuyOrder.available_amount)
                     {
-                        Main.Browser.ExecuteJavaScript(Request.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
+                        Main.Browser.ExecuteJavaScript(Post.CancelBuyOrder(BuyOrder.id[i], Main.sessionid));
                         Thread.Sleep(2000);
-                        Main.Browser.ExecuteJavaScript(Request.CreateBuyOrder(BuyOrder.url[i], highest_buy_order, Main.sessionid));
+                        Main.Browser.ExecuteJavaScript(Post.CreateBuyOrder(BuyOrder.url[i], highest_buy_order, Main.sessionid));
 
                         BuyOrder.int_push++;
                         mainForm.push_label.Invoke(new MethodInvoker(() => mainForm.push_label.Text = "Push: " + Convert.ToString(BuyOrder.int_push)));

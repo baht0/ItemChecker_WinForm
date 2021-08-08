@@ -292,7 +292,7 @@ namespace ItemChecker.Presenter
                                    new JProperty("bot", new JArray(item)),
                                    new JProperty("user", new JArray()))));
                     string body = json.ToString(Formatting.None);
-                    Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/2.0/withdraw_skins"));
+                    Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", body, "https://cs.money/2.0/withdraw_skins"));
                 }
                 catch
                 {
@@ -371,7 +371,7 @@ namespace ItemChecker.Presenter
                     {
                         string[] item_line = favoriteItem.Split(';');
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Checking..."; }));
-                        var json = Request.inventoriesCsMoney(Edit.replaceUrl(item_line[0]));
+                        var json = Get.inventoriesCsMoney(Edit.replaceUrl(item_line[0]));
                         if (!json.Contains("error"))
                         {
                             JArray items = new();
@@ -389,7 +389,7 @@ namespace ItemChecker.Presenter
                                 }
                                 if (item.ContainsKey("stackSize"))
                                 {
-                                    var response = Request.GetRequest("https://inventories.cs.money/4.0/get_bot_stack/730/" + item["stackId"].ToString());
+                                    var response = Get.Request("https://inventories.cs.money/4.0/get_bot_stack/730/" + item["stackId"].ToString());
                                     JArray stack = JArray.Parse(response);
                                     foreach (JObject stack_item in stack)
                                         items.Add(getStackItems(item, stack_item));
@@ -441,7 +441,7 @@ namespace ItemChecker.Presenter
                            new JProperty("type", 2),
                            new JProperty("item", new JObject(item)));
                 string body = json.ToString(Formatting.None);
-                Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/add_cart"));
+                Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", body, "https://cs.money/add_cart"));
                 sum += Convert.ToDecimal(item["price"].ToString());
                 Thread.Sleep(100);
             }
@@ -477,7 +477,7 @@ namespace ItemChecker.Presenter
                             foreach (JObject item in items)
                                 if (item["id"].ToString() == id)
                                 {
-                                    Main.Browser.ExecuteJavaScript(Request.DeleteRequestFetch("https://cs.money/remove_cart_item?type=2&id=" + id));
+                                    Main.Browser.ExecuteJavaScript(Delete.FetchRequest("https://cs.money/remove_cart_item?type=2&id=" + id));
                                     sum -= Convert.ToDecimal(item["price"].ToString());
                                     itemsCopy.Remove(item);
                                 }
@@ -515,7 +515,7 @@ namespace ItemChecker.Presenter
                         new JProperty("offer_id", id),
                         new JProperty("action", "confirm"));
             string body = json.ToString(Formatting.None);
-            Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", body, "https://cs.money/confirm_virtual_offer"));
+            Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", body, "https://cs.money/confirm_virtual_offer"));
 
             old_id.Add(id);
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.withdraw_label.Text = $"Successful Trades: {old_id.Count}"; }));
@@ -567,7 +567,7 @@ namespace ItemChecker.Presenter
         {
             Main.Browser.ExecuteJavaScript("window.open();");
             Main.Browser.SwitchTo().Window(Main.Browser.WindowHandles.Last());
-            Main.Browser.ExecuteJavaScript(Request.PostRequestFetchResponse("application/json", body, "https://cs.money/2.0/send_offer"));
+            Main.Browser.ExecuteJavaScript(Post.FetchRequestWithResponse("application/json", body, "https://cs.money/2.0/send_offer"));
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
             string json = html.Text;
             Thread.Sleep(100);
@@ -578,9 +578,9 @@ namespace ItemChecker.Presenter
         }
         private void clearCart()
         {
-            Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
+            Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
             Thread.Sleep(100);
-            Main.Browser.ExecuteJavaScript(Request.PostRequestFetch("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
+            Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
         }
     }
 }

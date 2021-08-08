@@ -132,7 +132,7 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Info..."; }));
 
-            var course = Request.GetCourse(GeneralConfig.Default.currencyApiKey);
+            var course = Get.Course(GeneralConfig.Default.currencyApiKey);
             if (course != 0)
             {
                 Main.course = course;
@@ -143,9 +143,9 @@ namespace ItemChecker.Presenter
                 Main.course = Properties.Settings.Default.course;
             SteamPresenter.getBalance();
 
-            Request request = new Request();
-            Main.overstock = request.GetOverstock();
-            Main.unavailable = request.GetUnavailable();
+            Get get = new();
+            Main.overstock = get.Overstock();
+            Main.unavailable = get.Unavailable();
 
             mainForm.Invoke(new MethodInvoker(delegate
             {
