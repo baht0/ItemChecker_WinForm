@@ -108,9 +108,7 @@ namespace ItemChecker.Presenter
         {
             string args = null;
             foreach (bool update in ProjectInfo.update)
-            {
                 args += $"{update} ";
-            }
             ProcessStartInfo updater = new();
             updater.FileName = Application.StartupPath + "ItemChecker.Updater.exe";
             updater.Arguments = args;

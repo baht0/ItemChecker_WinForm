@@ -17,7 +17,7 @@ namespace ItemChecker.Updater
             try
             {
                 if (!args.Any())
-                    return;
+                    Environment.Exit(0);
                 Console.WriteLine("Startup: success...");
 
                 do
