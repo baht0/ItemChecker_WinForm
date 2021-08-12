@@ -367,9 +367,8 @@ namespace ItemChecker
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -1144,7 +1143,7 @@ namespace ItemChecker
         public System.Windows.Forms.Label withdraw_label;
         public System.Windows.Forms.Label checkWith_label;
         public System.Windows.Forms.Label itemsWith_label;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

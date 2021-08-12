@@ -7,5 +7,11 @@ namespace ItemChecker.Model
         public static List<string> info = new();
         public static List<string> latest = new();
         public static List<bool> update = new();
+
+        public static void _clear()
+        {
+            latest.Clear();
+            update.Clear();
+        }
     }
 }

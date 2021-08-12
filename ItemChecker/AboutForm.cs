@@ -1,5 +1,6 @@
 ﻿using ItemChecker.Model;
 using ItemChecker.Presenter;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -17,24 +18,36 @@ namespace ItemChecker
                 createInfo_linkLabel.Visible = true;
 
             version_label.Text = "Version: " + Main.assemblyVersion;
-            lastVersion_label.Text = $"Latest version: {ProjectInfo.latest[0]}";
 
-            if (ProjectInfo.latest[0] != ProjectInfo.info[0])
-                checkUpdate_linkLabel.Text = "Update...";
-            else
-                checkUpdate_linkLabel.Text = "Check Update...";
+            latestVersion();
         }
 
         private void checkUpdate_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (ProjectInfo.latest[0] != ProjectInfo.info[0])
+            if (ProjectInfo.update.Any())
             {
                 DialogResult result = MessageBox.Show($"Want to upgrade from {Main.assemblyVersion} to {ProjectInfo.latest[0]}?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                     ThreadPool.QueueUserWorkItem(pool => { ProjectInfoPresenter.update(); });
             }
             else
-                ThreadPool.QueueUserWorkItem(pool => { ProjectInfoPresenter.checkUpdate(); });
+            {
+                checkUpdate_linkLabel.Enabled = false;
+                ThreadPool.QueueUserWorkItem(pool => {
+                    ProjectInfoPresenter.checkUpdate();
+                    Invoke(new MethodInvoker(delegate { latestVersion(); }));
+                });
+            }
+        }
+        private void latestVersion()
+        {
+            lastVersion_label.Text = $"Latest version: {ProjectInfo.latest[0]}";
+
+            if (ProjectInfo.update.Any())
+                checkUpdate_linkLabel.Text = "Update...";
+            else
+                checkUpdate_linkLabel.Text = "Check Update...";
+            checkUpdate_linkLabel.Enabled = true;
         }
 
         private void openFolder_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

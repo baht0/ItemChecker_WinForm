@@ -13,6 +13,7 @@ using ItemChecker.Net;
 using ItemChecker.Model;
 using System.IO;
 using System.Data;
+using System.Linq;
 
 namespace ItemChecker.Presenter
 {
@@ -86,6 +87,8 @@ namespace ItemChecker.Presenter
 
             ProjectInfoPresenter.getCurrentVersion();
             ProjectInfoPresenter.checkUpdate();
+            if (ProjectInfo.update.Any())
+                mainForm.Invoke(new MethodInvoker(delegate { mainForm.aboutToolStripMenuItem.Image = new Bitmap(Properties.Resources.point_red); }));            
 
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
             progressInvoke();
