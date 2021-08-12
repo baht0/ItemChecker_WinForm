@@ -30,7 +30,7 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
                 Exceptions.errorMessage(exp, currMethodName);
             }
             finally
@@ -91,7 +91,7 @@ namespace ItemChecker.Presenter
                 }
                 catch (Exception exp)
                 {
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
                     continue;
                 }
                 finally
@@ -128,7 +128,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
         private static Decimal getFloatValue(string link)
@@ -143,7 +143,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
                 return 1;
             }
 

@@ -7,7 +7,7 @@ namespace ItemChecker.Model
 {
     public class Main
     {
-        public static string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static IWebDriver Browser { get; set; }
         public static WebDriverWait wait { get; set; }
         public static string sessionid { get; set; }

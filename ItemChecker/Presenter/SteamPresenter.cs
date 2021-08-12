@@ -30,7 +30,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
     }

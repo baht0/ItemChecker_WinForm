@@ -61,8 +61,6 @@ namespace ItemChecker
             FT_numericUpDown.Value = FloatConfig.Default.maxFloatValue_FT;
             WW_numericUpDown.Value = FloatConfig.Default.maxFloatValue_WW;
             BS_numericUpDown.Value = FloatConfig.Default.maxFloatValue_BS;
-
-            version_label.Text = "Version: " + Main.version;
         }
         private void default_button_Click(object sender, EventArgs e)
         {
@@ -221,10 +219,6 @@ namespace ItemChecker
                 str = str.Remove(str.Length - 2);
                 File.WriteAllText($"extract/tryskinsList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
             }
-        }
-        private void openFolder_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Support.Edit.openUrl(Application.StartupPath);
         }
 
         //api

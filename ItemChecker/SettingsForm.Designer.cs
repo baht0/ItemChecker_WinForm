@@ -125,11 +125,9 @@ namespace ItemChecker
             this.label2 = new System.Windows.Forms.Label();
             this.getCurr_linkLabel = new System.Windows.Forms.LinkLabel();
             this.currApiKey_textBox = new System.Windows.Forms.TextBox();
-            this.openFolder_linkLabel = new System.Windows.Forms.LinkLabel();
             this.extract_groupBox = new System.Windows.Forms.GroupBox();
             this.extractTry_linkLabel = new System.Windows.Forms.LinkLabel();
             this.extractST_linkLabel = new System.Windows.Forms.LinkLabel();
-            this.version_label = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -1299,9 +1297,7 @@ namespace ItemChecker
             // 
             this.general_tabPage.Controls.Add(this.groupBox7);
             this.general_tabPage.Controls.Add(this.groupBox6);
-            this.general_tabPage.Controls.Add(this.openFolder_linkLabel);
             this.general_tabPage.Controls.Add(this.extract_groupBox);
-            this.general_tabPage.Controls.Add(this.version_label);
             this.general_tabPage.Location = new System.Drawing.Point(4, 22);
             this.general_tabPage.Name = "general_tabPage";
             this.general_tabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -1446,18 +1442,6 @@ namespace ItemChecker
             this.currApiKey_textBox.TabIndex = 6;
             this.currApiKey_textBox.Text = "2e1738c3876683cb468f";
             // 
-            // openFolder_linkLabel
-            // 
-            this.openFolder_linkLabel.AutoSize = true;
-            this.openFolder_linkLabel.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.openFolder_linkLabel.Location = new System.Drawing.Point(184, 279);
-            this.openFolder_linkLabel.Name = "openFolder_linkLabel";
-            this.openFolder_linkLabel.Size = new System.Drawing.Size(87, 13);
-            this.openFolder_linkLabel.TabIndex = 2;
-            this.openFolder_linkLabel.TabStop = true;
-            this.openFolder_linkLabel.Text = "Open App Folder";
-            this.openFolder_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.openFolder_linkLabel_LinkClicked);
-            // 
             // extract_groupBox
             // 
             this.extract_groupBox.Controls.Add(this.extractTry_linkLabel);
@@ -1492,17 +1476,6 @@ namespace ItemChecker
             this.extractST_linkLabel.TabStop = true;
             this.extractST_linkLabel.Text = "SteamList to *.txt";
             this.extractST_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.extractST_linkLabel_LinkClicked);
-            // 
-            // version_label
-            // 
-            this.version_label.AutoSize = true;
-            this.version_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.version_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.version_label.Location = new System.Drawing.Point(200, 292);
-            this.version_label.Name = "version_label";
-            this.version_label.Size = new System.Drawing.Size(71, 12);
-            this.version_label.TabIndex = 4;
-            this.version_label.Text = "Version: 0.0.0.0";
             // 
             // tabControl
             // 
@@ -1581,7 +1554,6 @@ namespace ItemChecker
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timer_numericUpDown)).EndInit();
             this.general_tabPage.ResumeLayout(false);
-            this.general_tabPage.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wait_numericUpDown)).EndInit();
@@ -1653,7 +1625,6 @@ namespace ItemChecker
         private System.Windows.Forms.GroupBox extract_groupBox;
         private System.Windows.Forms.LinkLabel extractTry_linkLabel;
         private System.Windows.Forms.LinkLabel extractST_linkLabel;
-        private System.Windows.Forms.Label version_label;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox sticker_checkBox;

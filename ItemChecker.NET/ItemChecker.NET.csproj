@@ -4,9 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Description>Steam Bot Requests</Description>
-    <Company>baht0</Company>
     <Authors>baht0</Authors>
     <PackageProjectUrl>https://github.com/baht0/ItemChecker</PackageProjectUrl>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

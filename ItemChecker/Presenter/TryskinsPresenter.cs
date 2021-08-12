@@ -297,7 +297,7 @@ namespace ItemChecker.Presenter
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Exceptions.errorMessage(exp, currMethodName);
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
     }

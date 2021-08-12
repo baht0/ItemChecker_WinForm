@@ -222,7 +222,7 @@ namespace ItemChecker.Presenter
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Exceptions.errorMessage(exp, currMethodName);
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
             finally
             {
@@ -253,7 +253,7 @@ namespace ItemChecker.Presenter
                 }
                 catch (Exception exp)
                 {
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
                     continue;
                 }
                 finally
@@ -284,7 +284,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Exceptions.errorMessage(exp, currMethodName);
             }
@@ -373,7 +373,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
             finally
             {
@@ -415,7 +415,7 @@ namespace ItemChecker.Presenter
                 }
                 catch (Exception exp)
                 {
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
                     continue;
                 }
                 finally

@@ -39,7 +39,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
             finally
             {
@@ -85,7 +85,7 @@ namespace ItemChecker.Presenter
                 if (ServiceChecker.checkStop)
                     return;
                 else
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
         private static void checkMrinkaProxy()
@@ -229,7 +229,7 @@ namespace ItemChecker.Presenter
                 if (ServiceChecker.checkStop)
                     return;
                 else
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }            
         }
 
@@ -275,7 +275,7 @@ namespace ItemChecker.Presenter
                 if (ServiceChecker.checkStop)
                     return;
                 else
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
         public static void drawDTGView()
@@ -341,7 +341,7 @@ namespace ItemChecker.Presenter
                 if (ServiceChecker.checkStop)
                     return;
                 else
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
         public static void columnDTable()
@@ -380,7 +380,7 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 if(!ServiceChecker.checkStop)
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
         public static void ClearAll(bool clearDTable, bool data)
@@ -404,7 +404,7 @@ namespace ItemChecker.Presenter
                 if (ServiceChecker.checkStop)
                     return;
                 else
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
 
@@ -435,7 +435,7 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 if (!ServiceChecker.checkStop)
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }            
         }
         public static void checkCsmItem(object state)
@@ -479,7 +479,7 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 if (!ServiceChecker.checkStop)
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
         public static void addQueue(object state)
@@ -526,7 +526,7 @@ namespace ItemChecker.Presenter
             catch (Exception exp)
             {
                 if(ServiceChecker.checkStop)
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
 
@@ -598,7 +598,7 @@ namespace ItemChecker.Presenter
                 if (!ServiceChecker.checkStop)
                 {
                     string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
                     Exceptions.errorMessage(exp, currMethodName);
                 }
             }
@@ -662,7 +662,7 @@ namespace ItemChecker.Presenter
                 if (!ServiceChecker.checkStop)
                 {
                     string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                    Exceptions.errorLog(exp, Main.version);
+                    Exceptions.errorLog(exp, Main.assemblyVersion);
                     Exceptions.errorMessage(exp, currMethodName);
                 }
             }

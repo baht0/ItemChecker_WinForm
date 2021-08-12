@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Net;
 
 namespace ItemChecker.Net
 {
@@ -65,6 +67,20 @@ namespace ItemChecker.Net
             string url = "https://steamcommunity.com/tradeoffer/" + tradeofferid + "/accept";
 
             return FetchRequest("application/x-www-form-urlencoded", body, url);
+        }
+        public static String RequestDropbox()
+        {
+            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("https://content.dropboxapi.com/2/files/download");
+
+            httpRequest.Headers["Dropbox-API-Arg"] = "{\"path\": \"/info.xml\"}";
+            httpRequest.Headers["Authorization"] = "Bearer a94CSH6hwyUAAAAAAAAAAf3zRyhyZknI9J8KM3VZihWEILAuv6Vr3ht_-4RQcJxs";
+
+            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            Stream stream = httpResponse.GetResponseStream();
+            StreamReader streamReader = new StreamReader(stream);
+            string s = httpResponse.StatusCode.ToString();
+
+            return streamReader.ReadToEnd();
         }
     }
 }

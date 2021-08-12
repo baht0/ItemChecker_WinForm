@@ -50,7 +50,8 @@ namespace ItemChecker
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             notifyIcon.Visible = true;
-            ver_label.Text = "Version: " + Main.version;
+            //ProjectInfoPresenter.getCurrentVersion();
+            ver_label.Text = "Version: " + Main.assemblyVersion;
             MainPresenter.updateSettings();
 
             status_StripStatus.Text = "Launch Browser...";

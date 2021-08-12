@@ -33,7 +33,8 @@ namespace ItemChecker.Presenter
                         loginSteam();
                         loginTryskins();
                     }
-                    else progressInvoke(2);
+                    else
+                        progressInvoke(2);
                     preparationData();
                     loadDataSteam();
                     loadDataTryskins();
@@ -50,7 +51,7 @@ namespace ItemChecker.Presenter
             {
                 cancelTokenSource.Cancel();
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
                 Exceptions.errorMessage(exp, currMethodName);
             }
             finally
@@ -67,7 +68,7 @@ namespace ItemChecker.Presenter
         {
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
-            ChromeOptions option = new ChromeOptions();
+            ChromeOptions option = new();
             option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions", "--disable-blink-features=AutomationControlled", "ignore-certificate-errors");
             if (GeneralConfig.Default.profile)
                 option.AddArguments(@"--user-data-dir=" + Application.StartupPath.Replace(@"\", @"\\") + "\\profile", "profile-directory=Default");
@@ -83,8 +84,10 @@ namespace ItemChecker.Presenter
             var cookie = Main.Browser.Manage().Cookies.GetCookieNamed("sessionid").ToString();
             Main.sessionid = cookie.Substring(10, 24);
 
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
+            ProjectInfoPresenter.getCurrentVersion();
+            ProjectInfoPresenter.checkUpdate();
 
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
             progressInvoke();
         }
         private static void loginSteam()
@@ -147,8 +150,7 @@ namespace ItemChecker.Presenter
             Main.overstock = get.Overstock();
             Main.unavailable = get.Unavailable();
 
-            mainForm.Invoke(new MethodInvoker(delegate
-            {
+            mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.course_label.Text = Main.course.ToString() + " ₽";
                 mainForm.overstock_label.Text =  "Overstock: " + Main.overstock.Count.ToString();
                 mainForm.unavailable_label.Text = "Unavailable: " + Main.unavailable.Count.ToString(); }));
@@ -221,7 +223,7 @@ namespace ItemChecker.Presenter
             {
                 string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 Exceptions.errorMessage(exp, currMethodName);
-                Exceptions.errorLog(exp, Main.version);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
             finally
             {
