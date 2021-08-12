@@ -41,7 +41,7 @@ namespace ItemChecker.Presenter
             if (TryskinsConfig.Default.maxTryskinsPrice != 0)
                 max_sta = TryskinsConfig.Default.maxTryskinsPrice;
 
-            List<IWebElement> items = new List<IWebElement>();
+            List<IWebElement> items = new();
             TrySkins.url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=1&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=1&per-page=30";
             Main.Browser.Navigate().GoToUrl(TrySkins.url);
             int last;
@@ -145,9 +145,9 @@ namespace ItemChecker.Presenter
                 }
                 while (!response.Item2);
 
-                var highest_buy_order = Convert.ToDecimal(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
-                var csm_sell = Convert.ToDecimal(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
-                var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
+                decimal highest_buy_order = Convert.ToDecimal(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
+                decimal csm_sell = Convert.ToDecimal(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
+                decimal precent = Edit.Precent(highest_buy_order, csm_sell);
 
                 if (precent > 0)
                 {
@@ -174,9 +174,9 @@ namespace ItemChecker.Presenter
                     string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
                     string response = Get.Request(url, Main.proxyList[id]);
 
-                    var highest_buy_order = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString());
-                    var csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());
-                    var precent = Math.Round(((csm_sell - highest_buy_order) / highest_buy_order) * 100, 2);
+                    decimal highest_buy_order = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString());
+                    decimal csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());
+                    decimal precent = Edit.Precent(highest_buy_order, csm_sell);
 
                     if (precent > 0)
                     {
