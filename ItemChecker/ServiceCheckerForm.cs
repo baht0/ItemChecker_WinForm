@@ -248,7 +248,7 @@ namespace ItemChecker
                 if (1 < cell & cell < 6)
                 {
                     Main.save_str = value;
-                    servChecker_dataGridView.Rows[row].Cells[cell].Value = Math.Round(Convert.ToDecimal(value) * Main.course, 2);
+                    servChecker_dataGridView.Rows[row].Cells[cell].Value = Math.Round(Convert.ToDecimal(value) * GeneralConfig.Default.currency, 2);
                 }
                 if (ServiceChecker.stUpdated.Any() & ServiceChecker.csmUpdated.Any())
                 {

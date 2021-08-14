@@ -26,18 +26,6 @@ namespace ItemChecker.Settings {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string steamApiKey {
-            get {
-                return ((string)(this["steamApiKey"]));
-            }
-            set {
-                this["steamApiKey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string currencyApiKey {
             get {
                 return ((string)(this["currencyApiKey"]));
@@ -49,25 +37,13 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
-        public int wait {
+        [global::System.Configuration.DefaultSettingValueAttribute("74")]
+        public decimal currency {
             get {
-                return ((int)(this["wait"]));
+                return ((decimal)(this["currency"]));
             }
             set {
-                this["wait"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool profile {
-            get {
-                return ((bool)(this["profile"]));
-            }
-            set {
-                this["profile"] = value;
+                this["currency"] = value;
             }
         }
         
@@ -92,6 +68,30 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["proxyList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int wait {
+            get {
+                return ((int)(this["wait"]));
+            }
+            set {
+                this["wait"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool profile {
+            get {
+                return ((bool)(this["profile"]));
+            }
+            set {
+                this["profile"] = value;
             }
         }
         

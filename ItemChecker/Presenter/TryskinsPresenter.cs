@@ -122,7 +122,7 @@ namespace ItemChecker.Presenter
                 TrySkins.sta.Add(sta);
                 TrySkins.csm.Add(csm);
                 TrySkins.precent.Add(precent);
-                TrySkins.difference.Add(Edit.Difference(csm, sta, Main.course));
+                TrySkins.difference.Add(Edit.Difference(csm, sta, GeneralConfig.Default.currency));
                 mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
             }
         }
@@ -155,7 +155,7 @@ namespace ItemChecker.Presenter
                     TrySkins.sta.Add(highest_buy_order);
                     TrySkins.csm.Add(csm_sell);
                     TrySkins.precent.Add(precent);
-                    TrySkins.difference.Add(Edit.Difference(csm_sell, highest_buy_order, Main.course));
+                    TrySkins.difference.Add(Edit.Difference(csm_sell, highest_buy_order, GeneralConfig.Default.currency));
 
                     mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
                 }
@@ -184,7 +184,7 @@ namespace ItemChecker.Presenter
                         TrySkins.sta.Add(highest_buy_order);
                         TrySkins.csm.Add(csm_sell);
                         TrySkins.precent.Add(precent);
-                        TrySkins.difference.Add(Edit.Difference(csm_sell, highest_buy_order, Main.course));
+                        TrySkins.difference.Add(Edit.Difference(csm_sell, highest_buy_order, GeneralConfig.Default.currency));
 
                         mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
                     }
@@ -271,7 +271,7 @@ namespace ItemChecker.Presenter
                 {
                     if (!BuyOrder.queue.Contains(item))
                     {
-                        BuyOrder.queue_rub += Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue_rub += Math.Round(sta * GeneralConfig.Default.currency, 2);
                         BuyOrder.queue.Add(item);
                         mainForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
@@ -282,7 +282,7 @@ namespace ItemChecker.Presenter
                     }
                     else
                     {
-                        BuyOrder.queue_rub -= Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue_rub -= Math.Round(sta * GeneralConfig.Default.currency, 2);
                         BuyOrder.queue.Remove(item);
                         mainForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;

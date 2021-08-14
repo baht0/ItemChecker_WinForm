@@ -141,12 +141,9 @@ namespace ItemChecker.Presenter
             var course = Get.Course(GeneralConfig.Default.currencyApiKey);
             if (course != 0)
             {
-                Main.course = course;
-                Properties.Settings.Default.course = course;
-                Properties.Settings.Default.Save();
-            }            
-            else
-                Main.course = Properties.Settings.Default.course;
+                GeneralConfig.Default.currency = course;
+                GeneralConfig.Default.Save();
+            }
             SteamPresenter.getBalance();
 
             Get get = new();
@@ -154,7 +151,7 @@ namespace ItemChecker.Presenter
             Main.unavailable = get.Unavailable();
 
             mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.course_label.Text = Main.course.ToString() + " ₽";
+                mainForm.course_label.Text = GeneralConfig.Default.currency.ToString() + " ₽";
                 mainForm.overstock_label.Text =  "Overstock: " + Main.overstock.Count.ToString();
                 mainForm.unavailable_label.Text = "Unavailable: " + Main.unavailable.Count.ToString(); }));
 
@@ -289,7 +286,7 @@ namespace ItemChecker.Presenter
         }        
         public static void updateSettings()
         {
-            if (Properties.Settings.Default.UpdateSettings)
+            if (Properties.Settings.Default.updateSettings)
             {
                 Properties.Settings.Default.Upgrade();
                 GeneralConfig.Default.Upgrade();
@@ -297,7 +294,7 @@ namespace ItemChecker.Presenter
                 TryskinsConfig.Default.Upgrade();
                 WithdrawConfig.Default.Upgrade();
                 FloatConfig.Default.Upgrade();
-                Properties.Settings.Default.UpdateSettings = false;
+                Properties.Settings.Default.updateSettings = false;
                 Properties.Settings.Default.Save();
             }
         }

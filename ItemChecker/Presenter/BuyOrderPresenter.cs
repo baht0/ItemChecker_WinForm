@@ -75,8 +75,7 @@ namespace ItemChecker.Presenter
                     response = Get.MrinkaRequest(BuyOrder.url[i]);
                     if (!response.Item2)
                     {
-                        mainForm.Invoke(new MethodInvoker(delegate
-                        {
+                        mainForm.Invoke(new MethodInvoker(delegate {
                             mainForm.status_StripStatus.Text = "Calculate Steam (429). Please Wait...";
                             mainForm.timer_StripStatus.Text = "Updating (429). Please Wait..."; }));
                         Thread.Sleep(30000);
@@ -115,10 +114,10 @@ namespace ItemChecker.Presenter
         private static void parseOrder(string response, int i)
         {
             decimal my_order = Convert.ToDecimal(BuyOrder.price[i]);
-            var buy_order = Math.Round(my_order / Main.course, 2);
+            var buy_order = Math.Round(my_order / GeneralConfig.Default.currency, 2);
             var csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());
             var precent = Edit.Precent(buy_order, csm_sell);
-            var different = Edit.Difference(csm_sell * Main.course, my_order);
+            var different = Edit.Difference(csm_sell * GeneralConfig.Default.currency, my_order);
 
             BuyOrder.csm_price.Add(csm_sell);
             BuyOrder.precent.Add(precent);

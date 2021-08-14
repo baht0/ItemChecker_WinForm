@@ -2,17 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ItemChecker.Settings" GeneratedClassName="SteamConfig">
   <Profiles />
   <Settings>
-    <Setting Name="timer" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
-    </Setting>
-    <Setting Name="updateST" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="steamApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="autoDelete" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="cancelOrder" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="timer" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="updateST" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="startupPush" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

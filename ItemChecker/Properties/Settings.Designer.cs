@@ -74,24 +74,12 @@ namespace ItemChecker.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool UpdateSettings {
+        public bool updateSettings {
             get {
-                return ((bool)(this["UpdateSettings"]));
+                return ((bool)(this["updateSettings"]));
             }
             set {
-                this["UpdateSettings"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("74")]
-        public decimal course {
-            get {
-                return ((decimal)(this["course"]));
-            }
-            set {
-                this["course"] = value;
+                this["updateSettings"] = value;
             }
         }
     }

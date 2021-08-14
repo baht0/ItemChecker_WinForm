@@ -5,6 +5,7 @@ using static ItemChecker.Program;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using ItemChecker.Support;
+using ItemChecker.Settings;
 
 namespace ItemChecker.Presenter
 {
@@ -22,7 +23,7 @@ namespace ItemChecker.Presenter
                 if (Steam.balance == Math.Truncate(Steam.balance))
                     Steam.balance += 0.01m;
                 BuyOrder.my_buy_orders = Convert.ToInt32(count.Text);
-                Steam.balance_usd = Math.Round(Steam.balance / Main.course, 2);
+                Steam.balance_usd = Math.Round(Steam.balance / GeneralConfig.Default.currency, 2);
 
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.balance_StripStatus.Text = "Balance: " + balance.Text;

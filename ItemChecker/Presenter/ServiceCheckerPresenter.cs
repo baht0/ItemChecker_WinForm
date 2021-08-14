@@ -244,14 +244,14 @@ namespace ItemChecker.Presenter
                     if (ServiceChecker.service_one == 0) //steam -> (any)
                     {
                         decimal precent = Edit.Precent(ServiceChecker.price2_one[i], ServiceChecker.price2_two[i]);
-                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price2_one[i], Main.course);
+                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price2_one[i], GeneralConfig.Default.currency);
                         ServiceChecker.precent.Add(precent);
                         ServiceChecker.difference.Add(difference);
                     }
                     else //(any) -> (any)
                     {
                         decimal precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price2_two[i]);
-                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price_one[i], Main.course);
+                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price_one[i], GeneralConfig.Default.currency);
                         ServiceChecker.precent.Add(precent);
                         ServiceChecker.difference.Add(difference);
                     }
@@ -497,7 +497,7 @@ namespace ItemChecker.Presenter
                 {
                     if (!BuyOrder.queue.Contains(item))
                     {
-                        BuyOrder.queue_rub += Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue_rub += Math.Round(sta * GeneralConfig.Default.currency, 2);
                         BuyOrder.queue.Add(item);
                         serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub > BuyOrder.available_amount) 
@@ -510,7 +510,7 @@ namespace ItemChecker.Presenter
                     }
                     else
                     {
-                        BuyOrder.queue_rub -= Math.Round(sta * Main.course, 2);
+                        BuyOrder.queue_rub -= Math.Round(sta * GeneralConfig.Default.currency, 2);
                         BuyOrder.queue.Remove(item);
                         serviceCheckerForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub <= BuyOrder.available_amount) 

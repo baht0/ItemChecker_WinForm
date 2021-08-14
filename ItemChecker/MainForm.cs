@@ -245,7 +245,7 @@ namespace ItemChecker
         //linkLabels
         private void tradeOffers_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (!Main.loading & !String.IsNullOrEmpty(GeneralConfig.Default.steamApiKey))
+            if (!Main.loading & !String.IsNullOrEmpty(SteamConfig.Default.steamApiKey))
             {
                 DialogResult result = MessageBox.Show(
                     "Are you sure you want to ACCEPT trade offers?",
@@ -258,7 +258,7 @@ namespace ItemChecker
                     ThreadPool.QueueUserWorkItem(TradeOfferPresenter.tradeOffers);
                 }
             }
-            else if (String.IsNullOrEmpty(GeneralConfig.Default.steamApiKey))
+            else if (String.IsNullOrEmpty(SteamConfig.Default.steamApiKey))
             {
                 DialogResult result = MessageBox.Show(
                     "To continue you need a Steam API Key.",
@@ -350,7 +350,7 @@ namespace ItemChecker
                 if (cell == 2 || cell == 3 & str != "")
                 {
                     Main.save_str = str;
-                    tryskins_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, Main.course);
+                    tryskins_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
                 }
             }
             catch { }
@@ -410,7 +410,7 @@ namespace ItemChecker
                 if (cell == 3)
                 {
                     Main.save_str = str;
-                    buyOrder_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, Main.course);
+                    buyOrder_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
                 }
             }
             catch { }
@@ -487,7 +487,7 @@ namespace ItemChecker
                 if (cell == 2 || cell == 3)
                 {
                     Main.save_str = str;
-                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, Main.course);
+                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
                 }
             }
             catch { }

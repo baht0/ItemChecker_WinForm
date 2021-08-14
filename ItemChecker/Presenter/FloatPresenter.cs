@@ -120,7 +120,7 @@ namespace ItemChecker.Presenter
                 }
                 while (!response.Item2);
                 Float.csmPrice = Convert.ToDecimal(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
-                Float.csmPrice = Math.Round(Float.csmPrice * Main.course, 2);
+                Float.csmPrice = Math.Round(Float.csmPrice * GeneralConfig.Default.currency, 2);
 
                 if (FloatConfig.Default.priceCompare == 0) Float.priceCompare = Float.lowestPrice;
                 if (FloatConfig.Default.priceCompare == 1) Float.priceCompare = Float.medianPrice;

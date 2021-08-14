@@ -17,13 +17,13 @@ namespace ItemChecker
         private void SettingsForm_Load(object sender, EventArgs e)
         {
             //general
-            steamApiKey_textBox.Text = GeneralConfig.Default.steamApiKey.Trim();
             currApiKey_textBox.Text = GeneralConfig.Default.currencyApiKey.Trim();
             wait_numericUpDown.Value = GeneralConfig.Default.wait;
             profile_checkBox.Checked = GeneralConfig.Default.profile;
             exitChrome_checkBox.Checked = GeneralConfig.Default.exitChrome;
             proxy_checkBox.Checked = GeneralConfig.Default.proxy;
             //steam
+            steamApiKey_textBox.Text = SteamConfig.Default.steamApiKey.Trim();
             timer_numericUpDown.Value = SteamConfig.Default.timer;
             updST_checkBox.Checked = SteamConfig.Default.updateST;
             autoRemove_numericUpDown.Value = SteamConfig.Default.autoDelete;
@@ -117,13 +117,13 @@ namespace ItemChecker
                 if (!String.IsNullOrEmpty(currApiKey_textBox.Text))
                 {
                     //general
-                    GeneralConfig.Default.steamApiKey = steamApiKey_textBox.Text;
                     GeneralConfig.Default.currencyApiKey = currApiKey_textBox.Text;
                     GeneralConfig.Default.wait = Convert.ToInt32(wait_numericUpDown.Value);
                     GeneralConfig.Default.profile = profile_checkBox.Checked;
                     GeneralConfig.Default.exitChrome = exitChrome_checkBox.Checked;
                     GeneralConfig.Default.proxy = proxy_checkBox.Checked;
                     //steam
+                    SteamConfig.Default.steamApiKey = steamApiKey_textBox.Text;
                     SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
                     SteamConfig.Default.updateST = updST_checkBox.Checked;
                     SteamConfig.Default.autoDelete = Convert.ToInt32(autoRemove_numericUpDown.Value);

@@ -14,11 +14,8 @@
     <Setting Name="checkList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="UpdateSettings" Type="System.Boolean" Scope="User">
+    <Setting Name="updateSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="course" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">74</Value>
     </Setting>
   </Settings>
 </SettingsFile>

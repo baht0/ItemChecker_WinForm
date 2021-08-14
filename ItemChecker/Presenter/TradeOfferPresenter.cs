@@ -47,7 +47,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                var json = Get.TradeOffers(GeneralConfig.Default.steamApiKey);
+                var json = Get.TradeOffers(SteamConfig.Default.steamApiKey);
                 int count = ((JArray)JObject.Parse(json)["response"]["trade_offers_received"]).Count;
                 for (int i = 0; i < count; i++)
                 {

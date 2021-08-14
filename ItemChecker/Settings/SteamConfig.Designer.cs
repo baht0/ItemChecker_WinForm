@@ -25,25 +25,13 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
-        public int timer {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string steamApiKey {
             get {
-                return ((int)(this["timer"]));
+                return ((string)(this["steamApiKey"]));
             }
             set {
-                this["timer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool updateST {
-            get {
-                return ((bool)(this["updateST"]));
-            }
-            set {
-                this["updateST"] = value;
+                this["steamApiKey"] = value;
             }
         }
         
@@ -68,6 +56,30 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["cancelOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int timer {
+            get {
+                return ((int)(this["timer"]));
+            }
+            set {
+                this["timer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool updateST {
+            get {
+                return ((bool)(this["updateST"]));
+            }
+            set {
+                this["updateST"] = value;
             }
         }
         
