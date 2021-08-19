@@ -1,7 +1,7 @@
 ﻿
 namespace ItemChecker
 {
-    partial class ServiceCheckerForm
+    partial class ServiceParserForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace ItemChecker
         /// </summary>
         public void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiceCheckerForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiceParserForm));
             this.servChecker_menuStrip = new System.Windows.Forms.MenuStrip();
             this.add_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.check_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -504,7 +504,7 @@ namespace ItemChecker
             this.search_textBox.TabIndex = 7;
             this.search_textBox.TextChanged += new System.EventHandler(this.search_textBox_TextChanged);
             // 
-            // ServiceCheckerForm
+            // ServiceParserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -518,11 +518,11 @@ namespace ItemChecker
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.servChecker_menuStrip;
             this.MinimumSize = new System.Drawing.Size(1105, 570);
-            this.Name = "ServiceCheckerForm";
+            this.Name = "ServiceParserForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ServiceChecker";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServiceCheckerForm_FormClosing);
-            this.Load += new System.EventHandler(this.ServiceCheckerForm_Load);
+            this.Text = "ServiceParser";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.serviceParserForm_FormClosing);
+            this.Load += new System.EventHandler(this.serviceParserForm_Load);
             this.servChecker_menuStrip.ResumeLayout(false);
             this.servChecker_menuStrip.PerformLayout();
             this.servChecker_statusStrip.ResumeLayout(false);

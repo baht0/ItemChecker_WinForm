@@ -169,7 +169,7 @@ namespace ItemChecker.Presenter
                     row.Cells[0].Style.BackColor = Color.Orange;
                 if (item.Contains("★"))
                     row.Cells[0].Style.BackColor = Color.DarkViolet;
-                if (Withdraw.favoriteItems.Contains(item))
+                if (Withdraw.favoriteList.Contains(item))
                 {
                     row.Cells[1].Style.BackColor = Color.LightGray;
                     row.Cells[2].Style.BackColor = Color.LightGray;
@@ -187,20 +187,23 @@ namespace ItemChecker.Presenter
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
                 loginCsm();
 
                 JArray items = getItems(checkInventory());
                 if(items.Count > 0)
                 {
-                    DialogResult result = MessageBox.Show($"There are '{items.Count}' items to withdraw.\nDo you want to withdraw?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
-                    {
-                        mainForm.Invoke(new MethodInvoker(delegate {
-                            mainForm.progressBar_StripStatus.Maximum = items.Count;
-                            mainForm.progressBar_StripStatus.Value = 0;
-                            mainForm.progressBar_StripStatus.Visible = true; }));
-                        withdrawItems(items);
-                    }
+                    mainForm.Invoke(new MethodInvoker(delegate {
+                        DialogResult result = MessageBox.Show($"There are '{items.Count}' items to withdraw.\nDo you want to withdraw?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    
+                    if (result != DialogResult.Yes)
+                        return;
+
+                        mainForm.progressBar_StripStatus.Maximum = items.Count;
+                        mainForm.progressBar_StripStatus.Value = 0;
+                        mainForm.progressBar_StripStatus.Visible = true;
+                    }));
+                    withdrawItems(items);
                 }
             }
             catch (Exception exp)
@@ -313,26 +316,8 @@ namespace ItemChecker.Presenter
             Withdraw.tick = 1;
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.timer_StripStatus.Visible = false;
-                mainForm.checkFavorite_groupBox.Visible = false;
-                mainForm.checkFavorite_ToolStripMenuItem.ForeColor = Color.Black; }));
-        }
-        public static void checkStart()
-        {            
-            if (!BuyOrder.timer.Enabled & !Withdraw.timer.Enabled)
-            {
-                Withdraw.tick = WithdrawConfig.Default.timer;
-
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.itemsWith_label.Text = $"Items: {Withdraw.favoriteItems.Count}";
-                    mainForm.checkFavorite_groupBox.Visible = true;
-                    mainForm.timer_StripStatus.Visible = true;
-                    mainForm.checkFavorite_ToolStripMenuItem.ForeColor = Color.OrangeRed;
-                }));
-                loginCsm();
-                Withdraw.timer.Enabled = true;
-            }
-            else if (Withdraw.timer.Enabled & Withdraw.tick > 1)
-                WithdrawPresenter.stopCheckFavorite();
+                mainForm.favoriteCheck_groupBox.Visible = false;
+                mainForm.favoriteCheckToolStripMenuItem.ForeColor = Color.Black; }));
         }
         public void timerTick(Object sender, ElapsedEventArgs e)
         {
@@ -344,13 +329,13 @@ namespace ItemChecker.Presenter
                 if (!Main.loading)
                 {
                     Withdraw.timer.Enabled = false;
+                    Main.loading = true;
 
                     mainForm.Invoke(new MethodInvoker(delegate {
                         mainForm.timer_StripStatus.Text = "Checking...";
-                        mainForm.progressBar_StripStatus.Maximum = Withdraw.favoriteItems.Count;
+                        mainForm.progressBar_StripStatus.Maximum = Withdraw.favoriteList.Count;
                         mainForm.progressBar_StripStatus.Value = 0;
                         mainForm.progressBar_StripStatus.Visible = true; }));
-                    Main.loading = true;
                     ThreadPool.QueueUserWorkItem(checkFavorite);
                 }
                 else
@@ -363,9 +348,9 @@ namespace ItemChecker.Presenter
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-                List<string> favoriteItems = Withdraw.favoriteItems;
+                List<string> favoriteList = Withdraw.favoriteList;
                 Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
-                foreach (string favoriteItem in favoriteItems)
+                foreach (string favoriteItem in favoriteList)
                 {
                     try
                     {
@@ -423,7 +408,7 @@ namespace ItemChecker.Presenter
                 Main.loading = false;
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.timer_StripStatus.Text = "Next check: 00:00";
-                    mainForm.checkWith_label.Text = $"Check: {checkCount++}";
+                    mainForm.favoriteCheck_label.Text = $"Check: {checkCount++}";
                     mainForm.progressBar_StripStatus.Visible = false; }));
                 Withdraw.tick = WithdrawConfig.Default.timer;
                 Withdraw.timer.Enabled = true;
@@ -518,11 +503,11 @@ namespace ItemChecker.Presenter
             Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", body, "https://cs.money/confirm_virtual_offer"));
 
             old_id.Add(id);
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.withdraw_label.Text = $"Successful Trades: {old_id.Count}"; }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.favoriteTrades_label.Text = $"Successful Trades: {old_id.Count}"; }));
         }
 
         //cs.money
-        private static void loginCsm()
+        public static void loginCsm()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Cs.Money..."; }));
             Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");

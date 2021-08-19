@@ -22,6 +22,9 @@ namespace ItemChecker.Presenter
 {
     public class BuyOrderPresenter
     {
+        private int checkCount = 1;
+        private int pushCount = 1;
+        static private int cancelCount = 1;
         public static void getSteamlist()
         {
             BuyOrder._clear();
@@ -296,36 +299,19 @@ namespace ItemChecker.Presenter
 
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}";
-                mainForm.cancel_label.Text = $"Cancel: {BuyOrder.int_cancel + 1}";
-                mainForm.cancel_label.ForeColor = Color.OrangeRed; }));
+                mainForm.pusherCancel_label.Text = $"Cancel: {cancelCount++}";
+                mainForm.pusherCancel_label.ForeColor = Color.OrangeRed; }));
         }
 
         //push...
-        public static void stopPush()
+        public static void stopBuyOrderPusher()
         {
             BuyOrder.timer.Enabled = false;
-            BuyOrder.tick = 0;
+            BuyOrder.tick = 1;
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.timer_StripStatus.Visible = false;
-                mainForm.push_linkLabel.Text = "Push..."; }));
-        }
-        public static void startPush()
-        {
-            if (BuyOrder.item.Count > 0 & !Main.loading)
-            {
-                if (!BuyOrder.timer.Enabled & !Withdraw.timer.Enabled)
-                {
-                    BuyOrder.tick = SteamConfig.Default.timer * 60;
-
-                    mainForm.Invoke(new MethodInvoker(delegate {
-                        mainForm.timer_StripStatus.Visible = true;
-                        mainForm.push_linkLabel.Text = "Stop..."; }));
-
-                    BuyOrder.timer.Enabled = true;
-                }
-                else if (BuyOrder.timer.Enabled & BuyOrder.tick > 1)
-                    BuyOrderPresenter.stopPush();
-            }
+                mainForm.pusherBuyOrder_groupBox.Visible = false;
+                mainForm.buyOrderPush_toolStripMenuItem.ForeColor = Color.Black; }));
         }
         public void timerTick(Object sender, ElapsedEventArgs e)
         {
@@ -342,7 +328,7 @@ namespace ItemChecker.Presenter
                     ThreadPool.QueueUserWorkItem(push);
                 }
                 else
-                    BuyOrderPresenter.stopPush();
+                    BuyOrderPresenter.stopBuyOrderPusher();
             }
         }
         private void push(object state)
@@ -377,9 +363,14 @@ namespace ItemChecker.Presenter
             finally
             {
                 Main.loading = false;
+                mainForm.Invoke(new MethodInvoker(delegate { 
+                    mainForm.progressBar_StripStatus.Visible = false;
+                    mainForm.timer_StripStatus.Text = "Next check: 00:00";
+                    mainForm.pusherCheck_label.Text = $"Check: {checkCount++}";
+                    mainForm.pusherItems_label.Text = $"Items: {BuyOrder.item.Count}";
+                }));
                 BuyOrder.tick = SteamConfig.Default.timer * 60;
                 BuyOrder.timer.Enabled = true;
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Visible = false; }));
             }
         }
         private void pushItem()
@@ -401,8 +392,7 @@ namespace ItemChecker.Presenter
                         Thread.Sleep(2000);
                         Main.Browser.ExecuteJavaScript(Post.CreateBuyOrder(BuyOrder.url[i], highest_buy_order, Main.sessionid));
 
-                        BuyOrder.int_push++;
-                        mainForm.push_label.Invoke(new MethodInvoker(() => mainForm.push_label.Text = "Push: " + Convert.ToString(BuyOrder.int_push)));
+                        mainForm.pusherPush_label.Invoke(new MethodInvoker(() => mainForm.pusherPush_label.Text = $"Push: {pushCount++}"));
                         Thread.Sleep(1500);
                     }
                     else if (Steam.balance < highest_buy_order | (highest_buy_order - my_order) > BuyOrder.available_amount)
@@ -422,8 +412,6 @@ namespace ItemChecker.Presenter
                     MainPresenter.progressInvoke();
                 }
             }
-            BuyOrder.int_check++;
-            mainForm.check_label.Invoke(new MethodInvoker(() => mainForm.check_label.Text = "Check: " + BuyOrder.int_check.ToString()));
         }
     }
 }

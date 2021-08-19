@@ -29,7 +29,6 @@ namespace ItemChecker
         /// </summary>
         private void InitializeComponent()
         {
-            this.openFolder_linkLabel = new System.Windows.Forms.LinkLabel();
             this.icon_pictureBox = new System.Windows.Forms.PictureBox();
             this.name_label = new System.Windows.Forms.Label();
             this.autor_label = new System.Windows.Forms.Label();
@@ -39,22 +38,12 @@ namespace ItemChecker
             this.checkUpdate_linkLabel = new System.Windows.Forms.LinkLabel();
             this.createInfo_linkLabel = new System.Windows.Forms.LinkLabel();
             this.groupBox = new System.Windows.Forms.GroupBox();
+            this.link_pictureBox = new System.Windows.Forms.PictureBox();
+            this.label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.icon_pictureBox)).BeginInit();
             this.groupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // openFolder_linkLabel
-            // 
-            this.openFolder_linkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.openFolder_linkLabel.AutoSize = true;
-            this.openFolder_linkLabel.LinkColor = System.Drawing.Color.DimGray;
-            this.openFolder_linkLabel.Location = new System.Drawing.Point(12, 151);
-            this.openFolder_linkLabel.Name = "openFolder_linkLabel";
-            this.openFolder_linkLabel.Size = new System.Drawing.Size(97, 15);
-            this.openFolder_linkLabel.TabIndex = 5;
-            this.openFolder_linkLabel.TabStop = true;
-            this.openFolder_linkLabel.Text = "Open App Folder";
-            this.openFolder_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.openFolder_linkLabel_LinkClicked);
             // 
             // icon_pictureBox
             // 
@@ -70,12 +59,14 @@ namespace ItemChecker
             // name_label
             // 
             this.name_label.AutoSize = true;
+            this.name_label.Cursor = System.Windows.Forms.Cursors.Hand;
             this.name_label.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.name_label.Location = new System.Drawing.Point(112, 22);
             this.name_label.Name = "name_label";
             this.name_label.Size = new System.Drawing.Size(80, 15);
             this.name_label.TabIndex = 8;
             this.name_label.Text = "ItemChecker";
+            this.name_label.Click += new System.EventHandler(this.name_label_Click);
             // 
             // autor_label
             // 
@@ -107,7 +98,7 @@ namespace ItemChecker
             // close_button
             // 
             this.close_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.close_button.Location = new System.Drawing.Point(211, 143);
+            this.close_button.Location = new System.Drawing.Point(211, 145);
             this.close_button.Name = "close_button";
             this.close_button.Size = new System.Drawing.Size(65, 23);
             this.close_button.TabIndex = 13;
@@ -132,7 +123,7 @@ namespace ItemChecker
             this.createInfo_linkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.createInfo_linkLabel.AutoSize = true;
             this.createInfo_linkLabel.LinkColor = System.Drawing.Color.DimGray;
-            this.createInfo_linkLabel.Location = new System.Drawing.Point(115, 151);
+            this.createInfo_linkLabel.Location = new System.Drawing.Point(143, 150);
             this.createInfo_linkLabel.Name = "createInfo_linkLabel";
             this.createInfo_linkLabel.Size = new System.Drawing.Size(62, 15);
             this.createInfo_linkLabel.TabIndex = 15;
@@ -146,6 +137,7 @@ namespace ItemChecker
             this.groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox.Controls.Add(this.link_pictureBox);
             this.groupBox.Controls.Add(this.icon_pictureBox);
             this.groupBox.Controls.Add(this.name_label);
             this.groupBox.Controls.Add(this.checkUpdate_linkLabel);
@@ -154,19 +146,41 @@ namespace ItemChecker
             this.groupBox.Controls.Add(this.lastVersion_label);
             this.groupBox.Location = new System.Drawing.Point(12, 4);
             this.groupBox.Name = "groupBox";
-            this.groupBox.Size = new System.Drawing.Size(264, 133);
+            this.groupBox.Size = new System.Drawing.Size(264, 135);
             this.groupBox.TabIndex = 16;
             this.groupBox.TabStop = false;
+            // 
+            // link_pictureBox
+            // 
+            this.link_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.link;
+            this.link_pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.link_pictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.link_pictureBox.Location = new System.Drawing.Point(191, 24);
+            this.link_pictureBox.Name = "link_pictureBox";
+            this.link_pictureBox.Size = new System.Drawing.Size(12, 12);
+            this.link_pictureBox.TabIndex = 16;
+            this.link_pictureBox.TabStop = false;
+            this.link_pictureBox.Click += new System.EventHandler(this.link_pictureBox_Click);
+            // 
+            // label
+            // 
+            this.label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label.AutoSize = true;
+            this.label.Location = new System.Drawing.Point(12, 153);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(74, 15);
+            this.label.TabIndex = 15;
+            this.label.Text = "© 2018-2021";
             // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(288, 178);
+            this.ClientSize = new System.Drawing.Size(288, 177);
+            this.Controls.Add(this.label);
             this.Controls.Add(this.groupBox);
             this.Controls.Add(this.createInfo_linkLabel);
             this.Controls.Add(this.close_button);
-            this.Controls.Add(this.openFolder_linkLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -177,14 +191,13 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.icon_pictureBox)).EndInit();
             this.groupBox.ResumeLayout(false);
             this.groupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.LinkLabel openFolder_linkLabel;
         private System.Windows.Forms.PictureBox icon_pictureBox;
         private System.Windows.Forms.Label name_label;
         private System.Windows.Forms.Label autor_label;
@@ -194,5 +207,7 @@ namespace ItemChecker
         private System.Windows.Forms.GroupBox groupBox;
         public System.Windows.Forms.Label lastVersion_label;
         public System.Windows.Forms.LinkLabel checkUpdate_linkLabel;
+        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.PictureBox link_pictureBox;
     }
 }

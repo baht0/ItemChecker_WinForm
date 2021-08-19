@@ -5,7 +5,6 @@ using System.Threading;
 using System.Windows.Forms;
 using ItemChecker.Model;
 using ItemChecker.Net;
-using ItemChecker.Presenter;
 using ItemChecker.Support;
 using ItemChecker.Settings;
 using Newtonsoft.Json.Linq;
@@ -22,22 +21,22 @@ namespace ItemChecker
             InitializeComponent();
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             request = str;
-            if (str.Contains("FloatList"))
-            {
-                getToolStripMenuItem.Visible = false;
-                richTextBox1.Text = FloatConfig.Default.floatList.Trim();
-            }
-            else if (str.Contains("CheckList"))
+            if (str.Contains("CheckList"))
             {
                 getToolStripMenuItem.Text = "Get items";
                 lootFarmToolStripMenuItem.Visible = true;
                 csMoneyToolStripMenuItem.Visible = true;
                 richTextBox1.Text = Properties.Settings.Default.checkList.Trim();
             }
-            else if(str.Contains("FavoriteList"))
+            else if (str.Contains("FavoriteList"))
             {
                 getToolStripMenuItem.Visible = false;
-                richTextBox1.Text = WithdrawConfig.Default.favoriteItems.Trim();
+                richTextBox1.Text = WithdrawConfig.Default.favoriteList.Trim();
+            }
+            else if (str.Contains("FloatList"))
+            {
+                getToolStripMenuItem.Visible = false;
+                richTextBox1.Text = FloatConfig.Default.floatList.Trim();
             }
             else if (str.Contains("ProxyList"))
             {
@@ -50,16 +49,8 @@ namespace ItemChecker
         private void ok_button_Click(object sender, EventArgs e)
         {
             string str = richTextBox1.Text.Replace("\r\n", "\n");
-            if (request.Contains("FloatList"))
-            {
-                Float.items.Clear();
-                Float.items.AddRange(richTextBox1.Lines);
-                FloatConfig.Default.floatList = str;
-
-                Main.loading = true;
-                ThreadPool.QueueUserWorkItem(FloatPresenter.Check);
-            }
-            else if (request.Contains("CheckList"))
+            
+            if (request.Contains("CheckList"))
             {
                 Main.checkList.Clear();
                 Main.checkList.AddRange(richTextBox1.Lines);
@@ -67,9 +58,15 @@ namespace ItemChecker
             }
             else if (request.Contains("FavoriteList"))
             {
-                Withdraw.favoriteItems.Clear();
-                Withdraw.favoriteItems.AddRange(richTextBox1.Lines);
-                WithdrawConfig.Default.favoriteItems = str;
+                Withdraw.favoriteList.Clear();
+                Withdraw.favoriteList.AddRange(richTextBox1.Lines);
+                WithdrawConfig.Default.favoriteList = str;
+            }
+            else if(request.Contains("FloatList"))
+            {
+                Float.floatList.Clear();
+                Float.floatList.AddRange(richTextBox1.Lines);
+                FloatConfig.Default.floatList = str;
             }
             else if (request.Contains("ProxyList"))
             {

@@ -23,10 +23,6 @@ namespace ItemChecker.Model
         //push
         public static Timer timer = new();
         public static int tick { get; set; }
-        public static int int_check = 0;
-        public static int int_push = 0;
-        public static int int_cancel = 0;
-
 
         public static void _clear()
         {

@@ -70,9 +70,9 @@ namespace ItemChecker.Net
 
             return Request(url);
         }
-        public static String PriceOverview(string market_hash_name, int currency)
+        public static String PriceOverview(string market_hash_name)
         {
-            return Request(@"https://steamcommunity.com/market/priceoverview/?country=RU&currency=" + currency + "&appid=730&market_hash_name=" + market_hash_name);
+            return Request(@"https://steamcommunity.com/market/priceoverview/?country=RU&currency=5&appid=730&market_hash_name=" + market_hash_name);
         }
         public static String TradeOffers(string steam_api_key)
         {

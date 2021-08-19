@@ -50,7 +50,6 @@ namespace ItemChecker
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             notifyIcon.Visible = true;
-            //ProjectInfoPresenter.getCurrentVersion();
             ver_label.Text = "Version: " + Main.assemblyVersion;
             MainPresenter.updateSettings();
 
@@ -58,12 +57,15 @@ namespace ItemChecker
 
             BuyOrderPresenter buyOrderPresenter = new();
             WithdrawPresenter withdrawPresenter = new();
+            FloatPresenter floatPresenter = new();
             BuyOrder.timer.Elapsed += new ElapsedEventHandler(buyOrderPresenter.timerTick);
             Withdraw.timer.Elapsed += new ElapsedEventHandler(withdrawPresenter.timerTick);
-            BuyOrder.timer.Interval = Withdraw.timer.Interval = 1000;
+            Float.timer.Elapsed += new ElapsedEventHandler(floatPresenter.timerTick);
+            BuyOrder.timer.Interval = Withdraw.timer.Interval = Float.timer.Interval = 1000;
 
             Main.proxyList.AddRange(GeneralConfig.Default.proxyList.Split("\n"));
-            Withdraw.favoriteItems.AddRange(WithdrawConfig.Default.favoriteItems.Split("\n"));
+            Withdraw.favoriteList.AddRange(WithdrawConfig.Default.favoriteList.Split("\n"));
+            Float.floatList.AddRange(FloatConfig.Default.floatList.Split("\n"));
 
             ThreadPool.QueueUserWorkItem(MainPresenter.Start);
         }
@@ -119,8 +121,7 @@ namespace ItemChecker
 
             if (result == DialogResult.Yes)
             {
-                BuyOrderPresenter.stopPush();
-                WithdrawPresenter.stopCheckFavorite();
+                MainPresenter.stopTimers();
                 MainPresenter.exit();
             }
         }
@@ -160,28 +161,24 @@ namespace ItemChecker
         //withdraw
         private void showWithdraw_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Main.loading)
+            if (!Main.loading & !withdraw_dataGridView.Visible)
             {
-                if (!withdraw_dataGridView.Visible)
-                {
-                    BuyOrderPresenter.stopPush();
-                    WithdrawPresenter.stopCheckFavorite();
-                    showWithdraw_toolStripMenuItem.Text = "Close";
-                    withdraw_dataGridView.Visible = true;
-                    reload_MainStripMenu.Enabled = false;
-                    reloadWithdraw_toolStripMenuItem.Enabled = true;
-                    status_StripStatus.Text = "Check Withdraw...";
-                    status_StripStatus.Visible = true;
-                    Main.loading = true;
-                    ThreadPool.QueueUserWorkItem(WithdrawPresenter.withdraw);
-                }
-                else
-                {
-                    reloadWithdraw_toolStripMenuItem.Enabled = false;
-                    reload_MainStripMenu.Enabled = true;
-                    withdraw_dataGridView.Visible = false;
-                    showWithdraw_toolStripMenuItem.Text = "Load";
-                }
+                MainPresenter.stopTimers();
+                showWithdraw_toolStripMenuItem.Text = "Close";
+                withdraw_dataGridView.Visible = true;
+                reload_MainStripMenu.Enabled = false;
+                reloadWithdraw_toolStripMenuItem.Enabled = true;
+                status_StripStatus.Text = "Check Withdraw...";
+                status_StripStatus.Visible = true;
+                Main.loading = true;
+                ThreadPool.QueueUserWorkItem(WithdrawPresenter.withdraw);
+            }
+            else if (withdraw_dataGridView.Visible)
+            {
+                reloadWithdraw_toolStripMenuItem.Enabled = false;
+                reload_MainStripMenu.Enabled = true;
+                withdraw_dataGridView.Visible = false;
+                showWithdraw_toolStripMenuItem.Text = "Load";
             }
         }
         private void reloadWithdraw_toolStripMenuItem_Click(object sender, EventArgs e)
@@ -199,40 +196,124 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.loading = true;
-                BuyOrderPresenter.stopPush();
-                WithdrawPresenter.stopCheckFavorite();
+                MainPresenter.stopTimers();
                 status_StripStatus.Text = "Checking Cs.Money...";
                 status_StripStatus.Visible = true;
                 ThreadPool.QueueUserWorkItem(WithdrawPresenter.inventoryCsm);
             }
         }
-        private void checkFavorite_ToolStripMenuItem_Click(object sender, EventArgs e)
+        //tools
+        private void serviceParserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Withdraw.favoriteItems.Any() & !Main.loading)
-                WithdrawPresenter.checkStart();
-            else if (!Withdraw.favoriteItems.Any())
+            if ((Application.OpenForms["ServiceParserForm"] as ServiceParserForm) == null)
             {
+                ServiceParserForm serviceChecker = new();
+                serviceChecker.Show();
+            }
+            else
+                Application.OpenForms["ServiceParserForm"].Activate();
+        }
+        //extract
+        private void trySkinsTotxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (TrySkins.item != null)
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo("extract");
+                if (!dirInfo.Exists) dirInfo.Create();
+                string str = null;
+                foreach (string i in TrySkins.item)
+                    str += i + "\r\n";
+                str = str.Remove(str.Length - 2);
+                File.WriteAllText($"extract/tryskinsList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
+            }
+        }
+        private void buyOrdersTotxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (BuyOrder.item != null)
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo("extract");
+                if (!dirInfo.Exists) dirInfo.Create();
+                string str = null;
+                foreach (string i in BuyOrder.item)
+                    str += i + "\r\n";
+                str = str.Remove(str.Length - 2);
+                File.WriteAllText($"extract/steamList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
+            }
+        }
+        private void buyOrderPush_toolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Main.loading & BuyOrder.item.Any() & !BuyOrder.timer.Enabled & !Withdraw.timer.Enabled  & !Float.timer.Enabled)
+            {
+                pusherItems_label.Text = $"Items: {BuyOrder.item.Count}";
+                timer_StripStatus.Visible = true;
+                buyOrderPush_toolStripMenuItem.ForeColor = System.Drawing.Color.OrangeRed;
+
+                BuyOrder.tick = SteamConfig.Default.timer * 60;
+                BuyOrder.timer.Enabled = true;
+            }
+            else if (BuyOrder.timer.Enabled & BuyOrder.tick > 1)
+                BuyOrderPresenter.stopBuyOrderPusher();
+            else if (!BuyOrder.item.Any())
+            {
+                MessageBox.Show(
+                  "You need to add at least 1 item to continue.",
+                  "Warning",
+                  MessageBoxButtons.OK,
+                  MessageBoxIcon.Warning);
+            }
+        }
+        private void favoriteCheckToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Main.loading & Withdraw.favoriteList.Any() & !Withdraw.timer.Enabled & !BuyOrder.timer.Enabled & !Float.timer.Enabled)
+            {
+                favoriteItems_label.Text = $"Items: {Withdraw.favoriteList.Count}";
+                favoriteCheck_groupBox.Visible = true;
+                timer_StripStatus.Visible = true;
+                favoriteCheckToolStripMenuItem.ForeColor = System.Drawing.Color.OrangeRed;
+
+                WithdrawPresenter.loginCsm();
+
+                Withdraw.tick = WithdrawConfig.Default.timer;
+                Withdraw.timer.Enabled = true;
+            }
+            else if (Withdraw.timer.Enabled & Withdraw.tick > 1)
+                WithdrawPresenter.stopCheckFavorite();
+            else if (!Withdraw.favoriteList.Any())
+            {
+                MessageBox.Show(
+                  "You need to add at least 1 item to continue.",
+                  "Warning",
+                  MessageBoxButtons.OK,
+                  MessageBoxIcon.Warning);
+
                 SettingsForm settingsForm = new(3);
                 settingsForm.ShowDialog();
             }
         }
-        //tools
-        private void checkOwnList_MainStripMenu_Click(object sender, EventArgs e)
-        {
-            if ((Application.OpenForms["ServiceCheckerForm"] as ServiceCheckerForm) == null)
-            {
-                ServiceCheckerForm serviceChecker = new ServiceCheckerForm();
-                serviceChecker.Show();
-            }
-            else
-                Application.OpenForms["ServiceCheckerForm"].Activate();
-        }
         private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {
-            if (!Main.loading)
+            if (!Main.loading & Float.floatList.Any() & !Float.timer.Enabled & !Withdraw.timer.Enabled & !BuyOrder.timer.Enabled)
             {
-                CheckListForm checkListForm = new("FloatList");
-                checkListForm.ShowDialog();
+                floatItems_label.Text = $"Items: {Float.floatList.Count}";
+                floatCheck_groupBox.Visible = true;
+                timer_StripStatus.Visible = true;
+                floatCheck_MainStripMenu.ForeColor = System.Drawing.Color.OrangeRed;
+
+                Float.tick = FloatConfig.Default.timer * 60;
+                Float.timer.Enabled = true;
+            }
+            else if (Float.timer.Enabled & Float.tick > 1)
+                FloatPresenter.stopCheckFloat();
+            else if (!Float.floatList.Any())
+            {
+                MessageBox.Show(
+                   "You need to add at least 1 item to continue.",
+                   "Warning",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Warning);
+
+                SettingsForm settingsForm = new(4);
+                settingsForm.ShowDialog();
             }
         }
         //about
@@ -260,17 +341,14 @@ namespace ItemChecker
             }
             else if (String.IsNullOrEmpty(SteamConfig.Default.steamApiKey))
             {
-                DialogResult result = MessageBox.Show(
+                MessageBox.Show(
                     "To continue you need a Steam API Key.",
                     "Warning",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
-                if (result == DialogResult.OK)
-                {
-                    SettingsForm settingsForm = new(1);
-                    settingsForm.ShowDialog();
-                }
+                SettingsForm settingsForm = new(1);
+                settingsForm.ShowDialog();
             }
         }
         private void queue_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -297,16 +375,14 @@ namespace ItemChecker
                 }
             }            
         }
-        private void push_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            BuyOrderPresenter.startPush();
-        }
         private void timer_StripStatus_Click(object sender, EventArgs e)
         {
             if (BuyOrder.timer.Enabled)
                 BuyOrder.tick = 1;
             else if (Withdraw.timer.Enabled)
                 Withdraw.tick = 1;
+            else if (Float.timer.Enabled)
+                Float.tick = 1;
         }
 
         //tryskins table
@@ -518,13 +594,9 @@ namespace ItemChecker
             this.WindowState = FormWindowState.Normal;
             this.Activate();
         }
-        private void checkOwnList_toolStripMenuItem_Click(object sender, EventArgs e)
+        private void tree_serviceParserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            checkOwnList_MainStripMenu.PerformClick();
-        }
-        private void floatCheck_toolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            floatCheck_MainStripMenu.PerformClick();
+            serviceParserToolStripMenuItem.PerformClick();
         }
         private void settings_toolStripMenuItem_Click(object sender, EventArgs e)
         {

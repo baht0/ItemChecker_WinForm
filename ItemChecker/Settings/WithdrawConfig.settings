@@ -35,7 +35,7 @@
     <Setting Name="deviation" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">0.01</Value>
     </Setting>
-    <Setting Name="favoriteItems" Type="System.String" Scope="User">
+    <Setting Name="favoriteList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="favoritePrices" Type="System.String" Scope="User">

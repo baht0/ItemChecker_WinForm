@@ -49,11 +49,6 @@ namespace ItemChecker
                 checkUpdate_linkLabel.Text = "Check Update...";
             checkUpdate_linkLabel.Enabled = true;
         }
-
-        private void openFolder_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Support.Edit.openUrl(Application.StartupPath);
-        }
         private void createInfo_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             ThreadPool.QueueUserWorkItem(pool => { ProjectInfoPresenter.createCurrentVersion(); });
@@ -61,6 +56,16 @@ namespace ItemChecker
         private void close_button_Click(object sender, System.EventArgs e)
         {
             Close();
+        }
+
+        //open
+        private void name_label_Click(object sender, System.EventArgs e)
+        {
+            Support.Edit.openUrl(Application.StartupPath);
+        }
+        private void link_pictureBox_Click(object sender, System.EventArgs e)
+        {
+            Support.Edit.openUrl(Application.StartupPath);
         }
     }
 }

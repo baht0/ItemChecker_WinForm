@@ -45,10 +45,10 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                        serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-                        serviceCheckerForm.servChecker_dataGridView.Enabled = true;
-                        serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
+                    serviceParserForm.Invoke(new MethodInvoker(delegate {
+                        serviceParserForm.status_toolStripStatusLabel.Visible = false;
+                        serviceParserForm.servChecker_dataGridView.Enabled = true;
+                        serviceParserForm.servChecker_dataGridView.Sort(serviceParserForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                     drawDTGView();
                     MainPresenter.messageBalloonTip();
                     Main.loading = false;
@@ -70,12 +70,12 @@ namespace ItemChecker.Presenter
                         response = Get.MrinkaRequest(market_hash_name);
                         if (!response.Item2)
                         {
-                            serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list (429). Please Wait..."; }));
+                            serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.status_toolStripStatusLabel.Text = "Checking the list (429). Please Wait..."; }));
                             Thread.Sleep(30000);
                         }
                     }
                     while (!response.Item2);
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Checking the list..."; }));
+                    serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.status_toolStripStatusLabel.Text = "Checking the list..."; }));
 
                     parseJson(response.Item1);
                 }
@@ -213,15 +213,15 @@ namespace ItemChecker.Presenter
             {
                 while (i < Main.checkList.Count)
                 {
-                    serviceCheckerForm.Invoke(new Action(() => {
-                        serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
-                        serviceCheckerForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}";
+                    serviceParserForm.Invoke(new Action(() => {
+                        serviceParserForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
+                        serviceParserForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}";
                     }));
                     Thread.Sleep(500);
                 }
-                serviceCheckerForm.Invoke(new Action(() => {
-                    serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {Main.checkList.Count}";
-                    serviceCheckerForm.Text = "ServiceChecker";
+                serviceParserForm.Invoke(new Action(() => {
+                    serviceParserForm.count_toolStripStatusLabel.Text = $"Count: {Main.checkList.Count}";
+                    serviceParserForm.Text = "ServiceChecker";
                 }));
             }
             catch (Exception exp)
@@ -237,7 +237,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.status_toolStripStatusLabel.Text = "Write to the table..."; }));
+                serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.status_toolStripStatusLabel.Text = "Write to the table..."; }));
 
                 for (int i = 0; i < Main.checkList.Count; i++)
                 {
@@ -266,9 +266,9 @@ namespace ItemChecker.Presenter
                         ServiceChecker.difference[i],
                         ServiceChecker.status[i]);
 
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {i + 1}"; }));
+                    serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {i + 1}"; }));
                 }
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate { serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
+                serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
             }
             catch (Exception exp)
             {
@@ -282,7 +282,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
+                foreach (DataGridViewRow row in serviceParserForm.servChecker_dataGridView.Rows)
                 {
                     var item = row.Cells[1].Value.ToString();
                     var price2_one = Edit.removeDol(row.Cells[3].Value.ToString());
@@ -346,7 +346,7 @@ namespace ItemChecker.Presenter
         }
         public static void columnDTable()
         {
-            foreach (DataGridViewColumn column in serviceCheckerForm.servChecker_dataGridView.Columns)
+            foreach (DataGridViewColumn column in serviceParserForm.servChecker_dataGridView.Columns)
             {
                 if (ServiceChecker.dataTable.Columns.Contains(column.Name))
                     break;
@@ -363,14 +363,14 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
                 string str = args[0].ToString();
-                DataGridView dataGridView = serviceCheckerForm.servChecker_dataGridView;
+                DataGridView dataGridView = serviceParserForm.servChecker_dataGridView;
 
                 DataView dataView = ServiceChecker.dataTable.DefaultView;
                 dataView.RowFilter = str;
                 DataTable dt = dataView.ToTable();
                 Filters.filter = str;
 
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate { 
+                serviceParserForm.Invoke(new MethodInvoker(delegate { 
                     dataGridView.DataSource = dt;
                     dataGridView.Columns[1].HeaderText = $"Item - {dt.Rows.Count}";
                     if (str != string.Empty)
@@ -395,9 +395,9 @@ namespace ItemChecker.Presenter
                 if (data)
                     ServiceChecker._clear();
 
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                    serviceCheckerForm.quickCheck_textBox.Clear();
-                    serviceCheckerForm.search_textBox.Clear(); }));
+                serviceParserForm.Invoke(new MethodInvoker(delegate {
+                    serviceParserForm.quickCheck_textBox.Clear();
+                    serviceParserForm.search_textBox.Clear(); }));
             }
             catch (Exception exp)
             {
@@ -421,15 +421,15 @@ namespace ItemChecker.Presenter
                 JArray fullPriceLF = JArray.Parse(json);
 
                 int count = fullPriceLF.FirstOrDefault(x => x.Value<string>("name") == item).Value<int>("have");
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                    serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
+                serviceParserForm.Invoke(new MethodInvoker(delegate {
+                    serviceParserForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
                     if (count > 0) {
-                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
-                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
+                        serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
+                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
                     }
                     else {
-                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
-                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
+                        serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
+                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
                     } }));
             }
             catch (Exception exp)
@@ -465,15 +465,15 @@ namespace ItemChecker.Presenter
                             count++;
                     }
                 }
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                    serviceCheckerForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
+                serviceParserForm.Invoke(new MethodInvoker(delegate {
+                    serviceParserForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
                     if (count > 0) {
-                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
-                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
+                        serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
+                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
                     }
                     else {
-                        serviceCheckerForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
-                        serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
+                        serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
+                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
                     } }));
             }
             catch (Exception exp)
@@ -488,10 +488,10 @@ namespace ItemChecker.Presenter
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-                int row = serviceCheckerForm.servChecker_dataGridView.CurrentCell.RowIndex;
-                int cell = serviceCheckerForm.servChecker_dataGridView.CurrentCell.ColumnIndex;
-                string item = serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[1].Value.ToString();
-                decimal sta = Edit.removeSymbol(serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[3].Value.ToString());
+                int row = serviceParserForm.servChecker_dataGridView.CurrentCell.RowIndex;
+                int cell = serviceParserForm.servChecker_dataGridView.CurrentCell.ColumnIndex;
+                string item = serviceParserForm.servChecker_dataGridView.Rows[row].Cells[1].Value.ToString();
+                decimal sta = Edit.removeSymbol(serviceParserForm.servChecker_dataGridView.Rows[row].Cells[3].Value.ToString());
 
                 if (!BuyOrder.item.Contains(item) & cell != 3 & sta <= Steam.balance_usd)
                 {
@@ -499,26 +499,26 @@ namespace ItemChecker.Presenter
                     {
                         BuyOrder.queue_rub += Math.Round(sta * GeneralConfig.Default.currency, 2);
                         BuyOrder.queue.Add(item);
-                        serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                        serviceParserForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub > BuyOrder.available_amount) 
                                 mainForm.available_label.ForeColor = Color.Red;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
-                            serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LimeGreen;
+                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
+                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LimeGreen;
                         }));
                     }
                     else
                     {
                         BuyOrder.queue_rub -= Math.Round(sta * GeneralConfig.Default.currency, 2);
                         BuyOrder.queue.Remove(item);
-                        serviceCheckerForm.Invoke(new MethodInvoker(delegate {
+                        serviceParserForm.Invoke(new MethodInvoker(delegate {
                             if (BuyOrder.queue_rub <= BuyOrder.available_amount) 
                                 mainForm.available_label.ForeColor = Color.Black;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
-                            serviceCheckerForm.servChecker_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.White;
+                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
+                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.White;
                         }));
                     }
                 }
@@ -533,20 +533,20 @@ namespace ItemChecker.Presenter
         public static void exportTxt(object state)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            DialogResult result = MessageBox.Show($"Add prices \"{serviceCheckerForm.servChecker_dataGridView.Columns[2].HeaderText}\" to the list you create?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show($"Add prices \"{serviceParserForm.servChecker_dataGridView.Columns[2].HeaderText}\" to the list you create?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (result == DialogResult.Cancel)
                 return;
 
-            serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                serviceCheckerForm.status_toolStripStatusLabel.Text = "Export the list to *.txt...";
-                serviceCheckerForm.status_toolStripStatusLabel.Visible = true;
-                serviceCheckerForm.servChecker_dataGridView.Enabled = false; }));
+            serviceParserForm.Invoke(new MethodInvoker(delegate {
+                serviceParserForm.status_toolStripStatusLabel.Text = "Export the list to *.txt...";
+                serviceParserForm.status_toolStripStatusLabel.Visible = true;
+                serviceParserForm.servChecker_dataGridView.Enabled = false; }));
 
             DirectoryInfo dirInfo = new("extract");
             if (!dirInfo.Exists)
                 dirInfo.Create();
             string str = null;
-            foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
+            foreach (DataGridViewRow row in serviceParserForm.servChecker_dataGridView.Rows)
             {
                 str += row.Cells[1].Value;
                 if (result == DialogResult.Yes)
@@ -556,22 +556,22 @@ namespace ItemChecker.Presenter
             str = str.Remove(str.Length - 2);
             File.WriteAllText($"extract/serviceCheckerList_{DateTime.Now:dd.MM.yyyy_hh.mm}.txt", str);
 
-            serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-                serviceCheckerForm.servChecker_dataGridView.Enabled = true; }));
+            serviceParserForm.Invoke(new MethodInvoker(delegate {
+                serviceParserForm.status_toolStripStatusLabel.Visible = false;
+                serviceParserForm.servChecker_dataGridView.Enabled = true; }));
         }
         public static void exportCsv(object state)
         {
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                if (serviceCheckerForm.servChecker_dataGridView.Rows.Count > 0)
+                if (serviceParserForm.servChecker_dataGridView.Rows.Count > 0)
                 {
                     string csv = null;
                     //services
                     csv += $"{ServiceChecker.service_one},{ServiceChecker.service_two}\r\n";
                     //Rows
-                    foreach (DataGridViewRow row in serviceCheckerForm.servChecker_dataGridView.Rows)
+                    foreach (DataGridViewRow row in serviceParserForm.servChecker_dataGridView.Rows)
                     {
                         foreach (DataGridViewCell cell in row.Cells)
                         {
@@ -606,9 +606,9 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceChecker.checkStop)
                 {
-                    serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                        serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-                        serviceCheckerForm.servChecker_dataGridView.Enabled = true; }));
+                    serviceParserForm.Invoke(new MethodInvoker(delegate {
+                        serviceParserForm.status_toolStripStatusLabel.Visible = false;
+                        serviceParserForm.servChecker_dataGridView.Enabled = true; }));
                     MainPresenter.messageBalloonTip("Extraction was completed.");
                     Main.loading = false;
                 }
@@ -627,15 +627,15 @@ namespace ItemChecker.Presenter
 
                 ServiceChecker.service_one = Convert.ToInt32(service[0]);
                 ServiceChecker.service_two = Convert.ToInt32(service[1]);
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                    serviceCheckerForm.firstSer_comboBox.SelectedIndex = ServiceChecker.service_one;
-                    serviceCheckerForm.secondSer_comboBox.SelectedIndex = ServiceChecker.service_two;
-                    serviceCheckerForm.services_toolStripStatusLabel.Text = $"From {serviceCheckerForm.firstSer_comboBox.Text} To {serviceCheckerForm.secondSer_comboBox.Text} ({fileName})";
-                    serviceCheckerForm.services_toolStripStatusLabel.Visible = true;
+                serviceParserForm.Invoke(new MethodInvoker(delegate {
+                    serviceParserForm.firstSer_comboBox.SelectedIndex = ServiceChecker.service_one;
+                    serviceParserForm.secondSer_comboBox.SelectedIndex = ServiceChecker.service_two;
+                    serviceParserForm.services_toolStripStatusLabel.Text = $"From {serviceParserForm.firstSer_comboBox.Text} To {serviceParserForm.secondSer_comboBox.Text} ({fileName})";
+                    serviceParserForm.services_toolStripStatusLabel.Visible = true;
 
                     for (int i = 2; i < 6; i++)
-                        Filters.prices.Add(serviceCheckerForm.servChecker_dataGridView.Columns[i].HeaderText);
-                    serviceCheckerForm.count_toolStripStatusLabel.Text = $"Count: {lines.Length - 1}"; }));
+                        Filters.prices.Add(serviceParserForm.servChecker_dataGridView.Columns[i].HeaderText);
+                    serviceParserForm.count_toolStripStatusLabel.Text = $"Count: {lines.Length - 1}"; }));
 
                 //rows
                 for (int i = 1; i < lines.Length; i++)
@@ -650,11 +650,11 @@ namespace ItemChecker.Presenter
                     }
                     ServiceChecker.dataTable.Rows.Add(row);
                 }
-                serviceCheckerForm.Invoke(new MethodInvoker(delegate {
-                    serviceCheckerForm.status_toolStripStatusLabel.Visible = false;
-                    serviceCheckerForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
-                    serviceCheckerForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable;
-                    serviceCheckerForm.servChecker_dataGridView.Sort(serviceCheckerForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
+                serviceParserForm.Invoke(new MethodInvoker(delegate {
+                    serviceParserForm.status_toolStripStatusLabel.Visible = false;
+                    serviceParserForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
+                    serviceParserForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable;
+                    serviceParserForm.servChecker_dataGridView.Sort(serviceParserForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
                 drawDTGView();
             }
             catch (Exception exp)

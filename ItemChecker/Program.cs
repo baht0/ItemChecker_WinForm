@@ -6,7 +6,7 @@ namespace ItemChecker
     static class Program
     {
         public static MainForm mainForm;
-        public static ServiceCheckerForm serviceCheckerForm;
+        public static ServiceParserForm serviceParserForm;
         public static AboutForm aboutForm;
         /// <summary>
         ///  The main entry point for the application.

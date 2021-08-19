@@ -52,9 +52,14 @@ namespace ItemChecker
             this.reloadWithdraw_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.checkCsmWithdraw_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkFavorite_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tools_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkOwnList_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.serviceParserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableExtractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trySkinsTotxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buyOrdersTotxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.buyOrderPush_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favoriteCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.floatCheck_MainStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.availability_groupBox = new System.Windows.Forms.GroupBox();
@@ -71,15 +76,19 @@ namespace ItemChecker
             this.steamItems_groupBox = new System.Windows.Forms.GroupBox();
             this.queue_label = new System.Windows.Forms.Label();
             this.available_label = new System.Windows.Forms.Label();
-            this.itemPusher_groupBox = new System.Windows.Forms.GroupBox();
-            this.checkFavorite_groupBox = new System.Windows.Forms.GroupBox();
-            this.itemsWith_label = new System.Windows.Forms.Label();
-            this.withdraw_label = new System.Windows.Forms.Label();
-            this.checkWith_label = new System.Windows.Forms.Label();
-            this.cancel_label = new System.Windows.Forms.Label();
-            this.push_linkLabel = new System.Windows.Forms.LinkLabel();
-            this.push_label = new System.Windows.Forms.Label();
-            this.check_label = new System.Windows.Forms.Label();
+            this.floatCheck_groupBox = new System.Windows.Forms.GroupBox();
+            this.floatItems_label = new System.Windows.Forms.Label();
+            this.floatPurchases_label = new System.Windows.Forms.Label();
+            this.floatCheck_label = new System.Windows.Forms.Label();
+            this.pusherBuyOrder_groupBox = new System.Windows.Forms.GroupBox();
+            this.pusherItems_label = new System.Windows.Forms.Label();
+            this.pusherCancel_label = new System.Windows.Forms.Label();
+            this.pusherPush_label = new System.Windows.Forms.Label();
+            this.pusherCheck_label = new System.Windows.Forms.Label();
+            this.favoriteCheck_groupBox = new System.Windows.Forms.GroupBox();
+            this.favoriteItems_label = new System.Windows.Forms.Label();
+            this.favoriteTrades_label = new System.Windows.Forms.Label();
+            this.favoriteCheck_label = new System.Windows.Forms.Label();
             this.tryskins_dataGridView = new System.Windows.Forms.DataGridView();
             this.color = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -96,8 +105,7 @@ namespace ItemChecker
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.taskbar_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.checkOwnList_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.floatCheck_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tree_serviceParserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.links_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tryskinsLink_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,9 +118,6 @@ namespace ItemChecker
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.settings_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exit_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loading_panel = new System.Windows.Forms.Panel();
-            this.ver_label = new System.Windows.Forms.Label();
-            this.loading_pictureBox = new System.Windows.Forms.PictureBox();
             this.withdraw_dataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -120,6 +125,9 @@ namespace ItemChecker
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.loading_pictureBox = new System.Windows.Forms.PictureBox();
+            this.ver_label = new System.Windows.Forms.Label();
+            this.loading_panel = new System.Windows.Forms.Panel();
             this.main_statusStrip.SuspendLayout();
             this.main_menuStrip.SuspendLayout();
             this.availability_groupBox.SuspendLayout();
@@ -127,14 +135,15 @@ namespace ItemChecker
             this.queue_groupBox.SuspendLayout();
             this.course_groupBox.SuspendLayout();
             this.steamItems_groupBox.SuspendLayout();
-            this.itemPusher_groupBox.SuspendLayout();
-            this.checkFavorite_groupBox.SuspendLayout();
+            this.floatCheck_groupBox.SuspendLayout();
+            this.pusherBuyOrder_groupBox.SuspendLayout();
+            this.favoriteCheck_groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tryskins_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buyOrder_dataGridView)).BeginInit();
             this.taskbar_contextMenuStrip.SuspendLayout();
-            this.loading_panel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.withdraw_dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).BeginInit();
+            this.loading_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // main_statusStrip
@@ -301,8 +310,7 @@ namespace ItemChecker
             this.showWithdraw_toolStripMenuItem,
             this.reloadWithdraw_toolStripMenuItem,
             this.toolStripSeparator6,
-            this.checkCsmWithdraw_toolStripMenuItem,
-            this.checkFavorite_ToolStripMenuItem});
+            this.checkCsmWithdraw_toolStripMenuItem});
             this.withdraw_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.down;
             this.withdraw_toolStripMenuItem.Name = "withdraw_toolStripMenuItem";
             this.withdraw_toolStripMenuItem.Size = new System.Drawing.Size(86, 20);
@@ -311,7 +319,7 @@ namespace ItemChecker
             // showWithdraw_toolStripMenuItem
             // 
             this.showWithdraw_toolStripMenuItem.Name = "showWithdraw_toolStripMenuItem";
-            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.showWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.showWithdraw_toolStripMenuItem.Text = "Load";
             this.showWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.showWithdraw_toolStripMenuItem_Click);
             // 
@@ -319,49 +327,89 @@ namespace ItemChecker
             // 
             this.reloadWithdraw_toolStripMenuItem.Enabled = false;
             this.reloadWithdraw_toolStripMenuItem.Name = "reloadWithdraw_toolStripMenuItem";
-            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.reloadWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.reloadWithdraw_toolStripMenuItem.Text = "Reload";
             this.reloadWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.reloadWithdraw_toolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(146, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(121, 6);
             // 
             // checkCsmWithdraw_toolStripMenuItem
             // 
             this.checkCsmWithdraw_toolStripMenuItem.Name = "checkCsmWithdraw_toolStripMenuItem";
-            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.checkCsmWithdraw_toolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.checkCsmWithdraw_toolStripMenuItem.Text = "Inventory";
             this.checkCsmWithdraw_toolStripMenuItem.Click += new System.EventHandler(this.checkCsmWithdraw_toolStripMenuItem_Click);
-            // 
-            // checkFavorite_ToolStripMenuItem
-            // 
-            this.checkFavorite_ToolStripMenuItem.Name = "checkFavorite_ToolStripMenuItem";
-            this.checkFavorite_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.checkFavorite_ToolStripMenuItem.Text = "CheckFavorite";
-            this.checkFavorite_ToolStripMenuItem.Click += new System.EventHandler(this.checkFavorite_ToolStripMenuItem_Click);
             // 
             // tools_MainStripMenu
             // 
             this.tools_MainStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkOwnList_MainStripMenu,
+            this.serviceParserToolStripMenuItem,
+            this.tableExtractToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.buyOrderPush_toolStripMenuItem,
+            this.favoriteCheckToolStripMenuItem,
             this.floatCheck_MainStripMenu});
             this.tools_MainStripMenu.Name = "tools_MainStripMenu";
             this.tools_MainStripMenu.Size = new System.Drawing.Size(46, 20);
             this.tools_MainStripMenu.Text = "&Tools";
             // 
-            // checkOwnList_MainStripMenu
+            // serviceParserToolStripMenuItem
             // 
-            this.checkOwnList_MainStripMenu.Name = "checkOwnList_MainStripMenu";
-            this.checkOwnList_MainStripMenu.Size = new System.Drawing.Size(154, 22);
-            this.checkOwnList_MainStripMenu.Text = "ServiceChecker";
-            this.checkOwnList_MainStripMenu.Click += new System.EventHandler(this.checkOwnList_MainStripMenu_Click);
+            this.serviceParserToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("serviceParserToolStripMenuItem.Image")));
+            this.serviceParserToolStripMenuItem.Name = "serviceParserToolStripMenuItem";
+            this.serviceParserToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.serviceParserToolStripMenuItem.Text = "ServiceParser";
+            this.serviceParserToolStripMenuItem.Click += new System.EventHandler(this.serviceParserToolStripMenuItem_Click);
+            // 
+            // tableExtractToolStripMenuItem
+            // 
+            this.tableExtractToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.trySkinsTotxtToolStripMenuItem,
+            this.buyOrdersTotxtToolStripMenuItem});
+            this.tableExtractToolStripMenuItem.Name = "tableExtractToolStripMenuItem";
+            this.tableExtractToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.tableExtractToolStripMenuItem.Text = "TableExtract";
+            // 
+            // trySkinsTotxtToolStripMenuItem
+            // 
+            this.trySkinsTotxtToolStripMenuItem.Name = "trySkinsTotxtToolStripMenuItem";
+            this.trySkinsTotxtToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.trySkinsTotxtToolStripMenuItem.Text = "TrySkins to *.txt";
+            this.trySkinsTotxtToolStripMenuItem.Click += new System.EventHandler(this.trySkinsTotxtToolStripMenuItem_Click);
+            // 
+            // buyOrdersTotxtToolStripMenuItem
+            // 
+            this.buyOrdersTotxtToolStripMenuItem.Name = "buyOrdersTotxtToolStripMenuItem";
+            this.buyOrdersTotxtToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.buyOrdersTotxtToolStripMenuItem.Text = "BuyOrders to *.txt";
+            this.buyOrdersTotxtToolStripMenuItem.Click += new System.EventHandler(this.buyOrdersTotxtToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(157, 6);
+            // 
+            // buyOrderPush_toolStripMenuItem
+            // 
+            this.buyOrderPush_toolStripMenuItem.Name = "buyOrderPush_toolStripMenuItem";
+            this.buyOrderPush_toolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.buyOrderPush_toolStripMenuItem.Text = "BuyOrderPusher";
+            this.buyOrderPush_toolStripMenuItem.Click += new System.EventHandler(this.buyOrderPush_toolStripMenuItem_Click);
+            // 
+            // favoriteCheckToolStripMenuItem
+            // 
+            this.favoriteCheckToolStripMenuItem.Name = "favoriteCheckToolStripMenuItem";
+            this.favoriteCheckToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.favoriteCheckToolStripMenuItem.Text = "FavoriteCheck";
+            this.favoriteCheckToolStripMenuItem.Click += new System.EventHandler(this.favoriteCheckToolStripMenuItem_Click);
             // 
             // floatCheck_MainStripMenu
             // 
             this.floatCheck_MainStripMenu.Name = "floatCheck_MainStripMenu";
-            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(154, 22);
+            this.floatCheck_MainStripMenu.Size = new System.Drawing.Size(160, 22);
             this.floatCheck_MainStripMenu.Text = "FloatCheck";
             this.floatCheck_MainStripMenu.Click += new System.EventHandler(this.floatCheck_MainStripMenu_Click);
             // 
@@ -498,7 +546,7 @@ namespace ItemChecker
             this.steamItems_groupBox.Size = new System.Drawing.Size(246, 40);
             this.steamItems_groupBox.TabIndex = 4;
             this.steamItems_groupBox.TabStop = false;
-            this.steamItems_groupBox.Text = "Steam Items:";
+            this.steamItems_groupBox.Text = "BuyOrders:";
             // 
             // queue_label
             // 
@@ -518,102 +566,139 @@ namespace ItemChecker
             this.available_label.TabIndex = 1;
             this.available_label.Text = "Available: -";
             // 
-            // itemPusher_groupBox
+            // floatCheck_groupBox
             // 
-            this.itemPusher_groupBox.Controls.Add(this.checkFavorite_groupBox);
-            this.itemPusher_groupBox.Controls.Add(this.cancel_label);
-            this.itemPusher_groupBox.Controls.Add(this.push_linkLabel);
-            this.itemPusher_groupBox.Controls.Add(this.push_label);
-            this.itemPusher_groupBox.Controls.Add(this.check_label);
-            this.itemPusher_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.itemPusher_groupBox.Location = new System.Drawing.Point(328, 539);
-            this.itemPusher_groupBox.Name = "itemPusher_groupBox";
-            this.itemPusher_groupBox.Size = new System.Drawing.Size(259, 40);
-            this.itemPusher_groupBox.TabIndex = 4;
-            this.itemPusher_groupBox.TabStop = false;
-            this.itemPusher_groupBox.Text = "ItemPusher:";
+            this.floatCheck_groupBox.Controls.Add(this.floatItems_label);
+            this.floatCheck_groupBox.Controls.Add(this.floatPurchases_label);
+            this.floatCheck_groupBox.Controls.Add(this.floatCheck_label);
+            this.floatCheck_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.floatCheck_groupBox.Location = new System.Drawing.Point(0, 0);
+            this.floatCheck_groupBox.Name = "floatCheck_groupBox";
+            this.floatCheck_groupBox.Size = new System.Drawing.Size(259, 40);
+            this.floatCheck_groupBox.TabIndex = 10;
+            this.floatCheck_groupBox.TabStop = false;
+            this.floatCheck_groupBox.Text = "FloatCheck:";
+            this.floatCheck_groupBox.Visible = false;
             // 
-            // checkFavorite_groupBox
+            // floatItems_label
             // 
-            this.checkFavorite_groupBox.Controls.Add(this.itemsWith_label);
-            this.checkFavorite_groupBox.Controls.Add(this.withdraw_label);
-            this.checkFavorite_groupBox.Controls.Add(this.checkWith_label);
-            this.checkFavorite_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.checkFavorite_groupBox.Location = new System.Drawing.Point(0, 0);
-            this.checkFavorite_groupBox.Name = "checkFavorite_groupBox";
-            this.checkFavorite_groupBox.Size = new System.Drawing.Size(259, 40);
-            this.checkFavorite_groupBox.TabIndex = 9;
-            this.checkFavorite_groupBox.TabStop = false;
-            this.checkFavorite_groupBox.Text = "CheckFavorite:";
-            this.checkFavorite_groupBox.Visible = false;
+            this.floatItems_label.AutoSize = true;
+            this.floatItems_label.Location = new System.Drawing.Point(6, 16);
+            this.floatItems_label.Name = "floatItems_label";
+            this.floatItems_label.Size = new System.Drawing.Size(41, 13);
+            this.floatItems_label.TabIndex = 6;
+            this.floatItems_label.Text = "Items: -";
             // 
-            // itemsWith_label
+            // floatPurchases_label
             // 
-            this.itemsWith_label.AutoSize = true;
-            this.itemsWith_label.Location = new System.Drawing.Point(6, 16);
-            this.itemsWith_label.Name = "itemsWith_label";
-            this.itemsWith_label.Size = new System.Drawing.Size(41, 13);
-            this.itemsWith_label.TabIndex = 6;
-            this.itemsWith_label.Text = "Items: -";
+            this.floatPurchases_label.AutoSize = true;
+            this.floatPurchases_label.Location = new System.Drawing.Point(134, 16);
+            this.floatPurchases_label.Name = "floatPurchases_label";
+            this.floatPurchases_label.Size = new System.Drawing.Size(95, 13);
+            this.floatPurchases_label.TabIndex = 5;
+            this.floatPurchases_label.Text = "Purchases made: -";
             // 
-            // withdraw_label
+            // floatCheck_label
             // 
-            this.withdraw_label.AutoSize = true;
-            this.withdraw_label.Location = new System.Drawing.Point(134, 16);
-            this.withdraw_label.Name = "withdraw_label";
-            this.withdraw_label.Size = new System.Drawing.Size(104, 13);
-            this.withdraw_label.TabIndex = 5;
-            this.withdraw_label.Text = "Successful Trades: -";
+            this.floatCheck_label.AutoSize = true;
+            this.floatCheck_label.Location = new System.Drawing.Point(68, 16);
+            this.floatCheck_label.Name = "floatCheck_label";
+            this.floatCheck_label.Size = new System.Drawing.Size(47, 13);
+            this.floatCheck_label.TabIndex = 0;
+            this.floatCheck_label.Text = "Check: -";
             // 
-            // checkWith_label
+            // pusherBuyOrder_groupBox
             // 
-            this.checkWith_label.AutoSize = true;
-            this.checkWith_label.Location = new System.Drawing.Point(68, 16);
-            this.checkWith_label.Name = "checkWith_label";
-            this.checkWith_label.Size = new System.Drawing.Size(47, 13);
-            this.checkWith_label.TabIndex = 0;
-            this.checkWith_label.Text = "Check: -";
+            this.pusherBuyOrder_groupBox.Controls.Add(this.pusherItems_label);
+            this.pusherBuyOrder_groupBox.Controls.Add(this.pusherCancel_label);
+            this.pusherBuyOrder_groupBox.Controls.Add(this.pusherPush_label);
+            this.pusherBuyOrder_groupBox.Controls.Add(this.pusherCheck_label);
+            this.pusherBuyOrder_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.pusherBuyOrder_groupBox.Location = new System.Drawing.Point(328, 539);
+            this.pusherBuyOrder_groupBox.Name = "pusherBuyOrder_groupBox";
+            this.pusherBuyOrder_groupBox.Size = new System.Drawing.Size(259, 40);
+            this.pusherBuyOrder_groupBox.TabIndex = 4;
+            this.pusherBuyOrder_groupBox.TabStop = false;
+            this.pusherBuyOrder_groupBox.Text = "ItemPusher:";
             // 
-            // cancel_label
+            // pusherItems_label
             // 
-            this.cancel_label.AutoSize = true;
-            this.cancel_label.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cancel_label.Location = new System.Drawing.Point(194, 16);
-            this.cancel_label.Name = "cancel_label";
-            this.cancel_label.Size = new System.Drawing.Size(49, 13);
-            this.cancel_label.TabIndex = 8;
-            this.cancel_label.Text = "Cancel: -";
+            this.pusherItems_label.AutoSize = true;
+            this.pusherItems_label.Location = new System.Drawing.Point(6, 16);
+            this.pusherItems_label.Name = "pusherItems_label";
+            this.pusherItems_label.Size = new System.Drawing.Size(41, 13);
+            this.pusherItems_label.TabIndex = 9;
+            this.pusherItems_label.Text = "Items: -";
             // 
-            // push_linkLabel
+            // pusherCancel_label
             // 
-            this.push_linkLabel.ActiveLinkColor = System.Drawing.Color.Red;
-            this.push_linkLabel.AutoSize = true;
-            this.push_linkLabel.LinkColor = System.Drawing.Color.OrangeRed;
-            this.push_linkLabel.Location = new System.Drawing.Point(13, 16);
-            this.push_linkLabel.Name = "push_linkLabel";
-            this.push_linkLabel.Size = new System.Drawing.Size(40, 13);
-            this.push_linkLabel.TabIndex = 7;
-            this.push_linkLabel.TabStop = true;
-            this.push_linkLabel.Text = "Push...";
-            this.push_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.push_linkLabel_LinkClicked);
+            this.pusherCancel_label.AutoSize = true;
+            this.pusherCancel_label.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.pusherCancel_label.Location = new System.Drawing.Point(194, 16);
+            this.pusherCancel_label.Name = "pusherCancel_label";
+            this.pusherCancel_label.Size = new System.Drawing.Size(49, 13);
+            this.pusherCancel_label.TabIndex = 8;
+            this.pusherCancel_label.Text = "Cancel: -";
             // 
-            // push_label
+            // pusherPush_label
             // 
-            this.push_label.AutoSize = true;
-            this.push_label.Location = new System.Drawing.Point(139, 16);
-            this.push_label.Name = "push_label";
-            this.push_label.Size = new System.Drawing.Size(40, 13);
-            this.push_label.TabIndex = 5;
-            this.push_label.Text = "Push: -";
+            this.pusherPush_label.AutoSize = true;
+            this.pusherPush_label.Location = new System.Drawing.Point(134, 16);
+            this.pusherPush_label.Name = "pusherPush_label";
+            this.pusherPush_label.Size = new System.Drawing.Size(40, 13);
+            this.pusherPush_label.TabIndex = 5;
+            this.pusherPush_label.Text = "Push: -";
             // 
-            // check_label
+            // pusherCheck_label
             // 
-            this.check_label.AutoSize = true;
-            this.check_label.Location = new System.Drawing.Point(77, 16);
-            this.check_label.Name = "check_label";
-            this.check_label.Size = new System.Drawing.Size(47, 13);
-            this.check_label.TabIndex = 0;
-            this.check_label.Text = "Check: -";
+            this.pusherCheck_label.AutoSize = true;
+            this.pusherCheck_label.Location = new System.Drawing.Point(67, 16);
+            this.pusherCheck_label.Name = "pusherCheck_label";
+            this.pusherCheck_label.Size = new System.Drawing.Size(47, 13);
+            this.pusherCheck_label.TabIndex = 0;
+            this.pusherCheck_label.Text = "Check: -";
+            // 
+            // favoriteCheck_groupBox
+            // 
+            this.favoriteCheck_groupBox.Controls.Add(this.favoriteItems_label);
+            this.favoriteCheck_groupBox.Controls.Add(this.favoriteTrades_label);
+            this.favoriteCheck_groupBox.Controls.Add(this.favoriteCheck_label);
+            this.favoriteCheck_groupBox.Controls.Add(this.floatCheck_groupBox);
+            this.favoriteCheck_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.favoriteCheck_groupBox.Location = new System.Drawing.Point(328, 539);
+            this.favoriteCheck_groupBox.Name = "favoriteCheck_groupBox";
+            this.favoriteCheck_groupBox.Size = new System.Drawing.Size(259, 40);
+            this.favoriteCheck_groupBox.TabIndex = 9;
+            this.favoriteCheck_groupBox.TabStop = false;
+            this.favoriteCheck_groupBox.Text = "CheckFavorite:";
+            this.favoriteCheck_groupBox.Visible = false;
+            // 
+            // favoriteItems_label
+            // 
+            this.favoriteItems_label.AutoSize = true;
+            this.favoriteItems_label.Location = new System.Drawing.Point(6, 16);
+            this.favoriteItems_label.Name = "favoriteItems_label";
+            this.favoriteItems_label.Size = new System.Drawing.Size(41, 13);
+            this.favoriteItems_label.TabIndex = 6;
+            this.favoriteItems_label.Text = "Items: -";
+            // 
+            // favoriteTrades_label
+            // 
+            this.favoriteTrades_label.AutoSize = true;
+            this.favoriteTrades_label.Location = new System.Drawing.Point(134, 16);
+            this.favoriteTrades_label.Name = "favoriteTrades_label";
+            this.favoriteTrades_label.Size = new System.Drawing.Size(104, 13);
+            this.favoriteTrades_label.TabIndex = 5;
+            this.favoriteTrades_label.Text = "Successful Trades: -";
+            // 
+            // favoriteCheck_label
+            // 
+            this.favoriteCheck_label.AutoSize = true;
+            this.favoriteCheck_label.Location = new System.Drawing.Point(68, 16);
+            this.favoriteCheck_label.Name = "favoriteCheck_label";
+            this.favoriteCheck_label.Size = new System.Drawing.Size(47, 13);
+            this.favoriteCheck_label.TabIndex = 0;
+            this.favoriteCheck_label.Text = "Check: -";
             // 
             // tryskins_dataGridView
             // 
@@ -778,34 +863,26 @@ namespace ItemChecker
             // taskbar_contextMenuStrip
             // 
             this.taskbar_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkOwnList_toolStripMenuItem,
-            this.floatCheck_toolStripMenuItem,
+            this.tree_serviceParserToolStripMenuItem,
             this.toolStripSeparator5,
             this.links_toolStripMenuItem,
             this.toolStripSeparator9,
             this.settings_toolStripMenuItem,
             this.exit_toolStripMenuItem});
             this.taskbar_contextMenuStrip.Name = "taskbar_contextMenuStrip";
-            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(155, 126);
+            this.taskbar_contextMenuStrip.Size = new System.Drawing.Size(144, 104);
             // 
-            // checkOwnList_toolStripMenuItem
+            // tree_serviceParserToolStripMenuItem
             // 
-            this.checkOwnList_toolStripMenuItem.Name = "checkOwnList_toolStripMenuItem";
-            this.checkOwnList_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.checkOwnList_toolStripMenuItem.Text = "ServiceChecker";
-            this.checkOwnList_toolStripMenuItem.Click += new System.EventHandler(this.checkOwnList_toolStripMenuItem_Click);
-            // 
-            // floatCheck_toolStripMenuItem
-            // 
-            this.floatCheck_toolStripMenuItem.Name = "floatCheck_toolStripMenuItem";
-            this.floatCheck_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.floatCheck_toolStripMenuItem.Text = "FloatCheck";
-            this.floatCheck_toolStripMenuItem.Click += new System.EventHandler(this.floatCheck_toolStripMenuItem_Click);
+            this.tree_serviceParserToolStripMenuItem.Name = "tree_serviceParserToolStripMenuItem";
+            this.tree_serviceParserToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.tree_serviceParserToolStripMenuItem.Text = "ServiceParser";
+            this.tree_serviceParserToolStripMenuItem.Click += new System.EventHandler(this.tree_serviceParserToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(151, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(140, 6);
             // 
             // links_toolStripMenuItem
             // 
@@ -819,7 +896,7 @@ namespace ItemChecker
             this.marketLink_toolStripMenuItem});
             this.links_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.link;
             this.links_toolStripMenuItem.Name = "links_toolStripMenuItem";
-            this.links_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.links_toolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.links_toolStripMenuItem.Text = "Links";
             // 
             // tryskinsLink_toolStripMenuItem
@@ -870,53 +947,22 @@ namespace ItemChecker
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(151, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(140, 6);
             // 
             // settings_toolStripMenuItem
             // 
             this.settings_toolStripMenuItem.Image = global::ItemChecker.Properties.Resources.setting;
             this.settings_toolStripMenuItem.Name = "settings_toolStripMenuItem";
-            this.settings_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.settings_toolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.settings_toolStripMenuItem.Text = "Settings";
             this.settings_toolStripMenuItem.Click += new System.EventHandler(this.settings_toolStripMenuItem_Click);
             // 
             // exit_toolStripMenuItem
             // 
             this.exit_toolStripMenuItem.Name = "exit_toolStripMenuItem";
-            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.exit_toolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.exit_toolStripMenuItem.Text = "Exit";
             this.exit_toolStripMenuItem.Click += new System.EventHandler(this.exit_toolStripMenuItem_Click);
-            // 
-            // loading_panel
-            // 
-            this.loading_panel.BackColor = System.Drawing.SystemColors.Window;
-            this.loading_panel.Controls.Add(this.ver_label);
-            this.loading_panel.Controls.Add(this.loading_pictureBox);
-            this.loading_panel.Cursor = System.Windows.Forms.Cursors.AppStarting;
-            this.loading_panel.Location = new System.Drawing.Point(0, 0);
-            this.loading_panel.Name = "loading_panel";
-            this.loading_panel.Size = new System.Drawing.Size(600, 611);
-            this.loading_panel.TabIndex = 7;
-            // 
-            // ver_label
-            // 
-            this.ver_label.AutoSize = true;
-            this.ver_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ver_label.Location = new System.Drawing.Point(12, 589);
-            this.ver_label.Name = "ver_label";
-            this.ver_label.Size = new System.Drawing.Size(81, 13);
-            this.ver_label.TabIndex = 1;
-            this.ver_label.Text = "Version: 0.0.0.0";
-            // 
-            // loading_pictureBox
-            // 
-            this.loading_pictureBox.Image = global::ItemChecker.Properties.Resources.loading;
-            this.loading_pictureBox.Location = new System.Drawing.Point(0, 237);
-            this.loading_pictureBox.Name = "loading_pictureBox";
-            this.loading_pictureBox.Size = new System.Drawing.Size(600, 137);
-            this.loading_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.loading_pictureBox.TabIndex = 0;
-            this.loading_pictureBox.TabStop = false;
             // 
             // withdraw_dataGridView
             // 
@@ -988,18 +1034,50 @@ namespace ItemChecker
             this.Column1.ReadOnly = true;
             this.Column1.Width = 64;
             // 
+            // loading_pictureBox
+            // 
+            this.loading_pictureBox.Image = global::ItemChecker.Properties.Resources.loading;
+            this.loading_pictureBox.Location = new System.Drawing.Point(0, 237);
+            this.loading_pictureBox.Name = "loading_pictureBox";
+            this.loading_pictureBox.Size = new System.Drawing.Size(600, 137);
+            this.loading_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.loading_pictureBox.TabIndex = 0;
+            this.loading_pictureBox.TabStop = false;
+            // 
+            // ver_label
+            // 
+            this.ver_label.AutoSize = true;
+            this.ver_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ver_label.Location = new System.Drawing.Point(12, 589);
+            this.ver_label.Name = "ver_label";
+            this.ver_label.Size = new System.Drawing.Size(81, 13);
+            this.ver_label.TabIndex = 1;
+            this.ver_label.Text = "Version: 0.0.0.0";
+            // 
+            // loading_panel
+            // 
+            this.loading_panel.BackColor = System.Drawing.SystemColors.Window;
+            this.loading_panel.Controls.Add(this.ver_label);
+            this.loading_panel.Controls.Add(this.loading_pictureBox);
+            this.loading_panel.Cursor = System.Windows.Forms.Cursors.AppStarting;
+            this.loading_panel.Location = new System.Drawing.Point(0, 0);
+            this.loading_panel.Name = "loading_panel";
+            this.loading_panel.Size = new System.Drawing.Size(600, 611);
+            this.loading_panel.TabIndex = 7;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 611);
             this.Controls.Add(this.loading_panel);
+            this.Controls.Add(this.favoriteCheck_groupBox);
             this.Controls.Add(this.withdraw_dataGridView);
             this.Controls.Add(this.tryskins_dataGridView);
             this.Controls.Add(this.buyOrder_dataGridView);
             this.Controls.Add(this.course_groupBox);
             this.Controls.Add(this.steamItems_groupBox);
-            this.Controls.Add(this.itemPusher_groupBox);
+            this.Controls.Add(this.pusherBuyOrder_groupBox);
             this.Controls.Add(this.queue_groupBox);
             this.Controls.Add(this.tradeOffer_groupBox);
             this.Controls.Add(this.availability_groupBox);
@@ -1029,17 +1107,19 @@ namespace ItemChecker
             this.course_groupBox.PerformLayout();
             this.steamItems_groupBox.ResumeLayout(false);
             this.steamItems_groupBox.PerformLayout();
-            this.itemPusher_groupBox.ResumeLayout(false);
-            this.itemPusher_groupBox.PerformLayout();
-            this.checkFavorite_groupBox.ResumeLayout(false);
-            this.checkFavorite_groupBox.PerformLayout();
+            this.floatCheck_groupBox.ResumeLayout(false);
+            this.floatCheck_groupBox.PerformLayout();
+            this.pusherBuyOrder_groupBox.ResumeLayout(false);
+            this.pusherBuyOrder_groupBox.PerformLayout();
+            this.favoriteCheck_groupBox.ResumeLayout(false);
+            this.favoriteCheck_groupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tryskins_dataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.buyOrder_dataGridView)).EndInit();
             this.taskbar_contextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.withdraw_dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).EndInit();
             this.loading_panel.ResumeLayout(false);
             this.loading_panel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.withdraw_dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1063,7 +1143,6 @@ namespace ItemChecker
         public System.Windows.Forms.ToolStripMenuItem tryskinsReload_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem buyOrdersReload_MainStripMenu;
         public System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        public System.Windows.Forms.ToolStripMenuItem checkOwnList_MainStripMenu;
         public System.Windows.Forms.ToolStripMenuItem floatCheck_MainStripMenu;
         public System.Windows.Forms.ToolStripStatusLabel balance_StripStatus;
         public System.Windows.Forms.ToolStripStatusLabel space_StripStatus;
@@ -1075,7 +1154,7 @@ namespace ItemChecker
         public System.Windows.Forms.GroupBox queue_groupBox;
         public System.Windows.Forms.GroupBox course_groupBox;
         public System.Windows.Forms.GroupBox steamItems_groupBox;
-        public System.Windows.Forms.GroupBox itemPusher_groupBox;
+        public System.Windows.Forms.GroupBox pusherBuyOrder_groupBox;
         public System.Windows.Forms.GroupBox availability_groupBox;
         public System.Windows.Forms.Label steamMarket_label;
         public System.Windows.Forms.Label tryskins_label;
@@ -1085,23 +1164,17 @@ namespace ItemChecker
         public System.Windows.Forms.LinkLabel queue_linkLabel;
         public System.Windows.Forms.Label course_label;
         public System.Windows.Forms.Label available_label;
-        public System.Windows.Forms.LinkLabel push_linkLabel;
-        public System.Windows.Forms.Label push_label;
-        public System.Windows.Forms.Label check_label;
+        public System.Windows.Forms.Label pusherPush_label;
+        public System.Windows.Forms.Label pusherCheck_label;
         public System.Windows.Forms.DataGridView tryskins_dataGridView;
         public System.Windows.Forms.DataGridView buyOrder_dataGridView;
         public System.Windows.Forms.NotifyIcon notifyIcon;
         public System.Windows.Forms.ContextMenuStrip taskbar_contextMenuStrip;
-        public System.Windows.Forms.ToolStripMenuItem floatCheck_toolStripMenuItem;
         public System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         public System.Windows.Forms.ToolStripMenuItem exit_toolStripMenuItem;
-        public System.Windows.Forms.Panel loading_panel;
-        public System.Windows.Forms.Label ver_label;
-        public System.Windows.Forms.PictureBox loading_pictureBox;
         private System.ComponentModel.IContainer components;
         public System.Windows.Forms.DataGridView withdraw_dataGridView;
         private System.Windows.Forms.ToolStripMenuItem updateData_toolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem checkOwnList_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testbutton;
         public System.Windows.Forms.Label queue_label;
         private System.Windows.Forms.ToolStripMenuItem links_toolStripMenuItem;
@@ -1118,7 +1191,7 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        public System.Windows.Forms.Label cancel_label;
+        public System.Windows.Forms.Label pusherCancel_label;
         private System.Windows.Forms.ToolStripMenuItem settings_toolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn color;
         private System.Windows.Forms.DataGridViewTextBoxColumn Item;
@@ -1137,13 +1210,28 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem checkCsmWithdraw_toolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem showWithdraw_toolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem checkFavorite_ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transactionsToolStripMenuItem;
-        public System.Windows.Forms.GroupBox checkFavorite_groupBox;
-        public System.Windows.Forms.Label withdraw_label;
-        public System.Windows.Forms.Label checkWith_label;
-        public System.Windows.Forms.Label itemsWith_label;
+        public System.Windows.Forms.GroupBox favoriteCheck_groupBox;
+        public System.Windows.Forms.Label favoriteTrades_label;
+        public System.Windows.Forms.Label favoriteCheck_label;
+        public System.Windows.Forms.Label favoriteItems_label;
         public System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tree_serviceParserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem serviceParserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        public System.Windows.Forms.ToolStripMenuItem favoriteCheckToolStripMenuItem;
+        public System.Windows.Forms.PictureBox loading_pictureBox;
+        public System.Windows.Forms.Label ver_label;
+        public System.Windows.Forms.Panel loading_panel;
+        private System.Windows.Forms.ToolStripMenuItem tableExtractToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trySkinsTotxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buyOrdersTotxtToolStripMenuItem;
+        public System.Windows.Forms.GroupBox floatCheck_groupBox;
+        public System.Windows.Forms.Label floatItems_label;
+        public System.Windows.Forms.Label floatPurchases_label;
+        public System.Windows.Forms.Label floatCheck_label;
+        public System.Windows.Forms.Label pusherItems_label;
+        public System.Windows.Forms.ToolStripMenuItem buyOrderPush_toolStripMenuItem;
     }
 }
 

@@ -6,7 +6,7 @@
     <Description>Steam Bot Requests</Description>
     <Authors>baht0</Authors>
     <PackageProjectUrl>https://github.com/baht0/ItemChecker</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <AssemblyVersion>1.0.0.3</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

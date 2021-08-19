@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using ItemChecker.Model;
 using ItemChecker.Settings;
+using ItemChecker.Presenter;
 
 namespace ItemChecker
 {
@@ -52,6 +54,7 @@ namespace ItemChecker
             //float
             maxPrecentFloat_numericUpDown.Value = FloatConfig.Default.maxFloatPrecent;
             getItems_numericUpDown.Value = FloatConfig.Default.countGetItems;
+            floatTimer_numericUpDown.Value = FloatConfig.Default.timer;
             if (FloatConfig.Default.priceCompare == 0) lowest_radioButton.Checked = true;
             if (FloatConfig.Default.priceCompare == 1) median_radioButton.Checked = true;
             if (FloatConfig.Default.priceCompare == 2) csm_radioButton.Checked = true;
@@ -100,6 +103,7 @@ namespace ItemChecker
             //float
             maxPrecentFloat_numericUpDown.Value = Convert.ToDecimal(7);
             getItems_numericUpDown.Value = 40;
+            floatTimer_numericUpDown.Value = 10;
 
             FN_numericUpDown.Value = Convert.ToDecimal(0.001);
             MW_numericUpDown.Value = Convert.ToDecimal(0.080);
@@ -152,6 +156,8 @@ namespace ItemChecker
                     //float
                     FloatConfig.Default.maxFloatPrecent = maxPrecentFloat_numericUpDown.Value;
                     FloatConfig.Default.countGetItems = Convert.ToInt32(getItems_numericUpDown.Value);
+                    FloatConfig.Default.timer = Convert.ToInt32(floatTimer_numericUpDown.Value);
+
                     if (lowest_radioButton.Checked == true) FloatConfig.Default.priceCompare = 0;
                     if (median_radioButton.Checked == true) FloatConfig.Default.priceCompare = 1;
                     if (csm_radioButton.Checked == true) FloatConfig.Default.priceCompare = 2;
@@ -193,34 +199,6 @@ namespace ItemChecker
             Close();
         }
 
-        //extract
-        private void extractST_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (BuyOrder.item != null)
-            {
-                DirectoryInfo dirInfo = new DirectoryInfo("extract");
-                if (!dirInfo.Exists) dirInfo.Create();
-                string str = null;
-                foreach (string i in BuyOrder.item)
-                    str += i + "\r\n";
-                str = str.Remove(str.Length - 2);
-                File.WriteAllText($"extract/steamList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
-            }
-        }
-        private void extractTry_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (TrySkins.item != null)
-            {
-                DirectoryInfo dirInfo = new DirectoryInfo("extract");
-                if (!dirInfo.Exists) dirInfo.Create();
-                string str = null;
-                foreach (string i in TrySkins.item)
-                    str += i + "\r\n";
-                str = str.Remove(str.Length - 2);
-                File.WriteAllText($"extract/tryskinsList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
-            }
-        }
-
         //api
         private void getST_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -231,19 +209,6 @@ namespace ItemChecker
             Support.Edit.openUrl("https://free.currencyconverterapi.com/free-api-key");
             Support.Edit.openUrl("https://openexchangerates.org/signup/free");
         }
-
-        //withdraw
-        private void sticker_checkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!sticker_checkBox.Checked) onlySt_checkBox.Checked = false;
-            onlySt_checkBox.Enabled = sticker_checkBox.Checked;
-        }
-        private void favoriteItems_button_Click(object sender, EventArgs e)
-        {
-            CheckListForm checkListForm = new("FavoriteList");
-            checkListForm.ShowDialog();
-        }
-
         //proxy
         private void proxy_button_Click(object sender, EventArgs e)
         {
@@ -253,6 +218,53 @@ namespace ItemChecker
         private void proxy_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             proxy_button.Enabled = proxy_checkBox.Checked;
+        }
+        //withdraw
+        private void sticker_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!sticker_checkBox.Checked) onlySt_checkBox.Checked = false;
+            onlySt_checkBox.Enabled = sticker_checkBox.Checked;
+        }
+        private void favoriteList_button_Click(object sender, EventArgs e)
+        {
+            CheckListForm checkListForm = new("FavoriteList");
+            checkListForm.ShowDialog();
+        }
+        //float
+        private void floatList_button_Click(object sender, EventArgs e)
+        {
+            CheckListForm checkListForm = new("FloatList");
+            checkListForm.ShowDialog();
+        }
+
+        //config file
+        private void upload_button_Click(object sender, EventArgs e)
+        {
+            var configPath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoaming).FilePath.ToString();
+            configPath = configPath.Replace("Roaming", "Local");
+
+            OpenFileDialog dialog = new()
+            {
+                InitialDirectory = Application.StartupPath,
+                RestoreDirectory = true,
+                Filter = "user.config | user.config"
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = dialog.FileName;
+                File.Copy(fileName, configPath, true);
+
+                MessageBox.Show("Restart required. The program will be closed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MainPresenter.exit();
+            }
+        }
+        private void download_button_Click(object sender, EventArgs e)
+        {
+            var configPath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoaming).FilePath.ToString();
+            configPath = configPath.Replace("Roaming", "Local");
+
+            File.Copy(configPath, Application.StartupPath + "user.config", true);
+            MainPresenter.messageBalloonTip("Configuration file downloaded successfully.");
         }
     }
 }

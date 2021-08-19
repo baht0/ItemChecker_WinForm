@@ -14,7 +14,7 @@ namespace ItemChecker.Model
         public static string url { get; set; }
 
         //auto
-        public static List<string> favoriteItems = new();
+        public static List<string> favoriteList = new();
         public static System.Timers.Timer timer = new();
         public static int tick { get; set; }
 

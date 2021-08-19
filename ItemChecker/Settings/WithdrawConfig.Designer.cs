@@ -158,12 +158,12 @@ namespace ItemChecker.Settings {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string favoriteItems {
+        public string favoriteList {
             get {
-                return ((string)(this["favoriteItems"]));
+                return ((string)(this["favoriteList"]));
             }
             set {
-                this["favoriteItems"] = value;
+                this["favoriteList"] = value;
             }
         }
         

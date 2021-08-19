@@ -12,6 +12,7 @@ namespace ItemChecker.Updater
     class Program
     {
         static string path = AppDomain.CurrentDomain.BaseDirectory + @"\update";
+        static DirectoryInfo dirInfo = new(path);
         static void Main(string[] args)
         {
             try
@@ -25,11 +26,9 @@ namespace ItemChecker.Updater
                 while (Process.GetProcessesByName("chromedriver").Any() | Process.GetProcessesByName("ItemChecker").Any());
 
                 if (Directory.Exists(path))
-                {
-                    DirectoryInfo dirInfo = new(path);
                     dirInfo.Delete(true);
-                }
-                Directory.CreateDirectory(path);
+                dirInfo.Create();
+                dirInfo.Attributes = FileAttributes.Hidden;
 
                 List<string> files = new();
                 files.Add("ItemChecker.exe");
@@ -66,7 +65,6 @@ namespace ItemChecker.Updater
                     File.Move($"{path}\\{file}", newPath, true);
                 }
                 Console.WriteLine("Update complete: success");
-                Console.WriteLine("\nPress any key to close...");
             }
             catch (Exception exp)
             {
@@ -76,10 +74,9 @@ namespace ItemChecker.Updater
             finally
             {
                 if (Directory.Exists(path))
-                {
-                    DirectoryInfo dirInfo = new(path);
                     dirInfo.Delete(true);
-                }
+
+                Console.WriteLine("\nPress any key to close...");
                 Console.ReadKey();
             }
         }

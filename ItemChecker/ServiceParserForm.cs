@@ -13,24 +13,24 @@ using System.ComponentModel;
 
 namespace ItemChecker
 {
-    public partial class ServiceCheckerForm : Form
+    public partial class ServiceParserForm : Form
     {
         int past_row = 1;
-        public ServiceCheckerForm()
+        public ServiceParserForm()
         {
             InitializeComponent();
             ServiceChecker.checkStop = false;
-            Program.serviceCheckerForm = this;
+            Program.serviceParserForm = this;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
-        private void ServiceCheckerForm_Load(object sender, EventArgs e)
+        private void serviceParserForm_Load(object sender, EventArgs e)
         {
             firstSer_comboBox.SelectedIndex = 0;
             secondSer_comboBox.SelectedIndex = 1;
 
             ServiceCheckerPresenter.columnDTable();
         }
-        private void ServiceCheckerForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void serviceParserForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Main.loading | ServiceChecker.dataTable.Rows.Count > 150)
             {

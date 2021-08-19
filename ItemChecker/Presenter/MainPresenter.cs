@@ -43,7 +43,7 @@ namespace ItemChecker.Presenter
                     if (SteamConfig.Default.startupPush)
                     {
                         Main.loading = false;
-                        BuyOrderPresenter.startPush();
+                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrderPush_toolStripMenuItem.PerformClick(); }));
                     }
                     cancelTokenSource.Cancel();
                 }
@@ -184,8 +184,7 @@ namespace ItemChecker.Presenter
             try
             {
                 Main.loading = true;
-                BuyOrderPresenter.stopPush();
-                WithdrawPresenter.stopCheckFavorite();
+                MainPresenter.stopTimers();
                 object[] args = state as object[];
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = false;
@@ -244,8 +243,7 @@ namespace ItemChecker.Presenter
         }
         public static void clearAll()
         {
-            BuyOrderPresenter.stopPush();
-            WithdrawPresenter.stopCheckFavorite();
+            MainPresenter.stopTimers();
             TrySkins._clear();
             BuyOrder._clear();
             BuyOrder._clearQueue();
@@ -299,6 +297,12 @@ namespace ItemChecker.Presenter
             }
         }
 
+        public static void stopTimers()
+        {
+            BuyOrderPresenter.stopBuyOrderPusher();
+            WithdrawPresenter.stopCheckFavorite();
+            FloatPresenter.stopCheckFloat();
+        }
         public static void messageBalloonTip(string str = "Loading is complete. Open to show.", ToolTipIcon icon = ToolTipIcon.Info)
         {
             mainForm.notifyIcon.BalloonTipText = str;
