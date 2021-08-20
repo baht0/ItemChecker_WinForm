@@ -40,9 +40,11 @@ namespace ItemChecker
             this.groupBox = new System.Windows.Forms.GroupBox();
             this.link_pictureBox = new System.Windows.Forms.PictureBox();
             this.label = new System.Windows.Forms.Label();
+            this.point_pictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.icon_pictureBox)).BeginInit();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.point_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // icon_pictureBox
@@ -137,6 +139,7 @@ namespace ItemChecker
             this.groupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox.Controls.Add(this.point_pictureBox);
             this.groupBox.Controls.Add(this.link_pictureBox);
             this.groupBox.Controls.Add(this.icon_pictureBox);
             this.groupBox.Controls.Add(this.name_label);
@@ -155,9 +158,9 @@ namespace ItemChecker
             this.link_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.link;
             this.link_pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.link_pictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.link_pictureBox.Location = new System.Drawing.Point(191, 24);
+            this.link_pictureBox.Location = new System.Drawing.Point(192, 22);
             this.link_pictureBox.Name = "link_pictureBox";
-            this.link_pictureBox.Size = new System.Drawing.Size(12, 12);
+            this.link_pictureBox.Size = new System.Drawing.Size(15, 15);
             this.link_pictureBox.TabIndex = 16;
             this.link_pictureBox.TabStop = false;
             this.link_pictureBox.Click += new System.EventHandler(this.link_pictureBox_Click);
@@ -171,6 +174,18 @@ namespace ItemChecker
             this.label.Size = new System.Drawing.Size(74, 15);
             this.label.TabIndex = 15;
             this.label.Text = "© 2018-2021";
+            // 
+            // point_pictureBox
+            // 
+            this.point_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.point_red;
+            this.point_pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.point_pictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.point_pictureBox.Location = new System.Drawing.Point(232, 70);
+            this.point_pictureBox.Name = "point_pictureBox";
+            this.point_pictureBox.Size = new System.Drawing.Size(15, 15);
+            this.point_pictureBox.TabIndex = 17;
+            this.point_pictureBox.TabStop = false;
+            this.point_pictureBox.Visible = false;
             // 
             // AboutForm
             // 
@@ -192,6 +207,7 @@ namespace ItemChecker
             this.groupBox.ResumeLayout(false);
             this.groupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.point_pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,5 +225,6 @@ namespace ItemChecker
         public System.Windows.Forms.LinkLabel checkUpdate_linkLabel;
         private System.Windows.Forms.Label label;
         private System.Windows.Forms.PictureBox link_pictureBox;
+        private System.Windows.Forms.PictureBox point_pictureBox;
     }
 }

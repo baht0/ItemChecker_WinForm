@@ -17,6 +17,9 @@ namespace ItemChecker
             if (Properties.Settings.Default.login == "bahtiarov116" | Steam.login == "bahtiarov116")
                 createInfo_linkLabel.Visible = true;
 
+            if (ProjectInfo.update.Any())
+                point_pictureBox.Visible = true;
+            
             version_label.Text = "Version: " + Main.assemblyVersion;
 
             latestVersion();
