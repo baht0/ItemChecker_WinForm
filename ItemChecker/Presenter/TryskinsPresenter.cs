@@ -204,12 +204,11 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Tryskins...";}));
 
             MainPresenter.clearDTableRows(mainForm.tryskins_dataGridView);
-            DataTable table = new DataTable();
-            for (int i = 0; i < mainForm.tryskins_dataGridView.ColumnCount; ++i)
-            {
-                table.Columns.Add(new DataColumn( mainForm.tryskins_dataGridView.Columns[i].Name ));
-                mainForm.tryskins_dataGridView.Columns[i].DataPropertyName = mainForm.tryskins_dataGridView.Columns[i].Name;
-            }
+            DataTable table = new();
+
+            foreach (DataGridViewColumn column in mainForm.tryskins_dataGridView.Columns)
+                table.Columns.Add(new DataColumn(column.Name));
+
             table.Columns[4].DataType = typeof(decimal);
             table.Columns[5].DataType = typeof(decimal);
             for (int i = 0; i < TrySkins.item.Count; i++)

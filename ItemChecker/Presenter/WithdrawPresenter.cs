@@ -130,12 +130,10 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Table Withdraw..."; }));
             MainPresenter.clearDTableRows(mainForm.withdraw_dataGridView);
 
-            DataTable table = new DataTable();
-            for (int i = 0; i < mainForm.withdraw_dataGridView.ColumnCount; ++i)
-            {
-                table.Columns.Add(new DataColumn(mainForm.withdraw_dataGridView.Columns[i].Name));
-                mainForm.withdraw_dataGridView.Columns[i].DataPropertyName = mainForm.withdraw_dataGridView.Columns[i].Name;
-            }
+            DataTable table = new();
+            foreach (DataGridViewColumn column in mainForm.withdraw_dataGridView.Columns)
+                table.Columns.Add(new DataColumn(column.Name));
+
             table.Columns[4].DataType = typeof(decimal);
             table.Columns[5].DataType = typeof(decimal);
             for (int i = 0; i < Withdraw.item.Count; i++)

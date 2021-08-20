@@ -90,19 +90,7 @@ namespace ItemChecker
             this.favoriteTrades_label = new System.Windows.Forms.Label();
             this.favoriteCheck_label = new System.Windows.Forms.Label();
             this.tryskins_dataGridView = new System.Windows.Forms.DataGridView();
-            this.color = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Item = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.csm = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.precent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.diff = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buyOrder_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.taskbar_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tree_serviceParserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,15 +107,28 @@ namespace ItemChecker
             this.settings_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exit_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.withdraw_dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.loading_pictureBox = new System.Windows.Forms.PictureBox();
             this.ver_label = new System.Windows.Forms.Label();
             this.loading_panel = new System.Windows.Forms.Panel();
+            this.info_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.colorBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.staBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.csmBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.precentBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.differenceBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colorTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.staTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.csmTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.precentTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.differenceTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colorWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.csmWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.staWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.salesWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.precentWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.main_statusStrip.SuspendLayout();
             this.main_menuStrip.SuspendLayout();
             this.availability_groupBox.SuspendLayout();
@@ -708,12 +709,12 @@ namespace ItemChecker
             this.tryskins_dataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.tryskins_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tryskins_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.color,
-            this.Item,
-            this.sta,
-            this.csm,
-            this.precent,
-            this.diff});
+            this.colorTS_Column,
+            this.itemTS_Column,
+            this.staTS_Column,
+            this.csmTS_Column,
+            this.precentTS_Column,
+            this.differenceTS_Column});
             this.tryskins_dataGridView.Location = new System.Drawing.Point(12, 73);
             this.tryskins_dataGridView.Name = "tryskins_dataGridView";
             this.tryskins_dataGridView.ReadOnly = true;
@@ -727,54 +728,6 @@ namespace ItemChecker
             this.tryskins_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tryskins_dataGridView_ColumnHeaderMouseClick);
             this.tryskins_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tryskins_dataGridView_KeyDown);
             // 
-            // color
-            // 
-            this.color.HeaderText = "";
-            this.color.Name = "color";
-            this.color.ReadOnly = true;
-            this.color.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.color.Width = 5;
-            // 
-            // Item
-            // 
-            this.Item.HeaderText = "Item (TrySkins)";
-            this.Item.Name = "Item";
-            this.Item.ReadOnly = true;
-            this.Item.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Item.Width = 305;
-            // 
-            // sta
-            // 
-            this.sta.HeaderText = "ST(A)";
-            this.sta.Name = "sta";
-            this.sta.ReadOnly = true;
-            this.sta.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.sta.Width = 66;
-            // 
-            // csm
-            // 
-            this.csm.HeaderText = "CSM";
-            this.csm.Name = "csm";
-            this.csm.ReadOnly = true;
-            this.csm.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.csm.Width = 60;
-            // 
-            // precent
-            // 
-            this.precent.HeaderText = "Precent";
-            this.precent.Name = "precent";
-            this.precent.ReadOnly = true;
-            this.precent.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.precent.Width = 55;
-            // 
-            // diff
-            // 
-            this.diff.HeaderText = "Difference";
-            this.diff.Name = "diff";
-            this.diff.ReadOnly = true;
-            this.diff.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.diff.Width = 64;
-            // 
             // buyOrder_dataGridView
             // 
             this.buyOrder_dataGridView.AllowUserToAddRows = false;
@@ -783,12 +736,12 @@ namespace ItemChecker
             this.buyOrder_dataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.buyOrder_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.buyOrder_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn5,
-            this.dataGridViewTextBoxColumn6});
+            this.colorBO_Column,
+            this.itemBO_Column,
+            this.staBO_Column,
+            this.csmBO_Column,
+            this.precentBO_Column,
+            this.differenceBO_Column});
             this.buyOrder_dataGridView.Location = new System.Drawing.Point(12, 306);
             this.buyOrder_dataGridView.Name = "buyOrder_dataGridView";
             this.buyOrder_dataGridView.ReadOnly = true;
@@ -801,54 +754,6 @@ namespace ItemChecker
             this.buyOrder_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.buyOrder_dataGridView_CellLeave);
             this.buyOrder_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.buyOrder_dataGridView_ColumnHeaderMouseClick);
             this.buyOrder_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.buyOrder_dataGridView_KeyDown);
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn1.Width = 5;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Item (BuyOrders)";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn2.Width = 305;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "ST(A)";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn3.Width = 66;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "CSM";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn4.Width = 60;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "Precent";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn5.Width = 55;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "Difference";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn6.Width = 64;
             // 
             // notifyIcon
             // 
@@ -874,6 +779,7 @@ namespace ItemChecker
             // 
             // tree_serviceParserToolStripMenuItem
             // 
+            this.tree_serviceParserToolStripMenuItem.Image = global::ItemChecker.Properties.Resources.serviceParser;
             this.tree_serviceParserToolStripMenuItem.Name = "tree_serviceParserToolStripMenuItem";
             this.tree_serviceParserToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.tree_serviceParserToolStripMenuItem.Text = "ServiceParser";
@@ -972,12 +878,12 @@ namespace ItemChecker
             this.withdraw_dataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.withdraw_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.withdraw_dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn7,
-            this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9,
-            this.dataGridViewTextBoxColumn10,
-            this.dataGridViewTextBoxColumn11,
-            this.Column1});
+            this.colorWD_Column,
+            this.itemWD_Column,
+            this.csmWD_Column,
+            this.staWD_Column,
+            this.salesWD_Column,
+            this.precentWD_Column});
             this.withdraw_dataGridView.Location = new System.Drawing.Point(12, 73);
             this.withdraw_dataGridView.Name = "withdraw_dataGridView";
             this.withdraw_dataGridView.ReadOnly = true;
@@ -990,49 +896,6 @@ namespace ItemChecker
             this.withdraw_dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellEnter);
             this.withdraw_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellLeave);
             this.withdraw_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.withdraw_dataGridView_ColumnHeaderMouseClick);
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            this.dataGridViewTextBoxColumn7.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTextBoxColumn7.Width = 5;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "Item (Withdraw)";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 305;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "CSM";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            this.dataGridViewTextBoxColumn9.Width = 66;
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.HeaderText = "ST";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.ReadOnly = true;
-            this.dataGridViewTextBoxColumn10.Width = 60;
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.HeaderText = "Sales";
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            this.dataGridViewTextBoxColumn11.Width = 55;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Precent";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 64;
             // 
             // loading_pictureBox
             // 
@@ -1064,6 +927,163 @@ namespace ItemChecker
             this.loading_panel.Name = "loading_panel";
             this.loading_panel.Size = new System.Drawing.Size(600, 611);
             this.loading_panel.TabIndex = 7;
+            // 
+            // colorBO_Column
+            // 
+            this.colorBO_Column.DataPropertyName = "colorBO_Column";
+            this.colorBO_Column.HeaderText = "";
+            this.colorBO_Column.Name = "colorBO_Column";
+            this.colorBO_Column.ReadOnly = true;
+            this.colorBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colorBO_Column.Width = 5;
+            // 
+            // itemBO_Column
+            // 
+            this.itemBO_Column.DataPropertyName = "itemBO_Column";
+            this.itemBO_Column.HeaderText = "Item (BuyOrders)";
+            this.itemBO_Column.Name = "itemBO_Column";
+            this.itemBO_Column.ReadOnly = true;
+            this.itemBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.itemBO_Column.Width = 305;
+            // 
+            // staBO_Column
+            // 
+            this.staBO_Column.DataPropertyName = "staBO_Column";
+            this.staBO_Column.HeaderText = "ST(A)";
+            this.staBO_Column.Name = "staBO_Column";
+            this.staBO_Column.ReadOnly = true;
+            this.staBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.staBO_Column.Width = 66;
+            // 
+            // csmBO_Column
+            // 
+            this.csmBO_Column.DataPropertyName = "csmBO_Column";
+            this.csmBO_Column.HeaderText = "CSM";
+            this.csmBO_Column.Name = "csmBO_Column";
+            this.csmBO_Column.ReadOnly = true;
+            this.csmBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.csmBO_Column.Width = 60;
+            // 
+            // precentBO_Column
+            // 
+            this.precentBO_Column.DataPropertyName = "precentBO_Column";
+            this.precentBO_Column.HeaderText = "Precent";
+            this.precentBO_Column.Name = "precentBO_Column";
+            this.precentBO_Column.ReadOnly = true;
+            this.precentBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.precentBO_Column.Width = 55;
+            // 
+            // differenceBO_Column
+            // 
+            this.differenceBO_Column.DataPropertyName = "differenceBO_Column";
+            this.differenceBO_Column.HeaderText = "Difference";
+            this.differenceBO_Column.Name = "differenceBO_Column";
+            this.differenceBO_Column.ReadOnly = true;
+            this.differenceBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.differenceBO_Column.Width = 64;
+            // 
+            // colorTS_Column
+            // 
+            this.colorTS_Column.DataPropertyName = "colorTS_Column";
+            this.colorTS_Column.HeaderText = "";
+            this.colorTS_Column.Name = "colorTS_Column";
+            this.colorTS_Column.ReadOnly = true;
+            this.colorTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colorTS_Column.Width = 5;
+            // 
+            // itemTS_Column
+            // 
+            this.itemTS_Column.DataPropertyName = "itemTS_Column";
+            this.itemTS_Column.HeaderText = "Item (TrySkins)";
+            this.itemTS_Column.Name = "itemTS_Column";
+            this.itemTS_Column.ReadOnly = true;
+            this.itemTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.itemTS_Column.Width = 305;
+            // 
+            // staTS_Column
+            // 
+            this.staTS_Column.DataPropertyName = "staTS_Column";
+            this.staTS_Column.HeaderText = "ST(A)";
+            this.staTS_Column.Name = "staTS_Column";
+            this.staTS_Column.ReadOnly = true;
+            this.staTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.staTS_Column.Width = 66;
+            // 
+            // csmTS_Column
+            // 
+            this.csmTS_Column.DataPropertyName = "csmTS_Column";
+            this.csmTS_Column.HeaderText = "CSM";
+            this.csmTS_Column.Name = "csmTS_Column";
+            this.csmTS_Column.ReadOnly = true;
+            this.csmTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.csmTS_Column.Width = 60;
+            // 
+            // precentTS_Column
+            // 
+            this.precentTS_Column.DataPropertyName = "precentTS_Column";
+            this.precentTS_Column.HeaderText = "Precent";
+            this.precentTS_Column.Name = "precentTS_Column";
+            this.precentTS_Column.ReadOnly = true;
+            this.precentTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.precentTS_Column.Width = 55;
+            // 
+            // differenceTS_Column
+            // 
+            this.differenceTS_Column.DataPropertyName = "differenceTS_Column";
+            this.differenceTS_Column.HeaderText = "Difference";
+            this.differenceTS_Column.Name = "differenceTS_Column";
+            this.differenceTS_Column.ReadOnly = true;
+            this.differenceTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.differenceTS_Column.Width = 64;
+            // 
+            // colorWD_Column
+            // 
+            this.colorWD_Column.DataPropertyName = "colorWD_Column";
+            this.colorWD_Column.HeaderText = "";
+            this.colorWD_Column.Name = "colorWD_Column";
+            this.colorWD_Column.ReadOnly = true;
+            this.colorWD_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colorWD_Column.Width = 5;
+            // 
+            // itemWD_Column
+            // 
+            this.itemWD_Column.DataPropertyName = "itemWD_Column";
+            this.itemWD_Column.HeaderText = "Item (Withdraw)";
+            this.itemWD_Column.Name = "itemWD_Column";
+            this.itemWD_Column.ReadOnly = true;
+            this.itemWD_Column.Width = 305;
+            // 
+            // csmWD_Column
+            // 
+            this.csmWD_Column.DataPropertyName = "csmWD_Column";
+            this.csmWD_Column.HeaderText = "CSM";
+            this.csmWD_Column.Name = "csmWD_Column";
+            this.csmWD_Column.ReadOnly = true;
+            this.csmWD_Column.Width = 66;
+            // 
+            // staWD_Column
+            // 
+            this.staWD_Column.DataPropertyName = "staWD_Column";
+            this.staWD_Column.HeaderText = "ST";
+            this.staWD_Column.Name = "staWD_Column";
+            this.staWD_Column.ReadOnly = true;
+            this.staWD_Column.Width = 60;
+            // 
+            // salesWD_Column
+            // 
+            this.salesWD_Column.DataPropertyName = "salesWD_Column";
+            this.salesWD_Column.HeaderText = "Sales";
+            this.salesWD_Column.Name = "salesWD_Column";
+            this.salesWD_Column.ReadOnly = true;
+            this.salesWD_Column.Width = 55;
+            // 
+            // precentWD_Column
+            // 
+            this.precentWD_Column.DataPropertyName = "precentWD_Column";
+            this.precentWD_Column.HeaderText = "Precent";
+            this.precentWD_Column.Name = "precentWD_Column";
+            this.precentWD_Column.ReadOnly = true;
+            this.precentWD_Column.Width = 64;
             // 
             // MainForm
             // 
@@ -1185,26 +1205,8 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripMenuItem tryskinsLink_toolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         public System.Windows.Forms.Label pusherCancel_label;
         private System.Windows.Forms.ToolStripMenuItem settings_toolStripMenuItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn color;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Item;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sta;
-        private System.Windows.Forms.DataGridViewTextBoxColumn csm;
-        private System.Windows.Forms.DataGridViewTextBoxColumn precent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn diff;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.ToolStripMenuItem withdraw_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reloadWithdraw_toolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
@@ -1232,6 +1234,25 @@ namespace ItemChecker
         public System.Windows.Forms.Label floatCheck_label;
         public System.Windows.Forms.Label pusherItems_label;
         public System.Windows.Forms.ToolStripMenuItem buyOrderPush_toolStripMenuItem;
+        private System.Windows.Forms.ToolTip info_toolTip;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colorTS_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemTS_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn staTS_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn csmTS_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn precentTS_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn differenceTS_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colorBO_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemBO_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn staBO_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn csmBO_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn precentBO_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn differenceBO_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colorWD_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemWD_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn csmWD_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn staWD_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn salesWD_Column;
+        private System.Windows.Forms.DataGridViewTextBoxColumn precentWD_Column;
     }
 }
 

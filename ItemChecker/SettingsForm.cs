@@ -36,6 +36,7 @@ namespace ItemChecker
             minPrecent_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrecent;
             maxPrice_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrice;
             minPrice_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrice;
+            dontUpload_checkBox.Checked = TryskinsConfig.Default.dontUpload;
             oldcsm_checkBox.Checked = TryskinsConfig.Default.oldDesign;
             fast_radioButton.Checked = TryskinsConfig.Default.fastTime;
             long_radioButton.Checked = TryskinsConfig.Default.longTime;
@@ -81,12 +82,13 @@ namespace ItemChecker
             cancelOrder_checkBox.Checked = false;
             startupPush_checkBox.Checked = false;
             //tryskins
-            fast_radioButton.Checked = true;
-            long_radioButton.Checked = false;
             maxPrecent_numericUpDown.Value = 60;
-            minPrecent_numericUpDown.Value = 27;
+            minPrecent_numericUpDown.Value = 35;
             maxPrice_numericUpDown.Value = 0;
             minPrice_numericUpDown.Value = 0;
+            dontUpload_checkBox.Checked = false;
+            fast_radioButton.Checked = true;
+            long_radioButton.Checked = false;
             oldcsm_checkBox.Checked = true;
             //withdraw
             minPrecentW_numericUpDown.Value = 3;
@@ -138,6 +140,7 @@ namespace ItemChecker
                     TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);
                     TryskinsConfig.Default.maxTryskinsPrice = Convert.ToInt32(maxPrice_numericUpDown.Value);
                     TryskinsConfig.Default.minTryskinsPrice = Convert.ToInt32(minPrice_numericUpDown.Value);
+                    TryskinsConfig.Default.dontUpload = dontUpload_checkBox.Checked;
                     TryskinsConfig.Default.fastTime = fast_radioButton.Checked;
                     TryskinsConfig.Default.longTime = long_radioButton.Checked;
                     TryskinsConfig.Default.oldDesign = oldcsm_checkBox.Checked;

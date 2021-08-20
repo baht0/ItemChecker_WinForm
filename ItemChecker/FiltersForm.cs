@@ -67,9 +67,9 @@ namespace ItemChecker
         }
         private void reset_button_Click(object sender, EventArgs e)
         {
-            if (!Main.loading & ServiceChecker.dataTable != null)
+            if (!Main.loading & ServiceParser.dataTable != null)
             {
-                ServiceCheckerPresenter.ClearAll(false, false);
+                ServiceParserPresenter.ClearAll(false, false);
                 clear_form();
             }
 
@@ -142,7 +142,7 @@ namespace ItemChecker
         {
             try
             {
-                if (!Main.loading & ServiceChecker.dataTable.Rows.Count > 1)
+                if (!Main.loading & ServiceParser.dataTable.Rows.Count > 1)
                 {
                     Filters.filter = string.Empty;
                     //category
@@ -159,7 +159,7 @@ namespace ItemChecker
                         {
                             for (int i = 1; i < 5; i++)
                                 Filters.filter += $"AND item_Column NOT LIKE '%{category_checkedListBox.Items[i]}%'";
-                            for (int i = 2; i < 12; i++)
+                            for (int i = 3; i < 12; i++)
                                 Filters.filter += $"AND item_Column NOT LIKE '%{types_checkedListBox.Items[i]}%'";
                         }
                     }
@@ -198,7 +198,7 @@ namespace ItemChecker
                             Filters.filter += createFilter(types_checkedListBox, "item_Column", not);
                         }
                         else
-                            for (int i = 2; i < 12; i++)
+                            for (int i = 3; i < 12; i++)
                                 Filters.filter += $"AND item_Column NOT LIKE '%{types_checkedListBox.Items[i]}%'";
                     }
                     //price
@@ -225,9 +225,9 @@ namespace ItemChecker
                         Filters.filter += $"AND precent_Column <> 0";
 
                     if (Filters.filter != string.Empty)
-                        ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { Filters.filter.Remove(0, 4) });
+                        ThreadPool.QueueUserWorkItem(ServiceParserPresenter.Filter, new object[] { Filters.filter.Remove(0, 4) });
                     else
-                        ThreadPool.QueueUserWorkItem(ServiceCheckerPresenter.Filter, new object[] { string.Empty });
+                        ThreadPool.QueueUserWorkItem(ServiceParserPresenter.Filter, new object[] { string.Empty });
 
                     saveFilters();
                     if (!close_checkBox.Checked)

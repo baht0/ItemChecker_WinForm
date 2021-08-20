@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace ItemChecker.Presenter
 {
-    class ServiceCheckerPresenter
+    class ServiceParserPresenter
     {
         static int i;
         static DateTime start; 
@@ -28,12 +28,12 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 ThreadPool.QueueUserWorkItem(TimeLeft);
-                if (ServiceChecker.service_one < 2 | ServiceChecker.service_two < 2)
+                if (ServiceParser.service_one < 2 | ServiceParser.service_two < 2)
                     if (GeneralConfig.Default.proxy & !String.IsNullOrEmpty(GeneralConfig.Default.proxyList))
                         checkMrinkaProxy();
                     else
                         checkMrinka();
-                if (ServiceChecker.service_one == 2 | ServiceChecker.service_two == 2)
+                if (ServiceParser.service_one == 2 | ServiceParser.service_two == 2)
                     checkLootFarm();
                 createDTable();
             }
@@ -43,12 +43,12 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                if (!ServiceChecker.checkStop)
+                if (!ServiceParser.checkStop)
                 {
                     serviceParserForm.Invoke(new MethodInvoker(delegate {
                         serviceParserForm.status_toolStripStatusLabel.Visible = false;
-                        serviceParserForm.servChecker_dataGridView.Enabled = true;
-                        serviceParserForm.servChecker_dataGridView.Sort(serviceParserForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
+                        serviceParserForm.serviceParser_dataGridView.Enabled = true;
+                        serviceParserForm.serviceParser_dataGridView.Sort(serviceParserForm.serviceParser_dataGridView.Columns[6], ListSortDirection.Descending); }));
                     drawDTGView();
                     MainPresenter.messageBalloonTip();
                     Main.loading = false;
@@ -82,7 +82,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -94,7 +94,7 @@ namespace ItemChecker.Presenter
             int id = 0;
             for (i = 0; i < Main.checkList.Count; i++)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 try
                 {
@@ -115,38 +115,38 @@ namespace ItemChecker.Presenter
         }
         private static void parseJson(string response)
         {
-            if (ServiceChecker.service_one == 0)
+            if (ServiceParser.service_one == 0)
             {
-                ServiceChecker.price_one.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
-                ServiceChecker.price2_one.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
-                ServiceChecker.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
+                ServiceParser.price_one.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
+                ServiceParser.price2_one.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString()));
+                ServiceParser.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
             }
-            else if (ServiceChecker.service_two == 0)
+            else if (ServiceParser.service_two == 0)
             {
-                ServiceChecker.price_two.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
+                ServiceParser.price_two.Add(Convert.ToDecimal(JObject.Parse(response)["steam"]["sellOrder"].ToString()));
                 decimal buyOrder = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString()) * 0.8696m;
-                ServiceChecker.price2_two.Add(Math.Round(buyOrder, 2));
-                ServiceChecker.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
-                ServiceChecker.status.Add("Tradable");
+                ServiceParser.price2_two.Add(Math.Round(buyOrder, 2));
+                ServiceParser.stUpdated.Add(Convert.ToDouble(JObject.Parse(response)["steam"]["updated"].ToString()));
+                ServiceParser.status.Add("Tradable");
             }
-            if (ServiceChecker.service_one == 1)
+            if (ServiceParser.service_one == 1)
             {
-                ServiceChecker.price2_one.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString()));
-                ServiceChecker.price_one.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
-                ServiceChecker.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
+                ServiceParser.price2_one.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString()));
+                ServiceParser.price_one.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
+                ServiceParser.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
             }
-            else if (ServiceChecker.service_two == 1)
+            else if (ServiceParser.service_two == 1)
             {
-                ServiceChecker.price2_two.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString()));
-                ServiceChecker.price_two.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
-                ServiceChecker.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
+                ServiceParser.price2_two.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString()));
+                ServiceParser.price_two.Add(Convert.ToDecimal(JObject.Parse(response)["csm"]["buy"]["0"].ToString()));
+                ServiceParser.csmUpdated.Add(Convert.ToDouble(JObject.Parse(response)["csm"]["updated"].ToString()));
 
                 if (Main.unavailable.Contains(Main.checkList[i]))
-                    ServiceChecker.status.Add("Unavailable");
+                    ServiceParser.status.Add("Unavailable");
                 else if (Main.overstock.Contains(Main.checkList[i]))
-                    ServiceChecker.status.Add("Overstock");
+                    ServiceParser.status.Add("Overstock");
                 else
-                    ServiceChecker.status.Add("Tradable");
+                    ServiceParser.status.Add("Tradable");
             }
         }
         private static void checkLootFarm()
@@ -158,51 +158,51 @@ namespace ItemChecker.Presenter
 
             for (int i = 0; i < jArray.Count; i++)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 str.Add(jArray[i]["name"].ToString());
             }
             for (i = 0; i < Main.checkList.Count; i++)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 if (str.Contains(Main.checkList[i]))
                 {
                     int id = str.IndexOf(Main.checkList[i]);
-                    if (ServiceChecker.service_one == 2)
+                    if (ServiceParser.service_one == 2)
                     {
                         decimal price = Convert.ToDecimal(jArray[id]["price"]) / 100;
-                        ServiceChecker.price_one.Add(price);
-                        ServiceChecker.price2_one.Add(Math.Round(price * 0.95m, 2));
+                        ServiceParser.price_one.Add(price);
+                        ServiceParser.price2_one.Add(Math.Round(price * 0.95m, 2));
                         int have = Convert.ToInt32(jArray[id]["have"]);
                     }
-                    else if (ServiceChecker.service_two == 2)
+                    else if (ServiceParser.service_two == 2)
                     {
                         decimal price = Convert.ToDecimal(jArray[id]["price"]) / 100;
-                        ServiceChecker.price_two.Add(price);
-                        ServiceChecker.price2_two.Add(Math.Round(price * 0.95m, 2));
+                        ServiceParser.price_two.Add(price);
+                        ServiceParser.price2_two.Add(Math.Round(price * 0.95m, 2));
 
                         int have = Convert.ToInt32(jArray[id]["have"]);
                         int max = Convert.ToInt32(jArray[id]["max"]);
                         int count = max - have;
                         if (count > 0)
-                            ServiceChecker.status.Add("Tradable");
+                            ServiceParser.status.Add("Tradable");
                         else if (count <= 0)
-                            ServiceChecker.status.Add("Overstock");
+                            ServiceParser.status.Add("Overstock");
                     }
                 }
                 else
                 {
-                    if (ServiceChecker.service_one == 2)
+                    if (ServiceParser.service_one == 2)
                     {
-                        ServiceChecker.price_one.Add(0);
-                        ServiceChecker.price2_one.Add(0);
+                        ServiceParser.price_one.Add(0);
+                        ServiceParser.price2_one.Add(0);
                     }
-                    else if (ServiceChecker.service_two == 2)
+                    else if (ServiceParser.service_two == 2)
                     {
-                        ServiceChecker.price_two.Add(0);
-                        ServiceChecker.price2_two.Add(0);
-                        ServiceChecker.status.Add("Unknown");
+                        ServiceParser.price_two.Add(0);
+                        ServiceParser.price2_two.Add(0);
+                        ServiceParser.status.Add("Unknown");
                     }
                 }
             }
@@ -215,18 +215,18 @@ namespace ItemChecker.Presenter
                 {
                     serviceParserForm.Invoke(new Action(() => {
                         serviceParserForm.count_toolStripStatusLabel.Text = $"Count: {i + 1}/{Main.checkList.Count}";
-                        serviceParserForm.Text = $"ServiceChecker: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}";
+                        serviceParserForm.Text = $"ServiceParser: {Edit.calcTimeLeft(start, Main.checkList.Count, i)}";
                     }));
                     Thread.Sleep(500);
                 }
                 serviceParserForm.Invoke(new Action(() => {
                     serviceParserForm.count_toolStripStatusLabel.Text = $"Count: {Main.checkList.Count}";
-                    serviceParserForm.Text = "ServiceChecker";
+                    serviceParserForm.Text = "ServiceParser";
                 }));
             }
             catch (Exception exp)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -241,38 +241,38 @@ namespace ItemChecker.Presenter
 
                 for (int i = 0; i < Main.checkList.Count; i++)
                 {
-                    if (ServiceChecker.service_one == 0) //steam -> (any)
+                    if (ServiceParser.service_one == 0) //steam -> (any)
                     {
-                        decimal precent = Edit.Precent(ServiceChecker.price2_one[i], ServiceChecker.price2_two[i]);
-                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price2_one[i], GeneralConfig.Default.currency);
-                        ServiceChecker.precent.Add(precent);
-                        ServiceChecker.difference.Add(difference);
+                        decimal precent = Edit.Precent(ServiceParser.price2_one[i], ServiceParser.price2_two[i]);
+                        decimal difference = Edit.Difference(ServiceParser.price2_two[i], ServiceParser.price2_one[i], GeneralConfig.Default.currency);
+                        ServiceParser.precent.Add(precent);
+                        ServiceParser.difference.Add(difference);
                     }
                     else //(any) -> (any)
                     {
-                        decimal precent = Edit.Precent(ServiceChecker.price_one[i], ServiceChecker.price2_two[i]);
-                        decimal difference = Edit.Difference(ServiceChecker.price2_two[i], ServiceChecker.price_one[i], GeneralConfig.Default.currency);
-                        ServiceChecker.precent.Add(precent);
-                        ServiceChecker.difference.Add(difference);
+                        decimal precent = Edit.Precent(ServiceParser.price_one[i], ServiceParser.price2_two[i]);
+                        decimal difference = Edit.Difference(ServiceParser.price2_two[i], ServiceParser.price_one[i], GeneralConfig.Default.currency);
+                        ServiceParser.precent.Add(precent);
+                        ServiceParser.difference.Add(difference);
                     }
 
-                    ServiceChecker.dataTable.Rows.Add(null,
+                    ServiceParser.dataTable.Rows.Add(null,
                         Main.checkList[i],
-                        ServiceChecker.price_one[i],
-                        ServiceChecker.price2_one[i],
-                        ServiceChecker.price_two[i],
-                        ServiceChecker.price2_two[i],
-                        ServiceChecker.precent[i],
-                        ServiceChecker.difference[i],
-                        ServiceChecker.status[i]);
+                        ServiceParser.price_one[i],
+                        ServiceParser.price2_one[i],
+                        ServiceParser.price_two[i],
+                        ServiceParser.price2_two[i],
+                        ServiceParser.precent[i],
+                        ServiceParser.difference[i],
+                        ServiceParser.status[i]);
 
-                    serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {i + 1}"; }));
+                    serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.serviceParser_dataGridView.Columns[1].HeaderText = $"Item - {i + 1}"; }));
                 }
-                serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable; }));
+                serviceParserForm.Invoke(new MethodInvoker(delegate { serviceParserForm.serviceParser_dataGridView.DataSource = ServiceParser.dataTable; }));
             }
             catch (Exception exp)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -282,7 +282,7 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                foreach (DataGridViewRow row in serviceParserForm.servChecker_dataGridView.Rows)
+                foreach (DataGridViewRow row in serviceParserForm.serviceParser_dataGridView.Rows)
                 {
                     var item = row.Cells[1].Value.ToString();
                     var price2_one = Edit.removeDol(row.Cells[3].Value.ToString());
@@ -296,7 +296,7 @@ namespace ItemChecker.Presenter
                         row.Cells[6].Style.BackColor = Color.Red;
                     if (precent == 0 | precent == -100)
                         row.Cells[6].Style.BackColor = Color.Gray;
-                    if (price2_one > Steam.balance_usd & ServiceChecker.service_one == 0)
+                    if (price2_one > Steam.balance_usd & ServiceParser.service_one == 0)
                         row.Cells[3].Style.BackColor = Color.Crimson;
                     if (BuyOrder.queue.Contains(item))
                     {
@@ -321,7 +321,7 @@ namespace ItemChecker.Presenter
                     }
                     row.Cells[2].Style.BackColor = Color.LightGray;
                     row.Cells[5].Style.BackColor = Color.LightGray;
-                    if (ServiceChecker.service_one == 0) //steam -> (any)
+                    if (ServiceParser.service_one == 0) //steam -> (any)
                     {
                         row.Cells[3].Style.BackColor = Color.LightGray;
                         row.Cells[2].Style.BackColor = Color.White;
@@ -338,7 +338,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -346,13 +346,13 @@ namespace ItemChecker.Presenter
         }
         public static void columnDTable()
         {
-            foreach (DataGridViewColumn column in serviceParserForm.servChecker_dataGridView.Columns)
+            foreach (DataGridViewColumn column in serviceParserForm.serviceParser_dataGridView.Columns)
             {
-                if (ServiceChecker.dataTable.Columns.Contains(column.Name))
+                if (ServiceParser.dataTable.Columns.Contains(column.Name))
                     break;
-                ServiceChecker.dataTable.Columns.Add(column.Name);
+                ServiceParser.dataTable.Columns.Add(column.Name);
                 if (column.Index >= 2 & column.Index <= 7)
-                    ServiceChecker.dataTable.Columns[column.Index].DataType = typeof(decimal);
+                    ServiceParser.dataTable.Columns[column.Index].DataType = typeof(decimal);
             }
         }
 
@@ -363,9 +363,9 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 object[] args = state as object[];
                 string str = args[0].ToString();
-                DataGridView dataGridView = serviceParserForm.servChecker_dataGridView;
+                DataGridView dataGridView = serviceParserForm.serviceParser_dataGridView;
 
-                DataView dataView = ServiceChecker.dataTable.DefaultView;
+                DataView dataView = ServiceParser.dataTable.DefaultView;
                 dataView.RowFilter = str;
                 DataTable dt = dataView.ToTable();
                 Filters.filter = str;
@@ -379,7 +379,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if(!ServiceChecker.checkStop)
+                if(!ServiceParser.checkStop)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
@@ -391,9 +391,9 @@ namespace ItemChecker.Presenter
                 Filters._clearAll();
 
                 if (clearDTable)
-                    ServiceChecker.dataTable.Clear();
+                    ServiceParser.dataTable.Clear();
                 if (data)
-                    ServiceChecker._clear();
+                    ServiceParser._clear();
 
                 serviceParserForm.Invoke(new MethodInvoker(delegate {
                     serviceParserForm.quickCheck_textBox.Clear();
@@ -401,7 +401,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceChecker.checkStop)
+                if (ServiceParser.checkStop)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -425,16 +425,16 @@ namespace ItemChecker.Presenter
                     serviceParserForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
                     if (count > 0) {
                         serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
-                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
+                        serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
                     }
                     else {
                         serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
-                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
+                        serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
                     } }));
             }
             catch (Exception exp)
             {
-                if (!ServiceChecker.checkStop)
+                if (!ServiceParser.checkStop)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }            
         }
@@ -469,16 +469,16 @@ namespace ItemChecker.Presenter
                     serviceParserForm.availability_toolStripStatusLabel.Text = $"Availability: {count}";
                     if (count > 0) {
                         serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.Green;
-                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
+                        serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.MediumSeaGreen;
                     }
                     else {
                         serviceParserForm.availability_toolStripStatusLabel.ForeColor = Color.OrangeRed;
-                        serviceParserForm.servChecker_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
+                        serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[9].Style.BackColor = Color.LightSalmon;
                     } }));
             }
             catch (Exception exp)
             {
-                if (!ServiceChecker.checkStop)
+                if (!ServiceParser.checkStop)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
@@ -488,10 +488,10 @@ namespace ItemChecker.Presenter
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-                int row = serviceParserForm.servChecker_dataGridView.CurrentCell.RowIndex;
-                int cell = serviceParserForm.servChecker_dataGridView.CurrentCell.ColumnIndex;
-                string item = serviceParserForm.servChecker_dataGridView.Rows[row].Cells[1].Value.ToString();
-                decimal sta = Edit.removeSymbol(serviceParserForm.servChecker_dataGridView.Rows[row].Cells[3].Value.ToString());
+                int row = serviceParserForm.serviceParser_dataGridView.CurrentCell.RowIndex;
+                int cell = serviceParserForm.serviceParser_dataGridView.CurrentCell.ColumnIndex;
+                string item = serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[1].Value.ToString();
+                decimal sta = Edit.removeSymbol(serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[3].Value.ToString());
 
                 if (!BuyOrder.item.Contains(item) & cell != 3 & sta <= Steam.balance_usd)
                 {
@@ -504,8 +504,8 @@ namespace ItemChecker.Presenter
                                 mainForm.available_label.ForeColor = Color.Red;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
-                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LimeGreen;
+                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
+                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LimeGreen;
                         }));
                     }
                     else
@@ -517,15 +517,15 @@ namespace ItemChecker.Presenter
                                 mainForm.available_label.ForeColor = Color.Black;
                             mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
                             mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
-                            serviceParserForm.servChecker_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.White;
+                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LightGray;
+                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LightGray;
                         }));
                     }
                 }
             }
             catch (Exception exp)
             {
-                if(ServiceChecker.checkStop)
+                if(ServiceParser.checkStop)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
@@ -533,20 +533,20 @@ namespace ItemChecker.Presenter
         public static void exportTxt(object state)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            DialogResult result = MessageBox.Show($"Add prices \"{serviceParserForm.servChecker_dataGridView.Columns[2].HeaderText}\" to the list you create?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show($"Add prices \"{serviceParserForm.serviceParser_dataGridView.Columns[2].HeaderText}\" to the list you create?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (result == DialogResult.Cancel)
                 return;
 
             serviceParserForm.Invoke(new MethodInvoker(delegate {
                 serviceParserForm.status_toolStripStatusLabel.Text = "Export the list to *.txt...";
                 serviceParserForm.status_toolStripStatusLabel.Visible = true;
-                serviceParserForm.servChecker_dataGridView.Enabled = false; }));
+                serviceParserForm.serviceParser_dataGridView.Enabled = false; }));
 
             DirectoryInfo dirInfo = new("extract");
             if (!dirInfo.Exists)
                 dirInfo.Create();
             string str = null;
-            foreach (DataGridViewRow row in serviceParserForm.servChecker_dataGridView.Rows)
+            foreach (DataGridViewRow row in serviceParserForm.serviceParser_dataGridView.Rows)
             {
                 str += row.Cells[1].Value;
                 if (result == DialogResult.Yes)
@@ -554,24 +554,24 @@ namespace ItemChecker.Presenter
                 str += "\r\n";
             }
             str = str.Remove(str.Length - 2);
-            File.WriteAllText($"extract/serviceCheckerList_{DateTime.Now:dd.MM.yyyy_hh.mm}.txt", str);
+            File.WriteAllText($"extract/serviceParserList_{DateTime.Now:dd.MM.yyyy_hh.mm}.txt", str);
 
             serviceParserForm.Invoke(new MethodInvoker(delegate {
                 serviceParserForm.status_toolStripStatusLabel.Visible = false;
-                serviceParserForm.servChecker_dataGridView.Enabled = true; }));
+                serviceParserForm.serviceParser_dataGridView.Enabled = true; }));
         }
         public static void exportCsv(object state)
         {
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                if (serviceParserForm.servChecker_dataGridView.Rows.Count > 0)
+                if (serviceParserForm.serviceParser_dataGridView.Rows.Count > 0)
                 {
                     string csv = null;
                     //services
-                    csv += $"{ServiceChecker.service_one},{ServiceChecker.service_two}\r\n";
+                    csv += $"{ServiceParser.service_one},{ServiceParser.service_two}\r\n";
                     //Rows
-                    foreach (DataGridViewRow row in serviceParserForm.servChecker_dataGridView.Rows)
+                    foreach (DataGridViewRow row in serviceParserForm.serviceParser_dataGridView.Rows)
                     {
                         foreach (DataGridViewCell cell in row.Cells)
                         {
@@ -590,12 +590,15 @@ namespace ItemChecker.Presenter
                         csv = csv.Remove(csv.Length - 2);
                         csv += "\r\n";
                     }
-                    File.WriteAllText(Application.StartupPath.Replace(@"\", @"\\") + $"extract\\serviceChecker_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.csv", Edit.replaceSymbols(csv));
+                    string path = Application.StartupPath + "extract";
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    File.WriteAllText(path + $"\\serviceParser_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.csv", Edit.replaceSymbols(csv));
                 }
             }
             catch (Exception exp)
             {
-                if (!ServiceChecker.checkStop)
+                if (!ServiceParser.checkStop)
                 {
                     string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -604,11 +607,11 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                if (!ServiceChecker.checkStop)
+                if (!ServiceParser.checkStop)
                 {
                     serviceParserForm.Invoke(new MethodInvoker(delegate {
                         serviceParserForm.status_toolStripStatusLabel.Visible = false;
-                        serviceParserForm.servChecker_dataGridView.Enabled = true; }));
+                        serviceParserForm.serviceParser_dataGridView.Enabled = true; }));
                     MainPresenter.messageBalloonTip("Extraction was completed.");
                     Main.loading = false;
                 }
@@ -625,41 +628,41 @@ namespace ItemChecker.Presenter
                 string[] lines = File.ReadAllLines(filePath);
                 string[] service = lines[0].Split(',');
 
-                ServiceChecker.service_one = Convert.ToInt32(service[0]);
-                ServiceChecker.service_two = Convert.ToInt32(service[1]);
+                ServiceParser.service_one = Convert.ToInt32(service[0]);
+                ServiceParser.service_two = Convert.ToInt32(service[1]);
                 serviceParserForm.Invoke(new MethodInvoker(delegate {
-                    serviceParserForm.firstSer_comboBox.SelectedIndex = ServiceChecker.service_one;
-                    serviceParserForm.secondSer_comboBox.SelectedIndex = ServiceChecker.service_two;
+                    serviceParserForm.firstSer_comboBox.SelectedIndex = ServiceParser.service_one;
+                    serviceParserForm.secondSer_comboBox.SelectedIndex = ServiceParser.service_two;
                     serviceParserForm.services_toolStripStatusLabel.Text = $"From {serviceParserForm.firstSer_comboBox.Text} To {serviceParserForm.secondSer_comboBox.Text} ({fileName})";
                     serviceParserForm.services_toolStripStatusLabel.Visible = true;
 
                     for (int i = 2; i < 6; i++)
-                        Filters.prices.Add(serviceParserForm.servChecker_dataGridView.Columns[i].HeaderText);
+                        Filters.prices.Add(serviceParserForm.serviceParser_dataGridView.Columns[i].HeaderText);
                     serviceParserForm.count_toolStripStatusLabel.Text = $"Count: {lines.Length - 1}"; }));
 
                 //rows
                 for (int i = 1; i < lines.Length; i++)
                 {
                     string[] value = lines[i].Split(',');
-                    DataRow row = ServiceChecker.dataTable.NewRow();
+                    DataRow row = ServiceParser.dataTable.NewRow();
                     for (int j = 0; j <= 8; j++)
                     {
                         row[j] = value[j].Replace(";", ",");
                         if (j >= 2 & j <= 7)
                             row[j] = Math.Round(Convert.ToDecimal(value[j]) / 100, 2);
                     }
-                    ServiceChecker.dataTable.Rows.Add(row);
+                    ServiceParser.dataTable.Rows.Add(row);
                 }
                 serviceParserForm.Invoke(new MethodInvoker(delegate {
                     serviceParserForm.status_toolStripStatusLabel.Visible = false;
-                    serviceParserForm.servChecker_dataGridView.Columns[1].HeaderText = $"Item - {ServiceChecker.dataTable.Rows.Count}";
-                    serviceParserForm.servChecker_dataGridView.DataSource = ServiceChecker.dataTable;
-                    serviceParserForm.servChecker_dataGridView.Sort(serviceParserForm.servChecker_dataGridView.Columns[6], ListSortDirection.Descending); }));
+                    serviceParserForm.serviceParser_dataGridView.Columns[1].HeaderText = $"Item - {ServiceParser.dataTable.Rows.Count}";
+                    serviceParserForm.serviceParser_dataGridView.DataSource = ServiceParser.dataTable;
+                    serviceParserForm.serviceParser_dataGridView.Sort(serviceParserForm.serviceParser_dataGridView.Columns[6], ListSortDirection.Descending); }));
                 drawDTGView();
             }
             catch (Exception exp)
             {
-                if (!ServiceChecker.checkStop)
+                if (!ServiceParser.checkStop)
                 {
                     string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -668,7 +671,7 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                if (!ServiceChecker.checkStop)
+                if (!ServiceParser.checkStop)
                 {
                     MainPresenter.messageBalloonTip("Importing was completed.");
                     Main.loading = false;

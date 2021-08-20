@@ -6,13 +6,16 @@
       <Value Profile="(Default)">60</Value>
     </Setting>
     <Setting Name="minTryskinsPrecent" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">27</Value>
+      <Value Profile="(Default)">35</Value>
     </Setting>
     <Setting Name="maxTryskinsPrice" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="minTryskinsPrice" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="dontUpload" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="fastTime" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

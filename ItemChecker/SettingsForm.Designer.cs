@@ -61,8 +61,12 @@ namespace ItemChecker
             this.minPrecentW_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label14 = new System.Windows.Forms.Label();
             this.float_tabPage = new System.Windows.Forms.TabPage();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.floatTimer_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.floatList_button = new System.Windows.Forms.Button();
+            this.label35 = new System.Windows.Forms.Label();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.maxPrecentFloat_numericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
@@ -87,6 +91,7 @@ namespace ItemChecker
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.oldcsm_checkBox = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.dontUpload_checkBox = new System.Windows.Forms.CheckBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
@@ -132,10 +137,6 @@ namespace ItemChecker
             this.upload_button = new System.Windows.Forms.Button();
             this.download_button = new System.Windows.Forms.Button();
             this.info_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.label34 = new System.Windows.Forms.Label();
-            this.floatTimer_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label35 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.withdraw_tabPage.SuspendLayout();
             this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.deviation_numericUpDown)).BeginInit();
@@ -147,6 +148,8 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecentW_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minPrecentW_numericUpDown)).BeginInit();
             this.float_tabPage.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.floatTimer_numericUpDown)).BeginInit();
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecentFloat_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.getItems_numericUpDown)).BeginInit();
@@ -175,8 +178,6 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.wait_numericUpDown)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.tabControl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.floatTimer_numericUpDown)).BeginInit();
-            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // ok_button
@@ -607,6 +608,72 @@ namespace ItemChecker
             this.float_tabPage.Text = "Float";
             this.float_tabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.label34);
+            this.groupBox8.Controls.Add(this.floatTimer_numericUpDown);
+            this.groupBox8.Controls.Add(this.floatList_button);
+            this.groupBox8.Controls.Add(this.label35);
+            this.groupBox8.Location = new System.Drawing.Point(149, 6);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(137, 101);
+            this.groupBox8.TabIndex = 13;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "FloatCheck";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(17, 16);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(36, 13);
+            this.label34.TabIndex = 28;
+            this.label34.Text = "Timer:";
+            // 
+            // floatTimer_numericUpDown
+            // 
+            this.floatTimer_numericUpDown.Location = new System.Drawing.Point(17, 32);
+            this.floatTimer_numericUpDown.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.floatTimer_numericUpDown.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.floatTimer_numericUpDown.Name = "floatTimer_numericUpDown";
+            this.floatTimer_numericUpDown.Size = new System.Drawing.Size(80, 20);
+            this.floatTimer_numericUpDown.TabIndex = 26;
+            this.floatTimer_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.info_toolTip.SetToolTip(this.floatTimer_numericUpDown, "Check cycle timer.");
+            this.floatTimer_numericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // floatList_button
+            // 
+            this.floatList_button.Location = new System.Drawing.Point(17, 68);
+            this.floatList_button.Name = "floatList_button";
+            this.floatList_button.Size = new System.Drawing.Size(80, 23);
+            this.floatList_button.TabIndex = 3;
+            this.floatList_button.Text = "FloatList";
+            this.info_toolTip.SetToolTip(this.floatList_button, "List of items.");
+            this.floatList_button.UseVisualStyleBackColor = true;
+            this.floatList_button.Click += new System.EventHandler(this.floatList_button_Click);
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(101, 39);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(27, 13);
+            this.label35.TabIndex = 27;
+            this.label35.Text = "Min.";
+            // 
             // groupBox10
             // 
             this.groupBox10.Controls.Add(this.label13);
@@ -620,17 +687,6 @@ namespace ItemChecker
             this.groupBox10.TabIndex = 12;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Float";
-            // 
-            // floatList_button
-            // 
-            this.floatList_button.Location = new System.Drawing.Point(17, 68);
-            this.floatList_button.Name = "floatList_button";
-            this.floatList_button.Size = new System.Drawing.Size(80, 23);
-            this.floatList_button.TabIndex = 3;
-            this.floatList_button.Text = "FloatList";
-            this.info_toolTip.SetToolTip(this.floatList_button, "List of items.");
-            this.floatList_button.UseVisualStyleBackColor = true;
-            this.floatList_button.Click += new System.EventHandler(this.floatList_button_Click);
             // 
             // label13
             // 
@@ -968,7 +1024,7 @@ namespace ItemChecker
             // groupBox12
             // 
             this.groupBox12.Controls.Add(this.oldcsm_checkBox);
-            this.groupBox12.Location = new System.Drawing.Point(20, 151);
+            this.groupBox12.Location = new System.Drawing.Point(20, 169);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(251, 52);
             this.groupBox12.TabIndex = 2;
@@ -988,6 +1044,7 @@ namespace ItemChecker
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.dontUpload_checkBox);
             this.groupBox9.Controls.Add(this.label33);
             this.groupBox9.Controls.Add(this.label11);
             this.groupBox9.Controls.Add(this.label32);
@@ -998,12 +1055,23 @@ namespace ItemChecker
             this.groupBox9.Controls.Add(this.label12);
             this.groupBox9.Controls.Add(this.minPrecent_numericUpDown);
             this.groupBox9.Controls.Add(this.maxPrecent_numericUpDown);
-            this.groupBox9.Location = new System.Drawing.Point(20, 69);
+            this.groupBox9.Location = new System.Drawing.Point(20, 11);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(251, 76);
+            this.groupBox9.Size = new System.Drawing.Size(251, 94);
             this.groupBox9.TabIndex = 11;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "TrySkins";
+            // 
+            // dontUpload_checkBox
+            // 
+            this.dontUpload_checkBox.AutoSize = true;
+            this.dontUpload_checkBox.Location = new System.Drawing.Point(15, 71);
+            this.dontUpload_checkBox.Name = "dontUpload_checkBox";
+            this.dontUpload_checkBox.Size = new System.Drawing.Size(86, 17);
+            this.dontUpload_checkBox.TabIndex = 28;
+            this.dontUpload_checkBox.Text = "Don\'t upload";
+            this.info_toolTip.SetToolTip(this.dontUpload_checkBox, "The program will not load data from TrySkins on startup.");
+            this.dontUpload_checkBox.UseVisualStyleBackColor = true;
             // 
             // label33
             // 
@@ -1046,7 +1114,7 @@ namespace ItemChecker
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(18, 26);
+            this.label10.Location = new System.Drawing.Point(15, 26);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(47, 13);
             this.label10.TabIndex = 1;
@@ -1054,7 +1122,7 @@ namespace ItemChecker
             // 
             // minPrice_numericUpDown
             // 
-            this.minPrice_numericUpDown.Location = new System.Drawing.Point(160, 45);
+            this.minPrice_numericUpDown.Location = new System.Drawing.Point(78, 45);
             this.minPrice_numericUpDown.Maximum = new decimal(new int[] {
             999998,
             0,
@@ -1064,11 +1132,11 @@ namespace ItemChecker
             this.minPrice_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.minPrice_numericUpDown.TabIndex = 6;
             this.minPrice_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.info_toolTip.SetToolTip(this.minPrice_numericUpDown, "Maximum price.");
+            this.info_toolTip.SetToolTip(this.minPrice_numericUpDown, "Minimum price.");
             // 
             // maxPrice_numericUpDown
             // 
-            this.maxPrice_numericUpDown.Location = new System.Drawing.Point(78, 45);
+            this.maxPrice_numericUpDown.Location = new System.Drawing.Point(160, 45);
             this.maxPrice_numericUpDown.Maximum = new decimal(new int[] {
             999998,
             0,
@@ -1078,12 +1146,12 @@ namespace ItemChecker
             this.maxPrice_numericUpDown.Size = new System.Drawing.Size(60, 20);
             this.maxPrice_numericUpDown.TabIndex = 5;
             this.maxPrice_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.info_toolTip.SetToolTip(this.maxPrice_numericUpDown, "Minimum price.");
+            this.info_toolTip.SetToolTip(this.maxPrice_numericUpDown, "Maximum price.");
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(18, 52);
+            this.label12.Location = new System.Drawing.Point(15, 52);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(34, 13);
             this.label12.TabIndex = 3;
@@ -1108,7 +1176,7 @@ namespace ItemChecker
             this.minPrecent_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.info_toolTip.SetToolTip(this.minPrecent_numericUpDown, "Minimum percentage.");
             this.minPrecent_numericUpDown.Value = new decimal(new int[] {
-            27,
+            35,
             0,
             0,
             0});
@@ -1141,7 +1209,7 @@ namespace ItemChecker
             // 
             this.groupBox2.Controls.Add(this.long_radioButton);
             this.groupBox2.Controls.Add(this.fast_radioButton);
-            this.groupBox2.Location = new System.Drawing.Point(20, 11);
+            this.groupBox2.Location = new System.Drawing.Point(20, 111);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(251, 52);
             this.groupBox2.TabIndex = 0;
@@ -1545,61 +1613,6 @@ namespace ItemChecker
             // 
             this.info_toolTip.ToolTipTitle = "Information";
             // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(17, 16);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(36, 13);
-            this.label34.TabIndex = 28;
-            this.label34.Text = "Timer:";
-            // 
-            // floatTimer_numericUpDown
-            // 
-            this.floatTimer_numericUpDown.Location = new System.Drawing.Point(17, 32);
-            this.floatTimer_numericUpDown.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.floatTimer_numericUpDown.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.floatTimer_numericUpDown.Name = "floatTimer_numericUpDown";
-            this.floatTimer_numericUpDown.Size = new System.Drawing.Size(80, 20);
-            this.floatTimer_numericUpDown.TabIndex = 26;
-            this.floatTimer_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.info_toolTip.SetToolTip(this.floatTimer_numericUpDown, "Check cycle timer.");
-            this.floatTimer_numericUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(101, 39);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(27, 13);
-            this.label35.TabIndex = 27;
-            this.label35.Text = "Min.";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.label34);
-            this.groupBox8.Controls.Add(this.floatTimer_numericUpDown);
-            this.groupBox8.Controls.Add(this.floatList_button);
-            this.groupBox8.Controls.Add(this.label35);
-            this.groupBox8.Location = new System.Drawing.Point(149, 6);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(137, 101);
-            this.groupBox8.TabIndex = 13;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "FloatCheck";
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1634,6 +1647,9 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecentW_numericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minPrecentW_numericUpDown)).EndInit();
             this.float_tabPage.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.floatTimer_numericUpDown)).EndInit();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecentFloat_numericUpDown)).EndInit();
@@ -1672,9 +1688,6 @@ namespace ItemChecker
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.tabControl.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.floatTimer_numericUpDown)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1785,5 +1798,6 @@ namespace ItemChecker
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.NumericUpDown floatTimer_numericUpDown;
         private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.CheckBox dontUpload_checkBox;
     }
 }

@@ -131,12 +131,11 @@ namespace ItemChecker.Presenter
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Steam..."; }));
             MainPresenter.clearDTableRows(mainForm.buyOrder_dataGridView);
 
-            DataTable table = new DataTable();
-            for (int i = 0; i < mainForm.buyOrder_dataGridView.ColumnCount; ++i)
-            {
-                table.Columns.Add(new DataColumn(mainForm.buyOrder_dataGridView.Columns[i].Name));
-                mainForm.buyOrder_dataGridView.Columns[i].DataPropertyName = mainForm.buyOrder_dataGridView.Columns[i].Name;
-            }
+            DataTable table = new();
+
+            foreach (DataGridViewColumn column in mainForm.buyOrder_dataGridView.Columns)
+                table.Columns.Add(new DataColumn(column.Name));
+
             table.Columns[4].DataType = typeof(decimal);
             table.Columns[5].DataType = typeof(decimal);
             for (int i = 0; i < BuyOrder.item.Count; i++)
@@ -310,7 +309,6 @@ namespace ItemChecker.Presenter
             BuyOrder.tick = 1;
             mainForm.Invoke(new MethodInvoker(delegate {
                 mainForm.timer_StripStatus.Visible = false;
-                mainForm.pusherBuyOrder_groupBox.Visible = false;
                 mainForm.buyOrderPush_toolStripMenuItem.ForeColor = Color.Black; }));
         }
         public void timerTick(Object sender, ElapsedEventArgs e)

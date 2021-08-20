@@ -74,12 +74,12 @@ namespace ItemChecker.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool updateSettings {
+        public bool completionUpdate {
             get {
-                return ((bool)(this["updateSettings"]));
+                return ((bool)(this["completionUpdate"]));
             }
             set {
-                this["updateSettings"] = value;
+                this["completionUpdate"] = value;
             }
         }
     }

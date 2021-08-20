@@ -37,7 +37,7 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("27")]
+        [global::System.Configuration.DefaultSettingValueAttribute("35")]
         public int minTryskinsPrecent {
             get {
                 return ((int)(this["minTryskinsPrecent"]));
@@ -68,6 +68,18 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["minTryskinsPrice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool dontUpload {
+            get {
+                return ((bool)(this["dontUpload"]));
+            }
+            set {
+                this["dontUpload"] = value;
             }
         }
         

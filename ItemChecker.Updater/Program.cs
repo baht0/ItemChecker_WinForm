@@ -19,7 +19,7 @@ namespace ItemChecker.Updater
             {
                 if (!args.Any())
                     Environment.Exit(0);
-                Console.WriteLine("Startup: success...");
+                Console.WriteLine("Startup: success");
 
                 do
                     Thread.Sleep(1000);
@@ -31,6 +31,8 @@ namespace ItemChecker.Updater
                 dirInfo.Attributes = FileAttributes.Hidden;
 
                 List<string> files = new();
+                files.Add("ItemChecker.Updater.exe");
+                files.Add("ItemChecker.Updater.dll");
                 files.Add("ItemChecker.exe");
                 files.Add("ItemChecker.dll");
                 if (args[1] == "True")
@@ -58,6 +60,9 @@ namespace ItemChecker.Updater
                 Console.WriteLine("============================");
                 Console.WriteLine("Download: success");
 
+                files.Remove("ItemChecker.Updater.exe");
+                files.Remove("ItemChecker.Updater.dll");
+
                 Console.WriteLine("\nUpdating...");
                 foreach (string file in files)
                 {
@@ -73,9 +78,6 @@ namespace ItemChecker.Updater
             }
             finally
             {
-                if (Directory.Exists(path))
-                    dirInfo.Delete(true);
-
                 Console.WriteLine("\nPress any key to close...");
                 Console.ReadKey();
             }
@@ -106,7 +108,7 @@ namespace ItemChecker.Updater
         }
         public static void DownloadFile(string link, string fileName)
         {
-            using (WebClient client = new WebClient())
+            using (WebClient client = new())
             {
                 client.DownloadFile(link, path + $"\\{fileName}");
             }

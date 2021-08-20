@@ -38,8 +38,10 @@ namespace ItemChecker.Presenter
                         progressInvoke(2);
                     preparationData();
                     loadDataSteam();
-                    loadDataTryskins();
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
+                    if (!TryskinsConfig.Default.dontUpload)
+                        loadDataTryskins();
+                    else
+                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - Setting: 'Don't upload'."; }));
                     if (SteamConfig.Default.startupPush)
                     {
                         Main.loading = false;
@@ -282,17 +284,28 @@ namespace ItemChecker.Presenter
                 mainForm.balance_StripStatus.Text = "Balance: 0.00";
             }));
         }        
-        public static void updateSettings()
+        public static void completionUpdate()
         {
-            if (Properties.Settings.Default.updateSettings)
+            if (Properties.Settings.Default.completionUpdate)
             {
+                string update = Application.StartupPath + @"\update";
+                if (Directory.Exists(update))
+                {
+                    string path = Application.StartupPath;
+                    string updaterExe = "ItemChecker.Updater.exe";
+                    string updaterDll = "ItemChecker.Updater.dll";
+                    File.Move($"{update}\\{updaterExe}", path + updaterExe, true);
+                    File.Move($"{update}\\{updaterDll}", path + updaterDll, true);
+                    Directory.Delete(update, true);
+                }
                 Properties.Settings.Default.Upgrade();
                 GeneralConfig.Default.Upgrade();
                 SteamConfig.Default.Upgrade();
                 TryskinsConfig.Default.Upgrade();
                 WithdrawConfig.Default.Upgrade();
                 FloatConfig.Default.Upgrade();
-                Properties.Settings.Default.updateSettings = false;
+                Properties.Settings.Default.completionUpdate = false;
+
                 Properties.Settings.Default.Save();
             }
         }

@@ -3,7 +3,7 @@ using System.Data;
 
 namespace ItemChecker.Model
 {
-    public class ServiceChecker
+    public class ServiceParser
     {
         public static bool checkStop = false;
         public static int service_one, service_two;
@@ -22,16 +22,16 @@ namespace ItemChecker.Model
 
         public static void _clear()
         {
-            ServiceChecker.stUpdated.Clear();
-            ServiceChecker.csmUpdated.Clear();
+            ServiceParser.stUpdated.Clear();
+            ServiceParser.csmUpdated.Clear();
 
-            ServiceChecker.price_one.Clear();
-            ServiceChecker.price2_one.Clear();
-            ServiceChecker.price_two.Clear();
-            ServiceChecker.price2_two.Clear();
-            ServiceChecker.precent.Clear();
-            ServiceChecker.difference.Clear();
-            ServiceChecker.status.Clear();
+            ServiceParser.price_one.Clear();
+            ServiceParser.price2_one.Clear();
+            ServiceParser.price_two.Clear();
+            ServiceParser.price2_two.Clear();
+            ServiceParser.precent.Clear();
+            ServiceParser.difference.Clear();
+            ServiceParser.status.Clear();
         }
     }
 }

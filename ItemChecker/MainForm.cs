@@ -51,7 +51,7 @@ namespace ItemChecker
 
             notifyIcon.Visible = true;
             ver_label.Text = "Version: " + Main.assemblyVersion;
-            MainPresenter.updateSettings();
+            MainPresenter.completionUpdate();
 
             status_StripStatus.Text = "Launch Browser...";
 
@@ -237,7 +237,7 @@ namespace ItemChecker
                 foreach (string i in BuyOrder.item)
                     str += i + "\r\n";
                 str = str.Remove(str.Length - 2);
-                File.WriteAllText($"extract/steamList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
+                File.WriteAllText($"extract/buyOrdersList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
             }
         }
         private void buyOrderPush_toolStripMenuItem_Click(object sender, EventArgs e)
