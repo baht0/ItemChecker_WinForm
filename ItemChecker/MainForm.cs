@@ -11,6 +11,7 @@ using ItemChecker.Model;
 using ItemChecker.Presenter;
 using ItemChecker.Settings;
 using Keys = System.Windows.Forms.Keys;
+using System.Drawing;
 
 namespace ItemChecker
 {
@@ -516,7 +517,19 @@ namespace ItemChecker
                       MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
-                    ThreadPool.QueueUserWorkItem(BuyOrderPresenter.CancelOrder);
+                {
+                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
+                    int row = Convert.ToInt32(buyOrder_dataGridView.CurrentCell.RowIndex.ToString());
+                    string item = buyOrder_dataGridView.CurrentCell.Value.ToString();
+                    int index = BuyOrder.item.IndexOf(item);
+
+                    BuyOrderPresenter.CancelOrder(index);
+
+                    Invoke(new MethodInvoker(delegate {
+                        buyOrder_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
+                        buyOrder_dataGridView.Rows[row].Cells[2].Value = "Cancel";
+                    }));
+                }
             }
         }
         private void buyOrder_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)

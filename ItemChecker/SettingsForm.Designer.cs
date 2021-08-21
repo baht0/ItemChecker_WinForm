@@ -106,14 +106,16 @@ namespace ItemChecker
             this.long_radioButton = new System.Windows.Forms.RadioButton();
             this.fast_radioButton = new System.Windows.Forms.RadioButton();
             this.steam_tabPage = new System.Windows.Forms.TabPage();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.cancelOverstock_checkBox = new System.Windows.Forms.CheckBox();
+            this.cancelBalance_checkBox = new System.Windows.Forms.CheckBox();
+            this.cancelPrecent_numericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.cancelOrder_checkBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.steamApiKey_textBox = new System.Windows.Forms.TextBox();
             this.getST_linkLabel = new System.Windows.Forms.LinkLabel();
-            this.autoRemove_numericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.startupPush_checkBox = new System.Windows.Forms.CheckBox();
             this.timer_numericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -169,8 +171,9 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.maxPrecent_numericUpDown)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.steam_tabPage.SuspendLayout();
+            this.groupBox14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cancelPrecent_numericUpDown)).BeginInit();
             this.groupBox11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.autoRemove_numericUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timer_numericUpDown)).BeginInit();
             this.general_tabPage.SuspendLayout();
@@ -1242,6 +1245,7 @@ namespace ItemChecker
             // 
             // steam_tabPage
             // 
+            this.steam_tabPage.Controls.Add(this.groupBox14);
             this.steam_tabPage.Controls.Add(this.groupBox11);
             this.steam_tabPage.Controls.Add(this.groupBox1);
             this.steam_tabPage.Location = new System.Drawing.Point(4, 22);
@@ -1252,32 +1256,97 @@ namespace ItemChecker
             this.steam_tabPage.Text = "Steam";
             this.steam_tabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.cancelOverstock_checkBox);
+            this.groupBox14.Controls.Add(this.cancelBalance_checkBox);
+            this.groupBox14.Controls.Add(this.cancelPrecent_numericUpDown);
+            this.groupBox14.Controls.Add(this.label8);
+            this.groupBox14.Controls.Add(this.label9);
+            this.groupBox14.Location = new System.Drawing.Point(17, 157);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(260, 69);
+            this.groupBox14.TabIndex = 8;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "CancelOrder";
+            // 
+            // cancelOverstock_checkBox
+            // 
+            this.cancelOverstock_checkBox.AutoSize = true;
+            this.cancelOverstock_checkBox.Location = new System.Drawing.Point(126, 42);
+            this.cancelOverstock_checkBox.Name = "cancelOverstock_checkBox";
+            this.cancelOverstock_checkBox.Size = new System.Drawing.Size(106, 17);
+            this.cancelOverstock_checkBox.TabIndex = 6;
+            this.cancelOverstock_checkBox.Text = "Overstock status";
+            this.info_toolTip.SetToolTip(this.cancelOverstock_checkBox, "Cancel an order with overstock status.\r\nUnavailable orders will be canceled even " +
+        "if disabled.");
+            this.cancelOverstock_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // cancelBalance_checkBox
+            // 
+            this.cancelBalance_checkBox.AutoSize = true;
+            this.cancelBalance_checkBox.Location = new System.Drawing.Point(126, 19);
+            this.cancelBalance_checkBox.Name = "cancelBalance_checkBox";
+            this.cancelBalance_checkBox.Size = new System.Drawing.Size(123, 17);
+            this.cancelBalance_checkBox.TabIndex = 4;
+            this.cancelBalance_checkBox.Text = "Not enough balance";
+            this.info_toolTip.SetToolTip(this.cancelBalance_checkBox, "Cancel an order when there is not enough ST balance.");
+            this.cancelBalance_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // cancelPrecent_numericUpDown
+            // 
+            this.cancelPrecent_numericUpDown.Location = new System.Drawing.Point(6, 32);
+            this.cancelPrecent_numericUpDown.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.cancelPrecent_numericUpDown.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.cancelPrecent_numericUpDown.Name = "cancelPrecent_numericUpDown";
+            this.cancelPrecent_numericUpDown.Size = new System.Drawing.Size(71, 20);
+            this.cancelPrecent_numericUpDown.TabIndex = 3;
+            this.cancelPrecent_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.info_toolTip.SetToolTip(this.cancelPrecent_numericUpDown, "Cancel the purchase request\r\nif the percentage is lower than the specified one.");
+            this.cancelPrecent_numericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label8.Location = new System.Drawing.Point(83, 36);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(19, 16);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "%";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(56, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "Less than:";
+            // 
             // groupBox11
             // 
-            this.groupBox11.Controls.Add(this.cancelOrder_checkBox);
             this.groupBox11.Controls.Add(this.label1);
             this.groupBox11.Controls.Add(this.steamApiKey_textBox);
             this.groupBox11.Controls.Add(this.getST_linkLabel);
-            this.groupBox11.Controls.Add(this.autoRemove_numericUpDown);
-            this.groupBox11.Controls.Add(this.label9);
-            this.groupBox11.Controls.Add(this.label8);
             this.groupBox11.Location = new System.Drawing.Point(17, 13);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(260, 128);
+            this.groupBox11.Size = new System.Drawing.Size(260, 63);
             this.groupBox11.TabIndex = 7;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Steam";
-            // 
-            // cancelOrder_checkBox
-            // 
-            this.cancelOrder_checkBox.AutoSize = true;
-            this.cancelOrder_checkBox.Location = new System.Drawing.Point(6, 103);
-            this.cancelOrder_checkBox.Name = "cancelOrder_checkBox";
-            this.cancelOrder_checkBox.Size = new System.Drawing.Size(242, 17);
-            this.cancelOrder_checkBox.TabIndex = 4;
-            this.cancelOrder_checkBox.Text = "Cancel a BuyOrder if the balance isn\'t enough";
-            this.info_toolTip.SetToolTip(this.cancelOrder_checkBox, "Cancel an order when there is not enough balance or available amount.");
-            this.cancelOrder_checkBox.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -1311,39 +1380,6 @@ namespace ItemChecker
             this.getST_linkLabel.Text = "Get";
             this.getST_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.getST_linkLabel_LinkClicked);
             // 
-            // autoRemove_numericUpDown
-            // 
-            this.autoRemove_numericUpDown.Location = new System.Drawing.Point(6, 77);
-            this.autoRemove_numericUpDown.Name = "autoRemove_numericUpDown";
-            this.autoRemove_numericUpDown.Size = new System.Drawing.Size(87, 20);
-            this.autoRemove_numericUpDown.TabIndex = 3;
-            this.autoRemove_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.info_toolTip.SetToolTip(this.autoRemove_numericUpDown, "Cancel the purchase request\r\nif the percentage is lower than the specified one.");
-            this.autoRemove_numericUpDown.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 61);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(95, 13);
-            this.label9.TabIndex = 4;
-            this.label9.Text = "AutoRemove Item:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label8.Location = new System.Drawing.Point(99, 81);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(19, 16);
-            this.label8.TabIndex = 5;
-            this.label8.Text = "%";
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.startupPush_checkBox);
@@ -1351,17 +1387,17 @@ namespace ItemChecker
             this.groupBox1.Controls.Add(this.updST_checkBox);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(17, 147);
+            this.groupBox1.Location = new System.Drawing.Point(17, 82);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(260, 110);
+            this.groupBox1.Size = new System.Drawing.Size(260, 69);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "PushItems";
+            this.groupBox1.Text = "BuyOrderPusher";
             // 
             // startupPush_checkBox
             // 
             this.startupPush_checkBox.AutoSize = true;
-            this.startupPush_checkBox.Location = new System.Drawing.Point(6, 88);
+            this.startupPush_checkBox.Location = new System.Drawing.Point(126, 19);
             this.startupPush_checkBox.Name = "startupPush_checkBox";
             this.startupPush_checkBox.Size = new System.Drawing.Size(89, 17);
             this.startupPush_checkBox.TabIndex = 7;
@@ -1371,14 +1407,14 @@ namespace ItemChecker
             // 
             // timer_numericUpDown
             // 
-            this.timer_numericUpDown.Location = new System.Drawing.Point(6, 36);
+            this.timer_numericUpDown.Location = new System.Drawing.Point(6, 37);
             this.timer_numericUpDown.Minimum = new decimal(new int[] {
             5,
             0,
             0,
             0});
             this.timer_numericUpDown.Name = "timer_numericUpDown";
-            this.timer_numericUpDown.Size = new System.Drawing.Size(87, 20);
+            this.timer_numericUpDown.Size = new System.Drawing.Size(71, 20);
             this.timer_numericUpDown.TabIndex = 5;
             this.timer_numericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.info_toolTip.SetToolTip(this.timer_numericUpDown, "Check cycle timer.");
@@ -1391,18 +1427,18 @@ namespace ItemChecker
             // updST_checkBox
             // 
             this.updST_checkBox.AutoSize = true;
-            this.updST_checkBox.Location = new System.Drawing.Point(6, 65);
+            this.updST_checkBox.Location = new System.Drawing.Point(126, 41);
             this.updST_checkBox.Name = "updST_checkBox";
             this.updST_checkBox.Size = new System.Drawing.Size(124, 17);
             this.updST_checkBox.TabIndex = 6;
             this.updST_checkBox.Text = "Update Steam Table";
-            this.info_toolTip.SetToolTip(this.updST_checkBox, "Update table \'BuyOrders\' after each cycle.");
+            this.info_toolTip.SetToolTip(this.updST_checkBox, "Update \'BuyOrders\' table after each cycle.");
             this.updST_checkBox.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(99, 43);
+            this.label7.Location = new System.Drawing.Point(83, 44);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(27, 13);
             this.label7.TabIndex = 1;
@@ -1411,7 +1447,7 @@ namespace ItemChecker
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 20);
+            this.label6.Location = new System.Drawing.Point(6, 21);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(36, 13);
             this.label6.TabIndex = 0;
@@ -1675,9 +1711,11 @@ namespace ItemChecker
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.steam_tabPage.ResumeLayout(false);
+            this.groupBox14.ResumeLayout(false);
+            this.groupBox14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cancelPrecent_numericUpDown)).EndInit();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.autoRemove_numericUpDown)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timer_numericUpDown)).EndInit();
@@ -1728,7 +1766,7 @@ namespace ItemChecker
         private System.Windows.Forms.RadioButton long_radioButton;
         private System.Windows.Forms.RadioButton fast_radioButton;
         private System.Windows.Forms.TabPage steam_tabPage;
-        private System.Windows.Forms.NumericUpDown autoRemove_numericUpDown;
+        private System.Windows.Forms.NumericUpDown cancelPrecent_numericUpDown;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.NumericUpDown timer_numericUpDown;
@@ -1766,7 +1804,7 @@ namespace ItemChecker
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox steamApiKey_textBox;
         private System.Windows.Forms.LinkLabel getST_linkLabel;
-        private System.Windows.Forms.CheckBox cancelOrder_checkBox;
+        private System.Windows.Forms.CheckBox cancelBalance_checkBox;
         private System.Windows.Forms.CheckBox startupPush_checkBox;
         private System.Windows.Forms.CheckBox proxy_checkBox;
         private System.Windows.Forms.Button proxy_button;
@@ -1799,5 +1837,7 @@ namespace ItemChecker
         private System.Windows.Forms.NumericUpDown floatTimer_numericUpDown;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.CheckBox dontUpload_checkBox;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.CheckBox cancelOverstock_checkBox;
     }
 }

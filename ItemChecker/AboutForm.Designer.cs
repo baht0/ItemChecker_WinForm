@@ -38,13 +38,13 @@ namespace ItemChecker
             this.checkUpdate_linkLabel = new System.Windows.Forms.LinkLabel();
             this.createInfo_linkLabel = new System.Windows.Forms.LinkLabel();
             this.groupBox = new System.Windows.Forms.GroupBox();
+            this.point_pictureBox = new System.Windows.Forms.PictureBox();
             this.link_pictureBox = new System.Windows.Forms.PictureBox();
             this.label = new System.Windows.Forms.Label();
-            this.point_pictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.icon_pictureBox)).BeginInit();
             this.groupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.point_pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // icon_pictureBox
@@ -153,6 +153,18 @@ namespace ItemChecker
             this.groupBox.TabIndex = 16;
             this.groupBox.TabStop = false;
             // 
+            // point_pictureBox
+            // 
+            this.point_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.point_red;
+            this.point_pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.point_pictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.point_pictureBox.Location = new System.Drawing.Point(232, 70);
+            this.point_pictureBox.Name = "point_pictureBox";
+            this.point_pictureBox.Size = new System.Drawing.Size(15, 15);
+            this.point_pictureBox.TabIndex = 17;
+            this.point_pictureBox.TabStop = false;
+            this.point_pictureBox.Visible = false;
+            // 
             // link_pictureBox
             // 
             this.link_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.link;
@@ -175,18 +187,6 @@ namespace ItemChecker
             this.label.TabIndex = 15;
             this.label.Text = "© 2018-2021";
             // 
-            // point_pictureBox
-            // 
-            this.point_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.point_red;
-            this.point_pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.point_pictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.point_pictureBox.Location = new System.Drawing.Point(232, 70);
-            this.point_pictureBox.Name = "point_pictureBox";
-            this.point_pictureBox.Size = new System.Drawing.Size(15, 15);
-            this.point_pictureBox.TabIndex = 17;
-            this.point_pictureBox.TabStop = false;
-            this.point_pictureBox.Visible = false;
-            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -196,7 +196,7 @@ namespace ItemChecker
             this.Controls.Add(this.groupBox);
             this.Controls.Add(this.createInfo_linkLabel);
             this.Controls.Add(this.close_button);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutForm";
@@ -206,8 +206,8 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.icon_pictureBox)).EndInit();
             this.groupBox.ResumeLayout(false);
             this.groupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.point_pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.link_pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

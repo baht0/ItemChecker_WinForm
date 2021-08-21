@@ -27,10 +27,11 @@ namespace ItemChecker
             //steam
             steamApiKey_textBox.Text = SteamConfig.Default.steamApiKey.Trim();
             timer_numericUpDown.Value = SteamConfig.Default.timer;
-            updST_checkBox.Checked = SteamConfig.Default.updateST;
-            autoRemove_numericUpDown.Value = SteamConfig.Default.autoDelete;
-            cancelOrder_checkBox.Checked = SteamConfig.Default.cancelOrder;
             startupPush_checkBox.Checked = SteamConfig.Default.startupPush;
+            updST_checkBox.Checked = SteamConfig.Default.updateST;
+            cancelPrecent_numericUpDown.Value = SteamConfig.Default.cancelPrecent;
+            cancelBalance_checkBox.Checked = SteamConfig.Default.cancelBalance;
+            cancelOverstock_checkBox.Checked = SteamConfig.Default.cancelOverstock;
             //tryskins
             maxPrecent_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrecent;
             minPrecent_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrecent;
@@ -77,10 +78,11 @@ namespace ItemChecker
             proxy_checkBox.Checked = false;
             //steam
             timer_numericUpDown.Value = 10;
-            updST_checkBox.Checked = true;
-            autoRemove_numericUpDown.Value = 0;
-            cancelOrder_checkBox.Checked = false;
             startupPush_checkBox.Checked = false;
+            updST_checkBox.Checked = true;
+            cancelPrecent_numericUpDown.Value = 10;
+            cancelBalance_checkBox.Checked = false;
+            cancelOverstock_checkBox.Checked = true;
             //tryskins
             maxPrecent_numericUpDown.Value = 60;
             minPrecent_numericUpDown.Value = 35;
@@ -131,10 +133,11 @@ namespace ItemChecker
                     //steam
                     SteamConfig.Default.steamApiKey = steamApiKey_textBox.Text;
                     SteamConfig.Default.timer = Convert.ToInt32(timer_numericUpDown.Value);
-                    SteamConfig.Default.updateST = updST_checkBox.Checked;
-                    SteamConfig.Default.autoDelete = Convert.ToInt32(autoRemove_numericUpDown.Value);
-                    SteamConfig.Default.cancelOrder = cancelOrder_checkBox.Checked;
                     SteamConfig.Default.startupPush = startupPush_checkBox.Checked;
+                    SteamConfig.Default.updateST = updST_checkBox.Checked;
+                    SteamConfig.Default.cancelPrecent = Convert.ToInt32(cancelPrecent_numericUpDown.Value);
+                    SteamConfig.Default.cancelBalance = cancelBalance_checkBox.Checked;
+                    SteamConfig.Default.cancelOverstock = cancelOverstock_checkBox.Checked;
                     //tryskins
                     TryskinsConfig.Default.maxTryskinsPrecent = Convert.ToInt32(maxPrecent_numericUpDown.Value);
                     TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);

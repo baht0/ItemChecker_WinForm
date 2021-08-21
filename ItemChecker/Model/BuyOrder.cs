@@ -11,8 +11,7 @@ namespace ItemChecker.Model
         public static decimal sum { get; set; }
 
         public static List<string> item = new List<string>();
-        public static List<string> url = new List<string>();
-        public static List<string> id = new List<string>();
+        public static List<string> order_id = new List<string>();
         public static List<decimal> price = new List<decimal>();
         public static List<decimal> csm_price = new List<decimal>();
         public static List<decimal> precent = new List<decimal>();
@@ -27,8 +26,7 @@ namespace ItemChecker.Model
         public static void _clear()
         {
             BuyOrder.item.Clear();
-            BuyOrder.url.Clear();
-            BuyOrder.id.Clear();
+            BuyOrder.order_id.Clear();
             BuyOrder.price.Clear();
             BuyOrder.csm_price.Clear();
             BuyOrder.precent.Clear();
@@ -45,8 +43,7 @@ namespace ItemChecker.Model
         public static void removeAtItem(int index)
         {
             BuyOrder.item.RemoveAt(index);
-            BuyOrder.url.RemoveAt(index);
-            BuyOrder.id.RemoveAt(index);
+            BuyOrder.order_id.RemoveAt(index);
             BuyOrder.price.RemoveAt(index);
             BuyOrder.csm_price.RemoveAt(index);
             BuyOrder.precent.RemoveAt(index);

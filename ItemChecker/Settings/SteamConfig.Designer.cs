@@ -37,30 +37,6 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int autoDelete {
-            get {
-                return ((int)(this["autoDelete"]));
-            }
-            set {
-                this["autoDelete"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool cancelOrder {
-            get {
-                return ((bool)(this["cancelOrder"]));
-            }
-            set {
-                this["cancelOrder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int timer {
             get {
@@ -68,6 +44,18 @@ namespace ItemChecker.Settings {
             }
             set {
                 this["timer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool startupPush {
+            get {
+                return ((bool)(this["startupPush"]));
+            }
+            set {
+                this["startupPush"] = value;
             }
         }
         
@@ -85,13 +73,37 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool startupPush {
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int cancelPrecent {
             get {
-                return ((bool)(this["startupPush"]));
+                return ((int)(this["cancelPrecent"]));
             }
             set {
-                this["startupPush"] = value;
+                this["cancelPrecent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool cancelBalance {
+            get {
+                return ((bool)(this["cancelBalance"]));
+            }
+            set {
+                this["cancelBalance"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool cancelOverstock {
+            get {
+                return ((bool)(this["cancelOverstock"]));
+            }
+            set {
+                this["cancelOverstock"] = value;
             }
         }
     }
