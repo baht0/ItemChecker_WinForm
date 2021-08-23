@@ -25,7 +25,8 @@ namespace ItemChecker.Presenter
                 TradeOffer.tradeofferid.Clear();
                 TradeOffer.partner_id.Clear();
                 
-                if (checkOffer()) acceptTrade();
+                if (checkOffer())
+                    acceptTrade();
             }
             catch (Exception exp)
             {
@@ -57,7 +58,8 @@ namespace ItemChecker.Presenter
                         TradeOffer.tradeofferid.Add(JObject.Parse(json)["response"]["trade_offers_received"][i]["tradeofferid"].ToString());
                         TradeOffer.partner_id.Add(JObject.Parse(json)["response"]["trade_offers_received"][i]["accountid_other"].ToString());
                     }
-                    else continue;
+                    else
+                        continue;
                 }
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.progressBar_StripStatus.Value = 0;

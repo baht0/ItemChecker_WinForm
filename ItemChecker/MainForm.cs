@@ -72,15 +72,12 @@ namespace ItemChecker
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!loading_panel.Visible)
+            if (!loading_panel.Visible & e.CloseReason == CloseReason.UserClosing)
             {
-                if (e.CloseReason == CloseReason.UserClosing)
-                {
-                    e.Cancel = true;
-                    this.Hide();
-                }
+                e.Cancel = true;
+                this.Hide();
             }
-            else
+            else if (loading_panel.Visible)
             {
                 notifyIcon.Visible = false;
                 Main.Browser.Quit();
@@ -103,11 +100,14 @@ namespace ItemChecker
 
             if (result == DialogResult.Yes)
             {
+                Main.loading = true;
                 loading_panel.Visible = true;
                 progressBar_StripStatus.Maximum = 9;
+
                 MainPresenter.clearAll();
                 Main.Browser.Quit();
                 Thread.Sleep(1000);
+
                 status_StripStatus.Visible = true;
                 ThreadPool.QueueUserWorkItem(MainPresenter.Start);
             }
@@ -196,11 +196,19 @@ namespace ItemChecker
         {
             if (!Main.loading)
             {
-                Main.loading = true;
-                MainPresenter.stopTimers();
-                status_StripStatus.Text = "Checking Cs.Money...";
-                status_StripStatus.Visible = true;
-                ThreadPool.QueueUserWorkItem(WithdrawPresenter.inventoryCsm);
+                DialogResult result = MessageBox.Show(
+                    "Are you sure you want to withdraw all available\nitems from the Cs.Money inventory?",
+                    "Question", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    Main.loading = true;
+                    MainPresenter.stopTimers();
+                    status_StripStatus.Text = "Checking Cs.Money...";
+                    status_StripStatus.Visible = true;
+                    ThreadPool.QueueUserWorkItem(WithdrawPresenter.inventoryCsm);
+                }
             }
         }
         //tools
@@ -247,7 +255,7 @@ namespace ItemChecker
             {
                 pusherItems_label.Text = $"Items: {BuyOrder.item.Count}";
                 timer_StripStatus.Visible = true;
-                buyOrderPush_toolStripMenuItem.ForeColor = System.Drawing.Color.OrangeRed;
+                buyOrderPush_toolStripMenuItem.ForeColor = Color.OrangeRed;
 
                 BuyOrder.tick = SteamConfig.Default.timer * 60;
                 BuyOrder.timer.Enabled = true;
@@ -262,6 +270,7 @@ namespace ItemChecker
                   MessageBoxButtons.OK,
                   MessageBoxIcon.Warning);
             }
+            Main.cts.Cancel();
         }
         private void favoriteCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -270,7 +279,7 @@ namespace ItemChecker
                 favoriteItems_label.Text = $"Items: {Withdraw.favoriteList.Count}";
                 favoriteCheck_groupBox.Visible = true;
                 timer_StripStatus.Visible = true;
-                favoriteCheckToolStripMenuItem.ForeColor = System.Drawing.Color.OrangeRed;
+                favoriteCheckToolStripMenuItem.ForeColor = Color.OrangeRed;
 
                 WithdrawPresenter.loginCsm();
 
@@ -290,6 +299,7 @@ namespace ItemChecker
                 SettingsForm settingsForm = new(3);
                 settingsForm.ShowDialog();
             }
+            Main.cts.Cancel();
         }
         private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {
@@ -298,7 +308,7 @@ namespace ItemChecker
                 floatItems_label.Text = $"Items: {Float.floatList.Count}";
                 floatCheck_groupBox.Visible = true;
                 timer_StripStatus.Visible = true;
-                floatCheck_MainStripMenu.ForeColor = System.Drawing.Color.OrangeRed;
+                floatCheck_MainStripMenu.ForeColor = Color.OrangeRed;
 
                 Float.tick = FloatConfig.Default.timer * 60;
                 Float.timer.Enabled = true;
@@ -316,6 +326,7 @@ namespace ItemChecker
                 SettingsForm settingsForm = new(4);
                 settingsForm.ShowDialog();
             }
+            Main.cts.Cancel();
         }
         //about
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -336,6 +347,7 @@ namespace ItemChecker
                     MessageBoxIcon.Question);
                 if (result == DialogResult.OK)
                 {
+                    MainPresenter.stopTimers();
                     Main.loading = true;
                     ThreadPool.QueueUserWorkItem(TradeOfferPresenter.tradeOffers);
                 }
@@ -358,6 +370,7 @@ namespace ItemChecker
             {
                 if (BuyOrder.queue_rub < BuyOrder.available_amount)
                 {
+                    MainPresenter.stopTimers();
                     Main.loading = true;
                     ThreadPool.QueueUserWorkItem(BuyOrderPresenter.placeOrder);
                 }
@@ -378,6 +391,17 @@ namespace ItemChecker
         }
         private void timer_StripStatus_Click(object sender, EventArgs e)
         {
+            if (Main.loading)
+            {
+                DialogResult result = MessageBox.Show(
+                    "Are you sure you want to terminate the current process?", 
+                    "Question", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                    Main.cts.Cancel();
+            }
             if (BuyOrder.timer.Enabled)
                 BuyOrder.tick = 1;
             else if (Withdraw.timer.Enabled)

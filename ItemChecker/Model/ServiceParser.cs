@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Threading;
 
 namespace ItemChecker.Model
 {
     public class ServiceParser
     {
-        public static bool checkStop = false;
         public static int service_one, service_two;
 
         public static List<double> stUpdated = new();
@@ -19,6 +19,9 @@ namespace ItemChecker.Model
         public static List<decimal> precent = new();
         public static List<decimal> difference = new();
         public static List<string> status = new();
+
+        public static CancellationTokenSource cts = new();
+        public static CancellationToken token = cts.Token;
 
         public static void _clear()
         {

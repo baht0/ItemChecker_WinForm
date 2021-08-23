@@ -78,17 +78,6 @@ namespace ItemChecker.Net
         {
             return Request(@"http://api.steampowered.com/IEconService/GetTradeOffers/v1/?key=" + steam_api_key + "&get_received_offers=1&active_only=100");
         }
-        public static Int32 ItemNameId(string market_hash_name)
-        {
-            var html = Request("https://steamcommunity.com/market/listings/730/" + market_hash_name);
-            html = html.Substring(html.IndexOf("Market_LoadOrderSpread"));
-            var a = html.IndexOf("(");
-            var b = html.IndexOf(")");
-            string str = html.Substring(a, b);
-
-            int id = Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(str, @"[^\d]+", ""));
-            return id;
-        }
         public static Decimal ItemOrdersHistogram(int item_nameid)
         {
             var json = Request("https://steamcommunity.com/market/itemordershistogram?country=RU&language=english&currency=5&item_nameid=" + item_nameid + "&two_factor=0");

@@ -43,7 +43,7 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                if (!ServiceParser.checkStop)
+                if (!ServiceParser.token.IsCancellationRequested)
                 {
                     serviceParserForm.Invoke(new MethodInvoker(delegate {
                         serviceParserForm.status_toolStripStatusLabel.Visible = false;
@@ -82,7 +82,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -94,7 +94,7 @@ namespace ItemChecker.Presenter
             int id = 0;
             for (i = 0; i < Main.checkList.Count; i++)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 try
                 {
@@ -158,13 +158,13 @@ namespace ItemChecker.Presenter
 
             for (int i = 0; i < jArray.Count; i++)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 str.Add(jArray[i]["name"].ToString());
             }
             for (i = 0; i < Main.checkList.Count; i++)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 if (str.Contains(Main.checkList[i]))
                 {
@@ -226,7 +226,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -272,7 +272,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -338,7 +338,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -379,7 +379,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if(!ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
@@ -401,7 +401,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     return;
                 else
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -434,7 +434,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (!ServiceParser.checkStop)
+                if (!ServiceParser.token.IsCancellationRequested)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }            
         }
@@ -478,7 +478,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (!ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
@@ -525,7 +525,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if(ServiceParser.checkStop)
+                if (ServiceParser.token.IsCancellationRequested)
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
@@ -598,7 +598,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (!ServiceParser.checkStop)
+                if (!ServiceParser.token.IsCancellationRequested)
                 {
                     string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -607,7 +607,7 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                if (!ServiceParser.checkStop)
+                if (!ServiceParser.token.IsCancellationRequested)
                 {
                     serviceParserForm.Invoke(new MethodInvoker(delegate {
                         serviceParserForm.status_toolStripStatusLabel.Visible = false;
@@ -662,7 +662,7 @@ namespace ItemChecker.Presenter
             }
             catch (Exception exp)
             {
-                if (!ServiceParser.checkStop)
+                if (!ServiceParser.token.IsCancellationRequested)
                 {
                     string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                     Exceptions.errorLog(exp, Main.assemblyVersion);
@@ -671,7 +671,7 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                if (!ServiceParser.checkStop)
+                if (!ServiceParser.token.IsCancellationRequested)
                 {
                     MainPresenter.messageBalloonTip("Importing was completed.");
                     Main.loading = false;

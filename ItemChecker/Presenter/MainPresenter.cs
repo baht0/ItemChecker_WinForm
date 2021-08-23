@@ -22,7 +22,7 @@ namespace ItemChecker.Presenter
         //start
         public static void Start(object state)
         {
-            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+            CancellationTokenSource cancelTokenSource = new();
             CancellationToken token = cancelTokenSource.Token;
             try
             {                
@@ -246,6 +246,7 @@ namespace ItemChecker.Presenter
         public static void clearAll()
         {
             MainPresenter.stopTimers();
+            Main.cts.Cancel();
             TrySkins._clear();
             BuyOrder._clear();
             BuyOrder._clearQueue();

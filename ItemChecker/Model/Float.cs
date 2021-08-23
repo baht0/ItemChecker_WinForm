@@ -13,9 +13,10 @@ namespace ItemChecker.Model
         public static decimal priceCompare { get; set; }
 
         //auto
-        public static List<string> floatList = new List<string>();
+        public static List<string> floatList = new();
         public static System.Timers.Timer timer = new();
         public static int tick { get; set; }
+
         //public static List<string> listingId = new List<string>();
         //public static List<string> fee = new List<string>();
         //public static List<string> subtotal = new List<string>();

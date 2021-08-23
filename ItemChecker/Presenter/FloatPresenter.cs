@@ -44,8 +44,11 @@ namespace ItemChecker.Presenter
                         mainForm.timer_StripStatus.Text = "Checking...";
                         mainForm.progressBar_StripStatus.Maximum = Float.floatList.Count;
                         mainForm.progressBar_StripStatus.Value = 0;
-                        mainForm.progressBar_StripStatus.Visible = true;
-                    }));
+                        mainForm.progressBar_StripStatus.Visible = true; }));
+
+                    Main.cts = new();
+                    Main.token = Main.cts.Token;
+
                     ThreadPool.QueueUserWorkItem(Check);
                 }
                 else
@@ -105,7 +108,9 @@ namespace ItemChecker.Presenter
                             catch
                             {
                                 continue;
-                            }                            
+                            }
+                            if (Main.token.IsCancellationRequested)
+                                break;
                         }
                     }
                     catch (Exception exp)
@@ -117,6 +122,8 @@ namespace ItemChecker.Presenter
                     {
                         MainPresenter.progressInvoke();
                     }
+                    if (Main.token.IsCancellationRequested)
+                        break;
                 }
             }
             catch (Exception exp)
@@ -126,13 +133,16 @@ namespace ItemChecker.Presenter
             finally
             {
                 Main.loading = false;
+                Float.tick = FloatConfig.Default.timer * 60;
+                Float.timer.Enabled = true;
+
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.timer_StripStatus.Text = "Next check: 00:00";
                     mainForm.floatCheck_label.Text = $"Check: {checkCount++}";
-                    mainForm.progressBar_StripStatus.Visible = false;
-                }));
-                Float.tick = FloatConfig.Default.timer * 60;
-                Float.timer.Enabled = true;
+                    mainForm.progressBar_StripStatus.Visible = false; }));
+
+                if (Main.token.IsCancellationRequested)
+                    FloatPresenter.stopCheckFloat();
             }
         }
         private void getPrice(string market_hash_name)

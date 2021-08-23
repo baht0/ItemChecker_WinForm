@@ -67,6 +67,16 @@ namespace ItemChecker.Support
         {
             return idOrder.Replace("mybuyorder_", "");
         }
+        public static Int32 ItemNameId(string html)
+        {
+            html = html.Substring(html.IndexOf("Market_LoadOrderSpread"));
+            var a = html.IndexOf("(");
+            var b = html.IndexOf(")");
+            string str = html.Substring(a, b);
+
+            int id = Convert.ToInt32(System.Text.RegularExpressions.Regex.Replace(str, @"[^\d]+", ""));
+            return id;
+        }
 
         public static String replaceSymbols(string str)
         {

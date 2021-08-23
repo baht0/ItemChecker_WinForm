@@ -19,7 +19,6 @@ namespace ItemChecker
         public ServiceParserForm()
         {
             InitializeComponent();
-            ServiceParser.checkStop = false;
             Program.serviceParserForm = this;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
@@ -44,7 +43,7 @@ namespace ItemChecker
                 {
                     if ((Application.OpenForms["FiltersForm"] as FiltersForm) != null)
                         Application.OpenForms["FiltersForm"].Close();
-                    ServiceParser.checkStop = true;
+                    ServiceParser.cts.Cancel();
                     ServiceParserPresenter.ClearAll(true, true);
                     Main.loading = false;
                 }

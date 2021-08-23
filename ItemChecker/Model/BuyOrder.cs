@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Timers;
 
 namespace ItemChecker.Model
 {
@@ -10,17 +9,17 @@ namespace ItemChecker.Model
         public static decimal available_amount { get; set; }
         public static decimal sum { get; set; }
 
-        public static List<string> item = new List<string>();
-        public static List<string> order_id = new List<string>();
-        public static List<decimal> price = new List<decimal>();
-        public static List<decimal> csm_price = new List<decimal>();
-        public static List<decimal> precent = new List<decimal>();
-        public static List<decimal> difference = new List<decimal>();
+        public static List<string> item = new();
+        public static List<string> order_id = new();
+        public static List<decimal> price = new();
+        public static List<decimal> csm_price = new();
+        public static List<decimal> precent = new();
+        public static List<decimal> difference = new();
         //place order
-        public static List<string> queue = new List<string>();
+        public static List<string> queue = new();
         public static decimal queue_rub { get; set; }
         //push
-        public static Timer timer = new();
+        public static System.Timers.Timer timer = new();
         public static int tick { get; set; }
 
         public static void _clear()

@@ -192,15 +192,9 @@ namespace ItemChecker.Presenter
                 if(items.Count > 0)
                 {
                     mainForm.Invoke(new MethodInvoker(delegate {
-                        DialogResult result = MessageBox.Show($"There are '{items.Count}' items to withdraw.\nDo you want to withdraw?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    
-                    if (result != DialogResult.Yes)
-                        return;
-
                         mainForm.progressBar_StripStatus.Maximum = items.Count;
                         mainForm.progressBar_StripStatus.Value = 0;
-                        mainForm.progressBar_StripStatus.Visible = true;
-                    }));
+                        mainForm.progressBar_StripStatus.Visible = true; }));
                     withdrawItems(items);
                 }
             }
@@ -334,6 +328,11 @@ namespace ItemChecker.Presenter
                         mainForm.progressBar_StripStatus.Maximum = Withdraw.favoriteList.Count;
                         mainForm.progressBar_StripStatus.Value = 0;
                         mainForm.progressBar_StripStatus.Visible = true; }));
+
+                    Main.cts = new();
+                    Main.token = Main.cts.Token;
+
+                    Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
                     ThreadPool.QueueUserWorkItem(checkFavorite);
                 }
                 else
@@ -347,7 +346,6 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 List<string> favoriteList = Withdraw.favoriteList;
-                Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
                 foreach (string favoriteItem in favoriteList)
                 {
                     try
@@ -394,6 +392,8 @@ namespace ItemChecker.Presenter
                         pendingTrades();
                         MainPresenter.progressInvoke();
                     }
+                    if (Main.token.IsCancellationRequested)
+                        break;
                 }
                 clearCart();
             }
@@ -404,12 +404,16 @@ namespace ItemChecker.Presenter
             finally
             {
                 Main.loading = false;
+                Withdraw.tick = WithdrawConfig.Default.timer;
+                Withdraw.timer.Enabled = true;
+
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.timer_StripStatus.Text = "Next check: 00:00";
                     mainForm.favoriteCheck_label.Text = $"Check: {checkCount++}";
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                Withdraw.tick = WithdrawConfig.Default.timer;
-                Withdraw.timer.Enabled = true;
+
+                if (Main.token.IsCancellationRequested)
+                    WithdrawPresenter.stopCheckFavorite();
             }
         }
         private Boolean addCart(JArray items)

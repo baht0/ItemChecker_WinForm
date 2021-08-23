@@ -25,7 +25,7 @@ namespace ItemChecker.Presenter
         private int checkCount = 1;
         private int pushCount = 1;
         static private int cancelCount = 1;
-        public static void getSteamlist()
+        public static void getSteamlist(bool prg = true)
         {
             BuyOrder._clear();
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check Steam..."; }));
@@ -49,7 +49,8 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrder_dataGridView.Columns[1].HeaderText = $"Item (BuyOrders) - {BuyOrder.item.Count}"; }));
             }
             availableAmount();
-            MainPresenter.progressInvoke();
+            if(prg)
+                MainPresenter.progressInvoke();
         }
         public static void availableAmount()
         {
@@ -110,7 +111,8 @@ namespace ItemChecker.Presenter
                     i--;
                     if (Main.proxyList.Count > id)
                         id++;
-                    else break;
+                    else 
+                        id = 0;
                 }
             }
             MainPresenter.progressInvoke();
@@ -255,8 +257,8 @@ namespace ItemChecker.Presenter
                 try
                 {
                     var market_hash_name = Edit.replaceUrl(queue);
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/" + market_hash_name);
-                    var item_nameid = Get.ItemNameId(market_hash_name);
+                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + market_hash_name);
+                    var item_nameid = Edit.ItemNameId(Main.Browser.PageSource);
                     var highest_buy_order = Get.ItemOrdersHistogram(item_nameid);
 
                     if (Steam.balance > highest_buy_order) 
@@ -315,8 +317,17 @@ namespace ItemChecker.Presenter
                 if (!Main.loading)
                 {
                     BuyOrder.timer.Enabled = false;
-                    mainForm.timer_StripStatus.Text = "Pushing...";
                     Main.loading = true;
+
+                    mainForm.Invoke(new MethodInvoker(delegate {
+                        mainForm.timer_StripStatus.Text = "Pushing...";
+                        mainForm.progressBar_StripStatus.Maximum = BuyOrder.item.Count;
+                        mainForm.progressBar_StripStatus.Value = 0;
+                        mainForm.progressBar_StripStatus.Visible = true; }));
+
+                    Main.cts = new();
+                    Main.token = Main.cts.Token;
+
                     ThreadPool.QueueUserWorkItem(push);
                 }
                 else
@@ -330,14 +341,48 @@ namespace ItemChecker.Presenter
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
                 SteamPresenter.getBalance();
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value = 0; }));
-                getSteamlist();
+                getSteamlist(false);
 
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.item.Count;
-                    mainForm.progressBar_StripStatus.Value = 0;
-                    mainForm.progressBar_StripStatus.Visible = true; }));
-                pushItem();
+                for (int i = 0; i < BuyOrder.item.Count; i++)
+                {
+                    try
+                    {
+                        var market_hash_name = Edit.replaceUrl(BuyOrder.item[i]);
+                        Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + market_hash_name);
+                        Thread.Sleep(500);
+                        var item_nameid = Edit.ItemNameId(Main.Browser.PageSource);
+                        decimal highest_buy_order = Get.ItemOrdersHistogram(item_nameid);
+
+                        decimal my_order = BuyOrder.price[i];
+
+                        if (highest_buy_order > my_order & Steam.balance >= highest_buy_order & (highest_buy_order - my_order) <= BuyOrder.available_amount)
+                        {
+                            Main.Browser.ExecuteJavaScript(Post.CancelBuyOrder(BuyOrder.order_id[i], Main.sessionid));
+                            Thread.Sleep(2000);
+                            Main.Browser.ExecuteJavaScript(Post.CreateBuyOrder(market_hash_name, highest_buy_order, Main.sessionid));
+
+                            mainForm.pusherPush_label.Invoke(new MethodInvoker(() => mainForm.pusherPush_label.Text = $"Push: {pushCount++}"));
+                            Thread.Sleep(1500);
+                        }
+                        else if (Steam.balance < highest_buy_order)
+                        {
+                            if (SteamConfig.Default.cancelBalance)
+                                CancelOrder(i);
+                            MainPresenter.messageBalloonTip($"Not enough balance for item:\n{BuyOrder.item[i]}", ToolTipIcon.Warning);
+                        }
+                    }
+                    catch (Exception exp)
+                    {
+                        Exceptions.errorLog(exp, Main.assemblyVersion);
+                        continue;
+                    }
+                    finally
+                    {
+                        MainPresenter.progressInvoke();
+                    }
+                    if (Main.token.IsCancellationRequested)
+                        break;
+                }
                 if (SteamConfig.Default.updateST)
                 {
                     mainForm.Invoke(new MethodInvoker(delegate {
@@ -355,55 +400,17 @@ namespace ItemChecker.Presenter
             finally
             {
                 Main.loading = false;
+                BuyOrder.tick = SteamConfig.Default.timer * 60;
+                BuyOrder.timer.Enabled = true;
+
                 mainForm.Invoke(new MethodInvoker(delegate { 
                     mainForm.progressBar_StripStatus.Visible = false;
                     mainForm.timer_StripStatus.Text = "Next check: 00:00";
                     mainForm.pusherCheck_label.Text = $"Check: {checkCount++}";
-                    mainForm.pusherItems_label.Text = $"Items: {BuyOrder.item.Count}";
-                }));
-                BuyOrder.tick = SteamConfig.Default.timer * 60;
-                BuyOrder.timer.Enabled = true;
-            }
-        }
-        private void pushItem()
-        {
-            for (int i = 0; i < BuyOrder.item.Count; i++)
-            {
-                try
-                {
-                    var market_hash_name = Edit.replaceUrl(BuyOrder.item[i]);
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/" + market_hash_name);
-                    Thread.Sleep(500);
-                    var item_nameid = Get.ItemNameId(market_hash_name);
-                    decimal highest_buy_order = Get.ItemOrdersHistogram(item_nameid);
+                    mainForm.pusherItems_label.Text = $"Items: {BuyOrder.item.Count}"; }));
 
-                    decimal my_order = BuyOrder.price[i];
-
-                    if (highest_buy_order > my_order & Steam.balance >= highest_buy_order & (highest_buy_order - my_order) <= BuyOrder.available_amount)
-                    {
-                        Main.Browser.ExecuteJavaScript(Post.CancelBuyOrder(BuyOrder.order_id[i], Main.sessionid));
-                        Thread.Sleep(2000);
-                        Main.Browser.ExecuteJavaScript(Post.CreateBuyOrder(market_hash_name, highest_buy_order, Main.sessionid));
-
-                        mainForm.pusherPush_label.Invoke(new MethodInvoker(() => mainForm.pusherPush_label.Text = $"Push: {pushCount++}"));
-                        Thread.Sleep(1500);
-                    }
-                    else if (Steam.balance < highest_buy_order)
-                    {
-                        if (SteamConfig.Default.cancelBalance)
-                            CancelOrder(i);
-                        MainPresenter.messageBalloonTip($"Not enough balance for item:\n{BuyOrder.item[i]}", ToolTipIcon.Warning);
-                    }
-                }
-                catch (Exception exp)
-                {
-                    Exceptions.errorLog(exp, Main.assemblyVersion);
-                    continue;
-                }
-                finally
-                {
-                    MainPresenter.progressInvoke();
-                }
+                if (Main.token.IsCancellationRequested)
+                    BuyOrderPresenter.stopBuyOrderPusher();
             }
         }
     }

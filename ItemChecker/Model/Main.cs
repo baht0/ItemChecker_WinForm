@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Support.UI;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 
 namespace ItemChecker.Model
 {
@@ -15,10 +16,13 @@ namespace ItemChecker.Model
         public static int reload { get; set; }
         public static bool loading { get; set; }
 
+        public static CancellationTokenSource cts = new();
+        public static CancellationToken token = cts.Token;
+
         //lists
-        public static List<string> overstock = new List<string>();
-        public static List<string> unavailable = new List<string>();
-        internal static List<string> checkList = new List<string>();
-        internal static List<string> proxyList = new List<string>();
+        public static List<string> overstock = new();
+        public static List<string> unavailable = new();
+        internal static List<string> checkList = new();
+        internal static List<string> proxyList = new();
     }
 }

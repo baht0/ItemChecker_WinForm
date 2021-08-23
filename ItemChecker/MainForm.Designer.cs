@@ -90,7 +90,19 @@ namespace ItemChecker
             this.favoriteTrades_label = new System.Windows.Forms.Label();
             this.favoriteCheck_label = new System.Windows.Forms.Label();
             this.tryskins_dataGridView = new System.Windows.Forms.DataGridView();
+            this.colorTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.staTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.csmTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.precentTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.differenceTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buyOrder_dataGridView = new System.Windows.Forms.DataGridView();
+            this.colorBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.staBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.csmBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.precentBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.differenceBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.taskbar_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tree_serviceParserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,28 +119,16 @@ namespace ItemChecker
             this.settings_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exit_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.withdraw_dataGridView = new System.Windows.Forms.DataGridView();
-            this.loading_pictureBox = new System.Windows.Forms.PictureBox();
-            this.ver_label = new System.Windows.Forms.Label();
-            this.loading_panel = new System.Windows.Forms.Panel();
-            this.info_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.colorBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.staBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.csmBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.precentBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.differenceBO_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colorTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.staTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.csmTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.precentTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.differenceTS_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colorWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.itemWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.csmWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.staWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.salesWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.precentWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.loading_pictureBox = new System.Windows.Forms.PictureBox();
+            this.ver_label = new System.Windows.Forms.Label();
+            this.loading_panel = new System.Windows.Forms.Panel();
+            this.info_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.main_statusStrip.SuspendLayout();
             this.main_menuStrip.SuspendLayout();
             this.availability_groupBox.SuspendLayout();
@@ -224,31 +224,31 @@ namespace ItemChecker
             // 
             this.settings_MainStripMenu.Image = global::ItemChecker.Properties.Resources.setting;
             this.settings_MainStripMenu.Name = "settings_MainStripMenu";
-            this.settings_MainStripMenu.Size = new System.Drawing.Size(116, 22);
+            this.settings_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.settings_MainStripMenu.Text = "Settings";
             this.settings_MainStripMenu.Click += new System.EventHandler(this.settings_MainStripMenu_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(113, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(177, 6);
             // 
             // restart_MainStripMenu
             // 
             this.restart_MainStripMenu.Name = "restart_MainStripMenu";
-            this.restart_MainStripMenu.Size = new System.Drawing.Size(116, 22);
+            this.restart_MainStripMenu.Size = new System.Drawing.Size(180, 22);
             this.restart_MainStripMenu.Text = "Restart";
             this.restart_MainStripMenu.Click += new System.EventHandler(this.restart_MainStripMenu_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -728,6 +728,60 @@ namespace ItemChecker
             this.tryskins_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.tryskins_dataGridView_ColumnHeaderMouseClick);
             this.tryskins_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tryskins_dataGridView_KeyDown);
             // 
+            // colorTS_Column
+            // 
+            this.colorTS_Column.DataPropertyName = "colorTS_Column";
+            this.colorTS_Column.HeaderText = "";
+            this.colorTS_Column.Name = "colorTS_Column";
+            this.colorTS_Column.ReadOnly = true;
+            this.colorTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colorTS_Column.Width = 5;
+            // 
+            // itemTS_Column
+            // 
+            this.itemTS_Column.DataPropertyName = "itemTS_Column";
+            this.itemTS_Column.HeaderText = "Item (TrySkins)";
+            this.itemTS_Column.Name = "itemTS_Column";
+            this.itemTS_Column.ReadOnly = true;
+            this.itemTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.itemTS_Column.Width = 305;
+            // 
+            // staTS_Column
+            // 
+            this.staTS_Column.DataPropertyName = "staTS_Column";
+            this.staTS_Column.HeaderText = "ST(A)";
+            this.staTS_Column.Name = "staTS_Column";
+            this.staTS_Column.ReadOnly = true;
+            this.staTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.staTS_Column.Width = 66;
+            // 
+            // csmTS_Column
+            // 
+            this.csmTS_Column.DataPropertyName = "csmTS_Column";
+            this.csmTS_Column.HeaderText = "CSM";
+            this.csmTS_Column.Name = "csmTS_Column";
+            this.csmTS_Column.ReadOnly = true;
+            this.csmTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.csmTS_Column.Width = 60;
+            // 
+            // precentTS_Column
+            // 
+            this.precentTS_Column.DataPropertyName = "precentTS_Column";
+            this.precentTS_Column.HeaderText = "Precent";
+            this.precentTS_Column.Name = "precentTS_Column";
+            this.precentTS_Column.ReadOnly = true;
+            this.precentTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.precentTS_Column.Width = 55;
+            // 
+            // differenceTS_Column
+            // 
+            this.differenceTS_Column.DataPropertyName = "differenceTS_Column";
+            this.differenceTS_Column.HeaderText = "Difference";
+            this.differenceTS_Column.Name = "differenceTS_Column";
+            this.differenceTS_Column.ReadOnly = true;
+            this.differenceTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.differenceTS_Column.Width = 64;
+            // 
             // buyOrder_dataGridView
             // 
             this.buyOrder_dataGridView.AllowUserToAddRows = false;
@@ -754,6 +808,60 @@ namespace ItemChecker
             this.buyOrder_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.buyOrder_dataGridView_CellLeave);
             this.buyOrder_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.buyOrder_dataGridView_ColumnHeaderMouseClick);
             this.buyOrder_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.buyOrder_dataGridView_KeyDown);
+            // 
+            // colorBO_Column
+            // 
+            this.colorBO_Column.DataPropertyName = "colorBO_Column";
+            this.colorBO_Column.HeaderText = "";
+            this.colorBO_Column.Name = "colorBO_Column";
+            this.colorBO_Column.ReadOnly = true;
+            this.colorBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colorBO_Column.Width = 5;
+            // 
+            // itemBO_Column
+            // 
+            this.itemBO_Column.DataPropertyName = "itemBO_Column";
+            this.itemBO_Column.HeaderText = "Item (BuyOrders)";
+            this.itemBO_Column.Name = "itemBO_Column";
+            this.itemBO_Column.ReadOnly = true;
+            this.itemBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.itemBO_Column.Width = 305;
+            // 
+            // staBO_Column
+            // 
+            this.staBO_Column.DataPropertyName = "staBO_Column";
+            this.staBO_Column.HeaderText = "ST(A)";
+            this.staBO_Column.Name = "staBO_Column";
+            this.staBO_Column.ReadOnly = true;
+            this.staBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.staBO_Column.Width = 66;
+            // 
+            // csmBO_Column
+            // 
+            this.csmBO_Column.DataPropertyName = "csmBO_Column";
+            this.csmBO_Column.HeaderText = "CSM";
+            this.csmBO_Column.Name = "csmBO_Column";
+            this.csmBO_Column.ReadOnly = true;
+            this.csmBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.csmBO_Column.Width = 60;
+            // 
+            // precentBO_Column
+            // 
+            this.precentBO_Column.DataPropertyName = "precentBO_Column";
+            this.precentBO_Column.HeaderText = "Precent";
+            this.precentBO_Column.Name = "precentBO_Column";
+            this.precentBO_Column.ReadOnly = true;
+            this.precentBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.precentBO_Column.Width = 55;
+            // 
+            // differenceBO_Column
+            // 
+            this.differenceBO_Column.DataPropertyName = "differenceBO_Column";
+            this.differenceBO_Column.HeaderText = "Difference";
+            this.differenceBO_Column.Name = "differenceBO_Column";
+            this.differenceBO_Column.ReadOnly = true;
+            this.differenceBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.differenceBO_Column.Width = 64;
             // 
             // notifyIcon
             // 
@@ -897,145 +1005,6 @@ namespace ItemChecker
             this.withdraw_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.withdraw_dataGridView_CellLeave);
             this.withdraw_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.withdraw_dataGridView_ColumnHeaderMouseClick);
             // 
-            // loading_pictureBox
-            // 
-            this.loading_pictureBox.Image = global::ItemChecker.Properties.Resources.loading;
-            this.loading_pictureBox.Location = new System.Drawing.Point(0, 237);
-            this.loading_pictureBox.Name = "loading_pictureBox";
-            this.loading_pictureBox.Size = new System.Drawing.Size(600, 137);
-            this.loading_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.loading_pictureBox.TabIndex = 0;
-            this.loading_pictureBox.TabStop = false;
-            // 
-            // ver_label
-            // 
-            this.ver_label.AutoSize = true;
-            this.ver_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ver_label.Location = new System.Drawing.Point(12, 589);
-            this.ver_label.Name = "ver_label";
-            this.ver_label.Size = new System.Drawing.Size(81, 13);
-            this.ver_label.TabIndex = 1;
-            this.ver_label.Text = "Version: 0.0.0.0";
-            // 
-            // loading_panel
-            // 
-            this.loading_panel.BackColor = System.Drawing.SystemColors.Window;
-            this.loading_panel.Controls.Add(this.ver_label);
-            this.loading_panel.Controls.Add(this.loading_pictureBox);
-            this.loading_panel.Cursor = System.Windows.Forms.Cursors.AppStarting;
-            this.loading_panel.Location = new System.Drawing.Point(0, 0);
-            this.loading_panel.Name = "loading_panel";
-            this.loading_panel.Size = new System.Drawing.Size(600, 611);
-            this.loading_panel.TabIndex = 7;
-            // 
-            // colorBO_Column
-            // 
-            this.colorBO_Column.DataPropertyName = "colorBO_Column";
-            this.colorBO_Column.HeaderText = "";
-            this.colorBO_Column.Name = "colorBO_Column";
-            this.colorBO_Column.ReadOnly = true;
-            this.colorBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colorBO_Column.Width = 5;
-            // 
-            // itemBO_Column
-            // 
-            this.itemBO_Column.DataPropertyName = "itemBO_Column";
-            this.itemBO_Column.HeaderText = "Item (BuyOrders)";
-            this.itemBO_Column.Name = "itemBO_Column";
-            this.itemBO_Column.ReadOnly = true;
-            this.itemBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.itemBO_Column.Width = 305;
-            // 
-            // staBO_Column
-            // 
-            this.staBO_Column.DataPropertyName = "staBO_Column";
-            this.staBO_Column.HeaderText = "ST(A)";
-            this.staBO_Column.Name = "staBO_Column";
-            this.staBO_Column.ReadOnly = true;
-            this.staBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.staBO_Column.Width = 66;
-            // 
-            // csmBO_Column
-            // 
-            this.csmBO_Column.DataPropertyName = "csmBO_Column";
-            this.csmBO_Column.HeaderText = "CSM";
-            this.csmBO_Column.Name = "csmBO_Column";
-            this.csmBO_Column.ReadOnly = true;
-            this.csmBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.csmBO_Column.Width = 60;
-            // 
-            // precentBO_Column
-            // 
-            this.precentBO_Column.DataPropertyName = "precentBO_Column";
-            this.precentBO_Column.HeaderText = "Precent";
-            this.precentBO_Column.Name = "precentBO_Column";
-            this.precentBO_Column.ReadOnly = true;
-            this.precentBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.precentBO_Column.Width = 55;
-            // 
-            // differenceBO_Column
-            // 
-            this.differenceBO_Column.DataPropertyName = "differenceBO_Column";
-            this.differenceBO_Column.HeaderText = "Difference";
-            this.differenceBO_Column.Name = "differenceBO_Column";
-            this.differenceBO_Column.ReadOnly = true;
-            this.differenceBO_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.differenceBO_Column.Width = 64;
-            // 
-            // colorTS_Column
-            // 
-            this.colorTS_Column.DataPropertyName = "colorTS_Column";
-            this.colorTS_Column.HeaderText = "";
-            this.colorTS_Column.Name = "colorTS_Column";
-            this.colorTS_Column.ReadOnly = true;
-            this.colorTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colorTS_Column.Width = 5;
-            // 
-            // itemTS_Column
-            // 
-            this.itemTS_Column.DataPropertyName = "itemTS_Column";
-            this.itemTS_Column.HeaderText = "Item (TrySkins)";
-            this.itemTS_Column.Name = "itemTS_Column";
-            this.itemTS_Column.ReadOnly = true;
-            this.itemTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.itemTS_Column.Width = 305;
-            // 
-            // staTS_Column
-            // 
-            this.staTS_Column.DataPropertyName = "staTS_Column";
-            this.staTS_Column.HeaderText = "ST(A)";
-            this.staTS_Column.Name = "staTS_Column";
-            this.staTS_Column.ReadOnly = true;
-            this.staTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.staTS_Column.Width = 66;
-            // 
-            // csmTS_Column
-            // 
-            this.csmTS_Column.DataPropertyName = "csmTS_Column";
-            this.csmTS_Column.HeaderText = "CSM";
-            this.csmTS_Column.Name = "csmTS_Column";
-            this.csmTS_Column.ReadOnly = true;
-            this.csmTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.csmTS_Column.Width = 60;
-            // 
-            // precentTS_Column
-            // 
-            this.precentTS_Column.DataPropertyName = "precentTS_Column";
-            this.precentTS_Column.HeaderText = "Precent";
-            this.precentTS_Column.Name = "precentTS_Column";
-            this.precentTS_Column.ReadOnly = true;
-            this.precentTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.precentTS_Column.Width = 55;
-            // 
-            // differenceTS_Column
-            // 
-            this.differenceTS_Column.DataPropertyName = "differenceTS_Column";
-            this.differenceTS_Column.HeaderText = "Difference";
-            this.differenceTS_Column.Name = "differenceTS_Column";
-            this.differenceTS_Column.ReadOnly = true;
-            this.differenceTS_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.differenceTS_Column.Width = 64;
-            // 
             // colorWD_Column
             // 
             this.colorWD_Column.DataPropertyName = "colorWD_Column";
@@ -1084,6 +1053,37 @@ namespace ItemChecker
             this.precentWD_Column.Name = "precentWD_Column";
             this.precentWD_Column.ReadOnly = true;
             this.precentWD_Column.Width = 64;
+            // 
+            // loading_pictureBox
+            // 
+            this.loading_pictureBox.Image = global::ItemChecker.Properties.Resources.loading;
+            this.loading_pictureBox.Location = new System.Drawing.Point(0, 237);
+            this.loading_pictureBox.Name = "loading_pictureBox";
+            this.loading_pictureBox.Size = new System.Drawing.Size(600, 137);
+            this.loading_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.loading_pictureBox.TabIndex = 0;
+            this.loading_pictureBox.TabStop = false;
+            // 
+            // ver_label
+            // 
+            this.ver_label.AutoSize = true;
+            this.ver_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ver_label.Location = new System.Drawing.Point(12, 589);
+            this.ver_label.Name = "ver_label";
+            this.ver_label.Size = new System.Drawing.Size(81, 13);
+            this.ver_label.TabIndex = 1;
+            this.ver_label.Text = "Version: 0.0.0.0";
+            // 
+            // loading_panel
+            // 
+            this.loading_panel.BackColor = System.Drawing.SystemColors.Window;
+            this.loading_panel.Controls.Add(this.ver_label);
+            this.loading_panel.Controls.Add(this.loading_pictureBox);
+            this.loading_panel.Cursor = System.Windows.Forms.Cursors.AppStarting;
+            this.loading_panel.Location = new System.Drawing.Point(0, 0);
+            this.loading_panel.Name = "loading_panel";
+            this.loading_panel.Size = new System.Drawing.Size(600, 611);
+            this.loading_panel.TabIndex = 7;
             // 
             // MainForm
             // 
