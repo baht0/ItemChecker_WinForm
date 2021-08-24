@@ -276,7 +276,7 @@ namespace ItemChecker
             configPath = configPath.Replace("Roaming", "Local");
 
             File.Copy(configPath, Application.StartupPath + "user.config", true);
-            MainPresenter.messageBalloonTip("Configuration file downloaded successfully.");
+            MainPresenter.messageBalloonTip("Configuration file downloaded successfully.", ToolTipIcon.Info);
         }
     }
 }

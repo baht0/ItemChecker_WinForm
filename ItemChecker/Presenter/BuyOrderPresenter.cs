@@ -300,7 +300,7 @@ namespace ItemChecker.Presenter
                     mainForm.queue_label.Text = "Queue: -";
                     mainForm.queue_linkLabel.Text = "Place order: -";
                     mainForm.buyOrdersReload_MainStripMenu.PerformClick(); }));
-                MainPresenter.messageBalloonTip("The creation of orders has been completed.");
+                MainPresenter.messageBalloonTip("The creation of orders has been completed.", ToolTipIcon.Info);
             }
         }
         private static void createOrder()

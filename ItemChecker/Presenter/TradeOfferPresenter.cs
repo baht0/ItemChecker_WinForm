@@ -86,7 +86,7 @@ namespace ItemChecker.Presenter
                 MainPresenter.progressInvoke();
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.tradeOffers_linkLabel.Text = "Incoming: " + Convert.ToString(TradeOffer.tradeofferid.Count - (i + 1)); }));
             }
-            MainPresenter.messageBalloonTip("Acceptance of trades is complete.");
+            MainPresenter.messageBalloonTip("Acceptance of trades is complete.", ToolTipIcon.Info);
         }
     }
 }

@@ -222,7 +222,7 @@ namespace ItemChecker
             else
                 Application.OpenForms["ServiceParserForm"].Activate();
         }
-        //extract
+        //<extract
         private void trySkinsTotxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (TrySkins.item != null)
@@ -249,6 +249,7 @@ namespace ItemChecker
                 File.WriteAllText($"extract/buyOrdersList_{DateTime.Now.ToString("dd.MM.yyyy_hh.mm")}.txt", str);
             }
         }
+        //extract>
         private void buyOrderPush_toolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Main.loading & BuyOrder.item.Any() & !BuyOrder.timer.Enabled & !Withdraw.timer.Enabled  & !Float.timer.Enabled)
@@ -270,7 +271,6 @@ namespace ItemChecker
                   MessageBoxButtons.OK,
                   MessageBoxIcon.Warning);
             }
-            Main.cts.Cancel();
         }
         private void favoriteCheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -299,7 +299,6 @@ namespace ItemChecker
                 SettingsForm settingsForm = new(3);
                 settingsForm.ShowDialog();
             }
-            Main.cts.Cancel();
         }
         private void floatCheck_MainStripMenu_Click(object sender, EventArgs e)
         {
@@ -326,7 +325,6 @@ namespace ItemChecker
                 SettingsForm settingsForm = new(4);
                 settingsForm.ShowDialog();
             }
-            Main.cts.Cancel();
         }
         //about
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

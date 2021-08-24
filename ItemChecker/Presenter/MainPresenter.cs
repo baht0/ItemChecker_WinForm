@@ -64,7 +64,7 @@ namespace ItemChecker.Presenter
                     mainForm.progressBar_StripStatus.Visible = false;
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.reload_MainStripMenu.Enabled = true; }));
-                messageBalloonTip();
+                messageBalloonTip(null, ToolTipIcon.Info);
             }
         }
         private static void launchBrowser()
@@ -233,7 +233,7 @@ namespace ItemChecker.Presenter
                     mainForm.reload_MainStripMenu.Enabled = true;
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                messageBalloonTip();
+                messageBalloonTip(null, ToolTipIcon.Info);
             }
         }
         //other
@@ -317,11 +317,13 @@ namespace ItemChecker.Presenter
             WithdrawPresenter.stopCheckFavorite();
             FloatPresenter.stopCheckFloat();
         }
-        public static void messageBalloonTip(string str = "Loading is complete. Open to show.", ToolTipIcon icon = ToolTipIcon.Info)
+        public static void messageBalloonTip(string text, ToolTipIcon icon)
         {
-            mainForm.notifyIcon.BalloonTipText = str;
+            if (text == null)
+                text = "Loading is complete. Click to show.";
+            mainForm.notifyIcon.BalloonTipText = text;
             mainForm.notifyIcon.BalloonTipIcon = icon;
-            mainForm.notifyIcon.ShowBalloonTip(2);
+            mainForm.notifyIcon.ShowBalloonTip(1);
         }
         public static void progressInvoke(int i = 1)
         {

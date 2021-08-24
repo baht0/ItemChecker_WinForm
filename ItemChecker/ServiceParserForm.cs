@@ -131,8 +131,14 @@ namespace ItemChecker
         }
         private void extractListtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (serviceParser_dataGridView.Rows.Count > 0)
-                ThreadPool.QueueUserWorkItem(ServiceParserPresenter.exportTxt);
+            DialogResult result = MessageBox.Show(
+                $"Add prices \"{serviceParser_dataGridView.Columns[2].HeaderText}\" to the list you create?",
+                "Question",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (serviceParser_dataGridView.Rows.Count > 0 & result != DialogResult.Cancel)
+                ThreadPool.QueueUserWorkItem(ServiceParserPresenter.exportTxt, new object[] { result });
         }
 
         //comboboxs

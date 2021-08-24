@@ -50,7 +50,7 @@ namespace ItemChecker.Presenter
                         serviceParserForm.serviceParser_dataGridView.Enabled = true;
                         serviceParserForm.serviceParser_dataGridView.Sort(serviceParserForm.serviceParser_dataGridView.Columns[6], ListSortDirection.Descending); }));
                     drawDTGView();
-                    MainPresenter.messageBalloonTip();
+                    MainPresenter.messageBalloonTip(null, ToolTipIcon.Info);
                     Main.loading = false;
                 }
             }
@@ -486,9 +486,9 @@ namespace ItemChecker.Presenter
         public static void exportTxt(object state)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            DialogResult result = MessageBox.Show($"Add prices \"{serviceParserForm.serviceParser_dataGridView.Columns[2].HeaderText}\" to the list you create?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            if (result == DialogResult.Cancel)
-                return;
+
+            object[] args = state as object[];
+            var result = (DialogResult)args[0];
 
             serviceParserForm.Invoke(new MethodInvoker(delegate {
                 serviceParserForm.status_toolStripStatusLabel.Text = "Export the list to *.txt...";
@@ -565,7 +565,7 @@ namespace ItemChecker.Presenter
                     serviceParserForm.Invoke(new MethodInvoker(delegate {
                         serviceParserForm.status_toolStripStatusLabel.Visible = false;
                         serviceParserForm.serviceParser_dataGridView.Enabled = true; }));
-                    MainPresenter.messageBalloonTip("Extraction was completed.");
+                    MainPresenter.messageBalloonTip("Extraction was completed.", ToolTipIcon.Info);
                     Main.loading = false;
                 }
             }
@@ -626,7 +626,7 @@ namespace ItemChecker.Presenter
             {
                 if (!ServiceParser.token.IsCancellationRequested)
                 {
-                    MainPresenter.messageBalloonTip("Importing was completed.");
+                    MainPresenter.messageBalloonTip("Importing was completed.", ToolTipIcon.Info);
                     Main.loading = false;
                 }
             }

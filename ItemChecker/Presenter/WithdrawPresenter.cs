@@ -40,11 +40,10 @@ namespace ItemChecker.Presenter
             finally
             {
                 Main.loading = false;
-                MainPresenter.messageBalloonTip();
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                MainPresenter.messageBalloonTip();
+                MainPresenter.messageBalloonTip(null, ToolTipIcon.Info);
             }
         }
 
@@ -210,7 +209,7 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                MainPresenter.messageBalloonTip("Checking inventory cs.money is completed.");
+                MainPresenter.messageBalloonTip("Checking inventory cs.money is completed.", ToolTipIcon.Info);
             }
         }
         private static JArray checkInventory()
