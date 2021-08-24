@@ -275,8 +275,19 @@ namespace ItemChecker
         }
         private void serviceParser_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (ServiceParser.service_one == 0 & e.KeyCode == Keys.Insert)
-                ThreadPool.QueueUserWorkItem(ServiceParserPresenter.addQueue);
+            DataGridView dataGridView = serviceParser_dataGridView;
+            int sta = 3;
+            int row = dataGridView.CurrentCell.RowIndex;
+            int column = dataGridView.CurrentCell.ColumnIndex;
+
+            if (column == sta)
+                dataGridView.CurrentCell = dataGridView.Rows[row].Cells[1];
+
+            string item = dataGridView.Rows[row].Cells[1].Value.ToString();
+            decimal price = Edit.removeSymbol(dataGridView.Rows[row].Cells[sta].Value.ToString());
+
+            if (e.KeyCode == Keys.Insert)
+                ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
         }
         private void serviceParser_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {

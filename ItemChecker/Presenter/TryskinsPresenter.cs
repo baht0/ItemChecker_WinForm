@@ -3,7 +3,6 @@ using System.Threading;
 using OpenQA.Selenium;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -134,8 +133,9 @@ namespace ItemChecker.Presenter
                 TrySkins.csm.Add(csm);
                 TrySkins.precent.Add(precent);
                 TrySkins.difference.Add(Edit.Difference(csm, sta, GeneralConfig.Default.currency));
-                mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
+                mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}/{items.Count}";
             }
+            mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
         }
         private static void checkItemsMrinka(List<IWebElement> items)
         {
@@ -156,21 +156,10 @@ namespace ItemChecker.Presenter
                 }
                 while (!response.Item2);
 
-                decimal highest_buy_order = Convert.ToDecimal(JObject.Parse(response.Item1)["steam"]["buyOrder"].ToString());
-                decimal csm_sell = Convert.ToDecimal(JObject.Parse(response.Item1)["csm"]["sell"].ToString());
-                decimal precent = Edit.Precent(highest_buy_order, csm_sell);
-
-                if (precent > 0)
-                {
-                    TrySkins.item.Add(item_name);
-                    TrySkins.sta.Add(highest_buy_order);
-                    TrySkins.csm.Add(csm_sell);
-                    TrySkins.precent.Add(precent);
-                    TrySkins.difference.Add(Edit.Difference(csm_sell, highest_buy_order, GeneralConfig.Default.currency));
-
-                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
-                }
+                parseJson(response.Item1, item_name);
+                mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}/{items.Count}";
             }
+            mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
         } 
         private static void checkItemsMrinkaProxy(List<IWebElement> items)
         {
@@ -185,20 +174,8 @@ namespace ItemChecker.Presenter
                     string url = @"http://188.166.72.201:8080/singleitem?i=" + Edit.replaceUrl(Main.checkList[i]);
                     string response = Get.Request(url, Main.proxyList[id]);
 
-                    decimal highest_buy_order = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString());
-                    decimal csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());
-                    decimal precent = Edit.Precent(highest_buy_order, csm_sell);
-
-                    if (precent > 0)
-                    {
-                        TrySkins.item.Add(item_name);
-                        TrySkins.sta.Add(highest_buy_order);
-                        TrySkins.csm.Add(csm_sell);
-                        TrySkins.precent.Add(precent);
-                        TrySkins.difference.Add(Edit.Difference(csm_sell, highest_buy_order, GeneralConfig.Default.currency));
-
-                        mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
-                    }
+                    parseJson(response, item_name);
+                    mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}/{items.Count}";
                 }
                 catch
                 {
@@ -208,6 +185,24 @@ namespace ItemChecker.Presenter
                     else
                         id = 0;
                 }
+            }
+            mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
+        }
+        private static void parseJson(string response, string item_name)
+        {
+            decimal steam_price = Convert.ToDecimal(JObject.Parse(response)["steam"]["buyOrder"].ToString());
+            if (TryskinsConfig.Default.compareSt)
+                steam_price = Convert.ToDecimal(JObject.Parse(response)["steam"]["sellOrder"].ToString());
+            decimal csm_sell = Convert.ToDecimal(JObject.Parse(response)["csm"]["sell"].ToString());
+            decimal precent = Edit.Precent(steam_price, csm_sell);
+
+            if (precent > 0)
+            {
+                TrySkins.item.Add(item_name);
+                TrySkins.sta.Add(steam_price);
+                TrySkins.csm.Add(csm_sell);
+                TrySkins.precent.Add(precent);
+                TrySkins.difference.Add(Edit.Difference(csm_sell, steam_price, GeneralConfig.Default.currency));
             }
         }
         public static void createDTable()
@@ -263,51 +258,6 @@ namespace ItemChecker.Presenter
                     row.Cells[0].Style.BackColor = Color.Orange;
                 if (item.Contains("★"))
                     row.Cells[0].Style.BackColor = Color.DarkViolet;
-            }
-        }
-
-        //order
-        public static void addQueue(object state)
-        {
-            try
-            {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                int row = mainForm.tryskins_dataGridView.CurrentCell.RowIndex;
-                int cell = mainForm.tryskins_dataGridView.CurrentCell.ColumnIndex;
-                string item = mainForm.tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
-                decimal sta = Edit.removeSymbol(mainForm.tryskins_dataGridView.Rows[row].Cells[2].Value.ToString());
-
-                if (!BuyOrder.item.Contains(item) & cell != 2 & sta <= Steam.balance_usd)
-                {
-                    if (!BuyOrder.queue.Contains(item))
-                    {
-                        BuyOrder.queue_rub += Math.Round(sta * GeneralConfig.Default.currency, 2);
-                        BuyOrder.queue.Add(item);
-                        mainForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            mainForm.tryskins_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
-                            mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.LimeGreen; }));
-                    }
-                    else
-                    {
-                        BuyOrder.queue_rub -= Math.Round(sta * GeneralConfig.Default.currency, 2);
-                        BuyOrder.queue.Remove(item);
-                        mainForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            mainForm.tryskins_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
-                            mainForm.tryskins_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.White; }));
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorMessage(exp, currMethodName);
-                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
     }

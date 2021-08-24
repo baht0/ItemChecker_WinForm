@@ -482,53 +482,6 @@ namespace ItemChecker.Presenter
                     Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
-        public static void addQueue(object state)
-        {
-            try
-            {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-                int row = serviceParserForm.serviceParser_dataGridView.CurrentCell.RowIndex;
-                int cell = serviceParserForm.serviceParser_dataGridView.CurrentCell.ColumnIndex;
-                string item = serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[1].Value.ToString();
-                decimal sta = Edit.removeSymbol(serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[3].Value.ToString());
-
-                if (!BuyOrder.item.Contains(item) & cell != 3 & sta <= Steam.balance_usd)
-                {
-                    if (!BuyOrder.queue.Contains(item))
-                    {
-                        BuyOrder.queue_rub += Math.Round(sta * GeneralConfig.Default.currency, 2);
-                        BuyOrder.queue.Add(item);
-                        serviceParserForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_rub > BuyOrder.available_amount) 
-                                mainForm.available_label.ForeColor = Color.Red;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
-                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LimeGreen;
-                        }));
-                    }
-                    else
-                    {
-                        BuyOrder.queue_rub -= Math.Round(sta * GeneralConfig.Default.currency, 2);
-                        BuyOrder.queue.Remove(item);
-                        serviceParserForm.Invoke(new MethodInvoker(delegate {
-                            if (BuyOrder.queue_rub <= BuyOrder.available_amount) 
-                                mainForm.available_label.ForeColor = Color.Black;
-                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
-                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
-                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LightGray;
-                            serviceParserForm.serviceParser_dataGridView.Rows[row].Cells[3].Style.BackColor = Color.LightGray;
-                        }));
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                if (ServiceParser.token.IsCancellationRequested)
-                    Exceptions.errorLog(exp, Main.assemblyVersion);
-            }
-        }
 
         public static void exportTxt(object state)
         {

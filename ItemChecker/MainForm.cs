@@ -482,8 +482,19 @@ namespace ItemChecker
         }
         private void tryskins_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
+            DataGridView dataGridView = tryskins_dataGridView;
+            int sta = 2;
+            int row = dataGridView.CurrentCell.RowIndex;
+            int column = dataGridView.CurrentCell.ColumnIndex;
+            
+            if (column == sta)
+                dataGridView.CurrentCell = dataGridView.Rows[row].Cells[1];
+
+            string item = dataGridView.Rows[row].Cells[1].Value.ToString();
+            decimal price = Edit.removeSymbol(dataGridView.Rows[row].Cells[sta].Value.ToString());
+
             if (e.KeyCode == Keys.Insert)
-                ThreadPool.QueueUserWorkItem(TryskinsPresenter.addQueue);
+                ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
         }
         private void tryskins_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {

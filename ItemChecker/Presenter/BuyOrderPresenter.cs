@@ -220,6 +220,59 @@ namespace ItemChecker.Presenter
         }
 
         //place order
+        public static void addQueue(object state)
+        {
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                object[] args = state as object[];
+                DataGridView dataGridView = (DataGridView)args[0];
+
+                int row = (Int32)args[1];
+                int column = dataGridView.CurrentCell.ColumnIndex;
+                string item = (String)args[2];
+                decimal price = (Decimal)args[3];
+                int sta = (Int32)args[4];
+
+                var color = Color.White;
+                if (sta == 3)
+                    color = Color.LightGray;
+
+                if (!BuyOrder.item.Contains(item) & column != sta & price <= Steam.balance_usd)
+                {
+                    if (!BuyOrder.queue.Contains(item))
+                    {
+                        BuyOrder.queue_rub += Math.Round(price * GeneralConfig.Default.currency, 2);
+                        BuyOrder.queue.Add(item);
+                        mainForm.Invoke(new MethodInvoker(delegate {
+                            if (BuyOrder.queue_rub > BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Red;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
+                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
+                            dataGridView.Rows[row].Cells[1].Style.BackColor = Color.LimeGreen;
+                            dataGridView.Rows[row].Cells[sta].Style.BackColor = Color.LimeGreen;
+                        }));
+                    }
+                    else
+                    {
+                        BuyOrder.queue_rub -= Math.Round(price * GeneralConfig.Default.currency, 2);
+                        BuyOrder.queue.Remove(item);
+                        mainForm.Invoke(new MethodInvoker(delegate {
+                            if (BuyOrder.queue_rub < BuyOrder.available_amount) mainForm.available_label.ForeColor = Color.Black;
+                            mainForm.queue_label.Text = $"Queue: {BuyOrder.queue_rub}₽";
+                            mainForm.queue_linkLabel.Text = "Place order: " + BuyOrder.queue.Count;
+                            dataGridView.Rows[row].Cells[1].Style.BackColor = Color.White;
+                            dataGridView.Rows[row].Cells[sta].Style.BackColor = color;
+                        }));
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Exceptions.errorMessage(exp, currMethodName);
+                Exceptions.errorLog(exp, Main.assemblyVersion);
+            }
+        }
         public static void placeOrder(object state)
         {
             try
