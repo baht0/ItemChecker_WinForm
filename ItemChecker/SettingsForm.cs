@@ -37,6 +37,8 @@ namespace ItemChecker
             minPrecent_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrecent;
             maxPrice_numericUpDown.Value = TryskinsConfig.Default.maxTryskinsPrice;
             minPrice_numericUpDown.Value = TryskinsConfig.Default.minTryskinsPrice;
+            sales_numericUpDown.Value = TryskinsConfig.Default.sales;
+            compareSt_checkBox.Checked = TryskinsConfig.Default.compareSt;
             dontUpload_checkBox.Checked = TryskinsConfig.Default.dontUpload;
             oldcsm_checkBox.Checked = TryskinsConfig.Default.oldDesign;
             fast_radioButton.Checked = TryskinsConfig.Default.fastTime;
@@ -88,6 +90,8 @@ namespace ItemChecker
             minPrecent_numericUpDown.Value = 35;
             maxPrice_numericUpDown.Value = 0;
             minPrice_numericUpDown.Value = 0;
+            sales_numericUpDown.Value = 0;
+            compareSt_checkBox.Checked = false;
             dontUpload_checkBox.Checked = false;
             fast_radioButton.Checked = true;
             long_radioButton.Checked = false;
@@ -143,6 +147,8 @@ namespace ItemChecker
                     TryskinsConfig.Default.minTryskinsPrecent = Convert.ToInt32(minPrecent_numericUpDown.Value);
                     TryskinsConfig.Default.maxTryskinsPrice = Convert.ToInt32(maxPrice_numericUpDown.Value);
                     TryskinsConfig.Default.minTryskinsPrice = Convert.ToInt32(minPrice_numericUpDown.Value);
+                    TryskinsConfig.Default.sales = Convert.ToInt32(sales_numericUpDown.Value);
+                    TryskinsConfig.Default.compareSt = compareSt_checkBox.Checked;
                     TryskinsConfig.Default.dontUpload = dontUpload_checkBox.Checked;
                     TryskinsConfig.Default.fastTime = fast_radioButton.Checked;
                     TryskinsConfig.Default.longTime = long_radioButton.Checked;

@@ -193,6 +193,8 @@ namespace ItemChecker
             this.timer_StripStatus.Text = "Next check: 0:00";
             this.timer_StripStatus.Visible = false;
             this.timer_StripStatus.Click += new System.EventHandler(this.timer_StripStatus_Click);
+            this.timer_StripStatus.MouseEnter += new System.EventHandler(this.timer_StripStatus_MouseEnter);
+            this.timer_StripStatus.MouseLeave += new System.EventHandler(this.timer_StripStatus_MouseLeave);
             // 
             // main_menuStrip
             // 
@@ -224,31 +226,31 @@ namespace ItemChecker
             // 
             this.settings_MainStripMenu.Image = global::ItemChecker.Properties.Resources.setting;
             this.settings_MainStripMenu.Name = "settings_MainStripMenu";
-            this.settings_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.settings_MainStripMenu.Size = new System.Drawing.Size(116, 22);
             this.settings_MainStripMenu.Text = "Settings";
             this.settings_MainStripMenu.Click += new System.EventHandler(this.settings_MainStripMenu_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(113, 6);
             // 
             // restart_MainStripMenu
             // 
             this.restart_MainStripMenu.Name = "restart_MainStripMenu";
-            this.restart_MainStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.restart_MainStripMenu.Size = new System.Drawing.Size(116, 22);
             this.restart_MainStripMenu.Text = "Restart";
             this.restart_MainStripMenu.Click += new System.EventHandler(this.restart_MainStripMenu_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 

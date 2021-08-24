@@ -40,9 +40,15 @@ namespace ItemChecker.Presenter
             decimal max_sta = Steam.balance_usd;
             if (TryskinsConfig.Default.maxTryskinsPrice != 0)
                 max_sta = TryskinsConfig.Default.maxTryskinsPrice;
+            string service = "steama";
+            if (TryskinsConfig.Default.compareSt)
+            {
+                service = "steam";
+                mainForm.tryskins_dataGridView.Columns[2].HeaderText = "ST";
+            }
 
             List<IWebElement> items = new();
-            TrySkins.url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=1&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=showsteama&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=1&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=1&per-page=30";
+            TrySkins.url = "https://table.altskins.com/site/items?ItemsFilter%5Bknife%5D=0&ItemsFilter%5Bknife%5D=1&ItemsFilter%5Bstattrak%5D=0&ItemsFilter%5Bstattrak%5D=1&ItemsFilter%5Bsouvenir%5D=0&ItemsFilter%5Bsouvenir%5D=1&ItemsFilter%5Bsticker%5D=0&ItemsFilter%5Btype%5D=1&ItemsFilter%5Bservice1%5D=show" + service + "&ItemsFilter%5Bservice2%5D=showcsmoney&ItemsFilter%5Bunstable1%5D=1&ItemsFilter%5Bunstable2%5D=1&ItemsFilter%5Bhours1%5D=192&ItemsFilter%5Bhours2%5D=192&ItemsFilter%5BpriceFrom1%5D=" + min_sta + "&ItemsFilter%5BpriceTo1%5D=" + max_sta + "&ItemsFilter%5BpriceFrom2%5D=&ItemsFilter%5BpriceTo2%5D=&ItemsFilter%5BsalesBS%5D=&ItemsFilter%5BsalesTM%5D=&ItemsFilter%5BsalesST%5D=" + TryskinsConfig.Default.sales + "&ItemsFilter%5Bname%5D=&ItemsFilter%5Bservice1Minutes%5D=&ItemsFilter%5Bservice2Minutes%5D=&ItemsFilter%5BpercentFrom1%5D=" + TryskinsConfig.Default.minTryskinsPrecent + "&ItemsFilter%5BpercentFrom2%5D=&ItemsFilter%5Btimeout%5D=5&ItemsFilter%5Bservice1CountFrom%5D=1&ItemsFilter%5Bservice1CountTo%5D=&ItemsFilter%5Bservice2CountFrom%5D=1&ItemsFilter%5Bservice2CountTo%5D=&ItemsFilter%5BpercentTo1%5D=" + TryskinsConfig.Default.maxTryskinsPrecent + "&ItemsFilter%5BpercentTo2%5D=&page=1&per-page=30";
             Main.Browser.Navigate().GoToUrl(TrySkins.url);
             int last;
             do
@@ -94,29 +100,34 @@ namespace ItemChecker.Presenter
                     items.RemoveAt(i);
                 }
             }
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_label.Text = "TrySkins: " + TrySkins.t.ToString(); }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_label.Text = $"TrySkins: {TrySkins.t}"; }));
             return items;
         }
         private static void checkItems(List<IWebElement> items)
         {
-            for (int i = 0; i < items.Count; i++)
+            foreach (IWebElement element in items)
             {
-                string[] str = items[i].Text.Split("\n");
-                string item_name = str[0].Trim();
-                string[] prices; decimal precent;
+                string[] values = element.Text.Split("\n");
+                string item_name = values[0].Trim();
+                string[] prices;
+                decimal precent = 0;
+                decimal sta = 0;
+                decimal csm = 0;
 
-                if (str[1].Contains("$"))
+                for (int i = 1; i < values.Length; i++)
                 {
-                    prices = str[1].Split(" ");
-                    precent = Edit.removeSymbol(str[2].Trim());
+                    if (!values[i].Contains("$"))
+                        continue;
+
+                    prices = values[i].Split(" ");
+                    precent = Edit.removeSymbol(values[i + 1].Trim());
+                    sta = Edit.removeDol(prices[0].Trim());
+                    if (prices[1].Contains("$"))
+                        csm = Edit.removeDol(prices[1].Trim());
+                    else
+                        csm = Edit.removeDol(prices[2].Trim());
+                    break;
                 }
-                else
-                {
-                    prices = str[4].Split(" ");
-                    precent = Edit.removeSymbol(str[5].Trim());
-                }
-                decimal sta = Edit.removeDol(prices[0].Trim());
-                decimal csm = Edit.removeDol(prices[1].Trim());
 
                 TrySkins.item.Add(item_name);
                 TrySkins.sta.Add(sta);

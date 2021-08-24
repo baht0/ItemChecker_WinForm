@@ -409,6 +409,16 @@ namespace ItemChecker
             else if (Float.timer.Enabled)
                 Float.tick = 1;
         }
+        private void timer_StripStatus_MouseEnter(object sender, EventArgs e)
+        {
+            if (Main.loading)
+                timer_StripStatus.ForeColor = Color.Red;
+        }
+        private void timer_StripStatus_MouseLeave(object sender, EventArgs e)
+        {
+            if (Main.loading)
+                timer_StripStatus.ForeColor = Color.Black;
+        }
 
         //tryskins table
         private void tryskins_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
