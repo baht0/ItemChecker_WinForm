@@ -27,12 +27,15 @@ namespace ItemChecker.Presenter
             {                
                 while (!token.IsCancellationRequested)
                 {
+                    completionUpdate();
+
                     LaunchBrowser();
 
                     ProjectInfoPresenter.getCurrentVersion();
                     ProjectInfoPresenter.checkUpdate();
                     if (ProjectInfo.update.Any())
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.aboutToolStripMenuItem.Image = new Bitmap(Properties.Resources.point_red); }));
+                    mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
 
                     SteamPresenter.loginSteam();
                     preparationData();
@@ -89,7 +92,6 @@ namespace ItemChecker.Presenter
             Main.Browser.Manage().Window.Maximize();
             Main.wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));            
 
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
             progressInvoke();
         }
 

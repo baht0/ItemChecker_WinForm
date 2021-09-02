@@ -52,7 +52,6 @@ namespace ItemChecker
 
             notifyIcon.Visible = true;
             ver_label.Text = "Version: " + Main.assemblyVersion;
-            MainPresenter.completionUpdate();
 
             status_StripStatus.Text = "Launch Browser...";
 
