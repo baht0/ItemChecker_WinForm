@@ -68,19 +68,16 @@ namespace ItemChecker
             Withdraw.favoriteList.AddRange(WithdrawConfig.Default.favoriteList.Split("\n"));
             Float.floatList.AddRange(FloatConfig.Default.floatList.Split("\n"));
 
+            if (TryskinsConfig.Default.dontUpload)
+                progressBar_StripStatus.Maximum = 6;
             ThreadPool.QueueUserWorkItem(MainPresenter.Start);
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!loading_panel.Visible & e.CloseReason == CloseReason.UserClosing)
+            if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
                 this.Hide();
-            }
-            else if (loading_panel.Visible)
-            {
-                notifyIcon.Visible = false;
-                Main.Browser.Quit();
             }
         }
 
@@ -132,7 +129,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 0;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 6 });
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 7 });
             }
         }
         private void tryskins_MainStripMenu_Click(object sender, EventArgs e)
@@ -140,7 +137,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 1;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 3 });
+                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 5 });
             }
         }
         private void buyOrders_MainStripMenu_Click(object sender, EventArgs e)
@@ -255,6 +252,7 @@ namespace ItemChecker
             if (!Main.loading & BuyOrder.item.Any() & !BuyOrder.timer.Enabled & !Withdraw.timer.Enabled  & !Float.timer.Enabled)
             {
                 pusherItems_label.Text = $"Items: {BuyOrder.item.Count}";
+                pusherBuyOrder_groupBox.Visible = true;
                 timer_StripStatus.Visible = true;
                 buyOrderPush_toolStripMenuItem.ForeColor = Color.OrangeRed;
 
@@ -280,8 +278,6 @@ namespace ItemChecker
                 favoriteCheck_groupBox.Visible = true;
                 timer_StripStatus.Visible = true;
                 favoriteCheckToolStripMenuItem.ForeColor = Color.OrangeRed;
-
-                WithdrawPresenter.loginCsm();
 
                 Withdraw.tick = WithdrawConfig.Default.timer;
                 Withdraw.timer.Enabled = true;
@@ -421,136 +417,138 @@ namespace ItemChecker
         //tryskins table
         private void tryskins_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
-            {
-                int row = Convert.ToInt32(tryskins_dataGridView.CurrentCell.RowIndex.ToString());
-                string item = tryskins_dataGridView.Rows[row].Cells[1].Value.ToString();
-                int cell = tryskins_dataGridView.CurrentCell.ColumnIndex;
-                string market_has_name = Edit.replaceUrl(item);
-                string url;
-
-                if (cell == 1)
-                    Clipboard.SetText(item);
-                if (cell == 2)
-                {
-                    url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
-                    Edit.openUrl(url);
-                }
-                if (cell == 3)
-                {
-                    Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
-                }
-                if (cell == 4)
-                {
-                    url = TrySkins.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + market_has_name);
-                    Edit.openUrl(url);
-                }
-            }
-            catch { }
-        }
-        private void tryskins_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                int row = Convert.ToInt32(tryskins_dataGridView.CurrentCell.RowIndex);
-                string str = tryskins_dataGridView.CurrentCell.Value.ToString();
-                int cell = tryskins_dataGridView.CurrentCell.ColumnIndex;
-
-                if (cell == 2 || cell == 3 & str != "")
-                {
-                    Main.save_str = str;
-                    tryskins_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
-                }
-            }
-            catch { }
-        }
-        private void tryskins_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                int row = Convert.ToInt32(tryskins_dataGridView.CurrentCell.RowIndex);
-                int cell = tryskins_dataGridView.CurrentCell.ColumnIndex;
-                if (cell == 2 || cell == 3)
-                {
-                    tryskins_dataGridView.Rows[row].Cells[cell].Value = Main.save_str;
-                    Main.save_str = "";
-                }
-            }
-            catch { }
-        }
-        private void tryskins_dataGridView_KeyDown(object sender, KeyEventArgs e)
-        {
             DataGridView dataGridView = tryskins_dataGridView;
-            int sta = 2;
             int row = dataGridView.CurrentCell.RowIndex;
             int column = dataGridView.CurrentCell.ColumnIndex;
-            
-            if (column == sta)
-                dataGridView.CurrentCell = dataGridView.Rows[row].Cells[1];
-
             string item = dataGridView.Rows[row].Cells[1].Value.ToString();
-            decimal price = Edit.removeSymbol(dataGridView.Rows[row].Cells[sta].Value.ToString());
-
-            if (e.KeyCode == Keys.Insert)
-                ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
-        }
-        private void tryskins_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            TryskinsPresenter.drawDTGView();
-        }
-        //buyorder table
-        private void buyOrder_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int row = Convert.ToInt32(buyOrder_dataGridView.CurrentCell.RowIndex.ToString());
-            string item = buyOrder_dataGridView.Rows[row].Cells[1].Value.ToString();
             string market_has_name = Edit.replaceUrl(item);
             string url;
 
-            if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 1)
-            {
+            if (column == 1)
                 Clipboard.SetText(item);
-            }
-            if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 2)
+            if (column == 2)
             {
                 url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
                 Edit.openUrl(url);
             }
-            if (buyOrder_dataGridView.CurrentCell.ColumnIndex == 3)
-            {
+            if (column == 3)
                 Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
+            if (column == 4)
+            {
+                url = TrySkins.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + market_has_name);
+                Edit.openUrl(url);
             }
+        }
+        private void tryskins_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dataGridView = tryskins_dataGridView;
+            if (dataGridView.RowCount > 0)
+            {
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
+                string str = dataGridView.CurrentCell.Value.ToString();
+
+                if (column == 2 | column == 3)
+                {
+                    Main.save_str = str;
+                    dataGridView.Rows[row].Cells[column].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
+                }
+            }
+        }
+        private void tryskins_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dataGridView = tryskins_dataGridView;
+            if (dataGridView.RowCount > 0)
+            {
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
+
+                if (column == 2 | column == 3)
+                {
+                    dataGridView.Rows[row].Cells[column].Value = Main.save_str;
+                    Main.save_str = null;
+                }
+            }
+        }
+        private void tryskins_dataGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            DataGridView dataGridView = tryskins_dataGridView;
+            if (dataGridView.RowCount > 0)
+            {
+                int sta = 2;
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
+
+                if (column == sta)
+                    dataGridView.CurrentCell = dataGridView.Rows[row].Cells[1];
+
+                string item = dataGridView.Rows[row].Cells[1].Value.ToString();
+                decimal price = Edit.removeSymbol(dataGridView.Rows[row].Cells[sta].Value.ToString());
+
+                if (e.KeyCode == Keys.Insert)
+                    ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
+            }
+        }
+        private void tryskins_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (tryskins_dataGridView.RowCount > 0)
+                TryskinsPresenter.drawDTGView();
+        }
+        //buyorder table
+        private void buyOrder_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dataGridView = buyOrder_dataGridView;
+            int row = dataGridView.CurrentCell.RowIndex;
+            string item = dataGridView.Rows[row].Cells[1].Value.ToString();
+            string market_has_name = Edit.replaceUrl(item);
+            string url;
+
+            if (dataGridView.CurrentCell.ColumnIndex == 1)
+                Clipboard.SetText(item);
+            if (dataGridView.CurrentCell.ColumnIndex == 2)
+            {
+                url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
+                Edit.openUrl(url);
+            }
+            if (dataGridView.CurrentCell.ColumnIndex == 3)
+                Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
         }
         private void buyOrder_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            try
+            DataGridView dataGridView = buyOrder_dataGridView;
+            if (dataGridView.RowCount > 0)
             {
-                int row = Convert.ToInt32(buyOrder_dataGridView.CurrentCell.RowIndex);
-                string str = buyOrder_dataGridView.CurrentCell.Value.ToString();
-                int cell = buyOrder_dataGridView.CurrentCell.ColumnIndex;
-                if (cell == 3)
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
+                string str = dataGridView.CurrentCell.Value.ToString();
+
+                if (column == 3)
                 {
                     Main.save_str = str;
-                    buyOrder_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
+                    dataGridView.Rows[row].Cells[column].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
                 }
             }
-            catch { }
         }
         private void buyOrder_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
-            try
+            DataGridView dataGridView = buyOrder_dataGridView;
+            if (dataGridView.RowCount > 0)
             {
-                int row = Convert.ToInt32(buyOrder_dataGridView.CurrentCell.RowIndex);
-                int cell = buyOrder_dataGridView.CurrentCell.ColumnIndex;
-                if (cell == 3)
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
+
+                if (column == 3)
                 {
-                    buyOrder_dataGridView.Rows[row].Cells[cell].Value = Main.save_str;
-                    Main.save_str = "";
+                    dataGridView.Rows[row].Cells[column].Value = Main.save_str;
+                    Main.save_str = null;
                 }
             }
-            catch { }
         }
         private void buyOrder_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
+            DataGridView dataGridView = buyOrder_dataGridView;
+            if (dataGridView.RowCount <= 0)
+                return;
             if (e.KeyCode == Keys.Delete)
             {
                 DialogResult result = MessageBox.Show(
@@ -562,85 +560,84 @@ namespace ItemChecker
                 if (result == DialogResult.Yes)
                 {
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
-                    int row = Convert.ToInt32(buyOrder_dataGridView.CurrentCell.RowIndex.ToString());
-                    string item = buyOrder_dataGridView.CurrentCell.Value.ToString();
+                    int row = dataGridView.CurrentCell.RowIndex;
+                    string item = dataGridView.CurrentCell.Value.ToString();
                     int index = BuyOrder.item.IndexOf(item);
 
                     BuyOrderPresenter.CancelOrder(index);
 
-                    Invoke(new MethodInvoker(delegate {
-                        buyOrder_dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
-                        buyOrder_dataGridView.Rows[row].Cells[2].Value = "Cancel";
-                    }));
+                    dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
+                    dataGridView.Rows[row].Cells[2].Value = "Cancel";
                 }
             }
         }
         private void buyOrder_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            BuyOrderPresenter.drawDTGView();
+            if (buyOrder_dataGridView.RowCount > 0)
+                BuyOrderPresenter.drawDTGView();
         }
         //withdraw table
         private void withdraw_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
-            {
-                int row = Convert.ToInt32(withdraw_dataGridView.CurrentCell.RowIndex.ToString());
-                string item = withdraw_dataGridView.Rows[row].Cells[1].Value.ToString();
-                int cell = withdraw_dataGridView.CurrentCell.ColumnIndex;
-                string market_has_name = Edit.replaceUrl(item);
-                string url;
+            DataGridView dataGridView = withdraw_dataGridView;
+            int row = dataGridView.CurrentCell.RowIndex;
+            int column = dataGridView.CurrentCell.ColumnIndex;
+            string item = dataGridView.Rows[row].Cells[1].Value.ToString();
+            string market_has_name = Edit.replaceUrl(item);
+            string url;
 
-                if (cell == 1 || cell == 2)
-                {
-                    Clipboard.SetText(item);
-                    Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
-                    withdraw_dataGridView.Rows[row].Cells[1].Style.BackColor = System.Drawing.Color.Silver;
-                }
-                if (cell == 3 || cell == 4)
-                {
-                    url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
-                    Edit.openUrl(url);
-                }
-                if (cell == 5)
-                {
-                    url = Withdraw.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + market_has_name);
-                    Edit.openUrl(url);
-                }
+            if (column == 1 || column == 2)
+            {
+                Clipboard.SetText(item);
+                Edit.openCsm(market_has_name, TryskinsConfig.Default.oldDesign);
+                dataGridView.Rows[row].Cells[1].Style.BackColor = Color.Silver;
             }
-            catch { }
+            if (column == 3 || column == 4)
+            {
+                url = "https://steamcommunity.com/market/listings/730/" + market_has_name;
+                Edit.openUrl(url);
+            }
+            if (column == 5)
+            {
+                url = Withdraw.url.Replace("ItemsFilter%5Bname%5D=", "ItemsFilter%5Bname%5D=" + market_has_name);
+                Edit.openUrl(url);
+            }
         }
         private void withdraw_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            try
+            DataGridView dataGridView = withdraw_dataGridView;
+            if (dataGridView.RowCount > 0)
             {
-                string str = withdraw_dataGridView.CurrentCell.Value.ToString();
-                int row = withdraw_dataGridView.CurrentCell.RowIndex;
-                int cell = withdraw_dataGridView.CurrentCell.ColumnIndex;
-                if (cell == 2 || cell == 3)
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
+                string str = dataGridView.CurrentCell.Value.ToString();
+
+                if (column == 2 | column == 3)
                 {
                     Main.save_str = str;
-                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
+                    dataGridView.Rows[row].Cells[column].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
                 }
             }
-            catch { }
         }
         private void withdraw_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
-            try
+            DataGridView dataGridView = withdraw_dataGridView;
+            if (dataGridView.RowCount > 0)
             {
-                int row = withdraw_dataGridView.CurrentCell.RowIndex;
-                int cell = withdraw_dataGridView.CurrentCell.ColumnIndex;
-                if (cell == 2 || cell == 3)
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
+
+                if (column == 2 | column == 3)
                 {
-                    withdraw_dataGridView.Rows[row].Cells[cell].Value = Main.save_str;
-                    Main.save_str = "";
+                    dataGridView.Rows[row].Cells[column].Value = Main.save_str;
+                    Main.save_str = null;
                 }
             }
-            catch { }
         }
         private void withdraw_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            WithdrawPresenter.drawDTGView();
+            if (withdraw_dataGridView.RowCount > 0)
+                WithdrawPresenter.drawDTGView();
         }
 
         //tree

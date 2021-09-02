@@ -48,15 +48,17 @@ namespace ItemChecker.Support
         }
 
         //remove
-        public static Decimal removeRub(string rub)
+        public static Decimal removeRub(string str)
         {
-            string str = rub.Replace(",", ".");
-            return Convert.ToDecimal(str.Substring(0, str.Length - 5), CultureInfo.InvariantCulture);
+            str = str.Replace(",", ".");
+            decimal rub = Convert.ToDecimal(str[0..^5], CultureInfo.InvariantCulture);
+            return rub;
         }
-        public static Decimal removeDol(string dol)
+        public static Decimal removeDol(string str)
         {
-            string str = dol.Replace("$", "");
-            return Convert.ToDecimal(str.Replace(" USD", ""), CultureInfo.InvariantCulture);
+            str = str.Replace("$", null);
+            decimal dol = Convert.ToDecimal(str.Replace(" USD", ""), CultureInfo.InvariantCulture);
+            return dol;
         }
         public static Decimal removeSymbol(string str)
         {

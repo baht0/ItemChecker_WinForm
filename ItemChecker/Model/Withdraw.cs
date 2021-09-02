@@ -4,6 +4,9 @@ namespace ItemChecker.Model
 {
     public class Withdraw
     {
+        public static decimal balance { get; set; }
+        public static decimal balance_usd { get; set; }
+
         public static List<string> item = new();
         public static List<int> sales = new();
         public static List<decimal> csm = new();

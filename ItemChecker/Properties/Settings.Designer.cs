@@ -82,5 +82,17 @@ namespace ItemChecker.Properties {
                 this["completionUpdate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool whatIsNew {
+            get {
+                return ((bool)(this["whatIsNew"]));
+            }
+            set {
+                this["whatIsNew"] = value;
+            }
+        }
     }
 }

@@ -189,5 +189,10 @@ namespace ItemChecker
                 Exceptions.errorMessage(exp, currMethodName);
             }
         }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+        }
     }
 }

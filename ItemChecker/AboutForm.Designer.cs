@@ -91,11 +91,13 @@ namespace ItemChecker
             // lastVersion_label
             // 
             this.lastVersion_label.AutoSize = true;
+            this.lastVersion_label.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lastVersion_label.Location = new System.Drawing.Point(112, 70);
             this.lastVersion_label.Name = "lastVersion_label";
             this.lastVersion_label.Size = new System.Drawing.Size(118, 15);
             this.lastVersion_label.TabIndex = 12;
             this.lastVersion_label.Text = "Latest version: 0.0.0.0";
+            this.lastVersion_label.Click += new System.EventHandler(this.lastVersion_label_Click);
             // 
             // close_button
             // 
@@ -155,24 +157,24 @@ namespace ItemChecker
             // 
             // point_pictureBox
             // 
-            this.point_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.point_red;
+            this.point_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.what_icon;
             this.point_pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.point_pictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.point_pictureBox.Location = new System.Drawing.Point(232, 70);
+            this.point_pictureBox.Location = new System.Drawing.Point(230, 71);
             this.point_pictureBox.Name = "point_pictureBox";
-            this.point_pictureBox.Size = new System.Drawing.Size(15, 15);
+            this.point_pictureBox.Size = new System.Drawing.Size(13, 13);
             this.point_pictureBox.TabIndex = 17;
             this.point_pictureBox.TabStop = false;
-            this.point_pictureBox.Visible = false;
+            this.point_pictureBox.Click += new System.EventHandler(this.point_pictureBox_Click);
             // 
             // link_pictureBox
             // 
             this.link_pictureBox.BackgroundImage = global::ItemChecker.Properties.Resources.link;
             this.link_pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.link_pictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.link_pictureBox.Location = new System.Drawing.Point(192, 22);
+            this.link_pictureBox.Location = new System.Drawing.Point(191, 23);
             this.link_pictureBox.Name = "link_pictureBox";
-            this.link_pictureBox.Size = new System.Drawing.Size(15, 15);
+            this.link_pictureBox.Size = new System.Drawing.Size(13, 13);
             this.link_pictureBox.TabIndex = 16;
             this.link_pictureBox.TabStop = false;
             this.link_pictureBox.Click += new System.EventHandler(this.link_pictureBox_Click);

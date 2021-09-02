@@ -25,7 +25,22 @@ namespace ItemChecker.Presenter
         private int checkCount = 1;
         private int pushCount = 1;
         static private int cancelCount = 1;
-        public static void getSteamlist(bool prg = true)
+
+        public static void SteamOrders()
+        {
+            if (BuyOrder.my_buy_orders != 0)
+            {
+                getSteamlist();
+                if (GeneralConfig.Default.proxy & BuyOrder.item.Count > 30)
+                    checkOrdersProxy();
+                else
+                    checkOrders();
+                createDTable();
+            }
+            else
+                MainPresenter.progressInvoke(3);
+        }
+        private static void getSteamlist(bool prg = true)
         {
             BuyOrder._clear();
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check Steam..."; }));
@@ -66,7 +81,7 @@ namespace ItemChecker.Presenter
             }
             else mainForm.Invoke(new MethodInvoker(delegate { mainForm.available_label.ForeColor = Color.Black; }));
         }
-        public static void checkOrders()
+        private static void checkOrders()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Calculate Steam..."; }));
 
@@ -91,7 +106,7 @@ namespace ItemChecker.Presenter
             }
             MainPresenter.progressInvoke();
         }
-        public static void checkOrdersProxy()
+        private static void checkOrdersProxy()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Calculate Steam..."; }));
             int id = 0;
@@ -129,7 +144,7 @@ namespace ItemChecker.Presenter
             BuyOrder.precent.Add(precent);
             BuyOrder.difference.Add(different);
         }
-        public static void createDTable()
+        private static void createDTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Steam..."; }));
             MainPresenter.clearDTableRows(mainForm.buyOrder_dataGridView);
@@ -156,6 +171,7 @@ namespace ItemChecker.Presenter
                 mainForm.buyOrder_dataGridView.DataSource = table;
                 mainForm.buyOrder_dataGridView.Sort(mainForm.buyOrder_dataGridView.Columns[5], ListSortDirection.Ascending); }));
             drawDTGView();
+            MainPresenter.progressInvoke();
         }
         public static void drawDTGView()
         {
@@ -275,47 +291,20 @@ namespace ItemChecker.Presenter
         }
         public static void placeOrder(object state)
         {
-            try
-            {
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.status_StripStatus.Text = "Place Order...";
-                    mainForm.status_StripStatus.Visible = true;
-                    mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue.Count;
-                    mainForm.progressBar_StripStatus.Value = 0;
-                    mainForm.progressBar_StripStatus.Visible = true; }));
-                createOrder();
-            }
-            catch (Exception exp)
-            {
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorMessage(exp, currMethodName);
-                Exceptions.errorLog(exp, Main.assemblyVersion);
-            }
-            finally
-            {
-                Main.loading = false;
-                Thread.Sleep(1000);
-                BuyOrder._clearQueue();
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.queue_label.Text = "Queue: -";
-                    mainForm.queue_linkLabel.Text = "Place order: -";
-                    mainForm.buyOrdersReload_MainStripMenu.PerformClick(); }));
-                MainPresenter.messageBalloonTip("The creation of orders has been completed.", ToolTipIcon.Info);
-            }
-        }
-        private static void createOrder()
-        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.status_StripStatus.Text = "Place Order...";
+                mainForm.status_StripStatus.Visible = true;
+                mainForm.progressBar_StripStatus.Maximum = BuyOrder.queue.Count;
+                mainForm.progressBar_StripStatus.Value = 0;
+                mainForm.progressBar_StripStatus.Visible = true; }));
+
             foreach (string queue in BuyOrder.queue)
             {
                 try
                 {
-                    var market_hash_name = Edit.replaceUrl(queue);
-                    Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + market_hash_name);
-                    var item_nameid = Edit.ItemNameId(Main.Browser.PageSource);
-                    var highest_buy_order = Get.ItemOrdersHistogram(item_nameid);
-
-                    if (Steam.balance > highest_buy_order) 
-                        Main.Browser.ExecuteJavaScript(Post.CreateBuyOrder(market_hash_name, highest_buy_order, Main.sessionid));
+                    createOrder(queue);
                 }
                 catch (Exception exp)
                 {
@@ -327,6 +316,24 @@ namespace ItemChecker.Presenter
                     MainPresenter.progressInvoke();
                 }
             }
+
+            Main.loading = false;
+            BuyOrder._clearQueue();
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.queue_label.Text = "Queue: -";
+                mainForm.queue_linkLabel.Text = "Place order: -";
+                mainForm.buyOrdersReload_MainStripMenu.PerformClick(); }));
+            MainPresenter.messageBalloonTip("The creation of orders has been completed.", ToolTipIcon.Info);
+        }
+        private static void createOrder(string item)
+        {
+            var market_hash_name = Edit.replaceUrl(item);
+            Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/listings/730/" + market_hash_name);
+            var item_nameid = Edit.ItemNameId(Main.Browser.PageSource);
+            var highest_buy_order = Get.ItemOrdersHistogram(item_nameid);
+
+            if (Steam.balance > highest_buy_order)
+                Main.Browser.ExecuteJavaScript(Post.CreateBuyOrder(market_hash_name, highest_buy_order, Main.sessionid));
         }
         //delete order
         public static void CancelOrder(int id)
@@ -357,6 +364,7 @@ namespace ItemChecker.Presenter
             BuyOrder.timer.Enabled = false;
             BuyOrder.tick = 1;
             mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.pusherBuyOrder_groupBox.Visible = false;
                 mainForm.timer_StripStatus.Visible = false;
                 mainForm.buyOrderPush_toolStripMenuItem.ForeColor = Color.Black; }));
         }
@@ -443,7 +451,7 @@ namespace ItemChecker.Presenter
                         mainForm.progressBar_StripStatus.Value = 0;
                         mainForm.progressBar_StripStatus.Maximum = 3; }));
                     SteamPresenter.getBalance();
-                    MainPresenter.loadDataSteam();
+                    SteamOrders();
                 }
             }
             catch (Exception exp)

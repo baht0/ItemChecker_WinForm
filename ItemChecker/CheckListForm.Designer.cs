@@ -39,6 +39,7 @@ namespace ItemChecker
             this.getToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lootFarmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.csMoneyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +87,8 @@ namespace ItemChecker
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectFileToolStripMenuItem,
-            this.getToolStripMenuItem});
+            this.getToolStripMenuItem,
+            this.clearToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(453, 24);
@@ -126,6 +128,13 @@ namespace ItemChecker
             this.csMoneyToolStripMenuItem.Visible = false;
             this.csMoneyToolStripMenuItem.Click += new System.EventHandler(this.csMoneyToolStripMenuItem_Click);
             // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            // 
             // CheckListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -163,5 +172,6 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem getToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lootFarmToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem csMoneyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
     }
 }

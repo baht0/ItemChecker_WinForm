@@ -202,15 +202,14 @@ namespace ItemChecker
         //table
         private void serviceParser_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            int row = Convert.ToInt32(serviceParser_dataGridView.CurrentCell.RowIndex.ToString());
-            string iname = serviceParser_dataGridView.Rows[row].Cells[1].Value.ToString();
-            int index = serviceParser_dataGridView.CurrentCell.ColumnIndex;
+            DataGridView dataGridView = serviceParser_dataGridView;
+            int row = dataGridView.CurrentCell.RowIndex;
+            int index = dataGridView.CurrentCell.ColumnIndex;
+            string iname = dataGridView.Rows[row].Cells[1].Value.ToString();
             string market_has_name = Edit.replaceUrl(iname);
 
             if (index == 1)
-            {
                 Clipboard.SetText(iname);
-            }
             if (index == 2 | index == 3)
             {
                 if (ServiceParser.service_one == 0)
@@ -228,17 +227,18 @@ namespace ItemChecker
         }
         private void serviceParser_dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            try
+            DataGridView dataGridView = serviceParser_dataGridView;
+            if (dataGridView.RowCount > 0)
             {
-                string value = serviceParser_dataGridView.CurrentCell.Value.ToString();
-                int row = serviceParser_dataGridView.CurrentCell.RowIndex;
-                int cell = serviceParser_dataGridView.CurrentCell.ColumnIndex;
+                int row = dataGridView.CurrentCell.RowIndex;
+                int cell = dataGridView.CurrentCell.ColumnIndex;
+                string value = dataGridView.CurrentCell.Value.ToString();
 
                 if (ServiceParser.service_one == 1 & past_row != row)
                 {
                     availability_toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
                     availability_toolStripStatusLabel.Text = $"Availability: Checking...";
-                    ThreadPool.QueueUserWorkItem(ServiceParserPresenter.checkCsmItem, new object[] { serviceParser_dataGridView.Rows[row].Cells[1].Value.ToString(), row });
+                    ThreadPool.QueueUserWorkItem(ServiceParserPresenter.checkCsmItem, new object[] { dataGridView.Rows[row].Cells[1].Value.ToString(), row });
                     availability_toolStripStatusLabel.Visible = true;
                     past_row = row;
                 }
@@ -246,18 +246,18 @@ namespace ItemChecker
                 {
                     availability_toolStripStatusLabel.ForeColor = System.Drawing.Color.Black;
                     availability_toolStripStatusLabel.Text = $"Availability: Checking...";
-                    ThreadPool.QueueUserWorkItem(ServiceParserPresenter.checkLootFarmItem, new object[] { serviceParser_dataGridView.Rows[row].Cells[1].Value.ToString(), row });
+                    ThreadPool.QueueUserWorkItem(ServiceParserPresenter.checkLootFarmItem, new object[] { dataGridView.Rows[row].Cells[1].Value.ToString(), row });
                     availability_toolStripStatusLabel.Visible = true;
                     past_row = row;
                 }
                 if (1 < cell & cell < 6)
                 {
                     Main.save_str = value;
-                    serviceParser_dataGridView.Rows[row].Cells[cell].Value = Math.Round(Convert.ToDecimal(value) * GeneralConfig.Default.currency, 2);
+                    dataGridView.Rows[row].Cells[cell].Value = Math.Round(Convert.ToDecimal(value) * GeneralConfig.Default.currency, 2);
                 }
                 if (ServiceParser.stUpdated.Any() & ServiceParser.csmUpdated.Any())
                 {
-                    value = serviceParser_dataGridView.Rows[row].Cells[1].Value.ToString();
+                    value = dataGridView.Rows[row].Cells[1].Value.ToString();
                     int index = Main.checkList.IndexOf(value);
                     updated_toolStripStatusLabel.Text = "Updated(h):";
                     if (ServiceParser.service_one == 0 | ServiceParser.service_two == 0)
@@ -267,37 +267,45 @@ namespace ItemChecker
                     updated_toolStripStatusLabel.Visible = true;
                 }
             }
-            catch { }
         }
         private void serviceParser_dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
-            int row = serviceParser_dataGridView.CurrentCell.RowIndex;
-            int cell = serviceParser_dataGridView.CurrentCell.ColumnIndex;
-            if (1 < cell & cell < 6)
+            DataGridView dataGridView = serviceParser_dataGridView;
+            if (dataGridView.RowCount > 0)
             {
-                serviceParser_dataGridView.Rows[row].Cells[cell].Value = Convert.ToDouble(Main.save_str);
-                Main.save_str = null;
+                int row = dataGridView.CurrentCell.RowIndex;
+                int cell = dataGridView.CurrentCell.ColumnIndex;
+                if (1 < cell & cell < 6)
+                {
+                    dataGridView.Rows[row].Cells[cell].Value = Convert.ToDouble(Main.save_str);
+                    Main.save_str = null;
+                }
             }
         }
         private void serviceParser_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
             DataGridView dataGridView = serviceParser_dataGridView;
-            int sta = 3;
-            int row = dataGridView.CurrentCell.RowIndex;
-            int column = dataGridView.CurrentCell.ColumnIndex;
+            if (dataGridView.RowCount > 0)
+            {
+                int sta = 3;
+                int row = dataGridView.CurrentCell.RowIndex;
+                int column = dataGridView.CurrentCell.ColumnIndex;
 
-            if (column == sta)
-                dataGridView.CurrentCell = dataGridView.Rows[row].Cells[1];
+                if (column == sta)
+                    dataGridView.CurrentCell = dataGridView.Rows[row].Cells[1];
 
-            string item = dataGridView.Rows[row].Cells[1].Value.ToString();
-            decimal price = Edit.removeSymbol(dataGridView.Rows[row].Cells[sta].Value.ToString());
+                string item = dataGridView.Rows[row].Cells[1].Value.ToString();
+                decimal price = Edit.removeSymbol(dataGridView.Rows[row].Cells[sta].Value.ToString());
 
-            if (e.KeyCode == Keys.Insert)
-                ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
+                if (e.KeyCode == Keys.Insert)
+                    ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
+            }
+            
         }
         private void serviceParser_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            ServiceParserPresenter.drawDTGView();
+            if (serviceParser_dataGridView.RowCount > 0)
+                ServiceParserPresenter.drawDTGView();
         }
 
         //X

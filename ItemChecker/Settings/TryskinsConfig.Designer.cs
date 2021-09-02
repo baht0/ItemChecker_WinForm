@@ -109,25 +109,13 @@ namespace ItemChecker.Settings {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool fastTime {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int loadData {
             get {
-                return ((bool)(this["fastTime"]));
+                return ((int)(this["loadData"]));
             }
             set {
-                this["fastTime"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool longTime {
-            get {
-                return ((bool)(this["longTime"]));
-            }
-            set {
-                this["longTime"] = value;
+                this["loadData"] = value;
             }
         }
         

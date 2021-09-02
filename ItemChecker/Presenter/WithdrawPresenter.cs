@@ -27,8 +27,9 @@ namespace ItemChecker.Presenter
         public static void withdraw(object state)
         {
             try
-            {                
-                withdrawCheck();
+            {
+                TryskinsPresenter.loginTryskins();
+                getItems();
                 createDTable();
             }
             catch (Exception exp)
@@ -47,7 +48,7 @@ namespace ItemChecker.Presenter
             }
         }
 
-        private static void withdrawCheck()
+        private static void getItems()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -124,7 +125,7 @@ namespace ItemChecker.Presenter
             }
             
         }
-        public static void createDTable()
+        private static void createDTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Table Withdraw..."; }));
             MainPresenter.clearDTableRows(mainForm.withdraw_dataGridView);
@@ -181,13 +182,11 @@ namespace ItemChecker.Presenter
         //inventory
         public static void inventoryCsm(object state)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            JArray items = new();
             try
             {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-                loginCsm();
-
-                JArray items = getItems(checkInventory());
+                items = getItems(checkInventory());
                 if(items.Count > 0)
                 {
                     mainForm.Invoke(new MethodInvoker(delegate {
@@ -209,7 +208,7 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                MainPresenter.messageBalloonTip("Checking inventory cs.money is completed.", ToolTipIcon.Info);
+                MainPresenter.messageBalloonTip($"Checking inventory cs.money is completed.\n{items.Count} items were withdrawn.", ToolTipIcon.Info);
             }
         }
         private static JArray checkInventory()
@@ -273,7 +272,7 @@ namespace ItemChecker.Presenter
         }
         private static void withdrawItems(JArray items)
         {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Withdraw items..."; }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = $"Withdraw ({items.Count}) items..."; }));
 
             foreach (JObject item in items)
             {
@@ -331,7 +330,7 @@ namespace ItemChecker.Presenter
                     Main.cts = new();
                     Main.token = Main.cts.Token;
 
-                    Main.Browser.Navigate().GoToUrl("https://cs.money/csgo/trade/");
+                    MainPresenter.preparationData();
                     ThreadPool.QueueUserWorkItem(checkFavorite);
                 }
                 else
@@ -510,7 +509,6 @@ namespace ItemChecker.Presenter
         //cs.money
         public static void loginCsm()
         {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Cs.Money..."; }));
             Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
             string json = html.Text;
@@ -525,6 +523,21 @@ namespace ItemChecker.Presenter
                     signins.Click();
                     Thread.Sleep(300);
                 }
+            }
+        }
+        public static void getBalance()
+        {
+            try
+            {
+                loginCsm();
+                Main.Browser.Navigate().GoToUrl("https://cs.money/personal-info/");
+                IWebElement balance = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//span[@class='styles_price__1m7op styles_balance__1OBZG']/span")));
+                Withdraw.balance_usd = Edit.removeDol(balance.Text);
+                Withdraw.balance = Math.Round(Withdraw.balance_usd * GeneralConfig.Default.currency, 2);
+            }
+            catch (Exception exp)
+            {
+                Exceptions.errorLog(exp, Main.assemblyVersion);
             }
         }
         private JObject getStackItems(JObject item, JObject stack_item)

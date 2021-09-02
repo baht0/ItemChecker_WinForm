@@ -41,8 +41,7 @@ namespace ItemChecker
             compareSt_checkBox.Checked = TryskinsConfig.Default.compareSt;
             dontUpload_checkBox.Checked = TryskinsConfig.Default.dontUpload;
             oldcsm_checkBox.Checked = TryskinsConfig.Default.oldDesign;
-            fast_radioButton.Checked = TryskinsConfig.Default.fastTime;
-            long_radioButton.Checked = TryskinsConfig.Default.longTime;
+            loadData_comboBox.SelectedIndex = TryskinsConfig.Default.loadData;
             //withdraw
             minPrecentW_numericUpDown.Value = WithdrawConfig.Default.minPrecent;
             maxPrecentW_numericUpDown.Value = WithdrawConfig.Default.maxPrecent;
@@ -59,9 +58,7 @@ namespace ItemChecker
             maxPrecentFloat_numericUpDown.Value = FloatConfig.Default.maxFloatPrecent;
             getItems_numericUpDown.Value = FloatConfig.Default.countGetItems;
             floatTimer_numericUpDown.Value = FloatConfig.Default.timer;
-            if (FloatConfig.Default.priceCompare == 0) lowest_radioButton.Checked = true;
-            if (FloatConfig.Default.priceCompare == 1) median_radioButton.Checked = true;
-            if (FloatConfig.Default.priceCompare == 2) csm_radioButton.Checked = true;
+            comparePrices_comboBox.SelectedIndex = FloatConfig.Default.priceCompare;
 
             FN_numericUpDown.Value = FloatConfig.Default.maxFloatValue_FN;
             MW_numericUpDown.Value = FloatConfig.Default.maxFloatValue_MW;
@@ -92,9 +89,8 @@ namespace ItemChecker
             minPrice_numericUpDown.Value = 0;
             sales_numericUpDown.Value = 0;
             compareSt_checkBox.Checked = false;
+            loadData_comboBox.SelectedIndex = 0;
             dontUpload_checkBox.Checked = false;
-            fast_radioButton.Checked = true;
-            long_radioButton.Checked = false;
             oldcsm_checkBox.Checked = true;
             //withdraw
             minPrecentW_numericUpDown.Value = 3;
@@ -118,9 +114,7 @@ namespace ItemChecker
             FT_numericUpDown.Value = Convert.ToDecimal(0.175);
             WW_numericUpDown.Value = Convert.ToDecimal(0.400);
             BS_numericUpDown.Value = Convert.ToDecimal(0.500);
-            lowest_radioButton.Checked = true;
-            median_radioButton.Checked = false;
-            csm_radioButton.Checked = false;
+            comparePrices_comboBox.SelectedIndex = 0;
         }
         private void ok_button_Click(object sender, EventArgs e)
         {
@@ -150,8 +144,7 @@ namespace ItemChecker
                     TryskinsConfig.Default.sales = Convert.ToInt32(sales_numericUpDown.Value);
                     TryskinsConfig.Default.compareSt = compareSt_checkBox.Checked;
                     TryskinsConfig.Default.dontUpload = dontUpload_checkBox.Checked;
-                    TryskinsConfig.Default.fastTime = fast_radioButton.Checked;
-                    TryskinsConfig.Default.longTime = long_radioButton.Checked;
+                    TryskinsConfig.Default.loadData = loadData_comboBox.SelectedIndex;
                     TryskinsConfig.Default.oldDesign = oldcsm_checkBox.Checked;
                     //withdraw
                     WithdrawConfig.Default.minPrecent = Convert.ToInt32(minPrecentW_numericUpDown.Value);
@@ -169,10 +162,7 @@ namespace ItemChecker
                     FloatConfig.Default.maxFloatPrecent = maxPrecentFloat_numericUpDown.Value;
                     FloatConfig.Default.countGetItems = Convert.ToInt32(getItems_numericUpDown.Value);
                     FloatConfig.Default.timer = Convert.ToInt32(floatTimer_numericUpDown.Value);
-
-                    if (lowest_radioButton.Checked == true) FloatConfig.Default.priceCompare = 0;
-                    if (median_radioButton.Checked == true) FloatConfig.Default.priceCompare = 1;
-                    if (csm_radioButton.Checked == true) FloatConfig.Default.priceCompare = 2;
+                    FloatConfig.Default.priceCompare = comparePrices_comboBox.SelectedIndex;
 
                     FloatConfig.Default.maxFloatValue_FN = FN_numericUpDown.Value;
                     FloatConfig.Default.maxFloatValue_MW = MW_numericUpDown.Value;
@@ -267,6 +257,7 @@ namespace ItemChecker
                 File.Copy(fileName, configPath, true);
 
                 MessageBox.Show("Restart required. The program will be closed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Hide();
                 MainPresenter.exit();
             }
         }

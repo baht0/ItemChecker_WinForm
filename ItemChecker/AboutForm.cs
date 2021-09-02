@@ -18,7 +18,7 @@ namespace ItemChecker
                 createInfo_linkLabel.Visible = true;
 
             if (ProjectInfo.update.Any())
-                point_pictureBox.Visible = true;
+                point_pictureBox.BackgroundImage = new System.Drawing.Bitmap(Properties.Resources.point_red);
             
             version_label.Text = "Version: " + Main.assemblyVersion;
 
@@ -69,6 +69,17 @@ namespace ItemChecker
         private void link_pictureBox_Click(object sender, System.EventArgs e)
         {
             Support.Edit.openUrl(Application.StartupPath);
+        }
+
+        private void lastVersion_label_Click(object sender, System.EventArgs e)
+        {
+            NewForm newForm = new();
+            newForm.ShowDialog();
+        }
+        private void point_pictureBox_Click(object sender, System.EventArgs e)
+        {
+            NewForm newForm = new();
+            newForm.ShowDialog();
         }
     }
 }

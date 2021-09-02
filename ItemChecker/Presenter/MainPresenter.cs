@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium;
 using System;
 using System.Windows.Forms;
 using System.Drawing;
@@ -28,20 +27,18 @@ namespace ItemChecker.Presenter
             {                
                 while (!token.IsCancellationRequested)
                 {
-                    launchBrowser();
-                    if (!Main.Browser.Url.Contains("id"))
-                    {
-                        loginSteam();
-                        loginTryskins();
-                    }
-                    else
-                        progressInvoke(2);
+                    LaunchBrowser();
+
+                    ProjectInfoPresenter.getCurrentVersion();
+                    ProjectInfoPresenter.checkUpdate();
+                    if (ProjectInfo.update.Any())
+                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.aboutToolStripMenuItem.Image = new Bitmap(Properties.Resources.point_red); }));
+
+                    SteamPresenter.loginSteam();
                     preparationData();
-                    loadDataSteam();
-                    if (!TryskinsConfig.Default.dontUpload)
-                        loadDataTryskins();
-                    else
-                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - Setting: 'Don't upload'."; }));
+                    BuyOrderPresenter.SteamOrders();
+                    TryskinsPresenter.Tryskins(TryskinsConfig.Default.dontUpload);
+
                     if (SteamConfig.Default.startupPush)
                     {
                         Main.loading = false;
@@ -59,84 +56,45 @@ namespace ItemChecker.Presenter
             }
             finally
             {
-                Main.loading = false; 
+                Main.loading = false;
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.progressBar_StripStatus.Visible = false;
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.reload_MainStripMenu.Enabled = true; }));
                 messageBalloonTip(null, ToolTipIcon.Info);
+                if (Properties.Settings.Default.whatIsNew)
+                {
+                    NewForm newForm = new();
+                    mainForm.Invoke(new MethodInvoker(delegate { newForm.ShowDialog(); }));
+
+                    Properties.Settings.Default.whatIsNew = false;
+                    Properties.Settings.Default.Save();
+                }
+
             }
         }
-        private static void launchBrowser()
+        private static void LaunchBrowser()
         {
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
             ChromeOptions option = new();
             option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions", "--disable-blink-features=AutomationControlled", "ignore-certificate-errors");
             if (GeneralConfig.Default.profile)
-                option.AddArguments(@"--user-data-dir=" + Application.StartupPath.Replace(@"\", @"\\") + "\\profile", "profile-directory=Default");
+                option.AddArguments(@"--user-data-dir=" + Application.StartupPath + "\\profile", "profile-directory=Default");
             else
-                Directory.Delete(Application.StartupPath.Replace(@"\", @"\\") + "\\profile", true);
+                Directory.Delete(Application.StartupPath + "\\profile", true);
             option.Proxy = null;
 
             Main.Browser = new ChromeDriver(chromeDriverService, option, TimeSpan.FromSeconds(30));
             Main.Browser.Manage().Window.Maximize();
-            Main.Browser.Url = "https://steamcommunity.com/login/home/?goto=";
-            Main.wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));
-
-            var cookie = Main.Browser.Manage().Cookies.GetCookieNamed("sessionid").ToString();
-            Main.sessionid = cookie.Substring(10, 24);
-
-            ProjectInfoPresenter.getCurrentVersion();
-            ProjectInfoPresenter.checkUpdate();
-            if (ProjectInfo.update.Any())
-                mainForm.Invoke(new MethodInvoker(delegate { mainForm.aboutToolStripMenuItem.Image = new Bitmap(Properties.Resources.point_red); }));            
+            Main.wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));            
 
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
             progressInvoke();
         }
-        private static void loginSteam()
-        {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Steam..."; }));
-
-            IWebElement username = Main.Browser.FindElement(By.XPath("//input[@name='username']"));
-            IWebElement password = Main.Browser.FindElement(By.XPath("//input[@name='password']"));
-            IWebElement signin = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@class='btn_blue_steamui btn_medium login_btn']")));
-
-            LoginForm fr = new LoginForm();
-            mainForm.Invoke(new MethodInvoker(delegate { fr.ShowDialog(); }));
-            Main.loading = true;
-
-            username.SendKeys(Steam.login);
-            password.SendKeys(Steam.pass);
-            signin.Click();
-
-            IWebElement code = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//input[@id='twofactorcode_entry']")));
-            code.SendKeys(Steam.code);
-            code.SendKeys(OpenQA.Selenium.Keys.Enter);
-
-            Thread.Sleep(4000);
-            progressInvoke();
-        }
-        private static void loginTryskins()
-        {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Tryskins..."; }));
-            Main.Browser.Navigate().GoToUrl("https://table.altskins.com/login/steam");
-
-            IWebElement account = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
-            if (account.Text == Steam.login)
-            {
-                IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
-                signins.Click();
-                Thread.Sleep(300);
-
-                progressInvoke();
-            }
-            else throw new InvalidOperationException("Login Tryskins");
-        }
 
         //load
-        private static void preparationData()
+        public static void preparationData()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Info..."; }));
 
@@ -147,40 +105,21 @@ namespace ItemChecker.Presenter
                 GeneralConfig.Default.Save();
             }
             SteamPresenter.getBalance();
+            WithdrawPresenter.getBalance();
 
             Get get = new();
             Main.overstock = get.Overstock();
             Main.unavailable = get.Unavailable();
 
             mainForm.Invoke(new MethodInvoker(delegate {
-                mainForm.course_label.Text = GeneralConfig.Default.currency.ToString() + " ₽";
-                mainForm.overstock_label.Text =  "Overstock: " + Main.overstock.Count.ToString();
-                mainForm.unavailable_label.Text = "Unavailable: " + Main.unavailable.Count.ToString(); }));
+                mainForm.balance_StripStatus.Text = $"Balance: {Steam.balance}₽ / {Withdraw.balance}₽";
+                mainForm.balance_StripStatus.ToolTipText = $"Balance: ${Steam.balance_usd} / ${Withdraw.balance_usd}";
+                mainForm.course_label.Text = $"{GeneralConfig.Default.currency}₽";
+                mainForm.overstock_label.Text =  $"Overstock: {Main.overstock.Count}";
+                mainForm.unavailable_label.Text = $"Unavailable: {Main.unavailable.Count}"; }));
 
             progressInvoke();
         }
-        public static void loadDataSteam()
-        {
-            if (BuyOrder.my_buy_orders != 0)
-            {
-                BuyOrderPresenter.getSteamlist();
-                if (GeneralConfig.Default.proxy & BuyOrder.item.Count >= 30)
-                    BuyOrderPresenter.checkOrdersProxy();
-                else
-                    BuyOrderPresenter.checkOrders();
-                BuyOrderPresenter.createDTable();
-            }
-            else progressInvoke(3);
-        }
-        private static void loadDataTryskins()
-        {
-            TryskinsPresenter.getItemsTryskins();
-            if (TrySkins.item.Count > 0)
-                TryskinsPresenter.createDTable();
-            else progressInvoke();
-        }
-
-        //reaload
         public static void _reload(object state)
         {
             try
@@ -190,33 +129,30 @@ namespace ItemChecker.Presenter
                 object[] args = state as object[];
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = false;
-                    mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
                     mainForm.progressBar_StripStatus.Value = 0;
+                    mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
                     mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.status_StripStatus.Text = "Processing...";
                     mainForm.status_StripStatus.Visible = true; }));
 
+                preparationData();
                 if (Main.reload == 0)//full
                 {
                     clearAll();
-                    preparationData();
-                    loadDataSteam();
-                    loadDataTryskins();
+                    BuyOrderPresenter.SteamOrders();
+                    TryskinsPresenter.Tryskins(false);
                 }
                 else if (Main.reload == 1)//tryskins
                 {
-                    preparationData();
                     BuyOrder._clearQueue();
-                    loadDataTryskins();
+                    TryskinsPresenter.Tryskins(false);
                 }
                 else if (Main.reload == 2)//buy order
                 {
-                    preparationData();
-                    loadDataSteam();
+                    BuyOrderPresenter.SteamOrders();
                 }
                 else if (Main.reload == 3)//update data
                 {
-                    preparationData();
                     BuyOrderPresenter.availableAmount();
                 }
             }
@@ -305,8 +241,8 @@ namespace ItemChecker.Presenter
                 TryskinsConfig.Default.Upgrade();
                 WithdrawConfig.Default.Upgrade();
                 FloatConfig.Default.Upgrade();
-                Properties.Settings.Default.completionUpdate = false;
 
+                Properties.Settings.Default.completionUpdate = false;
                 Properties.Settings.Default.Save();
             }
         }
@@ -335,7 +271,6 @@ namespace ItemChecker.Presenter
             {
                 mainForm.notifyIcon.Visible = false;
                 Main.Browser.Quit();
-                Application.Exit();
             }
             catch
             {
@@ -349,7 +284,10 @@ namespace ItemChecker.Presenter
                         continue;
                     }
                 }
-                foreach (Process proc in Process.GetProcessesByName("ItemChecker")) proc.Kill();
+            }
+            finally
+            {
+                Application.Exit();
             }
         }
     }

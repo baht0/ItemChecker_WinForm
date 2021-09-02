@@ -129,6 +129,8 @@ namespace ItemChecker
             this.ver_label = new System.Windows.Forms.Label();
             this.loading_panel = new System.Windows.Forms.Panel();
             this.info_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.toolsMessage_groupBox = new System.Windows.Forms.GroupBox();
+            this.toolsMessage_label = new System.Windows.Forms.Label();
             this.main_statusStrip.SuspendLayout();
             this.main_menuStrip.SuspendLayout();
             this.availability_groupBox.SuspendLayout();
@@ -145,6 +147,7 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.withdraw_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).BeginInit();
             this.loading_panel.SuspendLayout();
+            this.toolsMessage_groupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // main_statusStrip
@@ -157,6 +160,7 @@ namespace ItemChecker
             this.timer_StripStatus});
             this.main_statusStrip.Location = new System.Drawing.Point(0, 589);
             this.main_statusStrip.Name = "main_statusStrip";
+            this.main_statusStrip.ShowItemToolTips = true;
             this.main_statusStrip.Size = new System.Drawing.Size(600, 22);
             this.main_statusStrip.SizingGrip = false;
             this.main_statusStrip.TabIndex = 0;
@@ -165,13 +169,14 @@ namespace ItemChecker
             // balance_StripStatus
             // 
             this.balance_StripStatus.Name = "balance_StripStatus";
-            this.balance_StripStatus.Size = new System.Drawing.Size(75, 17);
-            this.balance_StripStatus.Text = "Balance: 0.00";
+            this.balance_StripStatus.Size = new System.Drawing.Size(119, 17);
+            this.balance_StripStatus.Text = "Balance: 0.00₽ / 0.00₽";
+            this.balance_StripStatus.ToolTipText = "Balance: $0.00 / $0.00";
             // 
             // space_StripStatus
             // 
             this.space_StripStatus.Name = "space_StripStatus";
-            this.space_StripStatus.Size = new System.Drawing.Size(360, 17);
+            this.space_StripStatus.Size = new System.Drawing.Size(316, 17);
             this.space_StripStatus.Spring = true;
             // 
             // status_StripStatus
@@ -182,7 +187,7 @@ namespace ItemChecker
             // 
             // progressBar_StripStatus
             // 
-            this.progressBar_StripStatus.Maximum = 9;
+            this.progressBar_StripStatus.Maximum = 10;
             this.progressBar_StripStatus.Name = "progressBar_StripStatus";
             this.progressBar_StripStatus.Size = new System.Drawing.Size(100, 16);
             // 
@@ -372,6 +377,7 @@ namespace ItemChecker
             this.tableExtractToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.trySkinsTotxtToolStripMenuItem,
             this.buyOrdersTotxtToolStripMenuItem});
+            this.tableExtractToolStripMenuItem.Image = global::ItemChecker.Properties.Resources.txt_file;
             this.tableExtractToolStripMenuItem.Name = "tableExtractToolStripMenuItem";
             this.tableExtractToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.tableExtractToolStripMenuItem.Text = "TableExtract";
@@ -575,7 +581,7 @@ namespace ItemChecker
             this.floatCheck_groupBox.Controls.Add(this.floatPurchases_label);
             this.floatCheck_groupBox.Controls.Add(this.floatCheck_label);
             this.floatCheck_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.floatCheck_groupBox.Location = new System.Drawing.Point(0, 0);
+            this.floatCheck_groupBox.Location = new System.Drawing.Point(328, 538);
             this.floatCheck_groupBox.Name = "floatCheck_groupBox";
             this.floatCheck_groupBox.Size = new System.Drawing.Size(259, 40);
             this.floatCheck_groupBox.TabIndex = 10;
@@ -623,6 +629,7 @@ namespace ItemChecker
             this.pusherBuyOrder_groupBox.TabIndex = 4;
             this.pusherBuyOrder_groupBox.TabStop = false;
             this.pusherBuyOrder_groupBox.Text = "ItemPusher:";
+            this.pusherBuyOrder_groupBox.Visible = false;
             // 
             // pusherItems_label
             // 
@@ -666,7 +673,6 @@ namespace ItemChecker
             this.favoriteCheck_groupBox.Controls.Add(this.favoriteItems_label);
             this.favoriteCheck_groupBox.Controls.Add(this.favoriteTrades_label);
             this.favoriteCheck_groupBox.Controls.Add(this.favoriteCheck_label);
-            this.favoriteCheck_groupBox.Controls.Add(this.floatCheck_groupBox);
             this.favoriteCheck_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.favoriteCheck_groupBox.Location = new System.Drawing.Point(328, 539);
             this.favoriteCheck_groupBox.Name = "favoriteCheck_groupBox";
@@ -1070,7 +1076,7 @@ namespace ItemChecker
             // 
             this.ver_label.AutoSize = true;
             this.ver_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ver_label.Location = new System.Drawing.Point(12, 589);
+            this.ver_label.Location = new System.Drawing.Point(507, 589);
             this.ver_label.Name = "ver_label";
             this.ver_label.Size = new System.Drawing.Size(81, 13);
             this.ver_label.TabIndex = 1;
@@ -1087,24 +1093,46 @@ namespace ItemChecker
             this.loading_panel.Size = new System.Drawing.Size(600, 611);
             this.loading_panel.TabIndex = 7;
             // 
+            // toolsMessage_groupBox
+            // 
+            this.toolsMessage_groupBox.Controls.Add(this.toolsMessage_label);
+            this.toolsMessage_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toolsMessage_groupBox.Location = new System.Drawing.Point(328, 539);
+            this.toolsMessage_groupBox.Name = "toolsMessage_groupBox";
+            this.toolsMessage_groupBox.Size = new System.Drawing.Size(259, 40);
+            this.toolsMessage_groupBox.TabIndex = 11;
+            this.toolsMessage_groupBox.TabStop = false;
+            this.toolsMessage_groupBox.Text = "Tools:";
+            // 
+            // toolsMessage_label
+            // 
+            this.toolsMessage_label.AutoSize = true;
+            this.toolsMessage_label.Location = new System.Drawing.Point(44, 16);
+            this.toolsMessage_label.Name = "toolsMessage_label";
+            this.toolsMessage_label.Size = new System.Drawing.Size(191, 13);
+            this.toolsMessage_label.TabIndex = 6;
+            this.toolsMessage_label.Text = "Instrument statistics are displayed here.";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 611);
             this.Controls.Add(this.loading_panel);
+            this.Controls.Add(this.floatCheck_groupBox);
+            this.Controls.Add(this.pusherBuyOrder_groupBox);
             this.Controls.Add(this.favoriteCheck_groupBox);
             this.Controls.Add(this.withdraw_dataGridView);
             this.Controls.Add(this.tryskins_dataGridView);
             this.Controls.Add(this.buyOrder_dataGridView);
             this.Controls.Add(this.course_groupBox);
             this.Controls.Add(this.steamItems_groupBox);
-            this.Controls.Add(this.pusherBuyOrder_groupBox);
             this.Controls.Add(this.queue_groupBox);
             this.Controls.Add(this.tradeOffer_groupBox);
             this.Controls.Add(this.availability_groupBox);
             this.Controls.Add(this.main_statusStrip);
             this.Controls.Add(this.main_menuStrip);
+            this.Controls.Add(this.toolsMessage_groupBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.main_menuStrip;
             this.MaximizeBox = false;
@@ -1142,6 +1170,8 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).EndInit();
             this.loading_panel.ResumeLayout(false);
             this.loading_panel.PerformLayout();
+            this.toolsMessage_groupBox.ResumeLayout(false);
+            this.toolsMessage_groupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1216,7 +1246,6 @@ namespace ItemChecker
         public System.Windows.Forms.ToolStripMenuItem showWithdraw_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem transactionsToolStripMenuItem;
         public System.Windows.Forms.GroupBox favoriteCheck_groupBox;
-        public System.Windows.Forms.Label favoriteTrades_label;
         public System.Windows.Forms.Label favoriteCheck_label;
         public System.Windows.Forms.Label favoriteItems_label;
         public System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -1255,6 +1284,9 @@ namespace ItemChecker
         private System.Windows.Forms.DataGridViewTextBoxColumn staWD_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn salesWD_Column;
         private System.Windows.Forms.DataGridViewTextBoxColumn precentWD_Column;
+        public System.Windows.Forms.Label favoriteTrades_label;
+        public System.Windows.Forms.GroupBox toolsMessage_groupBox;
+        public System.Windows.Forms.Label toolsMessage_label;
     }
 }
 

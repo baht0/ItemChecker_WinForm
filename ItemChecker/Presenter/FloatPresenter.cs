@@ -145,6 +145,7 @@ namespace ItemChecker.Presenter
                     FloatPresenter.stopCheckFloat();
             }
         }
+
         private void getPrice(string market_hash_name)
         {
             try

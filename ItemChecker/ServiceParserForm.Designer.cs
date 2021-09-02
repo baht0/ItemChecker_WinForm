@@ -47,6 +47,16 @@ namespace ItemChecker
             this.status_toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.quickCheck_textBox = new System.Windows.Forms.TextBox();
             this.serviceParser_dataGridView = new System.Windows.Forms.DataGridView();
+            this.color_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price1_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price2_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price3_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.price4_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.precent_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.difference_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.status_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.availability_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.secondSer_comboBox = new System.Windows.Forms.ComboBox();
@@ -62,16 +72,6 @@ namespace ItemChecker
             this.clearSearch_linkLabel = new System.Windows.Forms.LinkLabel();
             this.search_textBox = new System.Windows.Forms.TextBox();
             this.info_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.color_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price1_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price2_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price3_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.price4_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.precent_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.difference_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.status_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.availability_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.serviceParser_menuStrip.SuspendLayout();
             this.serviceParser_statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.serviceParser_dataGridView)).BeginInit();
@@ -135,8 +135,9 @@ namespace ItemChecker
             // 
             // extractListtxtToolStripMenuItem
             // 
+            this.extractListtxtToolStripMenuItem.Image = global::ItemChecker.Properties.Resources.txt_file;
             this.extractListtxtToolStripMenuItem.Name = "extractListtxtToolStripMenuItem";
-            this.extractListtxtToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
+            this.extractListtxtToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
             this.extractListtxtToolStripMenuItem.Text = "Extract list *.txt";
             this.extractListtxtToolStripMenuItem.Click += new System.EventHandler(this.extractListtxtToolStripMenuItem_Click);
             // 
@@ -238,6 +239,100 @@ namespace ItemChecker
             this.serviceParser_dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.serviceParser_dataGridView_CellLeave);
             this.serviceParser_dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.serviceParser_dataGridView_ColumnHeaderMouseClick);
             this.serviceParser_dataGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serviceParser_dataGridView_KeyDown);
+            // 
+            // color_Column
+            // 
+            this.color_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.color_Column.DataPropertyName = "color_Column";
+            this.color_Column.FillWeight = 0.000422392F;
+            this.color_Column.HeaderText = "";
+            this.color_Column.Name = "color_Column";
+            this.color_Column.ReadOnly = true;
+            this.color_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.color_Column.Width = 5;
+            // 
+            // item_Column
+            // 
+            this.item_Column.DataPropertyName = "item_Column";
+            this.item_Column.FillWeight = 310F;
+            this.item_Column.HeaderText = "Item";
+            this.item_Column.Name = "item_Column";
+            this.item_Column.ReadOnly = true;
+            this.item_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price1_Column
+            // 
+            this.price1_Column.DataPropertyName = "price1_Column";
+            this.price1_Column.FillWeight = 75F;
+            this.price1_Column.HeaderText = "Price (S1)";
+            this.price1_Column.Name = "price1_Column";
+            this.price1_Column.ReadOnly = true;
+            this.price1_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price2_Column
+            // 
+            this.price2_Column.DataPropertyName = "price2_Column";
+            this.price2_Column.FillWeight = 75F;
+            this.price2_Column.HeaderText = "Price (S1)";
+            this.price2_Column.Name = "price2_Column";
+            this.price2_Column.ReadOnly = true;
+            this.price2_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price3_Column
+            // 
+            this.price3_Column.DataPropertyName = "price3_Column";
+            this.price3_Column.FillWeight = 75F;
+            this.price3_Column.HeaderText = "Price (S2)";
+            this.price3_Column.Name = "price3_Column";
+            this.price3_Column.ReadOnly = true;
+            this.price3_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // price4_Column
+            // 
+            this.price4_Column.DataPropertyName = "price4_Column";
+            this.price4_Column.FillWeight = 75F;
+            this.price4_Column.HeaderText = "Price (S2)";
+            this.price4_Column.Name = "price4_Column";
+            this.price4_Column.ReadOnly = true;
+            this.price4_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // precent_Column
+            // 
+            this.precent_Column.DataPropertyName = "precent_Column";
+            this.precent_Column.FillWeight = 60F;
+            this.precent_Column.HeaderText = "Precent";
+            this.precent_Column.Name = "precent_Column";
+            this.precent_Column.ReadOnly = true;
+            this.precent_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // difference_Column
+            // 
+            this.difference_Column.DataPropertyName = "difference_Column";
+            this.difference_Column.FillWeight = 80F;
+            this.difference_Column.HeaderText = "Difference [₽]";
+            this.difference_Column.Name = "difference_Column";
+            this.difference_Column.ReadOnly = true;
+            this.difference_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // status_Column
+            // 
+            this.status_Column.DataPropertyName = "status_Column";
+            this.status_Column.FillWeight = 80F;
+            this.status_Column.HeaderText = "Status";
+            this.status_Column.Name = "status_Column";
+            this.status_Column.ReadOnly = true;
+            this.status_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // availability_Column
+            // 
+            this.availability_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.availability_Column.DataPropertyName = "availability_Column";
+            this.availability_Column.FillWeight = 1F;
+            this.availability_Column.HeaderText = "";
+            this.availability_Column.Name = "availability_Column";
+            this.availability_Column.ReadOnly = true;
+            this.availability_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.availability_Column.Width = 5;
             // 
             // groupBox1
             // 
@@ -411,100 +506,6 @@ namespace ItemChecker
             this.search_textBox.Size = new System.Drawing.Size(930, 23);
             this.search_textBox.TabIndex = 7;
             this.search_textBox.TextChanged += new System.EventHandler(this.search_textBox_TextChanged);
-            // 
-            // color_Column
-            // 
-            this.color_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.color_Column.DataPropertyName = "color_Column";
-            this.color_Column.FillWeight = 0.000422392F;
-            this.color_Column.HeaderText = "";
-            this.color_Column.Name = "color_Column";
-            this.color_Column.ReadOnly = true;
-            this.color_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.color_Column.Width = 5;
-            // 
-            // item_Column
-            // 
-            this.item_Column.DataPropertyName = "item_Column";
-            this.item_Column.FillWeight = 310F;
-            this.item_Column.HeaderText = "Item";
-            this.item_Column.Name = "item_Column";
-            this.item_Column.ReadOnly = true;
-            this.item_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price1_Column
-            // 
-            this.price1_Column.DataPropertyName = "price1_Column";
-            this.price1_Column.FillWeight = 75F;
-            this.price1_Column.HeaderText = "Price (S1)";
-            this.price1_Column.Name = "price1_Column";
-            this.price1_Column.ReadOnly = true;
-            this.price1_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price2_Column
-            // 
-            this.price2_Column.DataPropertyName = "price2_Column";
-            this.price2_Column.FillWeight = 75F;
-            this.price2_Column.HeaderText = "Price (S1)";
-            this.price2_Column.Name = "price2_Column";
-            this.price2_Column.ReadOnly = true;
-            this.price2_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price3_Column
-            // 
-            this.price3_Column.DataPropertyName = "price3_Column";
-            this.price3_Column.FillWeight = 75F;
-            this.price3_Column.HeaderText = "Price (S2)";
-            this.price3_Column.Name = "price3_Column";
-            this.price3_Column.ReadOnly = true;
-            this.price3_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // price4_Column
-            // 
-            this.price4_Column.DataPropertyName = "price4_Column";
-            this.price4_Column.FillWeight = 75F;
-            this.price4_Column.HeaderText = "Price (S2)";
-            this.price4_Column.Name = "price4_Column";
-            this.price4_Column.ReadOnly = true;
-            this.price4_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // precent_Column
-            // 
-            this.precent_Column.DataPropertyName = "precent_Column";
-            this.precent_Column.FillWeight = 60F;
-            this.precent_Column.HeaderText = "Precent";
-            this.precent_Column.Name = "precent_Column";
-            this.precent_Column.ReadOnly = true;
-            this.precent_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // difference_Column
-            // 
-            this.difference_Column.DataPropertyName = "difference_Column";
-            this.difference_Column.FillWeight = 80F;
-            this.difference_Column.HeaderText = "Difference [₽]";
-            this.difference_Column.Name = "difference_Column";
-            this.difference_Column.ReadOnly = true;
-            this.difference_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // status_Column
-            // 
-            this.status_Column.DataPropertyName = "status_Column";
-            this.status_Column.FillWeight = 80F;
-            this.status_Column.HeaderText = "Status";
-            this.status_Column.Name = "status_Column";
-            this.status_Column.ReadOnly = true;
-            this.status_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // availability_Column
-            // 
-            this.availability_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.availability_Column.DataPropertyName = "availability_Column";
-            this.availability_Column.FillWeight = 1F;
-            this.availability_Column.HeaderText = "";
-            this.availability_Column.Name = "availability_Column";
-            this.availability_Column.ReadOnly = true;
-            this.availability_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.availability_Column.Width = 5;
             // 
             // ServiceParserForm
             // 

@@ -19,10 +19,64 @@ namespace ItemChecker.Presenter
 {
     public class TryskinsPresenter
     {
-        public static void getItemsTryskins()
+        public static void Tryskins(bool dontUpload)
+        {
+            if (dontUpload)
+            {
+                mainForm.Invoke(new MethodInvoker(delegate { mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - Setting: 'Don't upload'."; }));
+                return;
+            }
+
+            TrySkins._clear();
+            loginTryskins();
+
+            List<IWebElement> items = getItemsTryskins();
+
+            items = checkItemsList(items);
+
+            if (items.Any())
+            {
+                if (TryskinsConfig.Default.loadData == 0)
+                    checkItems(items);
+                else if (TryskinsConfig.Default.loadData == 1)
+                {
+                    if (!GeneralConfig.Default.proxy)
+                        checkItemsMrinka(items);
+                    else
+                        checkItemsMrinkaProxy(items);
+                }
+            }
+
+            if (TrySkins.item.Any())
+                TryskinsPresenter.createDTable();
+        }
+        public static void loginTryskins()
+        {
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Tryskins..."; }));
+
+            Main.Browser.Navigate().GoToUrl("https://table.altskins.com/site/items");
+            if (Main.Browser.Url.Contains("items"))
+            {
+                MainPresenter.progressInvoke();
+                return;
+            }
+
+            Main.Browser.Navigate().GoToUrl("https://table.altskins.com/login/steam");
+            IWebElement account = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
+            if (account.Text == Properties.Settings.Default.login | account.Text == Steam.login)
+            {
+                IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
+                signins.Click();
+                Thread.Sleep(300);
+
+                MainPresenter.progressInvoke();
+            }
+            else throw new InvalidOperationException("Login Tryskins");
+        }
+        private static List<IWebElement> getItemsTryskins()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Check Tryskins..."; }));
-            TrySkins._clear();
+
             decimal min_sta = 2;
             if (TryskinsConfig.Default.minTryskinsPrice == 0)
             {
@@ -61,21 +115,8 @@ namespace ItemChecker.Presenter
                 items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
             } while (items.Count > last);
 
-            items = checkItemsList(items);
-
-            if (items.Any())
-            {
-                if (TryskinsConfig.Default.fastTime)
-                    checkItems(items);
-                else if (TryskinsConfig.Default.longTime)
-                {
-                    if (!GeneralConfig.Default.proxy)
-                        checkItemsMrinka(items);
-                    else
-                        checkItemsMrinkaProxy(items);
-                }
-            }
             MainPresenter.progressInvoke();
+            return items;
         }
         private static List<IWebElement> checkItemsList(List<IWebElement> items)
         {
@@ -136,6 +177,7 @@ namespace ItemChecker.Presenter
                 mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}/{items.Count}";
             }
             mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
+            MainPresenter.progressInvoke();
         }
         private static void checkItemsMrinka(List<IWebElement> items)
         {
@@ -160,6 +202,7 @@ namespace ItemChecker.Presenter
                 mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}/{items.Count}";
             }
             mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
+            MainPresenter.progressInvoke();
         } 
         private static void checkItemsMrinkaProxy(List<IWebElement> items)
         {
@@ -187,6 +230,7 @@ namespace ItemChecker.Presenter
                 }
             }
             mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
+            MainPresenter.progressInvoke();
         }
         private static void parseJson(string response, string item_name)
         {
@@ -205,7 +249,7 @@ namespace ItemChecker.Presenter
                 TrySkins.difference.Add(Edit.Difference(csm_sell, steam_price, GeneralConfig.Default.currency));
             }
         }
-        public static void createDTable()
+        private static void createDTable()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Write Tryskins...";}));
 
@@ -232,6 +276,7 @@ namespace ItemChecker.Presenter
             drawDTGView();
             MainPresenter.progressInvoke();
         }
+
         public static void drawDTGView()
         {
             foreach (DataGridViewRow row in mainForm.tryskins_dataGridView.Rows)
