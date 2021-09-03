@@ -1,5 +1,6 @@
 ﻿using ItemChecker.Model;
 using ItemChecker.Presenter;
+using ItemChecker.Settings;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace ItemChecker
         }
         private void AboutForm_Load(object sender, System.EventArgs e)
         {
-            if (Properties.Settings.Default.login == "bahtiarov116" | Steam.login == "bahtiarov116")
+            if (SteamConfig.Default.login == "bahtiarov116" | Steam.login == "bahtiarov116")
                 createInfo_linkLabel.Visible = true;
 
             if (ProjectInfo.update.Any())
@@ -73,13 +74,19 @@ namespace ItemChecker
 
         private void lastVersion_label_Click(object sender, System.EventArgs e)
         {
-            NewForm newForm = new();
-            newForm.ShowDialog();
+            if (!Properties.Settings.Default.whatIsNew)
+            {
+                NewForm newForm = new();
+                newForm.ShowDialog();
+            }
         }
         private void point_pictureBox_Click(object sender, System.EventArgs e)
         {
-            NewForm newForm = new();
-            newForm.ShowDialog();
+            if (!Properties.Settings.Default.whatIsNew)
+            {
+                NewForm newForm = new();
+                newForm.ShowDialog();
+            }
         }
     }
 }

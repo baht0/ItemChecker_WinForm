@@ -68,11 +68,11 @@ namespace ItemChecker.Net
 
             return FetchRequest("application/x-www-form-urlencoded", body, url);
         }
-        public static String RequestDropbox()
+        public static String RequestDropbox(string file)
         {
             HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("https://content.dropboxapi.com/2/files/download");
 
-            httpRequest.Headers["Dropbox-API-Arg"] = "{\"path\": \"/info.xml\"}";
+            httpRequest.Headers["Dropbox-API-Arg"] = "{\"path\": \"/" + file + "\"}";
             httpRequest.Headers["Authorization"] = "Bearer a94CSH6hwyUAAAAAAAAAAf3zRyhyZknI9J8KM3VZihWEILAuv6Vr3ht_-4RQcJxs";
 
             HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();

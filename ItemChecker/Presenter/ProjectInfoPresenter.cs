@@ -57,7 +57,7 @@ namespace ItemChecker.Presenter
                 ProjectInfo._clear();
 
                 XmlDocument xDoc = new();
-                xDoc.LoadXml(Post.RequestDropbox());
+                xDoc.LoadXml(Post.RequestDropbox("info.xml"));
                 XmlElement xRoot = xDoc.DocumentElement;
 
                 foreach (XmlNode xnode in xRoot)

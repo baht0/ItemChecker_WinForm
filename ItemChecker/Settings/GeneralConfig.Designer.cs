@@ -26,6 +26,18 @@ namespace ItemChecker.Settings {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string checkList {
+            get {
+                return ((string)(this["checkList"]));
+            }
+            set {
+                this["checkList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string currencyApiKey {
             get {
                 return ((string)(this["currencyApiKey"]));

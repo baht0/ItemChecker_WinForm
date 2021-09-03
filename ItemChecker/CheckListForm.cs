@@ -26,7 +26,7 @@ namespace ItemChecker
                 getToolStripMenuItem.Text = "Get items";
                 lootFarmToolStripMenuItem.Visible = true;
                 csMoneyToolStripMenuItem.Visible = true;
-                richTextBox1.Text = Properties.Settings.Default.checkList.Trim();
+                richTextBox1.Text = GeneralConfig.Default.checkList.Trim();
             }
             else if (str.Contains("FavoriteList"))
             {
@@ -54,7 +54,7 @@ namespace ItemChecker
             {
                 Main.checkList.Clear();
                 Main.checkList.AddRange(richTextBox1.Lines);
-                Properties.Settings.Default.checkList = str;
+                GeneralConfig.Default.checkList = str;
             }
             else if (request.Contains("FavoriteList"))
             {

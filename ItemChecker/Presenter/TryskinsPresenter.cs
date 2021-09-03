@@ -63,7 +63,7 @@ namespace ItemChecker.Presenter
 
             Main.Browser.Navigate().GoToUrl("https://table.altskins.com/login/steam");
             IWebElement account = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
-            if (account.Text == Properties.Settings.Default.login | account.Text == Steam.login)
+            if (account.Text == SteamConfig.Default.login | account.Text == Steam.login)
             {
                 IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
                 signins.Click();

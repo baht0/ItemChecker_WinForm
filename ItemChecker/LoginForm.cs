@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using ItemChecker.Model;
 using static ItemChecker.Program;
 using System.Diagnostics;
+using ItemChecker.Settings;
 
 namespace ItemChecker
 {
@@ -15,9 +16,9 @@ namespace ItemChecker
         {
             InitializeComponent(); 
             
-            login_textBox.Text = Properties.Settings.Default.login;
-            pass_textBox.Text = Properties.Settings.Default.pass;
-            remember_checkBox.Checked = Properties.Settings.Default.remember;
+            login_textBox.Text = SteamConfig.Default.login;
+            pass_textBox.Text = SteamConfig.Default.password;
+            remember_checkBox.Checked = SteamConfig.Default.remember;
             this.ActiveControl = code_textBox;
             SystemSounds.Beep.Play();
         }
@@ -65,14 +66,11 @@ namespace ItemChecker
                 Steam.login = login_textBox.Text;
                 Steam.pass = pass_textBox.Text;
                 Steam.code = code_textBox.Text;
-                Properties.Settings.Default.login = "";
-                Properties.Settings.Default.pass = "";
-                Properties.Settings.Default.remember = false;
                 if (remember_checkBox.Checked)
                 {
-                    Properties.Settings.Default.login = login_textBox.Text;
-                    Properties.Settings.Default.pass = pass_textBox.Text;
-                    Properties.Settings.Default.remember = remember_checkBox.Checked;
+                    SteamConfig.Default.login = login_textBox.Text;
+                    SteamConfig.Default.password = pass_textBox.Text;
+                    SteamConfig.Default.remember = remember_checkBox.Checked;
                 }
                 Properties.Settings.Default.Save();
                 close = true;

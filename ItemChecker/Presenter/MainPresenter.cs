@@ -1,11 +1,9 @@
-﻿using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
+﻿using static ItemChecker.Program;
 using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
 using System.Threading;
-using static ItemChecker.Program;
 using ItemChecker.Settings;
 using ItemChecker.Support;
 using ItemChecker.Net;
@@ -13,6 +11,8 @@ using ItemChecker.Model;
 using System.IO;
 using System.Data;
 using System.Linq;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace ItemChecker.Presenter
 {
@@ -23,6 +23,7 @@ namespace ItemChecker.Presenter
         {
             CancellationTokenSource cancelTokenSource = new();
             CancellationToken token = cancelTokenSource.Token;
+
             try
             {                
                 while (!token.IsCancellationRequested)
@@ -65,6 +66,7 @@ namespace ItemChecker.Presenter
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.reload_MainStripMenu.Enabled = true; }));
                 messageBalloonTip(null, ToolTipIcon.Info);
+
                 if (Properties.Settings.Default.whatIsNew)
                 {
                     NewForm newForm = new();
@@ -73,7 +75,6 @@ namespace ItemChecker.Presenter
                     Properties.Settings.Default.whatIsNew = false;
                     Properties.Settings.Default.Save();
                 }
-
             }
         }
         private static void LaunchBrowser()
@@ -237,7 +238,6 @@ namespace ItemChecker.Presenter
                     File.Move($"{update}\\{updaterDll}", path + updaterDll, true);
                     Directory.Delete(update, true);
                 }
-                Properties.Settings.Default.Upgrade();
                 GeneralConfig.Default.Upgrade();
                 SteamConfig.Default.Upgrade();
                 TryskinsConfig.Default.Upgrade();
