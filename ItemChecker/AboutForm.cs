@@ -1,9 +1,11 @@
 ﻿using ItemChecker.Model;
 using ItemChecker.Presenter;
 using ItemChecker.Settings;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using static ItemChecker.Program;
 
 namespace ItemChecker
 {
@@ -19,7 +21,7 @@ namespace ItemChecker
                 createInfo_linkLabel.Visible = true;
 
             if (ProjectInfo.update.Any())
-                point_pictureBox.BackgroundImage = new System.Drawing.Bitmap(Properties.Resources.point_red);
+                point_pictureBox.BackgroundImage = new Bitmap(Properties.Resources.point_red);
             
             version_label.Text = "Version: " + Main.assemblyVersion;
 
@@ -48,7 +50,11 @@ namespace ItemChecker
             lastVersion_label.Text = $"Latest version: {ProjectInfo.latest[0]}";
 
             if (ProjectInfo.update.Any())
+            {
                 checkUpdate_linkLabel.Text = "Update...";
+                point_pictureBox.BackgroundImage = new Bitmap(Properties.Resources.point_red);
+                mainForm.aboutToolStripMenuItem.Image = new Bitmap(Properties.Resources.point_red);
+            }
             else
                 checkUpdate_linkLabel.Text = "Check Update...";
             checkUpdate_linkLabel.Enabled = true;

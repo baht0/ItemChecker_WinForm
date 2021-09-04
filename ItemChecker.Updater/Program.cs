@@ -31,8 +31,6 @@ namespace ItemChecker.Updater
                 dirInfo.Attributes = FileAttributes.Hidden;
 
                 List<string> files = new();
-                files.Add("ItemChecker.Updater.exe");
-                files.Add("ItemChecker.Updater.dll");
                 files.Add("ItemChecker.exe");
                 files.Add("ItemChecker.dll");
                 if (args[1] == "True")
@@ -47,8 +45,10 @@ namespace ItemChecker.Updater
                     files.Add("WebDriver.Support.dll");
                 if (args[6] == "True")
                     files.Add("chromedriver.exe");
-
+                files.Add("ItemChecker.Updater.exe");
+                files.Add("ItemChecker.Updater.dll");
                 Console.WriteLine("Preparation: success");
+
                 Console.WriteLine("\nDownloading...");
                 Console.WriteLine("============================");
                 foreach (string file in files)
@@ -62,8 +62,6 @@ namespace ItemChecker.Updater
 
                 files.Remove("ItemChecker.Updater.exe");
                 files.Remove("ItemChecker.Updater.dll");
-
-                Console.WriteLine("\nUpdating...");
                 foreach (string file in files)
                 {
                     string newPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + file;
@@ -78,8 +76,9 @@ namespace ItemChecker.Updater
             }
             finally
             {
-                Console.WriteLine("\nPress any key to close...");
+                Console.WriteLine("\nPress any key to proceed...");
                 Console.ReadKey();
+                Process.Start(AppDomain.CurrentDomain.BaseDirectory + @"\ItemChecker.exe");
             }
         }
         public static String TemporaryLinkDropbox(string file)
