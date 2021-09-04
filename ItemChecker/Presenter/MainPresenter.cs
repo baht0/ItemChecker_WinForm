@@ -276,7 +276,8 @@ namespace ItemChecker.Presenter
             }
             catch
             {
-                foreach (Process proc in Process.GetProcessesByName("chrome")) proc.Kill();
+                if (GeneralConfig.Default.exitChrome)
+                    foreach (Process proc in Process.GetProcessesByName("chrome")) proc.Kill();
                 foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
                 foreach (Process proc in Process.GetProcessesByName("conhost")) {
                     try {

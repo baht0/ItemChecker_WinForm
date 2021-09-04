@@ -55,7 +55,7 @@ namespace ItemChecker.Net
                 return Tuple.Create(string.Empty, false);
             }
         }
-        public static String inventoriesCsMoney(string market_hash_name)
+        public static String InventoriesCsMoney(string market_hash_name)
         {
             string stattrak = "false";
             string souvenir = "false";
@@ -114,22 +114,24 @@ namespace ItemChecker.Net
 
         public List<string> Overstock()
         {
-            WebClient client = new WebClient();
+            WebClient client = new();
             var str = client.DownloadString("https://cs.money/list_overstock?appId=730");
             var json = JsonConvert.DeserializeObject<RootObject[]>(str);
-            List<string> list = new List<string>();
+            List<string> list = new();
 
-            foreach (var rootObject in json) list.Add(Edit.replaceSymbols(rootObject.market_hash_name));
+            foreach (var rootObject in json) 
+                list.Add(Edit.replaceSymbols(rootObject.market_hash_name));
             return list;
         }
         public List<string> Unavailable()
         {
-            WebClient client = new WebClient();
+            WebClient client = new();
             var str = client.DownloadString("https://cs.money/list_unavailable?appId=730");
             var json = JsonConvert.DeserializeObject<RootObject[]>(str);
-            List<string> list = new List<string>();
+            List<string> list = new();
 
-            foreach (var rootObject in json) list.Add(Edit.replaceSymbols(rootObject.market_hash_name));
+            foreach (var rootObject in json)
+                list.Add(Edit.replaceSymbols(rootObject.market_hash_name));
             return list;
         }
         private class RootObject

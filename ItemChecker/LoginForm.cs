@@ -38,9 +38,7 @@ namespace ItemChecker
         private void code_textBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 ok_button.PerformClick();
-            }
         }
         private void code_textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -49,13 +47,9 @@ namespace ItemChecker
         private void viewPass_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (viewPass_checkBox.Checked)
-            {
                 pass_textBox.PasswordChar = char.Parse("\0");
-            }
             else
-            {
                 pass_textBox.PasswordChar = '•';
-            }
         }
 
         //buttons
@@ -84,8 +78,13 @@ namespace ItemChecker
         }
         private void settings_button_Click(object sender, EventArgs e)
         {
-            SettingsForm fr = new SettingsForm();
-            fr.ShowDialog();
+            if ((Application.OpenForms["SettingsForm"] as SettingsForm) == null)
+            {
+                SettingsForm settingsForm = new();
+                settingsForm.ShowDialog();
+            }
+            else
+                Application.OpenForms["SettingsForm"].Activate();
         }
         private void exit()
         {

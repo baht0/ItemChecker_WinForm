@@ -186,7 +186,7 @@ namespace ItemChecker.Presenter
             JArray items = new();
             try
             {
-                items = getItems(checkInventory());
+                items = checkInventory();
                 if(items.Count > 0)
                 {
                     mainForm.Invoke(new MethodInvoker(delegate {
@@ -208,12 +208,12 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.status_StripStatus.Visible = false;
                     mainForm.progressBar_StripStatus.Visible = false; }));
-                MainPresenter.messageBalloonTip($"Checking inventory cs.money is completed.\n{items.Count} items were withdrawn.", ToolTipIcon.Info);
+                MainPresenter.messageBalloonTip($"Checking Cs.Money inventory is completed.\n{items.Count} items were withdrawn.", ToolTipIcon.Info);
             }
         }
         private static JArray checkInventory()
         {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Getting inventory items..."; }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Checking inventory..."; }));
             int offset = 0;
             JArray inventory = new();
             while (true)
@@ -225,6 +225,7 @@ namespace ItemChecker.Presenter
                 string json = JObject.Parse(html.Text)["items"].ToString();
                 inventory.Merge(JArray.Parse(json));
                 offset += 60;
+                Thread.Sleep(1500);
             }
             JArray items = new();
             if (inventory.Count > 0)
@@ -238,7 +239,7 @@ namespace ItemChecker.Presenter
                     }
                 }
             }
-            return items;
+            return getItems(items);
         }
         private static JArray getItems(JArray inventory)
         {
@@ -263,6 +264,7 @@ namespace ItemChecker.Presenter
                                 item_copy["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
                             items.Add(item_copy);
                         }
+                        Thread.Sleep(1500);
                     }
                     else
                         items.Add(item);
@@ -272,30 +274,19 @@ namespace ItemChecker.Presenter
         }
         private static void withdrawItems(JArray items)
         {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = $"Withdraw ({items.Count}) items..."; }));
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = $"Withdraw [{items.Count}] items..."; }));
 
             foreach (JObject item in items)
             {
-                try
-                {
-                    JObject json =
-                       new JObject(
-                           new JProperty("skins",
-                               new JObject(
-                                   new JProperty("bot", new JArray(item)),
-                                   new JProperty("user", new JArray()))));
-                    string body = json.ToString(Formatting.None);
-                    Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", body, "https://cs.money/2.0/withdraw_skins"));
-                }
-                catch
-                {
-                    continue;
-                }
-                finally
-                {
-                    MainPresenter.progressInvoke();
-                    Thread.Sleep(500);
-                }
+                JObject json = new(
+                       new JProperty("skins",
+                           new JObject(
+                               new JProperty("bot", new JArray(item)),
+                               new JProperty("user", new JArray()))));
+                string body = json.ToString(Formatting.None);
+                Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", body, "https://cs.money/2.0/withdraw_skins"));
+                Thread.Sleep(1500);
+                MainPresenter.progressInvoke();
             }
         }
 
@@ -350,7 +341,7 @@ namespace ItemChecker.Presenter
                     {
                         string[] item_line = favoriteItem.Split(';');
                         mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Checking..."; }));
-                        var json = Get.inventoriesCsMoney(Edit.replaceUrl(item_line[0]));
+                        var json = Get.InventoriesCsMoney(Edit.replaceUrl(item_line[0]));
                         if (!json.Contains("error"))
                         {
                             JArray items = new();
@@ -428,7 +419,7 @@ namespace ItemChecker.Presenter
                 string body = json.ToString(Formatting.None);
                 Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", body, "https://cs.money/add_cart"));
                 sum += Convert.ToDecimal(item["price"].ToString());
-                Thread.Sleep(100);
+                Thread.Sleep(300);
             }
             sum *= -1;
             return sendOffer(items, sum);
@@ -465,6 +456,7 @@ namespace ItemChecker.Presenter
                                     Main.Browser.ExecuteJavaScript(Delete.FetchRequest("https://cs.money/remove_cart_item?type=2&id=" + id));
                                     sum -= Convert.ToDecimal(item["price"].ToString());
                                     itemsCopy.Remove(item);
+                                    Thread.Sleep(1000);
                                 }
                         }
                         sendOffer(itemsCopy, sum);
@@ -480,6 +472,7 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Pending Trades..."; }));
 
+            Thread.Sleep(1000);
             Main.Browser.Navigate().GoToUrl("https://cs.money/2.0/get_transactions?type=0&status=0&appId=730&limit=20");
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
             string json = html.Text;
@@ -517,6 +510,8 @@ namespace ItemChecker.Presenter
                 var code_error = JObject.Parse(json)["error"].ToString();
                 if (code_error == "6")
                 {
+                    mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Login Cs.Money..."; }));
+
                     Main.Browser.Navigate().GoToUrl("https://auth.dota.trade/login?redirectUrl=https://cs.money/&callbackUrl=https://cs.money/login");
 
                     IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
@@ -578,7 +573,7 @@ namespace ItemChecker.Presenter
         private void clearCart()
         {
             Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", "{\"type\":1}", "https://cs.money/clear_cart"));
-            Thread.Sleep(100);
+            Thread.Sleep(300);
             Main.Browser.ExecuteJavaScript(Post.FetchRequest("application/json", "{\"type\":2}", "https://cs.money/clear_cart"));
         }
     }

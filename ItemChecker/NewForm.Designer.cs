@@ -53,7 +53,7 @@ namespace ItemChecker
             this.listView.MultiSelect = false;
             this.listView.Name = "listView";
             this.listView.ShowGroups = false;
-            this.listView.Size = new System.Drawing.Size(460, 386);
+            this.listView.Size = new System.Drawing.Size(496, 409);
             this.listView.TabIndex = 2;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
@@ -66,7 +66,7 @@ namespace ItemChecker
             // 
             this.close_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.close_button.Enabled = false;
-            this.close_button.Location = new System.Drawing.Point(397, 404);
+            this.close_button.Location = new System.Drawing.Point(433, 427);
             this.close_button.Name = "close_button";
             this.close_button.Size = new System.Drawing.Size(75, 23);
             this.close_button.TabIndex = 3;
@@ -83,7 +83,7 @@ namespace ItemChecker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 439);
+            this.ClientSize = new System.Drawing.Size(520, 462);
             this.Controls.Add(this.close_button);
             this.Controls.Add(this.listView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;

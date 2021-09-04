@@ -448,7 +448,7 @@ namespace ItemChecker.Presenter
                 int row = Convert.ToInt32(args[1]);
 
                 string market_hash_name = Edit.replaceUrl(item_name);
-                var json = Get.inventoriesCsMoney(market_hash_name);
+                var json = Get.InventoriesCsMoney(market_hash_name);
                 int count = 0;
 
                 if (!json.Contains("error"))

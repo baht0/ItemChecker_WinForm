@@ -83,8 +83,13 @@ namespace ItemChecker
         //file
         private void settings_MainStripMenu_Click(object sender, EventArgs e)
         {
-            SettingsForm settingsForm = new();
-            settingsForm.ShowDialog();     
+            if ((Application.OpenForms["SettingsForm"] as SettingsForm) == null)
+            {
+                SettingsForm settingsForm = new();
+                settingsForm.ShowDialog();
+            }
+            else
+                Application.OpenForms["SettingsForm"].Activate();
         }
         private void restart_MainStripMenu_Click(object sender, EventArgs e)
         {

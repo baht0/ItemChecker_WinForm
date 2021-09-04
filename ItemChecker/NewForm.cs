@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using ItemChecker.Model;
 using ItemChecker.Net;
 
@@ -26,6 +27,26 @@ namespace ItemChecker
             else
                 close_button.Enabled = true;
         }
+        private void NewForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (i >= 0 & Properties.Settings.Default.whatIsNew)
+                e.Cancel = true;
+        }
+        private void close_button_Click(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }
+        private void timer_Tick(object sender, System.EventArgs e)
+        {
+            close_button.Text = $"Close ({i--})";
+            if (i < 0)
+            {
+                close_button.Text = $"Close";
+                close_button.Enabled = true;
+                timer.Enabled = false;
+            }
+        }
+
         private void writeUpdates()
         {
             try
@@ -37,8 +58,10 @@ namespace ItemChecker
                 for (int i = 0; i < lines.Length; i++)
                 {
                     listView.Items.Add(lines[i]);
-                    if (lines[i].Contains(":"))
-                        listView.Items[i].Font = new System.Drawing.Font("Consales", listView.Items[i].Font.Size, System.Drawing.FontStyle.Bold);
+                    if (!lines[i].Contains("-"))
+                        listView.Items[i].Font = new Font("Consales", listView.Items[i].Font.Size, FontStyle.Bold); 
+                    else if (lines[i].Contains("!"))
+                        listView.Items[i].ForeColor = Color.OrangeRed;
                 }
             }
             catch
@@ -49,26 +72,6 @@ namespace ItemChecker
             finally
             {
                 listView.Columns[0].Width = -1;
-            }
-        }
-        private void NewForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (i >= 0 & Properties.Settings.Default.whatIsNew)
-                e.Cancel = true;
-        }
-        private void close_button_Click(object sender, System.EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void timer_Tick(object sender, System.EventArgs e)
-        {
-            close_button.Text = $"Close ({i--})";
-            if (i < 0)
-            {
-                close_button.Text = $"Close";
-                close_button.Enabled = true;
-                timer.Enabled = false;
             }
         }
     }
