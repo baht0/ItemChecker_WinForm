@@ -24,6 +24,7 @@ namespace ItemChecker.Presenter
     {
         private int checkCount = 1;
         private static List<string> old_id = new();
+
         public static void withdraw(object state)
         {
             try
@@ -47,7 +48,6 @@ namespace ItemChecker.Presenter
                 MainPresenter.messageBalloonTip(null, ToolTipIcon.Info);
             }
         }
-
         private static void getItems()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -321,7 +321,6 @@ namespace ItemChecker.Presenter
                     Main.cts = new();
                     Main.token = Main.cts.Token;
 
-                    MainPresenter.preparationData();
                     ThreadPool.QueueUserWorkItem(checkFavorite);
                 }
                 else
@@ -333,6 +332,7 @@ namespace ItemChecker.Presenter
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                MainPresenter.preparationData();
 
                 List<string> favoriteList = Withdraw.favoriteList;
                 foreach (string favoriteItem in favoriteList)
@@ -378,7 +378,7 @@ namespace ItemChecker.Presenter
                     }
                     finally
                     {
-                        pendingTrades();
+                        getTransactions();
                         MainPresenter.progressInvoke();
                     }
                     if (Main.token.IsCancellationRequested)
@@ -456,7 +456,7 @@ namespace ItemChecker.Presenter
                                     Main.Browser.ExecuteJavaScript(Delete.FetchRequest("https://cs.money/remove_cart_item?type=2&id=" + id));
                                     sum -= Convert.ToDecimal(item["price"].ToString());
                                     itemsCopy.Remove(item);
-                                    Thread.Sleep(1000);
+                                    Thread.Sleep(150);
                                 }
                         }
                         sendOffer(itemsCopy, sum);
@@ -468,11 +468,11 @@ namespace ItemChecker.Presenter
             }
             else return true;
         }
-        private void pendingTrades()
+        private void getTransactions()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Pending Trades..."; }));
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             Main.Browser.Navigate().GoToUrl("https://cs.money/2.0/get_transactions?type=0&status=0&appId=730&limit=20");
             IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
             string json = html.Text;
