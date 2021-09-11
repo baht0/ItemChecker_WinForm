@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using ItemChecker.Model;
 using ItemChecker.Net;
+using Newtonsoft.Json.Linq;
 
 namespace ItemChecker
 {
@@ -15,9 +16,8 @@ namespace ItemChecker
 
         private void NewForm_Load(object sender, System.EventArgs e)
         {
-            this.Text = $"What'is new? Version: {ProjectInfo.latest[0]}";
-
-            writeUpdates();
+            getUpdatesList();
+            comboBox.SelectedItem = ProjectInfo.latest[0];
 
             if (Properties.Settings.Default.whatIsNew)
             {
@@ -47,13 +47,29 @@ namespace ItemChecker
             }
         }
 
-        private void writeUpdates()
+        private void getUpdatesList()
+        {
+            string json = Post.DropboxListFolder("updates");
+
+            JArray updates = JArray.Parse(JObject.Parse(json)["entries"].ToString());
+
+            foreach (JObject update in updates)
+            {
+                string ver = (string)update["name"];
+                ver = ver[0..^4];
+                ver = ver[7..^0];
+                comboBox.Items.Add(ver);
+            }
+        }
+        private void writeUpdates(string version)
         {
             try
             {
-                string updates = Post.RequestDropbox($"updates/updates_{ProjectInfo.latest[0]}.txt");
-                updates = updates.Replace("\r\n", "\n");
-                string[] lines = updates.Split('\n');
+                listView.Items.Clear();
+                this.Text = $"What's new? Version: {version}";
+                string update = Post.DropboxRead($"updates/update_{version}.txt");
+                update = update.Replace("\r\n", "\n");
+                string[] lines = update.Split('\n');
 
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -73,6 +89,11 @@ namespace ItemChecker
             {
                 listView.Columns[0].Width = -1;
             }
+        }
+
+        private void comboBox_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            writeUpdates(comboBox.Text);
         }
     }
 }

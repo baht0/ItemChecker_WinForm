@@ -29,7 +29,6 @@ namespace ItemChecker.Presenter
         {
             try
             {
-                TryskinsPresenter.loginTryskins();
                 getItems();
                 createDTable();
             }
@@ -186,13 +185,20 @@ namespace ItemChecker.Presenter
             JArray items = new();
             try
             {
-                items = checkInventory();
-                if(items.Count > 0)
+                JArray inventory = checkInventory();
+                if (inventory.Any())
+                {
+                    mainForm.Invoke(new MethodInvoker(delegate {
+                        mainForm.progressBar_StripStatus.Maximum = inventory.Count;
+                        mainForm.progressBar_StripStatus.Value = 0;
+                        mainForm.progressBar_StripStatus.Visible = true; }));
+                    items = getItems(inventory);
+                }
+                if(items.Any())
                 {
                     mainForm.Invoke(new MethodInvoker(delegate {
                         mainForm.progressBar_StripStatus.Maximum = items.Count;
-                        mainForm.progressBar_StripStatus.Value = 0;
-                        mainForm.progressBar_StripStatus.Visible = true; }));
+                        mainForm.progressBar_StripStatus.Value = 0; }));
                     withdrawItems(items);
                 }
             }
@@ -214,18 +220,25 @@ namespace ItemChecker.Presenter
         private static JArray checkInventory()
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Checking inventory..."; }));
+
             int offset = 0;
             JArray inventory = new();
             while (true)
             {
-                if (inventory.Count < offset)
-                    break;
-                Main.Browser.Navigate().GoToUrl("https://cs.money/3.0/load_user_inventory/730?limit=60&noCache=true&offset=" + offset + "&order=desc&sort=price");
-                IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-                string json = JObject.Parse(html.Text)["items"].ToString();
-                inventory.Merge(JArray.Parse(json));
-                offset += 60;
-                Thread.Sleep(1500);
+                try
+                {
+                    if (inventory.Count < offset)
+                        break;
+                    Main.Browser.Navigate().GoToUrl("https://cs.money/3.0/load_user_inventory/730?limit=60&noCache=true&offset=" + offset + "&order=desc&sort=price");
+                    IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+                    string json = JObject.Parse(html.Text)["items"].ToString();
+                    inventory.Merge(JArray.Parse(json));
+                }
+                finally
+                {
+                    offset += 60;
+                    Thread.Sleep(1000);
+                }
             }
             JArray items = new();
             if (inventory.Count > 0)
@@ -239,37 +252,37 @@ namespace ItemChecker.Presenter
                     }
                 }
             }
-            return getItems(items);
+            return items;
         }
         private static JArray getItems(JArray inventory)
         {
-            JArray items = new();
-            if (inventory.Count > 0)
-            {
-                foreach (JObject item in inventory)
-                {
-                    if (item.ContainsKey("stackSize"))
-                    {
-                        Main.Browser.Navigate().GoToUrl("https://cs.money/2.0/get_user_stack/730/" + item["stackId"].ToString());
-                        IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-                        JArray stack = JArray.Parse(html.Text);
+            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Get Items..."; }));
 
-                        foreach (JObject stack_item in stack)
-                        {
-                            JObject item_copy = item;
-                            item_copy["id"] = Convert.ToInt64(stack_item["id"].ToString());
-                            if (item.ContainsKey("float"))
-                                item_copy["float"] = stack_item["float"].ToString();
-                            if (item.ContainsKey("pattern"))
-                                item_copy["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
-                            items.Add(item_copy);
-                        }
-                        Thread.Sleep(1500);
+            JArray items = new();
+            foreach (JObject item in inventory)
+            {
+                if (item.ContainsKey("stackSize"))
+                {
+                    Main.Browser.Navigate().GoToUrl("https://cs.money/2.0/get_user_stack/730/" + item["stackId"].ToString());
+                    IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
+                    JArray stack = JArray.Parse(html.Text);
+
+                    foreach (JObject stack_item in stack)
+                    {
+                        JObject item_copy = item;
+                        item_copy["id"] = Convert.ToInt64(stack_item["id"].ToString());
+                        if (item.ContainsKey("float"))
+                            item_copy["float"] = stack_item["float"].ToString();
+                        if (item.ContainsKey("pattern"))
+                            item_copy["pattern"] = Convert.ToInt32(stack_item["pattern"].ToString());
+                        items.Add(item_copy);
                     }
-                    else
-                        items.Add(item);
+                    Thread.Sleep(1500);
                 }
-            }            
+                else
+                    items.Add(item);
+                MainPresenter.progressInvoke();
+            }
             return items;
         }
         private static void withdrawItems(JArray items)
@@ -500,31 +513,10 @@ namespace ItemChecker.Presenter
         }
 
         //cs.money
-        public static void loginCsm()
-        {
-            Main.Browser.Navigate().GoToUrl("https://cs.money/pending-trades");
-            IWebElement html = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//pre")));
-            string json = html.Text;
-            if (json.Contains("error"))
-            {
-                var code_error = JObject.Parse(json)["error"].ToString();
-                if (code_error == "6")
-                {
-                    mainForm.Invoke(new MethodInvoker(delegate { mainForm.timer_StripStatus.Text = "Login Cs.Money..."; }));
-
-                    Main.Browser.Navigate().GoToUrl("https://auth.dota.trade/login?redirectUrl=https://cs.money/&callbackUrl=https://cs.money/login");
-
-                    IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
-                    signins.Click();
-                    Thread.Sleep(300);
-                }
-            }
-        }
         public static void getBalance()
         {
             try
             {
-                loginCsm();
                 Main.Browser.Navigate().GoToUrl("https://cs.money/personal-info/");
                 IWebElement balance = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//span[@class='styles_price__1m7op styles_balance__1OBZG']/span")));
                 Withdraw.balance_usd = Edit.removeDol(balance.Text);

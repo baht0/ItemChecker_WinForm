@@ -28,10 +28,7 @@ namespace ItemChecker.Presenter
             }
 
             TrySkins._clear();
-            loginTryskins();
-
             List<IWebElement> items = getItemsTryskins();
-
             items = checkItemsList(items);
 
             if (items.Any())
@@ -49,29 +46,6 @@ namespace ItemChecker.Presenter
 
             if (TrySkins.item.Any())
                 TryskinsPresenter.createDTable();
-        }
-        public static void loginTryskins()
-        {
-            mainForm.Invoke(new MethodInvoker(delegate { mainForm.status_StripStatus.Text = "Login Tryskins..."; }));
-
-            Main.Browser.Navigate().GoToUrl("https://table.altskins.com/site/items");
-            if (Main.Browser.Url.Contains("items"))
-            {
-                MainPresenter.progressInvoke();
-                return;
-            }
-
-            Main.Browser.Navigate().GoToUrl("https://table.altskins.com/login/steam");
-            IWebElement account = Main.wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class='OpenID_loggedInAccount']")));
-            if (account.Text == SteamConfig.Default.login | account.Text == Steam.login)
-            {
-                IWebElement signins = Main.wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//input[@class='btn_green_white_innerfade']")));
-                signins.Click();
-                Thread.Sleep(300);
-
-                MainPresenter.progressInvoke();
-            }
-            else throw new InvalidOperationException("Login Tryskins");
         }
         private static List<IWebElement> getItemsTryskins()
         {
@@ -115,7 +89,6 @@ namespace ItemChecker.Presenter
                 items = Main.Browser.FindElements(By.XPath("//table[@class='table table-bordered']/tbody/tr")).ToList();
             } while (items.Count > last);
 
-            MainPresenter.progressInvoke();
             return items;
         }
         private static List<IWebElement> checkItemsList(List<IWebElement> items)
@@ -177,7 +150,6 @@ namespace ItemChecker.Presenter
                 mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}/{items.Count}";
             }
             mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) - {TrySkins.item.Count}";
-            MainPresenter.progressInvoke();
         }
         private static void checkItemsMrinka(List<IWebElement> items)
         {
@@ -202,7 +174,6 @@ namespace ItemChecker.Presenter
                 mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}/{items.Count}";
             }
             mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
-            MainPresenter.progressInvoke();
         } 
         private static void checkItemsMrinkaProxy(List<IWebElement> items)
         {
@@ -230,7 +201,6 @@ namespace ItemChecker.Presenter
                 }
             }
             mainForm.tryskins_dataGridView.Columns[1].HeaderText = $"Item (TrySkins) [Accurate] - {TrySkins.item.Count}";
-            MainPresenter.progressInvoke();
         }
         private static void parseJson(string response, string item_name)
         {
@@ -274,7 +244,6 @@ namespace ItemChecker.Presenter
                 mainForm.tryskins_dataGridView.DataSource = table;
                 mainForm.tryskins_dataGridView.Sort(mainForm.tryskins_dataGridView.Columns[5], ListSortDirection.Descending); }));
             drawDTGView();
-            MainPresenter.progressInvoke();
         }
 
         public static void drawDTGView()
@@ -283,7 +252,8 @@ namespace ItemChecker.Presenter
             {
                 var item = row.Cells[1].Value.ToString();
                 var sta = Edit.removeDol(row.Cells[2].Value.ToString());
-                var precent = Edit.removeDol(row.Cells[4].Value.ToString());
+                var precent = Convert.ToDecimal(row.Cells[4].Value);
+
                 if (precent < 30)
                     row.Cells[4].Style.BackColor = Color.OrangeRed;
                 if (precent >= 35)
@@ -295,6 +265,8 @@ namespace ItemChecker.Presenter
                     row.Cells[1].Style.BackColor = Color.LimeGreen;
                     row.Cells[2].Style.BackColor = Color.LimeGreen;
                 }
+                if (BuyOrder.item.Contains(item))
+                    row.Cells[1].Style.BackColor = Color.CornflowerBlue;
                 if (item.Contains("Sticker") | item.Contains("Graffiti"))
                     row.Cells[0].Style.BackColor = Color.DeepSkyBlue;
                 if (item.Contains("Souvenir"))

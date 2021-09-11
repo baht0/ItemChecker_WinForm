@@ -5,6 +5,7 @@ namespace ItemChecker
 {
     static class Program
     {
+        public static StartingForm startingForm;
         public static MainForm mainForm;
         public static ServiceParserForm serviceParserForm;
         public static AboutForm aboutForm;
@@ -17,7 +18,11 @@ namespace ItemChecker
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            startingForm = new StartingForm();
+            mainForm = new MainForm();
+            startingForm.Show();
+            mainForm.Show();
+            Application.Run();
         }
     }
 }

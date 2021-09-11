@@ -36,6 +36,7 @@ namespace ItemChecker.Presenter
                 if (ServiceParser.service_one == 2 | ServiceParser.service_two == 2)
                     checkLootFarm();
                 createDTable();
+                drawDTGView();
             }
             catch (Exception exp)
             {
@@ -49,7 +50,6 @@ namespace ItemChecker.Presenter
                         serviceParserForm.status_toolStripStatusLabel.Visible = false;
                         serviceParserForm.serviceParser_dataGridView.Enabled = true;
                         serviceParserForm.serviceParser_dataGridView.Sort(serviceParserForm.serviceParser_dataGridView.Columns[6], ListSortDirection.Descending); }));
-                    drawDTGView();
                     MainPresenter.messageBalloonTip(null, ToolTipIcon.Info);
                     Main.loading = false;
                 }
@@ -285,9 +285,10 @@ namespace ItemChecker.Presenter
                 foreach (DataGridViewRow row in serviceParserForm.serviceParser_dataGridView.Rows)
                 {
                     var item = row.Cells[1].Value.ToString();
-                    var price2_one = Edit.removeDol(row.Cells[3].Value.ToString());
+                    var sta = Edit.removeDol(row.Cells[3].Value.ToString());
                     var precent = Convert.ToDecimal(row.Cells[6].Value.ToString());
                     var status = row.Cells[8].Value.ToString();
+
                     if (precent >= 20)
                         row.Cells[6].Style.BackColor = Color.MediumSeaGreen;
                     if (precent <= 0)
@@ -296,8 +297,9 @@ namespace ItemChecker.Presenter
                         row.Cells[6].Style.BackColor = Color.Red;
                     if (precent == 0 | precent == -100)
                         row.Cells[6].Style.BackColor = Color.Gray;
-                    if (price2_one > Steam.balance_usd & ServiceParser.service_one == 0)
+                    if (sta > Steam.balance_usd & ServiceParser.service_one == 0)
                         row.Cells[3].Style.BackColor = Color.Crimson;
+
                     if (BuyOrder.queue.Contains(item))
                     {
                         row.Cells[1].Style.BackColor = Color.LimeGreen;
@@ -319,6 +321,7 @@ namespace ItemChecker.Presenter
                         row.Cells[1].Style.BackColor = Color.Red;
                         row.Cells[8].Style.BackColor = Color.Red;
                     }
+
                     row.Cells[2].Style.BackColor = Color.LightGray;
                     row.Cells[5].Style.BackColor = Color.LightGray;
                     if (ServiceParser.service_one == 0) //steam -> (any)
@@ -397,7 +400,9 @@ namespace ItemChecker.Presenter
 
                 serviceParserForm.Invoke(new MethodInvoker(delegate {
                     serviceParserForm.quickCheck_textBox.Clear();
-                    serviceParserForm.search_textBox.Clear(); }));
+                    serviceParserForm.search_textBox.Clear();
+                    serviceParserForm.serviceParser_dataGridView.DataSource = ServiceParser.dataTable;
+                }));
             }
             catch (Exception exp)
             {

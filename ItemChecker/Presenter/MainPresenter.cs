@@ -3,99 +3,16 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
-using System.Threading;
 using ItemChecker.Settings;
 using ItemChecker.Support;
 using ItemChecker.Net;
 using ItemChecker.Model;
-using System.IO;
 using System.Data;
-using System.Linq;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 
 namespace ItemChecker.Presenter
 {
     public class MainPresenter
     {
-        //start
-        public static void Start(object state)
-        {
-            CancellationTokenSource cancelTokenSource = new();
-            CancellationToken token = cancelTokenSource.Token;
-
-            try
-            {                
-                while (!token.IsCancellationRequested)
-                {
-                    completionUpdate();
-
-                    LaunchBrowser();
-
-                    ProjectInfoPresenter.getCurrentVersion();
-                    ProjectInfoPresenter.checkUpdate();
-                    if (ProjectInfo.update.Any())
-                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.aboutToolStripMenuItem.Image = new Bitmap(Properties.Resources.point_red); }));
-                    mainForm.Invoke(new MethodInvoker(delegate { mainForm.loading_panel.Visible = false; }));
-
-                    SteamPresenter.loginSteam();
-                    preparationData();
-                    BuyOrderPresenter.SteamOrders();
-                    TryskinsPresenter.Tryskins(TryskinsConfig.Default.dontUpload);
-
-                    if (SteamConfig.Default.startupPush)
-                    {
-                        Main.loading = false;
-                        mainForm.Invoke(new MethodInvoker(delegate { mainForm.buyOrderPush_toolStripMenuItem.PerformClick(); }));
-                    }
-                    cancelTokenSource.Cancel();
-                }
-            }
-            catch (Exception exp)
-            {
-                cancelTokenSource.Cancel();
-                string currMethodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Exceptions.errorLog(exp, Main.assemblyVersion);
-                Exceptions.errorMessage(exp, currMethodName);
-            }
-            finally
-            {
-                Main.loading = false;
-                mainForm.Invoke(new MethodInvoker(delegate {
-                    mainForm.progressBar_StripStatus.Visible = false;
-                    mainForm.status_StripStatus.Visible = false;
-                    mainForm.reload_MainStripMenu.Enabled = true; }));
-                messageBalloonTip(null, ToolTipIcon.Info);
-
-                if (Properties.Settings.Default.whatIsNew)
-                {
-                    NewForm newForm = new();
-                    mainForm.Invoke(new MethodInvoker(delegate { newForm.ShowDialog(); }));
-
-                    Properties.Settings.Default.whatIsNew = false;
-                    Properties.Settings.Default.Save();
-                }
-            }
-        }
-        private static void LaunchBrowser()
-        {
-            ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
-            chromeDriverService.HideCommandPromptWindow = true;
-            ChromeOptions option = new();
-            option.AddArguments("--headless", "--disable-gpu", "no-sandbox", "--window-size=1920,2160", "--disable-extensions", "--disable-blink-features=AutomationControlled", "ignore-certificate-errors");
-            if (GeneralConfig.Default.profile)
-                option.AddArguments(@"--user-data-dir=" + Application.StartupPath + "\\profile", "profile-directory=Default");
-            else
-                Directory.Delete(Application.StartupPath + "\\profile", true);
-            option.Proxy = null;
-
-            Main.Browser = new ChromeDriver(chromeDriverService, option, TimeSpan.FromSeconds(30));
-            Main.Browser.Manage().Window.Maximize();
-            Main.wait = new WebDriverWait(Main.Browser, TimeSpan.FromSeconds(GeneralConfig.Default.wait));            
-
-            progressInvoke();
-        }
-
         //load
         public static void preparationData()
         {
@@ -120,28 +37,22 @@ namespace ItemChecker.Presenter
                 mainForm.course_label.Text = $"{GeneralConfig.Default.currency}₽";
                 mainForm.overstock_label.Text =  $"Overstock: {Main.overstock.Count}";
                 mainForm.unavailable_label.Text = $"Unavailable: {Main.unavailable.Count}"; }));
-
-            progressInvoke();
         }
-        public static void _reload(object state)
+        public static void Reload(object state)
         {
             try
             {
                 Main.loading = true;
                 MainPresenter.stopTimers();
-                object[] args = state as object[];
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = false;
-                    mainForm.progressBar_StripStatus.Value = 0;
-                    mainForm.progressBar_StripStatus.Maximum = Convert.ToInt32(args[0]);
-                    mainForm.progressBar_StripStatus.Visible = true;
                     mainForm.status_StripStatus.Text = "Processing...";
                     mainForm.status_StripStatus.Visible = true; }));
 
                 preparationData();
                 if (Main.reload == 0)//full
                 {
-                    clearAll();
+                    ClearData();
                     BuyOrderPresenter.SteamOrders();
                     TryskinsPresenter.Tryskins(false);
                 }
@@ -154,10 +65,7 @@ namespace ItemChecker.Presenter
                 {
                     BuyOrderPresenter.SteamOrders();
                 }
-                else if (Main.reload == 3)//update data
-                {
-                    BuyOrderPresenter.availableAmount();
-                }
+                BuyOrderPresenter.availableAmount();
             }
             catch (Exception exp)
             {
@@ -168,21 +76,33 @@ namespace ItemChecker.Presenter
             finally
             {
                 Main.loading = false;
-                mainForm.Invoke(new MethodInvoker(delegate {
+                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.reload_MainStripMenu.Enabled = true;
-                    mainForm.status_StripStatus.Visible = false;
-                    mainForm.progressBar_StripStatus.Visible = false; }));
+                    mainForm.status_StripStatus.Visible = false; }));
                 messageBalloonTip(null, ToolTipIcon.Info);
             }
         }
-        //other
+        public static void Restart()
+        {
+            MainPresenter.ClearData();
+            MainPresenter.ClearForm();
+            Main.Browser.Quit();
+
+            mainForm.Invoke(new MethodInvoker(delegate {
+                mainForm.WindowState = FormWindowState.Minimized;
+                mainForm.ShowInTaskbar = false; }));
+
+            startingForm.Show();
+            startingForm.Activate();
+        }
+        //Clear
         public static void clearDTableRows(DataGridView dataGridView)
         {
             DataTable dataTable = (DataTable)dataGridView.DataSource;
             if (dataTable != null)
                 mainForm.Invoke(new MethodInvoker(delegate { dataTable.Rows.Clear(); }));
         }
-        public static void clearAll()
+        private static void ClearData()
         {
             MainPresenter.stopTimers();
             Main.cts.Cancel();
@@ -194,9 +114,14 @@ namespace ItemChecker.Presenter
             clearDTableRows(mainForm.tryskins_dataGridView);
             clearDTableRows(mainForm.buyOrder_dataGridView);
             clearDTableRows(mainForm.withdraw_dataGridView);
-
+        }
+        private static void ClearForm()
+        {
             mainForm.Invoke(new MethodInvoker(delegate
             {
+                mainForm.status_StripStatus.Text = "Restarting...";
+                mainForm.status_StripStatus.Visible = true;
+
                 mainForm.steamMarket_label.Text = "SteamMarket: -";
                 mainForm.tryskins_label.Text = "TrySkins: -";
                 mainForm.overstock_label.Text = "Overstock: -";
@@ -205,50 +130,23 @@ namespace ItemChecker.Presenter
                 mainForm.course_label.Text = "0.00 ₽";
                 mainForm.tryskins_dataGridView.Columns[1].HeaderText = "Item (TrySkins)";
                 mainForm.buyOrder_dataGridView.Columns[1].HeaderText = "Item (BuyOrders)";
-                mainForm.available_label.Text = "Available: -"; mainForm.available_label.ForeColor = Color.Red;
+                mainForm.available_label.Text = "Available: -"; 
+                mainForm.available_label.ForeColor = Color.Black;
                 mainForm.queue_label.Text = "Queue: -";
-
-                mainForm.status_StripStatus.Text = "Processing...";
-                mainForm.status_StripStatus.Visible = true;
 
                 mainForm.withdraw_dataGridView.Visible = false;
                 mainForm.showWithdraw_toolStripMenuItem.Text = "Withdraw";
 
                 mainForm.reload_MainStripMenu.Enabled = false;
-                mainForm.progressBar_StripStatus.Value = 0;
-                mainForm.progressBar_StripStatus.Visible = true;
                 mainForm.steamMarket_label.ForeColor = Color.Black;
                 mainForm.available_label.ForeColor = Color.Black;
                 mainForm.queue_linkLabel.Text = "Place order: -";
                 mainForm.tradeOffers_linkLabel.Text = "Incoming: -";
-                mainForm.balance_StripStatus.Text = "Balance: 0.00";
+                mainForm.balance_StripStatus.Text = "Balance: 0.00 / 0.00";
             }));
         }        
-        public static void completionUpdate()
-        {
-            if (Properties.Settings.Default.completionUpdate)
-            {
-                string update = Application.StartupPath + @"\update";
-                if (Directory.Exists(update))
-                {
-                    string path = Application.StartupPath;
-                    string updaterExe = "ItemChecker.Updater.exe";
-                    string updaterDll = "ItemChecker.Updater.dll";
-                    File.Move($"{update}\\{updaterExe}", path + updaterExe, true);
-                    File.Move($"{update}\\{updaterDll}", path + updaterDll, true);
-                    Directory.Delete(update, true);
-                }
-                GeneralConfig.Default.Upgrade();
-                SteamConfig.Default.Upgrade();
-                TryskinsConfig.Default.Upgrade();
-                WithdrawConfig.Default.Upgrade();
-                FloatConfig.Default.Upgrade();
 
-                Properties.Settings.Default.completionUpdate = false;
-                Properties.Settings.Default.Save();
-            }
-        }
-
+        //other
         public static void stopTimers()
         {
             BuyOrderPresenter.stopBuyOrderPusher();
@@ -267,7 +165,7 @@ namespace ItemChecker.Presenter
         {
             mainForm.Invoke(new MethodInvoker(delegate { mainForm.progressBar_StripStatus.Value += i; }));
         }
-        public static void exit()
+        public static void Exit()
         {
             try
             {

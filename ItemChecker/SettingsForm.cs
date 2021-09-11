@@ -258,7 +258,7 @@ namespace ItemChecker
 
                 MessageBox.Show("Restart required. The program will be closed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Hide();
-                MainPresenter.exit();
+                MainPresenter.Exit();
             }
         }
         private void download_button_Click(object sender, EventArgs e)

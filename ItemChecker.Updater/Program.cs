@@ -81,6 +81,7 @@ namespace ItemChecker.Updater
                 Process.Start(AppDomain.CurrentDomain.BaseDirectory + @"\ItemChecker.exe");
             }
         }
+
         public static String TemporaryLinkDropbox(string file)
         {
             HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("https://api.dropboxapi.com/2/files/get_temporary_link");

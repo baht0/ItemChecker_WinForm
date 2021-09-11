@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Net;
 
@@ -68,7 +70,7 @@ namespace ItemChecker.Net
 
             return FetchRequest("application/x-www-form-urlencoded", body, url);
         }
-        public static String RequestDropbox(string file)
+        public static String DropboxRead(string file)
         {
             HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("https://content.dropboxapi.com/2/files/download");
 
@@ -77,8 +79,35 @@ namespace ItemChecker.Net
 
             HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             Stream stream = httpResponse.GetResponseStream();
-            StreamReader streamReader = new StreamReader(stream);
+            StreamReader streamReader = new(stream);
             string s = httpResponse.StatusCode.ToString();
+
+            return streamReader.ReadToEnd();
+        }
+        public static String DropboxListFolder(string path)
+        {
+            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("https://api.dropboxapi.com/2/files/list_folder");
+
+            httpRequest.Method = "POST";
+            httpRequest.ContentType = "application/json";
+            httpRequest.Headers["Authorization"] = "Bearer a94CSH6hwyUAAAAAAAAAAf3zRyhyZknI9J8KM3VZihWEILAuv6Vr3ht_-4RQcJxs";
+
+            JObject json = new(
+                        new JProperty("path", $"/{path}"),
+                        new JProperty("recursive", false),
+                        new JProperty("include_media_info", false),
+                        new JProperty("include_deleted", false),
+                        new JProperty("include_has_explicit_shared_members", false),
+                        new JProperty("include_mounted_folders", true),
+                        new JProperty("include_non_downloadable_files", true));
+            string data = json.ToString(Formatting.None);
+
+            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            {
+                streamWriter.Write(data.ToLower());
+            }
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            var streamReader = new StreamReader(httpResponse.GetResponseStream());
 
             return streamReader.ReadToEnd();
         }

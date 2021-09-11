@@ -34,6 +34,7 @@ namespace ItemChecker
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.close_button = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.comboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // listView
@@ -60,7 +61,7 @@ namespace ItemChecker
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Width = 400;
+            this.columnHeader1.Width = 25;
             // 
             // close_button
             // 
@@ -79,11 +80,23 @@ namespace ItemChecker
             this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // comboBox
+            // 
+            this.comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox.FormattingEnabled = true;
+            this.comboBox.Location = new System.Drawing.Point(12, 427);
+            this.comboBox.Name = "comboBox";
+            this.comboBox.Size = new System.Drawing.Size(70, 23);
+            this.comboBox.Sorted = true;
+            this.comboBox.TabIndex = 4;
+            this.comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            // 
             // NewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(520, 462);
+            this.Controls.Add(this.comboBox);
             this.Controls.Add(this.close_button);
             this.Controls.Add(this.listView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -102,5 +115,6 @@ namespace ItemChecker
         private System.Windows.Forms.Button close_button;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ComboBox comboBox;
     }
 }

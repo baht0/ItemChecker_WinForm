@@ -8,6 +8,7 @@ using ItemChecker.Settings;
 using ItemChecker.Net;
 using OpenQA.Selenium.Support.Extensions;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace ItemChecker.Presenter
 {
@@ -37,8 +38,8 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate {
                     mainForm.tradeOffers_linkLabel.Text = "Incoming: -";
                     mainForm.progressBar_StripStatus.Visible = false;
-                    mainForm.status_StripStatus.Visible = false;
-                }));
+                    mainForm.status_StripStatus.Visible = false; }));
+                MainPresenter.messageBalloonTip("Acceptance of trades is complete.", ToolTipIcon.Info);
             }
         }
         private static Boolean checkOffer()
@@ -46,6 +47,7 @@ namespace ItemChecker.Presenter
             try
             {
                 TradeOffer._clear();
+                bool response = false;
                 var json = Get.TradeOffers(SteamConfig.Default.steamApiKey);
                 int count = ((JArray)JObject.Parse(json)["response"]["trade_offers_received"]).Count;
                 for (int i = 0; i < count; i++)
@@ -63,9 +65,11 @@ namespace ItemChecker.Presenter
                     mainForm.progressBar_StripStatus.Value = 0;
                     mainForm.progressBar_StripStatus.Maximum = TradeOffer.tradeofferid.Count;
                     mainForm.progressBar_StripStatus.Visible = true;
-                    mainForm.tradeOffers_linkLabel.Text = $"Incoming: {TradeOffer.tradeofferid.Count}";
-                }));
-                return true;
+                    mainForm.tradeOffers_linkLabel.Text = $"Incoming: {TradeOffer.tradeofferid.Count}"; }));
+
+                if (TradeOffer.tradeofferid.Any())
+                    response = true;
+                return response;
             }
             catch
             {
@@ -84,7 +88,6 @@ namespace ItemChecker.Presenter
                 mainForm.Invoke(new MethodInvoker(delegate { mainForm.tradeOffers_linkLabel.Text = $"Incoming: {TradeOffer.tradeofferid.Count - (i + 1)}"; }));
                 MainPresenter.progressInvoke();
             }
-            MainPresenter.messageBalloonTip("Acceptance of trades is complete.", ToolTipIcon.Info);
         }
     }
 }

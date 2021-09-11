@@ -15,7 +15,7 @@ namespace ItemChecker
 {
     public partial class ServiceParserForm : Form
     {
-        int past_row = 1;
+        int past_row = 0;
         public ServiceParserForm()
         {
             InitializeComponent();
@@ -75,9 +75,11 @@ namespace ItemChecker
             int ser_1 = firstSer_comboBox.SelectedIndex;
             int ser_2 = secondSer_comboBox.SelectedIndex;
 
-            if (Main.checkList.Count != 0 & !Main.loading & ser_1 != ser_2)
+            if (Main.checkList.Any() & !Main.loading & ser_1 != ser_2)
             {
                 Main.loading = true;
+                ServiceParserPresenter.ClearAll(true, true);
+
                 ServiceParser.service_one = ser_1;
                 ServiceParser.service_two = ser_2;
 
@@ -92,7 +94,6 @@ namespace ItemChecker
                 services_toolStripStatusLabel.Text = $"From {firstSer_comboBox.Text} To {secondSer_comboBox.Text}";
                 services_toolStripStatusLabel.Visible = true;
 
-                ServiceParserPresenter.ClearAll(true, true);
                 ThreadPool.QueueUserWorkItem(ServiceParserPresenter.checkMain);
             }
         }
@@ -120,11 +121,13 @@ namespace ItemChecker
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Main.loading = true;
+                    ServiceParserPresenter.ClearAll(true, true);
+
                     status_toolStripStatusLabel.Text = "Import the list from *.csv...";
                     status_toolStripStatusLabel.Visible = true;
                     string fileName = Path.GetFileNameWithoutExtension(dialog.FileName).ToString();
                     fileName = fileName.Remove(0, 15).Replace("_", " ");
-                    ServiceParserPresenter.ClearAll(true, true);
+
                     ThreadPool.QueueUserWorkItem(ServiceParserPresenter.importCsv, new object[] { dialog.FileName, fileName });
                 }
             }
@@ -304,8 +307,12 @@ namespace ItemChecker
         }
         private void serviceParser_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (serviceParser_dataGridView.RowCount > 0)
+            DataGridView dataGridView = serviceParser_dataGridView;
+            if (dataGridView.RowCount > 0)
+            {
+                dataGridView.CurrentCell = dataGridView.Rows[0].Cells[0];
                 ServiceParserPresenter.drawDTGView();
+            }
         }
 
         //X

@@ -125,9 +125,6 @@ namespace ItemChecker
             this.staWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.salesWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.precentWD_Column = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.loading_pictureBox = new System.Windows.Forms.PictureBox();
-            this.ver_label = new System.Windows.Forms.Label();
-            this.loading_panel = new System.Windows.Forms.Panel();
             this.info_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.toolsMessage_groupBox = new System.Windows.Forms.GroupBox();
             this.toolsMessage_label = new System.Windows.Forms.Label();
@@ -145,8 +142,6 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.buyOrder_dataGridView)).BeginInit();
             this.taskbar_contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.withdraw_dataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).BeginInit();
-            this.loading_panel.SuspendLayout();
             this.toolsMessage_groupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -176,7 +171,7 @@ namespace ItemChecker
             // space_StripStatus
             // 
             this.space_StripStatus.Name = "space_StripStatus";
-            this.space_StripStatus.Size = new System.Drawing.Size(316, 17);
+            this.space_StripStatus.Size = new System.Drawing.Size(418, 17);
             this.space_StripStatus.Spring = true;
             // 
             // status_StripStatus
@@ -187,15 +182,17 @@ namespace ItemChecker
             // 
             // progressBar_StripStatus
             // 
-            this.progressBar_StripStatus.Maximum = 10;
+            this.progressBar_StripStatus.Maximum = 0;
             this.progressBar_StripStatus.Name = "progressBar_StripStatus";
             this.progressBar_StripStatus.Size = new System.Drawing.Size(100, 16);
+            this.progressBar_StripStatus.Visible = false;
             // 
             // timer_StripStatus
             // 
             this.timer_StripStatus.Name = "timer_StripStatus";
             this.timer_StripStatus.Size = new System.Drawing.Size(93, 17);
             this.timer_StripStatus.Text = "Next check: 0:00";
+            this.timer_StripStatus.ToolTipText = "Click to speed up.";
             this.timer_StripStatus.Visible = false;
             this.timer_StripStatus.Click += new System.EventHandler(this.timer_StripStatus_Click);
             this.timer_StripStatus.MouseEnter += new System.EventHandler(this.timer_StripStatus_MouseEnter);
@@ -879,6 +876,8 @@ namespace ItemChecker
             this.notifyIcon.ContextMenuStrip = this.taskbar_contextMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "ItemChecker";
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.BalloonTipClicked += new System.EventHandler(this.notifyIcon_BalloonTipClicked);
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // taskbar_contextMenuStrip
@@ -1062,37 +1061,6 @@ namespace ItemChecker
             this.precentWD_Column.ReadOnly = true;
             this.precentWD_Column.Width = 64;
             // 
-            // loading_pictureBox
-            // 
-            this.loading_pictureBox.Image = global::ItemChecker.Properties.Resources.loading;
-            this.loading_pictureBox.Location = new System.Drawing.Point(0, 237);
-            this.loading_pictureBox.Name = "loading_pictureBox";
-            this.loading_pictureBox.Size = new System.Drawing.Size(600, 137);
-            this.loading_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.loading_pictureBox.TabIndex = 0;
-            this.loading_pictureBox.TabStop = false;
-            // 
-            // ver_label
-            // 
-            this.ver_label.AutoSize = true;
-            this.ver_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ver_label.Location = new System.Drawing.Point(507, 589);
-            this.ver_label.Name = "ver_label";
-            this.ver_label.Size = new System.Drawing.Size(81, 13);
-            this.ver_label.TabIndex = 1;
-            this.ver_label.Text = "Version: 0.0.0.0";
-            // 
-            // loading_panel
-            // 
-            this.loading_panel.BackColor = System.Drawing.SystemColors.Window;
-            this.loading_panel.Controls.Add(this.ver_label);
-            this.loading_panel.Controls.Add(this.loading_pictureBox);
-            this.loading_panel.Cursor = System.Windows.Forms.Cursors.AppStarting;
-            this.loading_panel.Location = new System.Drawing.Point(0, 0);
-            this.loading_panel.Name = "loading_panel";
-            this.loading_panel.Size = new System.Drawing.Size(600, 611);
-            this.loading_panel.TabIndex = 7;
-            // 
             // toolsMessage_groupBox
             // 
             this.toolsMessage_groupBox.Controls.Add(this.toolsMessage_label);
@@ -1118,7 +1086,6 @@ namespace ItemChecker
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 611);
-            this.Controls.Add(this.loading_panel);
             this.Controls.Add(this.floatCheck_groupBox);
             this.Controls.Add(this.pusherBuyOrder_groupBox);
             this.Controls.Add(this.favoriteCheck_groupBox);
@@ -1139,10 +1106,11 @@ namespace ItemChecker
             this.MaximumSize = new System.Drawing.Size(616, 650);
             this.MinimumSize = new System.Drawing.Size(616, 650);
             this.Name = "MainForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ItemChecker";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.main_statusStrip.ResumeLayout(false);
             this.main_statusStrip.PerformLayout();
             this.main_menuStrip.ResumeLayout(false);
@@ -1167,9 +1135,6 @@ namespace ItemChecker
             ((System.ComponentModel.ISupportInitialize)(this.buyOrder_dataGridView)).EndInit();
             this.taskbar_contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.withdraw_dataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loading_pictureBox)).EndInit();
-            this.loading_panel.ResumeLayout(false);
-            this.loading_panel.PerformLayout();
             this.toolsMessage_groupBox.ResumeLayout(false);
             this.toolsMessage_groupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -1253,9 +1218,6 @@ namespace ItemChecker
         private System.Windows.Forms.ToolStripMenuItem serviceParserToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         public System.Windows.Forms.ToolStripMenuItem favoriteCheckToolStripMenuItem;
-        public System.Windows.Forms.PictureBox loading_pictureBox;
-        public System.Windows.Forms.Label ver_label;
-        public System.Windows.Forms.Panel loading_panel;
         private System.Windows.Forms.ToolStripMenuItem tableExtractToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trySkinsTotxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buyOrdersTotxtToolStripMenuItem;

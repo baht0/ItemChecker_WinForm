@@ -57,7 +57,7 @@ namespace ItemChecker.Presenter
                 ProjectInfo._clear();
 
                 XmlDocument xDoc = new();
-                xDoc.LoadXml(Post.RequestDropbox("info.xml"));
+                xDoc.LoadXml(Post.DropboxRead("info.xml"));
                 XmlElement xRoot = xDoc.DocumentElement;
 
                 foreach (XmlNode xnode in xRoot)
@@ -116,7 +116,7 @@ namespace ItemChecker.Presenter
             updater.Arguments = args;
             Process.Start(updater);
 
-            MainPresenter.exit();
+            MainPresenter.Exit();
         }
 
         public static void createCurrentVersion()

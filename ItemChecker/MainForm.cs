@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 using ItemChecker.Support;
 using ItemChecker.Model;
@@ -45,32 +43,6 @@ namespace ItemChecker
                 }
             }
         }
-        public void MainForm_Shown(object sender, EventArgs e)
-        {
-            Main.loading = true;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-            notifyIcon.Visible = true;
-            ver_label.Text = "Version: " + Main.assemblyVersion;
-
-            status_StripStatus.Text = "Launch Browser...";
-
-            BuyOrderPresenter buyOrderPresenter = new();
-            WithdrawPresenter withdrawPresenter = new();
-            FloatPresenter floatPresenter = new();
-            BuyOrder.timer.Elapsed += new ElapsedEventHandler(buyOrderPresenter.timerTick);
-            Withdraw.timer.Elapsed += new ElapsedEventHandler(withdrawPresenter.timerTick);
-            Float.timer.Elapsed += new ElapsedEventHandler(floatPresenter.timerTick);
-            BuyOrder.timer.Interval = Withdraw.timer.Interval = Float.timer.Interval = 1000;
-
-            Main.proxyList.AddRange(GeneralConfig.Default.proxyList.Split("\n"));
-            Withdraw.favoriteList.AddRange(WithdrawConfig.Default.favoriteList.Split("\n"));
-            Float.floatList.AddRange(FloatConfig.Default.floatList.Split("\n"));
-
-            if (TryskinsConfig.Default.dontUpload)
-                progressBar_StripStatus.Maximum = 6;
-            ThreadPool.QueueUserWorkItem(MainPresenter.Start);
-        }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -93,24 +65,21 @@ namespace ItemChecker
         }
         private void restart_MainStripMenu_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(
+            if (!Main.loading)
+            {
+                DialogResult result = MessageBox.Show(
                     "Do you really want restart program?",
                     "Question",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                Main.loading = true;
-                loading_panel.Visible = true;
-                progressBar_StripStatus.Maximum = 9;
+                if (result == DialogResult.Yes)
+                {
+                    Main.loading = true;
 
-                MainPresenter.clearAll();
-                Main.Browser.Quit();
-                Thread.Sleep(1000);
-
-                status_StripStatus.Visible = true;
-                ThreadPool.QueueUserWorkItem(MainPresenter.Start);
+                    MainPresenter.Restart();
+                    ThreadPool.QueueUserWorkItem(StartingPresenter.Start);
+                }
             }
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -124,7 +93,7 @@ namespace ItemChecker
             if (result == DialogResult.Yes)
             {
                 MainPresenter.stopTimers();
-                MainPresenter.exit();
+                MainPresenter.Exit();
             }
         }
         //reload
@@ -133,7 +102,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 0;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 7 });
+                ThreadPool.QueueUserWorkItem(MainPresenter.Reload);
             }
         }
         private void tryskins_MainStripMenu_Click(object sender, EventArgs e)
@@ -141,7 +110,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 1;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 5 });
+                ThreadPool.QueueUserWorkItem(MainPresenter.Reload);
             }
         }
         private void buyOrders_MainStripMenu_Click(object sender, EventArgs e)
@@ -149,7 +118,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 2;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 4 });
+                ThreadPool.QueueUserWorkItem(MainPresenter.Reload);
             }
         }
         private void updateData_toolStripMenuItem_Click(object sender, EventArgs e)
@@ -157,7 +126,7 @@ namespace ItemChecker
             if (!Main.loading)
             {
                 Main.reload = 3;
-                ThreadPool.QueueUserWorkItem(MainPresenter._reload, new object[] { 1 });
+                ThreadPool.QueueUserWorkItem(MainPresenter.Reload);
             }
         }
         //withdraw
@@ -410,7 +379,13 @@ namespace ItemChecker
         private void timer_StripStatus_MouseEnter(object sender, EventArgs e)
         {
             if (Main.loading)
+            {
                 timer_StripStatus.ForeColor = Color.Red;
+                timer_StripStatus.ToolTipText = "Click to stop.";
+            }
+            else
+                timer_StripStatus.ToolTipText = "Click to speed up.";
+
         }
         private void timer_StripStatus_MouseLeave(object sender, EventArgs e)
         {
@@ -477,7 +452,7 @@ namespace ItemChecker
         private void tryskins_dataGridView_KeyDown(object sender, KeyEventArgs e)
         {
             DataGridView dataGridView = tryskins_dataGridView;
-            if (dataGridView.RowCount > 0)
+            if (dataGridView.RowCount > 0 & e.KeyCode == Keys.Insert)
             {
                 int sta = 2;
                 int row = dataGridView.CurrentCell.RowIndex;
@@ -488,15 +463,18 @@ namespace ItemChecker
 
                 string item = dataGridView.Rows[row].Cells[1].Value.ToString();
                 decimal price = Edit.removeSymbol(dataGridView.Rows[row].Cells[sta].Value.ToString());
-
-                if (e.KeyCode == Keys.Insert)
-                    ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
+                
+                ThreadPool.QueueUserWorkItem(BuyOrderPresenter.addQueue, new object[] { dataGridView, row, item, price, sta });
             }
         }
         private void tryskins_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (tryskins_dataGridView.RowCount > 0)
+            DataGridView dataGridView = tryskins_dataGridView;
+            if (dataGridView.RowCount > 0)
+            {
+                dataGridView.CurrentCell = dataGridView.Rows[0].Cells[0];
                 TryskinsPresenter.drawDTGView();
+            }
         }
         //buyorder table
         private void buyOrder_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -526,7 +504,7 @@ namespace ItemChecker
                 int column = dataGridView.CurrentCell.ColumnIndex;
                 string str = dataGridView.CurrentCell.Value.ToString();
 
-                if (column == 3)
+                if (column == 3 & (str != "Overstock" & str != "Unavailable"))
                 {
                     Main.save_str = str;
                     dataGridView.Rows[row].Cells[column].Value = Edit.currencyConverter(str, GeneralConfig.Default.currency);
@@ -541,7 +519,7 @@ namespace ItemChecker
                 int row = dataGridView.CurrentCell.RowIndex;
                 int column = dataGridView.CurrentCell.ColumnIndex;
 
-                if (column == 3)
+                if (column == 3 & Main.save_str != null)
                 {
                     dataGridView.Rows[row].Cells[column].Value = Main.save_str;
                     Main.save_str = null;
@@ -565,9 +543,9 @@ namespace ItemChecker
                 {
                     Main.Browser.Navigate().GoToUrl("https://steamcommunity.com/market/");
                     int row = dataGridView.CurrentCell.RowIndex;
-                    string item = dataGridView.CurrentCell.Value.ToString();
-                    int index = BuyOrder.item.IndexOf(item);
+                    string item = dataGridView.Rows[row].Cells[1].Value.ToString();
 
+                    int index = BuyOrder.item.IndexOf(item);
                     BuyOrderPresenter.CancelOrder(index);
 
                     dataGridView.Rows[row].Cells[2].Style.BackColor = Color.Red;
@@ -577,8 +555,12 @@ namespace ItemChecker
         }
         private void buyOrder_dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (buyOrder_dataGridView.RowCount > 0)
+            DataGridView dataGridView = buyOrder_dataGridView;
+            if (dataGridView.RowCount > 0)
+            {
+                dataGridView.CurrentCell = dataGridView.Rows[0].Cells[0];
                 BuyOrderPresenter.drawDTGView();
+            }
         }
         //withdraw table
         private void withdraw_dataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -647,9 +629,28 @@ namespace ItemChecker
         //tree
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-            this.Activate();
+            if ((Application.OpenForms["StartingForm"] as StartingForm) == null)
+            {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+                this.Activate();
+            }
+        }
+        private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            if ((Application.OpenForms["ServiceParserForm"] as ServiceParserForm) != null)
+                Application.OpenForms["ServiceParserForm"].Activate();
+            else if ((Application.OpenForms["MainForm"] as MainForm) != null)
+            {
+                Application.OpenForms["MainForm"].BringToFront();
+                Application.OpenForms["MainForm"].Activate();
+            }
+            else if ((Application.OpenForms["MainForm"] as MainForm) == null)
+            {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+                this.Activate();
+            }
         }
         private void tree_serviceParserToolStripMenuItem_Click(object sender, EventArgs e)
         {

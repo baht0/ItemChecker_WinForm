@@ -5,6 +5,7 @@ using ItemChecker.Model;
 using static ItemChecker.Program;
 using System.Diagnostics;
 using ItemChecker.Settings;
+using ItemChecker.Presenter;
 
 namespace ItemChecker
 {
@@ -31,7 +32,11 @@ namespace ItemChecker
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!close)
-                exit();
+            {
+                this.Hide();
+                mainForm.Hide();
+                MainPresenter.Exit();
+            }
         }
 
         //code
@@ -55,7 +60,7 @@ namespace ItemChecker
         //buttons
         private void ok_button_Click(object sender, EventArgs e)
         {
-            if (login_textBox.Text != "" & pass_textBox.Text != "" & code_textBox.Text != "")
+            if (login_textBox.Text != null & pass_textBox.Text != null & code_textBox.Text != null)
             {
                 Steam.login = login_textBox.Text;
                 Steam.pass = pass_textBox.Text;
@@ -85,23 +90,6 @@ namespace ItemChecker
             }
             else
                 Application.OpenForms["SettingsForm"].Activate();
-        }
-        private void exit()
-        {
-            try
-            {
-                this.Hide();
-                mainForm.Hide();
-                mainForm.notifyIcon.Visible = false;
-                Main.Browser.Quit();
-                Application.Exit();
-            }
-            catch
-            {
-                foreach (Process proc in Process.GetProcessesByName("chromedriver")) proc.Kill();
-                foreach (Process proc in Process.GetProcessesByName("conhost")) proc.Kill();
-                foreach (Process proc in Process.GetProcessesByName("ItemChecker")) proc.Kill();
-            }
         }
     }
 }
